@@ -1,0 +1,155 @@
+/* ===============================
+   GLOBAL RESET
+================================*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* Smooth transitions globally */
+  transition: background 150ms ease, color 150ms ease;
+}
+
+/* ===============================
+   SCROLL BEHAVIOR + BASE HTML
+================================*/
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: #000;
+  color: #fff;
+
+  /* Removes horizontal accidental overflow */
+  overflow-x: hidden;
+
+  /* Perfect OpenAI page comfortable spacing */
+  line-height: 1.6;
+}
+
+/* ===============================
+   TEXT SELECTION STYLE
+================================*/
+::selection {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* For Firefox (uses different tag) */
+::-moz-selection {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* ===============================
+   GLOBAL LINKS
+================================*/
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+/* ===============================
+   REMOVE SCROLLBAR (optional)
+================================*/
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* ===============================
+   ROOT LAYOUT WRAPPER (optional)
+   Makes entire layout consistent
+================================*/
+#root {
+  display: flex;
+  flex-direction: column;
+
+  /* Prevents content touching edges on huge screens */
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ===============================
+   IMAGE OPTIMIZATION
+================================*/
+img {
+  user-select: none;
+  pointer-events: none;
+  max-width: 100%;
+}
+
+/* ===============================
+   BUTTON BASE
+================================*/
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  background: none;
+}
+
+/* ===============================
+   INPUT BASE
+================================*/
+input,
+textarea {
+  font-family: inherit;
+  outline: none;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255,255,255,0.55);
+}
+
+/* ===============================
+   RESPONSIVE GLOBAL CONTAINER
+   (Optional but very premium)
+================================*/
+.container {
+  width: min(1400px, 92%);
+  margin: 0 auto;
+}
+
+/* ===============================
+   ANIMATIONS (Reusable)
+================================*/
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===============================
+   PAGE TRANSITION SAFE AREA
+================================*/
+.page-wrapper {
+  padding: 24px 0;
+}
+
+/* Hide full page scrollbar */
+html, body {
+  overflow-y: scroll;
+  scrollbar-width: none;           /* Firefox */
+}
+
+::-webkit-scrollbar {
+  width: 0px;                      /* Chrome, Safari */
+  background: transparent;
+}
