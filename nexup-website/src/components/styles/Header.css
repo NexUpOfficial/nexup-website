@@ -1,0 +1,297 @@
+/* ===========================
+   BASE
+=========================== */
+:root {
+  --motion: 240ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  --white-12: rgba(255,255,255,0.12);
+  --white-18: rgba(255,255,255,0.18);
+  --white-20: rgba(255,255,255,0.20);
+  --white-25: rgba(255,255,255,0.25);
+
+  --glass-bg: rgba(0,0,0,0.86);
+  --glass-blur: blur(14px);
+}
+
+/* ===========================
+   HEADER (GLOBAL)
+=========================== */
+.header {
+  width: 100%;
+  height: 80px;
+  padding: 16px 30px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  z-index: 2000;
+}
+
+/* Scroll Hide */
+.header.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform var(--motion), opacity var(--motion);
+}
+
+/* ===========================
+   LEFT SECTION
+=========================== */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 40px;
+  padding-bottom: 6px;
+  flex-shrink: 0;
+}
+
+/* Title (Always Visible) */
+.header-title {
+  font-family: "Inter", sans-serif;
+  font-size: 1.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 36px;
+  white-space: nowrap;
+}
+
+/* Smooth Fade */
+.fade-smooth {
+  animation: fadeSmooth var(--motion);
+}
+
+@keyframes fadeSmooth {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   SIDEBAR ICON
+=========================== */
+.sidebar-icon-btn {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  margin-left: 20px;  
+
+  filter: brightness(0.25);  /* low default */
+  transition: filter var(--motion);
+}
+
+.sidebar-icon-btn:hover {
+  filter: brightness(1);     /* bright only on hover */
+}
+
+.icon-wrapper {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  transition: transform var(--motion);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrapper.open {
+  transform: rotate(14deg);
+}
+
+.icon {
+  position: absolute;
+  transition: opacity var(--motion), transform var(--motion);
+}
+
+.bottom-icon { opacity: 1; }
+.top-icon { opacity: 0; transform: translateY(6px); }
+
+.icon-wrapper.open .bottom-icon {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.icon-wrapper.open .top-icon {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tooltip */
+.tooltip-container { position: relative; }
+
+.diamond-tooltip {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  font-size: 12px;
+
+  background: var(--white-18);
+  border: 1px solid var(--white-25);
+  border-radius: 8px;
+  white-space: nowrap !important;
+  backdrop-filter: blur(8px);
+}
+
+/* ===========================
+   RIGHT SECTION
+=========================== */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding-bottom: 10px;
+  padding-right: 40px;
+}
+
+/* Search Button */
+.search-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--white-12);
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background var(--motion), transform var(--motion);
+}
+
+.search-btn:hover {
+  background: var(--white-20);
+  transform: scale(1.05);
+}
+
+/* Login Button */
+.login-btn {
+  padding: 6px 18px;
+  border-radius: 8px;
+  background: var(--white-12);
+  border: 1px solid var(--white-18);
+  color: #fff;
+
+  font-size: 0.95rem;
+  transition: transform var(--motion), background var(--motion);
+}
+
+.login-btn:hover {
+  background: var(--white-18);
+  transform: scale(1.04);
+}
+
+/* ===========================
+   GLOW TEXT (STRONGER VERSION)
+=========================== */
+.glow-text {
+  color: #ffffff;
+  text-shadow: none;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+
+  /* Sharp clear white, no shadow, no animation */
+  text-shadow: none;
+  opacity: 1;
+
+  /* Stable, perfect readability */
+  letter-spacing: 1px;
+  transform: none;
+  animation: none !important;
+}
+
+
+
+/* ===========================
+   RESPONSIVE — MOBILE
+=========================== */
+@media (max-width: 768px) {
+  .header {
+    height: 72px;
+    padding: 14px 16px;
+  }
+
+  .header-title {
+    font-size: 1.55rem;
+  }
+
+  .sidebar-icon-btn {
+    width: 22px;
+    height: 22px;
+  }
+
+  .header-right {
+    gap: 14px;
+    padding-right: 20px;
+  }
+
+  .search-btn, .login-btn {
+    transform: scale(0.92);
+  }
+}
+
+/* ===========================
+   RESPONSIVE — TABLET
+=========================== */
+@media (max-width: 1024px) {
+  .header-title {
+    font-size: 1.75rem;
+  }
+
+  .header-right {
+    padding-right: 20px;
+  }
+}
+
+/* ===========================
+   RESPONSIVE — LAPTOP
+=========================== */
+@media (min-width: 1280px) {
+  .header-title {
+    font-size: 2.05rem;
+  }
+}
+
+/* ===========================
+   RESPONSIVE — LARGE SCREEN / TV
+=========================== */
+@media (min-width: 1600px) {
+  .header {
+    height: 90px;
+    padding: 22px 40px;
+  }
+
+  .header-title {
+    font-size: 2.4rem;
+  }
+
+  .sidebar-icon-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .search-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .login-btn {
+    font-size: 1.05rem;
+    padding: 8px 22px;
+  }
+}
