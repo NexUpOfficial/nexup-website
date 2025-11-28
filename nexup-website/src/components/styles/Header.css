@@ -1,3 +1,12 @@
+/*
+ * RESPONSIVE HEADER STYLES (NeXUP Motion)
+ * This stylesheet is fully responsive and handles layouts for Mobile, Tablet,
+ * Laptop, and large screens (TV), implementing the following rules:
+ * 1. Smooth slide/fade animation for fixed header on scroll.
+ * 2. Mobile: Login button is hidden.
+ * 3. Mobile: Sidebar icon moves to the far right end (now flush with header padding).
+ */
+
 /* ===========================
    BASE
 =========================== */
@@ -15,7 +24,6 @@
 
 /* =====================================
    HEADER — SMOOTH SCROLL ANIMATION
-   (NeXUP Premium Motion)
 ===================================== */
 
 .header {
@@ -38,7 +46,7 @@
   z-index: 2000;
 
   /* ★ Smooth slide + fade effects */
- transition:
+  transition:
     transform 880ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 680ms ease,
     filter 760ms ease,
@@ -47,9 +55,9 @@
 
 /* When scrolling DOWN (hide header) */
 .header.hide {
-  transform: translateY(-120%);  /* slightly more for smooth exit */
+  transform: translateY(-120%);
   opacity: 0;
-  backdrop-filter: blur(0px);     /* subtle dissolve */
+  backdrop-filter: blur(0px);
 }
 
 /* ===========================
@@ -68,12 +76,12 @@
 .header-title {
   font-family: "Inter", sans-serif;
   font-size: 1.92rem;
-  font-weight: 500;           /* stronger, clean weight */
-  color: #FFFFFF;             /* pure polished white */
+  font-weight: 500;
+  color: #FFFFFF;
   line-height: 1;
   white-space: nowrap;
   user-select: none;
-  letter-spacing: 0.3px;     /* tighter, premium typography */
+  letter-spacing: 0.3px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -98,15 +106,15 @@
   border: none;
   cursor: pointer;
 
-  margin-left: 20px;  
+  margin-left: 20px;
   margin-top: 10px;
 
-  filter: brightness(0.35);  /* low default */
+  filter: brightness(0.35);
   transition: filter var(--motion);
 }
 
 .sidebar-icon-btn:hover {
-  filter: brightness(1);     /* bright only on hover */
+  filter: brightness(1);
 }
 
 .icon-wrapper {
@@ -158,6 +166,7 @@
   border-radius: 8px;
   white-space: nowrap !important;
   backdrop-filter: blur(8px);
+  z-index: 1000; /* Ensure tooltip is above other content */
 }
 
 /* ===========================
@@ -204,6 +213,7 @@
 
   font-size: 0.95rem;
   transition: transform var(--motion), background var(--motion);
+  cursor: pointer; /* Ensure clickability */
 }
 
 .login-btn:hover {
@@ -212,7 +222,7 @@
 }
 
 /* ===========================
-   GLOW TEXT (STRONGER VERSION)
+   GLOW TEXT
 =========================== */
 .glow-text {
   color: #ffffff;
@@ -221,117 +231,12 @@
   font-weight: 600;
   font-size: 24px;
 
-  /* Sharp clear white, no shadow, no animation */
   text-shadow: none;
   opacity: 1;
 
-  /* Stable, perfect readability */
   letter-spacing: 1px;
   transform: none;
   animation: none !important;
-}
-
-
-
-/* ===========================
-   RESPONSIVE — MOBILE
-=========================== */
-@media (max-width: 768px) {
-  .header {
-    height: 72px;
-    padding: 14px 16px;
-  }
-
-  .header-title {
-    font-size: 1.55rem;
-  }
-
-  .sidebar-icon-btn {
-    width: 22px;
-    height: 22px;
-  }
-
-  .header-right {
-    gap: 14px;
-    padding-right: 20px;
-  }
-
-  .search-btn, .login-btn {
-    transform: scale(0.92);
-  }
-  .diamond-tooltip {
-    top: 46px;                /* adjust slightly lower */
-    left: 50%;
-    transform: translateX(-50%) !important;
-
-    padding: 6px 12px;
-    font-size: 11px;
-
-    max-width: 160px;         /* prevents long text overflow */
-    text-align: center;
-
-    white-space: normal !important;
-    line-height: 1.2;
-
-    opacity: 1;
-  }
-
-  /* Prevent layout shifting */
-  .tooltip-container {
-    position: relative;
-  }
-}
-
-/* ===========================
-   RESPONSIVE — TABLET
-=========================== */
-@media (max-width: 1024px) {
-  .header-title {
-    font-size: 1.75rem;
-  }
-
-  .header-right {
-    padding-right: 20px;
-  }
-}
-
-/* ===========================
-   RESPONSIVE — LAPTOP
-=========================== */
-@media (min-width: 1280px) {
-  .header-title {
-    font-size: 2.05rem;
-  }
-}
-
-/* ===========================
-   RESPONSIVE — LARGE SCREEN / TV
-=========================== */
-@media (min-width: 1600px) {
-  .header {
-    height: 90px;
-    padding: 22px 40px;
-  }
-
-  .header-title {
-    font-size: 2.4rem;
-  }
-
-  .sidebar-icon-btn {
-    width: 28px;
-    height: 28px;
-  }
-
-  .search-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .login-btn {
-    font-size: 1.05rem;
-    padding: 8px 22px;
-    user-select: none;
-  }
 }
 
 /* Small dynamic titles */
@@ -364,14 +269,12 @@
   transition: background 220ms ease, transform 220ms ease, border-color 220ms ease;
 }
 
-/* Hover */
 .back-arrow-btn:hover {
   background: rgba(255,255,255,0.18);
   border-color: rgba(255,255,255,0.25);
   transform: scale(1.05);
 }
 
-/* Arrow SVG clean & centered */
 .back-arrow-btn svg {
   width: 18px;
   height: 18px;
@@ -382,66 +285,172 @@
   display: block;
 }
 
-/* Fixed Sidebar Icon (untouched) */
+/* Fixed Sidebar Icon */
 .fixed-sidebar-icon {
   margin-left: 14px;
   display: flex;
   align-items: center;
 }
 
-/* ===========================================================
-   🔥 NEW — APPEAR / DISAPPEAR ANIMATIONS
-=========================================================== */
-
-/* Arrow appears */
+/* NEW — APPEAR DISAPPEAR ANIMATIONS */
 .back-arrow-appear {
   animation: arrowFadeIn 0.38s ease both;
 }
 
-/* Arrow disappears */
 .back-arrow-disappear {
   animation: arrowFadeOut 0.35s ease forwards;
 }
 
-/* Fade In */
 @keyframes arrowFadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(-14px) scale(0.85);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+  from { opacity: 0; transform: translateX(-14px) scale(0.85); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* Fade Out */
 @keyframes arrowFadeOut {
-  from {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-14px) scale(0.85);
-  }
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(-14px) scale(0.85); }
 }
 
-/* ===========================================================
-   MOBILE — SMALLER & MORE CENTERED ARROW
-=========================================================== */
+/* =========================================================================
+   RESPONSIVE LAYOUTS
+   ========================================================================= */
 
+/* RESPONSIVE — MOBILE (< 768px) */
 @media (max-width: 768px) {
+  .header {
+    height: 72px;
+    padding: 14px 16px;
+  }
+
+  .header-title {
+    font-size: 1.55rem;
+  }
+
+  /* Adjust sidebar icon size */
+  .sidebar-icon-btn {
+    width: 22px;
+    height: 22px;
+    margin-left: 300px; /* Adjusted for tighter mobile layout */
+    margin-top: 10px;
+  }
+
+  .icon-wrapper {
+    transform: scale(0.9);
+  }
+
+  /* Right section: Search → Sidebar menu icon (icon at far right) */
+  .header-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 14px;
+    padding-bottom: 0;
+    /* --- FIX: Removing 10px padding to move sidebar icon further right --- */
+    padding-right: 50px; 
+    /* ------------------------------------------------------------------- */
+    align-items: center; 
+  }
+
+  /* 1. HIDE LOGIN BUTTON ON MOBILE */
+  .login-btn {
+    display: none !important;
+  }
+
+  /* 2. SIDEBAR ICON TO FAR RIGHT */
+  .sidebar-icon-btn {
+    order: 2; /* pushes menu icon to right end */
+    transform: scale(0.92);
+    margin-right: -100px;filter: brightness(0.5);
+    transition: filter var(--motion);
+  }
+
+  /* 3. SEARCH BUTTON STAYS LEFT OF ICON */
+  .search-btn {
+    margin-right: 50px;
+    margin-bottom: 6px;
+    transform: scale(0.92);
+    width: 30px;
+    height: 30px;
+
+  }
+
+  /* Back Arrow Button adjustments */
   .back-arrow-btn {
     width: 30px;
     height: 30px;
     border-radius: 6px;
-    transform: translateX(-10px);
+    margin-right: 8px; /* Tighter spacing */
+    transform: none; /* remove initial desktop translation */
   }
 
   .back-arrow-btn svg {
     width: 16px;
     height: 16px;
     transform: translateX(-0.5px);
+  }
+
+  /* Tooltip stays single line on mobile */
+  .diamond-tooltip {
+    top: 46px;
+    left: 134%;
+    transform: translateX(-50%) !important;
+
+    padding: 6px 12px;
+    font-size: 11px;  
+    
+
+    white-space: nowrap !important;
+    max-width: none !important;
+    overflow: visible !important;
+  }
+
+  .tooltip-container {
+    position: relative;
+  }
+}
+
+/* RESPONSIVE — TABLET (< 1024px) */
+@media (max-width: 1024px) {
+  .header-title {
+    font-size: 1.75rem;
+  }
+
+  .header-right {
+    padding-right: 20px;
+  }
+}
+
+/* RESPONSIVE — LAPTOP (≥ 1280px) */
+@media (min-width: 1280px) {
+  .header-title {
+    font-size: 2.05rem;
+  }
+}
+
+/* RESPONSIVE — LARGE SCREEN / TV (≥ 1600px) */
+@media (min-width: 1600px) {
+  .header {
+    height: 90px;
+    padding: 22px 40px;
+  }
+
+  .header-title {
+    font-size: 2.4rem;
+  }
+
+  .sidebar-icon-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .search-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .login-btn {
+    font-size: 1.05rem;
+    padding: 8px 22px;
+    user-select: none;
   }
 }

@@ -229,7 +229,7 @@ useEffect(() => {
           }
         >
           <span className="left-indicator" />
-          Login System (DNS)
+          Login
         </NavLink>
       </div>
 
