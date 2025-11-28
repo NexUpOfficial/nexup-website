@@ -13,9 +13,11 @@
   --glass-blur: blur(14px);
 }
 
-/* ===========================
-   HEADER (GLOBAL)
-=========================== */
+/* =====================================
+   HEADER — SMOOTH SCROLL ANIMATION
+   (NeXUP Premium Motion)
+===================================== */
+
 .header {
   width: 100%;
   height: 80px;
@@ -31,16 +33,23 @@
 
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
-
   box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+
   z-index: 2000;
+
+  /* ★ Smooth slide + fade effects */
+ transition:
+    transform 880ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 680ms ease,
+    filter 760ms ease,
+    backdrop-filter 680ms ease;
 }
 
-/* Scroll Hide */
+/* When scrolling DOWN (hide header) */
 .header.hide {
-  transform: translateY(-100%);
+  transform: translateY(-120%);  /* slightly more for smooth exit */
   opacity: 0;
-  transition: transform var(--motion), opacity var(--motion);
+  backdrop-filter: blur(0px);     /* subtle dissolve */
 }
 
 /* ===========================
@@ -55,14 +64,18 @@
   flex-shrink: 0;
 }
 
-/* Title (Always Visible) */
+/* Title — Polished White (OpenAI Style) */
 .header-title {
   font-family: "Inter", sans-serif;
-  font-size: 1.95rem;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 36px;
+  font-size: 1.92rem;
+  font-weight: 500;           /* stronger, clean weight */
+  color: #FFFFFF;             /* pure polished white */
+  line-height: 1;
   white-space: nowrap;
+  user-select: none;
+  letter-spacing: 0.3px;     /* tighter, premium typography */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Smooth Fade */
@@ -86,8 +99,9 @@
   cursor: pointer;
 
   margin-left: 20px;  
+  margin-top: 10px;
 
-  filter: brightness(0.25);  /* low default */
+  filter: brightness(0.35);  /* low default */
   transition: filter var(--motion);
 }
 
@@ -186,6 +200,8 @@
   border: 1px solid var(--white-18);
   color: #fff;
 
+  user-select: none;
+
   font-size: 0.95rem;
   transition: transform var(--motion), background var(--motion);
 }
@@ -243,6 +259,27 @@
   .search-btn, .login-btn {
     transform: scale(0.92);
   }
+  .diamond-tooltip {
+    top: 46px;                /* adjust slightly lower */
+    left: 50%;
+    transform: translateX(-50%) !important;
+
+    padding: 6px 12px;
+    font-size: 11px;
+
+    max-width: 160px;         /* prevents long text overflow */
+    text-align: center;
+
+    white-space: normal !important;
+    line-height: 1.2;
+
+    opacity: 1;
+  }
+
+  /* Prevent layout shifting */
+  .tooltip-container {
+    position: relative;
+  }
 }
 
 /* ===========================
@@ -293,5 +330,118 @@
   .login-btn {
     font-size: 1.05rem;
     padding: 8px 22px;
+    user-select: none;
+  }
+}
+
+/* Small dynamic titles */
+.small-title {
+  font-size: 1.25rem !important;
+  font-weight: 600;
+}
+
+.big-title {
+  font-size: 1.95rem !important;
+}
+
+/* Back Arrow Button */
+.back-arrow-btn {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+
+  margin-right: 12px;
+  padding: 0;
+
+  cursor: pointer;
+  transition: background 220ms ease, transform 220ms ease, border-color 220ms ease;
+}
+
+/* Hover */
+.back-arrow-btn:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.25);
+  transform: scale(1.05);
+}
+
+/* Arrow SVG clean & centered */
+.back-arrow-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+
+/* Fixed Sidebar Icon (untouched) */
+.fixed-sidebar-icon {
+  margin-left: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* ===========================================================
+   🔥 NEW — APPEAR / DISAPPEAR ANIMATIONS
+=========================================================== */
+
+/* Arrow appears */
+.back-arrow-appear {
+  animation: arrowFadeIn 0.38s ease both;
+}
+
+/* Arrow disappears */
+.back-arrow-disappear {
+  animation: arrowFadeOut 0.35s ease forwards;
+}
+
+/* Fade In */
+@keyframes arrowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-14px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Fade Out */
+@keyframes arrowFadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-14px) scale(0.85);
+  }
+}
+
+/* ===========================================================
+   MOBILE — SMALLER & MORE CENTERED ARROW
+=========================================================== */
+
+@media (max-width: 768px) {
+  .back-arrow-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    transform: translateX(-10px);
+  }
+
+  .back-arrow-btn svg {
+    width: 16px;
+    height: 16px;
+    transform: translateX(-0.5px);
   }
 }

@@ -1,0 +1,6 @@
+.head {
+    justify-content: center;
+    display: flex;
+    align-self: center;
+    margin-top: 100px;
+}

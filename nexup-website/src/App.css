@@ -35,8 +35,8 @@ body {
    TEXT SELECTION STYLE
 ================================*/
 ::selection {
-  background: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
+  background: rgb(255, 255, 255);
+  color: #000000;
 }
 
 /* For Firefox (uses different tag) */
