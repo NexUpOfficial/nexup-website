@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import * as THREE from "three";
 import "../page-styles/Home.css";
+import { useNavigate } from "react-router-dom";
 
 /* ============================
    THREE.JS BACKGROUND
@@ -41,7 +42,6 @@ function NexUpThreeBackground() {
     mount.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // Soft ambient light
     const ambient = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambient);
 
@@ -49,7 +49,6 @@ function NexUpThreeBackground() {
     dirLight.position.set(10, 20, 30);
     scene.add(dirLight);
 
-    // Energy Ring (Torus)
     const ringGeometry = new THREE.TorusGeometry(14, 0.7, 32, 120);
     const ringMaterial = new THREE.MeshStandardMaterial({
       color: 0xffffff,
@@ -58,27 +57,24 @@ function NexUpThreeBackground() {
       metalness: 0.4,
       roughness: 0.3,
     });
+
     const energyRing = new THREE.Mesh(ringGeometry, ringMaterial);
     energyRing.rotation.x = Math.PI / 3;
     energyRing.position.set(8, 2, -10);
     scene.add(energyRing);
     ringRef.current = energyRing;
 
-    // Particle "shadow" field
     const particlesCount = 750;
     const pGeometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particlesCount * 3);
 
     for (let i = 0; i < particlesCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 140; // x
-      positions[i + 1] = (Math.random() - 0.5) * 80; // y
-      positions[i + 2] = (Math.random() - 0.5) * 60; // z
+      positions[i] = (Math.random() - 0.5) * 140;
+      positions[i + 1] = (Math.random() - 0.5) * 80;
+      positions[i + 2] = (Math.random() - 0.5) * 60;
     }
 
-    pGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(positions, 3)
-    );
+    pGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
 
     const pMaterial = new THREE.PointsMaterial({
       color: 0x050505,
@@ -96,17 +92,14 @@ function NexUpThreeBackground() {
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
 
-      // Energy ring subtle rotation
       if (ringRef.current) {
         ringRef.current.rotation.z = elapsedTime * 0.25;
       }
 
-      // Particle gentle drift
       if (particlesRef.current) {
         particlesRef.current.rotation.y += 0.0006;
         particlesRef.current.rotation.x += 0.0003;
 
-        // React slightly to cursor rotation
         particlesRef.current.rotation.y +=
           (targetRotation.current.y - particlesRef.current.rotation.y) * 0.02;
         particlesRef.current.rotation.x +=
@@ -130,8 +123,8 @@ function NexUpThreeBackground() {
     window.addEventListener("resize", handleResize);
 
     const handleMouseMove = (e) => {
-      const xNorm = (e.clientY / window.innerHeight - 0.5) * 0.5; // vertical tilt
-      const yNorm = (e.clientX / window.innerWidth - 0.5) * 0.7; // horizontal tilt
+      const xNorm = (e.clientY / window.innerHeight - 0.5) * 0.5;
+      const yNorm = (e.clientX / window.innerWidth - 0.5) * 0.7;
       targetRotation.current = { x: xNorm, y: yNorm };
     };
 
@@ -146,6 +139,7 @@ function NexUpThreeBackground() {
         mount.removeChild(renderer.domElement);
         renderer.dispose();
       }
+
       pGeometry.dispose();
       pMaterial.dispose();
       ringGeometry.dispose();
@@ -159,7 +153,7 @@ function NexUpThreeBackground() {
 /* ============================
    MAGNETIC BUTTON
 ============================ */
-function MagneticButton({ className = "", children }) {
+function MagneticButton({ className = "", children, onClick }) {
   const btnRef = useRef(null);
 
   const handleMouseMove = (e) => {
@@ -170,7 +164,6 @@ function MagneticButton({ className = "", children }) {
     const relX = e.clientX - (rect.left + rect.width / 2);
     const relY = e.clientY - (rect.top + rect.height / 2);
 
-    // Limit movement
     const moveX = Math.max(Math.min(relX * 0.2, 12), -12);
     const moveY = Math.max(Math.min(relY * 0.2, 12), -12);
 
@@ -189,6 +182,7 @@ function MagneticButton({ className = "", children }) {
       className={`${className} magnetic-btn`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={onClick}
     >
       {children}
     </button>
@@ -199,10 +193,10 @@ function MagneticButton({ className = "", children }) {
    MAIN HOME COMPONENT
 ============================ */
 function Home({ isOpen }) {
+  const navigate = useNavigate();
+
   return (
-    <div
-      className={`home-root ${isOpen ? "home-root--sidebar-open" : ""}`}
-    >
+    <div className={`home-root ${isOpen ? "home-root--sidebar-open" : ""}`}>
       <NexUpThreeBackground />
       <div className="home-overlay" />
 
@@ -212,7 +206,6 @@ function Home({ isOpen }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* HERO */}
         <section className="home-hero">
           <div className="home-hero-glow" />
 
@@ -237,20 +230,22 @@ function Home({ isOpen }) {
             </p>
 
             <div className="hero-cta-row">
-              <MagneticButton className="btn-primary">
-                Explore NexWorld
+              <MagneticButton
+                className="btn-primary"
+                onClick={() => navigate("/Ecosystem")}
+              >
+                Explore Ecosystem
               </MagneticButton>
-              <MagneticButton className="btn-ghost">
-                Our Vision
+
+              <MagneticButton
+                className="btn-ghost"
+                onClick={() => navigate("/About")}
+              >
+                About Us
               </MagneticButton>
             </div>
           </motion.div>
         </section>
-
-        {/* FOOTER */}
-        <footer className="home-footer">
-          <span>© {new Date().getFullYear()} NeX UP. Building the next reality.</span>
-        </footer>
       </motion.div>
     </div>
   );

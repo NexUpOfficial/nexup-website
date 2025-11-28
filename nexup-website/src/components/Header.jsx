@@ -124,7 +124,7 @@ function Header({ toggleSidebar, isOpen }) {
     if (isMobile) return;
     clearTimeout(timer.current);
     setShowTooltip(true);
-    timer.current = setTimeout(() => setShowTooltip(false), 1000);
+    timer.current = setTimeout(() => setShowTooltip(false), 500);
   };
 
   const handleLeave = () => {
@@ -145,7 +145,7 @@ function Header({ toggleSidebar, isOpen }) {
 
     clearTimeout(timer.current);
     setShowTooltip(true);
-    timer.current = setTimeout(() => setShowTooltip(false), 1200);
+    timer.current = setTimeout(() => setShowTooltip(false), 500);
   };
 
   /* =======================================================

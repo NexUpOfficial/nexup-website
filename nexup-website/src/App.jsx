@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
@@ -17,6 +18,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 
 /* Ecosystem */
+import Ecosystem from "./pages/Ecosystem/Ecosystem.jsx";
 import NexWorld from "./pages/Ecosystem/NexWorld";
 import NexNodes from "./pages/Ecosystem/NexNodes";
 import NexEngine from "./pages/Ecosystem/NexEngine";
@@ -24,6 +26,7 @@ import NexHousing from "./pages/Ecosystem/NexHousing";
 import Search from "./pages/Ecosystem/Search";
 
 /* About */
+import About from "./pages/About/About.jsx";
 import Vision from "./pages/About/Vision";
 import Team from "./pages/About/Team";
 import Stories from "./pages/About/Stories";
@@ -51,10 +54,11 @@ function AnimatedRoutesWrapper({ isOpen }) {
     <AnimatePresence mode="wait">
       <Routes key={location.pathname} location={location}>
 
-        {/* HOME — IMPORTANT */}
+        {/* HOME */}
         <Route path="/" element={<Home isOpen={isOpen} />} />
 
         {/* ECOSYSTEM */}
+        <Route path="/ecosystem" element={<Ecosystem />} />
         <Route path="/ecosystem/nexworld" element={<NexWorld />} />
         <Route path="/ecosystem/nexnodes" element={<NexNodes />} />
         <Route path="/ecosystem/nexengine" element={<NexEngine />} />
@@ -62,6 +66,7 @@ function AnimatedRoutesWrapper({ isOpen }) {
         <Route path="/ecosystem/search" element={<Search />} />
 
         {/* ABOUT */}
+        <Route path="/about" element={<About />} />
         <Route path="/about/vision" element={<Vision />} />
         <Route path="/about/team" element={<Team />} />
         <Route path="/about/stories" element={<Stories />} />
@@ -78,7 +83,6 @@ function AnimatedRoutesWrapper({ isOpen }) {
         <Route path="/login" element={<Login />} />
 
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/ecosystem/search" element={<Search />} />
 
       </Routes>
     </AnimatePresence>
