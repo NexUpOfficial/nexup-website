@@ -10,7 +10,7 @@ main {
 
 /* When sidebar is closed */
 .main {
-  margin-left: 64px;
+  margin-left: 0;
 }
 
 @media (max-width: 768px) {

@@ -44,6 +44,38 @@ function Sidebar({ isOpen, onClose }) {
     { label: "News", to: "/about/news" },
   ];
 
+  /* ===========================
+   SCROLL SHADOW LOGIC
+=========================== */
+useEffect(() => {
+  const container = document.querySelector(".sidebar-inner");
+  if (!container) return;
+
+  const handleShadow = () => {
+    const atTop = container.scrollTop <= 0;
+    const atBottom =
+      container.scrollHeight - container.scrollTop === container.clientHeight;
+
+    // toggle top shadow
+    if (!atTop) container.classList.add("shadow-top");
+    else container.classList.remove("shadow-top");
+
+    // toggle bottom shadow
+    if (!atBottom) container.classList.add("shadow-bottom");
+    else container.classList.remove("shadow-bottom");
+  };
+
+  // initial shadow check
+  handleShadow();
+
+  // attach scroll listener
+  container.addEventListener("scroll", handleShadow);
+
+  // cleanup
+  return () => container.removeEventListener("scroll", handleShadow);
+}, []);
+
+
   return (
   <aside className={`sidebar ${isOpen ? "open" : ""}`}>
     <div className="sidebar-inner">
