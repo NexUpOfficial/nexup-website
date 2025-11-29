@@ -22,7 +22,7 @@
 
 .sidebar {
   position: fixed;
-  top: 80px;
+  top: 72px;
   left: 0;
   height: calc(100vh - 80px);
   width: 250px;
@@ -133,7 +133,7 @@
    SECTION WRAPPER + LABEL
 ========================================================= */
 .sidebar-section {
-  margin-bottom: 26px;
+  margin-bottom: 12px;
 }
 
 .sidebar-section-label {

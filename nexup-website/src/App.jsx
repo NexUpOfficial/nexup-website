@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion";
 
 import "./App.css";
 
+
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Main from "./components/Main";
@@ -45,7 +46,7 @@ import Login from "./pages/Login";
 import SearchPage from "./pages/Search";
 
 /* ============================
-   PAGE TRANSITION WRAPPER
+   PAGE TRANSITION WRAPPER 
 ============================ */
 function AnimatedRoutesWrapper({ isOpen }) {
   const location = useLocation();
@@ -111,6 +112,7 @@ function App() {
       </Main>
 
     </BrowserRouter>
+  
   );
 }
 
