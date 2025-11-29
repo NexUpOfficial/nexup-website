@@ -30,6 +30,9 @@ body {
   /* Perfect OpenAI page comfortable spacing */
   line-height: 1.6;
 }
+html, body, button, a {
+  transition: background 150ms ease, color 150ms ease;
+}
 
 /* ===============================
    TEXT SELECTION STYLE

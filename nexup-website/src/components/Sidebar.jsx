@@ -1,10 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./styles/Sidebar.css";
+import useHeaderHeight from "../hooks/useHeaderHeight";
+
 
 function Sidebar({ isOpen, onClose }) {
   const [openSection, setOpenSection] = useState(null);
   const location = useLocation();
+
+  /* Auto height dectector  */
+const headerHeight = useHeaderHeight();
+const [touchStartX, setTouchStartX] = useState(0);
+const [touchEndX, setTouchEndX] = useState(0);
+/* Mobile Swipe-to-Close */
+useEffect(() => {
+  if (!isOpen) return;
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.changedTouches[0].screenX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEndX(e.changedTouches[0].screenX);
+  };
+
+  const handleTouchEnd = () => {
+    // Swipe left gesture
+    if (touchStartX - touchEndX > minSwipeDistance) {
+      onClose?.();
+    }
+  };
+
+  const el = document.querySelector(".sidebar");
+
+  el.addEventListener("touchstart", handleTouchStart);
+  el.addEventListener("touchmove", handleTouchMove);
+  el.addEventListener("touchend", handleTouchEnd);
+
+  return () => {
+    el.removeEventListener("touchstart", handleTouchStart);
+    el.removeEventListener("touchmove", handleTouchMove);
+    el.removeEventListener("touchend", handleTouchEnd);
+  };
+}, [isOpen, touchStartX, touchEndX]);
+
+
+const minSwipeDistance = 60;
+
 
   /* Auto-open correct section on route */
   useEffect(() => {
@@ -77,7 +119,14 @@ useEffect(() => {
 
 
   return (
-  <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+  <aside
+  className={`sidebar ${isOpen ? "open" : ""}`}
+  style={{
+    top: headerHeight,
+    height: `calc(100vh - ${headerHeight}px)`
+  }}
+>
+
     <div className="sidebar-inner">
 
       {/* MAIN */}
