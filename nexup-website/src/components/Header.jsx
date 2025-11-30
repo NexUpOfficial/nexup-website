@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./styles/Header.css";
 
-
 function Header({ toggleSidebar, isOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,29 +17,28 @@ function Header({ toggleSidebar, isOpen }) {
   /* =======================================================
      BROWSER TITLE + HEADER TITLE LOGIC
   ======================================================== */
-
   const TITLE_MAP = {
     "/": "NexUP",
 
-    "/ecosystem/nexworld": "NexWorld | NexUP",
-    "/ecosystem/nexnodes": "NexNodes | NexUP",
-    "/ecosystem/nexengine": "NexEngine | NexUP",
-    "/ecosystem/nexhousing": "NexHousing | NexUP",
-    "/ecosystem/search": "Search Engine | NexUP",
+    "/ecosystem/nexworld": "NexWorld",
+    "/ecosystem/nexnodes": "NexNodes",
+    "/ecosystem/nexengine": "NexEngine",
+    "/ecosystem/nexhousing": "NexHousing",
+    "/ecosystem/search": "Search Engine",
 
-    "/about/vision": "Vision | NexUP",
-    "/about/team": "Team | NexUP",
-    "/about/stories": "Stories | NexUP",
-    "/about/company": "Company | NexUP",
-    "/about/career": "Career | NexUP",
-    "/about/news": "News | NexUP",
+    "/about/vision": "Vision",
+    "/about/team": "Team",
+    "/about/stories": "Stories",
+    "/about/company": "Company",
+    "/about/career": "Career",
+    "/about/news": "News",
 
-    "/support/guidelines": "Guidelines | Support",
-    "/support/help": "Help | Support",
+    "/support/guidelines": "Guidelines",
+    "/support/help": "Help / Support",
 
-    "/contact": "Contact | NexUP",
-    "/login": "Login | NexUP",
-    "/search": "Search | NexUP",
+    "/contact": "Contact",
+    "/login": "Login",
+    "/search": "Search",
   };
 
   const SIMPLE_TITLE = {
@@ -64,38 +62,11 @@ function Header({ toggleSidebar, isOpen }) {
 
     "/contact": "Contact",
     "/login": "Login",
-    "/search": "Search"
-  };
-
-  /* ============================================
-     NEW — CLICK TITLE → NAVIGATE TO CORRECT PAGE
-  ============================================ */
-  const ROUTE_MAP = {
-    "NexUP": "/",
-    "NexWorld": "/ecosystem/nexworld",
-    "NexNodes": "/ecosystem/nexnodes",
-    "NexEngine": "/ecosystem/nexengine",
-    "NexHousing": "/ecosystem/nexhousing",
-    "Search Engine": "/ecosystem/search",
-
-    "Vision": "/about/vision",
-    "Team": "/about/team",
-    "Stories": "/about/stories",
-    "Company": "/about/company",
-    "Career": "/about/career",
-    "News": "/about/news",
-
-    "Guidelines": "/support/guidelines",
-    "Help / Support": "/support/help",
-
-    "Contact": "/contact",
-    "Login": "/login",
-    "Search": "/search",
+    "/search": "Search",
   };
 
   const headerTitle = SIMPLE_TITLE[location.pathname] || "NexUP";
 
-  // update browser title
   useEffect(() => {
     document.title = TITLE_MAP[location.pathname] || "NexUP";
   }, [location.pathname]);
@@ -142,18 +113,18 @@ function Header({ toggleSidebar, isOpen }) {
 
   const handleMobileTap = () => {
     if (!isMobile) return;
-
     clearTimeout(timer.current);
     setShowTooltip(true);
     timer.current = setTimeout(() => setShowTooltip(false), 500);
   };
 
   /* =======================================================
-     NAVIGATE TO TOP WHEN TITLE CLICKED
+     CLICK TITLE → ALWAYS GO HOME
   ======================================================== */
   const navigateByTitle = () => {
-    const target = ROUTE_MAP[headerTitle] || "/";
-    navigate(target);
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -162,21 +133,21 @@ function Header({ toggleSidebar, isOpen }) {
   ======================================================== */
   return (
     <header className={`header ${hideHeader ? "hide" : ""}`}>
+      <div className="header-gradient"></div>
 
       {/* LEFT SECTION */}
       <div className="header-left">
 
-        {/* BACK ARROW */}
+        {/* BACK BUTTON */}
         {!isHome && (
-        <button className="back-arrow-btn" onClick={() => navigate(-1)}>
-  <svg viewBox="0 0 24 24">
-    <polyline points="14 18 8 12 14 6" />
-  </svg>
-</button>
-
+          <button className="back-arrow-btn" onClick={() => navigate(-1)}>
+            <svg viewBox="0 0 24 24">
+              <polyline points="14 18 8 12 14 6" />
+            </svg>
+          </button>
         )}
 
-        {/* CLICKABLE DYNAMIC TITLE */}
+        {/* DYNAMIC CLICKABLE TITLE */}
         <h1
           className={`header-title ${isHome ? "big-title" : "small-title"}`}
           onClick={navigateByTitle}
@@ -200,7 +171,6 @@ function Header({ toggleSidebar, isOpen }) {
             }}
           >
             <div className={`icon-wrapper ${isOpen ? "open" : ""}`}>
-
               {/* CLOSED ICON */}
               <svg
                 className="icon bottom-icon"
@@ -232,7 +202,6 @@ function Header({ toggleSidebar, isOpen }) {
                 <rect x="4" y="4" width="16" height="16" rx="3" />
                 <line x1="4" y1="8" x2="20" y2="8" />
               </svg>
-
             </div>
           </button>
 
@@ -243,43 +212,40 @@ function Header({ toggleSidebar, isOpen }) {
               style={{
                 transform: isMobile
                   ? "translateX(-50%)"
-                  : `translateX(calc(-50% + ${mouseOffsetX}px))`
+                  : `translateX(calc(-50% + ${mouseOffsetX}px))`,
               }}
             >
               {isOpen ? "Close Menu" : "Open Menu"}
             </div>
           )}
         </div>
-
       </div>
 
       {/* RIGHT SECTION */}
       <div className="header-right">
+
+        {/* SEARCH BUTTON */}
         <button className="search-btn" onClick={() => navigate("/search")}>
-  <svg
-    width="22"
-    height="22"
-    viewBox="0 1 24 24"
-    fill="none"
-    stroke="white"
-    strokeWidth="2.2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    {/* Circle */}
-    <circle cx="11" cy="11" r="7" />
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 1 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <line x1="16.5" y1="16.5" x2="21" y2="21" />
+          </svg>
+        </button>
 
-    {/* Handle */}
-    <line x1="16.5" y1="16.5" x2="21" y2="21" />
-  </svg>
-</button>
-
-
+        {/* LOGIN BUTTON */}
         <button className="login-btn" onClick={() => navigate("/login")}>
           Login
         </button>
       </div>
-
     </header>
   );
 }

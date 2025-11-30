@@ -1,436 +1,224 @@
-/****************************************************
- * ROOT & LAYOUT
- ****************************************************/
-.home-root {
+/* ============================================
+   HOME — Ultra Clean Black Premium Page
+============================================ */
+
+.home-container {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  background: hsl(0, 0%, 0%);
+  min-height: calc(100vh - 80px);
+  background: #000;
+  color: #fff;
   overflow: hidden;
-  transition: transform 250ms ease, border-radius 250ms ease;
+  
+
   display: flex;
-  flex-direction: column;
-  border: 0.50px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 1px 2px 50px 10px rgba(255, 255, 255, 0.1);
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
 }
 
-.home-root--sidebar-open {
-  transition: 0.8s all ease;
-  transform: scale(0.94);
-  border-radius: 20px;
-}
-
-.home-overlay {
-  position: fixed;
+/* Smoke */
+.home-smoke {
+  position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 1;
+  z-index: 0;
+  opacity: 0.48;
   pointer-events: none;
 }
 
-.home-content-wrapper {
-  position: relative;
-  z-index: 2;
-  color: #fff;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 80px 28px 40px;
-  font-family: "Inter", sans-serif;
-  width: 100%;
-}
-
-/****************************************************
- * HERO SECTION
- ****************************************************/
+/* HERO */
 .home-hero {
-  padding: 80px 0 60px;
   position: relative;
-}
-
-.home-hero-glow {
-  display: none;
-}
-
-@keyframes glowFloat {
-  0% { transform: translate(0, 0); opacity: 0.7; }
-  50% { transform: translate(40px, 20px); opacity: 1; }
-  100% { transform: translate(10px, -20px); opacity: 0.65; }
-}
-
-.hero-title-main {
-  position: relative;
-  font-size: clamp(3rem, 6vw, 4.6rem);
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  user-select: none;
-  text-transform: uppercase;
-  margin: 0;
   z-index: 2;
+  text-align: center;
+  max-width: 750px;
+}
+/* =======================================
+   TITLE — Light Sweep Glossy Effect
+======================================= */
+
+.home-title {
+  position: relative;
+  overflow: hidden;
+  font-size: 3.4rem;
 }
 
-.hero-title-main::before {
+/* Sweeping light */
+.home-title::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 10%;
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(
-    circle,
-    rgba(51, 209, 255, 0.45) 0%,
-    rgba(0, 0, 0, 0) 70%
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    transparent 98%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 100%
   );
-  transform: translate(-50%, -50%);
-  filter: blur(40px);
-  z-index: -1;
+  transform: skewX(-20deg);
+  animation: titleSweep 4s linear infinite;
+}
+
+@keyframes titleSweep {
+  0% { left: -120%; }
+  60% { left: 120%; }
+  100% { left: 120%; }
+}
+
+.home-subtitle {
+  font-size: 1.3rem;
   opacity: 0.85;
-  animation: titleGlowFloat 12s ease-in-out infinite alternate;
+  margin-bottom: 2.5rem;
 }
 
-@keyframes titleGlowFloat {
-  0% { transform: translate(-50%, -52%) scale(1); opacity: 0.75; }
-  50% { transform: translate(-50%, -48%) scale(1.08); opacity: 0.95; }
-  100% { transform: translate(-50%, -52%) scale(0.97); opacity: 0.7; }
+/* ==========================
+   BUTTON AREA
+========================== */
+
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.3rem;
 }
 
-.hero-symbol {
-  background: linear-gradient(135deg, #ffffff 0%, #cfcfcf 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  opacity: 0.95;
-  font-weight: 300;
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.25),
-               0 2px 6px rgba(0, 0, 0, 0.35);
-}
-
-.hero-subtitle {
-  margin-top: 14px;
-  font-size: 1.25rem;
-  opacity: 0.85;
-}
-
-.hero-description {
-  margin-top: 16px;
+/* Buttons base */
+.home-btn {
+  padding: 0.9rem 1.8rem;
+  border-radius: 10px;
   font-size: 1.05rem;
-  opacity: 0.78;
-  max-width: 560px;
-  line-height: 1.6;
-}
+  font-weight: 600;
 
-.hero-cta-row {
-  margin-top: 28px;
   display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+
+  transition: all 0.35s ease;
 }
 
-/****************************************************
- * MINIMAL BUTTONS
- ****************************************************/
-.magnetic-btn {
-  border-radius: 999px;
-  padding: 12px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: none;
-  color: white;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
-  will-change: transform;
-}
-
-.btn-primary {
-  background: #fff;
-  color: #000;
-  border: 1px solid #fff;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
-}
-
-.btn-primary:hover {
-  background: #f0f0f0;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.15);
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.4);
-}
-
-.btn-ghost:hover {
-  background: rgba(255,255,255,0.1);
-  box-shadow: none;
-}
-
-/****************************************************
- * ECOSYSTEM TITLES
- ****************************************************/
-.ecosystem-section {
-  margin-top: 120px;
-}
-
-.ecosystem-title {
-  text-align: center;
-  font-size: 2.2rem;
-  font-weight: 700;
-}
-
-.ecosystem-subtitle {
-  text-align: center;
-  font-size: 1rem;
-  opacity: 0.75;
-  margin-top: 8px;
-}
-
-/****************************************************
- * ECOSYSTEM GRID
- ****************************************************/
-.ecosystem-grid {
-  margin-top: 40px;
-  width: 100%;
-}
-
-/* TOP ROW */
-.eco-top-row {
-  display: flex;
-  gap: 22px;
-}
-
-.eco-top-row .eco-card {
-  flex: 1;
-}
-
-/* BOTTOM ROW */
-.eco-bottom-row {
-  margin-top: 22px;
-  display: flex;
-  justify-content: space-around;
-  gap: 22px;
-}
-
-.eco-bottom-row .eco-card {
-  width: calc(33.33% - 14.66px);
-}
-
-/****************************************************
- * ECOSYSTEM CARD BASE
- ****************************************************/
-.eco-card {
+/* Filled Button (Ecosystem) */
+.fill-btn {
+  background: #ffffff10;
+  border: 1px solid #ffffff22;
+  color: #fff;
   position: relative;
-  height: 260px;
-  border-radius: 20px;
   overflow: hidden;
-  cursor: pointer;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.eco-card::before {
+/* Background fill animation */
+.fill-btn::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.3));
-  z-index: 1;
+  background: #ffffff18;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
 }
 
-.eco-card-content {
-  position: absolute;
-  z-index: 2;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+.fill-btn:hover::before {
+  transform: scaleX(1);
 }
 
-/****************************************************
- * ECOSYSTEM CARD BACKGROUNDS
- ****************************************************/
-.eco-card--nexworld {
-  background-image: url("https://i.pinimg.com/736x/66/b5/d4/66b5d4abbe3b0ebe8189179f82d820ca.jpg");
+.fill-btn .arrow {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.3s ease;
 }
 
-.eco-card--nexnodes {
-  background-image: url("https://i.pinimg.com/736x/ac/5b/f6/ac5bf6d168b2957b48e5f4f7e8c19a3a.jpg");
-}
-
-.eco-card--nexhousing {
-  background-image: url("https://i.pinimg.com/736x/79/0a/80/790a80a8c4da3e9c0cb9492137edbd80.jpg");
-}
-
-.eco-card--nexengine {
-  background-image: url("https://i.pinimg.com/736x/74/60/d7/7460d73a6dd827924c58a9e0a05356a3.jpg");
-}
-
-.eco-card--search {
-  background-image: url("https://i.pinimg.com/1200x/21/f3/e3/21f3e3ff382901c555038d63f66270ba.jpg");
-}
-
-/****************************************************
- * CTA SECTION
- ****************************************************/
-.cta-section {
-  margin-top: 130px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.7);
-  border-radius: 12px;
-  padding: 60px 28px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 140px;
-}
-
-.cta-title {
-  font-size: 2.4rem;
-  font-weight: 700;
-  opacity: 0.97;
-}
-
-.cta-buttons {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.cta-btn-main,
-.cta-btn-secondary {
-  appearance: none;
-  outline: none;
-  cursor: pointer;
-  will-change: transform;
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.23,1,0.32,1);
-  padding: 13px 28px;
-  border-radius: 999px;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.cta-btn-main {
-  background: #fff;
-  color: #000;
-  border: 1px solid #fff;
-  box-shadow: 0 2px 5px rgba(255,255,255,0.1);
-}
-
-.cta-btn-main:hover {
-  background: #f0f0f0;
-  box-shadow: 0 4px 8px rgba(255,255,255,0.15);
-}
-
-.cta-btn-secondary {
-  background: transparent;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.4);
-}
-
-.cta-btn-secondary:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-/****************************************************
- * FOOTER
- ****************************************************/
-.footer {
-  margin-top: 0;
-  padding: 50px 28px;
-  display: grid;
-  grid-template-columns: 1.3fr 2fr;
-  gap: 40px;
-  border: 0.1px solid rgba(255,255,255,0.1);
-}
-
-.footer-logo {
-  font-size: 2rem;
-  font-weight: 800;
-}
-
-.footer-tagline {
-  margin-top: 10px;
-  opacity: 0.65;
-  max-width: 260px;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 26px;
-}
-
-.footer-col h4 {
-  margin-bottom: 14px;
-  font-size: 0.8rem;
-  opacity: 0.75;
-  font-weight: 600;
-}
-
-.footer-col a {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 0.85rem;
+.fill-btn:hover .arrow {
   opacity: 1;
-  cursor: pointer;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform: translateX(3px);
 }
 
-.footer-col a:hover {
-  opacity: 0.75;
-  transform: translateX(4px);
-  color: #ffffff;
+/* Outline Button (About) */
+.outline-btn {
+  border: 1px solid #ffffff25;
+  background: transparent;
 }
 
-/****************************************************
- * SCROLL TO TOP BUTTON
- ****************************************************/
-.scroll-to-top-btn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 100;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #ffffff;
-  color: black;
-  border: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.7);
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  transition: background 0.2s;
+.outline-btn:hover {
+  background: #ffffff12;
 }
 
-.scroll-to-top-btn:hover {
-  background: #f0f0f0;
+.outline-btn .arrow {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.3s ease;
 }
 
-/****************************************************
- * RESPONSIVE
- ****************************************************/
-@media (max-width: 900px) {
-  .eco-top-row {
+.outline-btn:hover .arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 2.4rem;
+  }
+  .home-subtitle {
+    font-size: 1.1rem;
+  }
+  .home-buttons {
     flex-direction: column;
+    gap: 0.9rem;
   }
+}
 
-  .eco-bottom-row {
-    flex-direction: column;
-    justify-content: flex-start;
+@media (min-width: 1600px) {
+  .home-title {
+    font-size: 4.2rem;
   }
+  .home-subtitle {
+    font-size: 1.6rem;
+  }
+}
 
-  .eco-bottom-row .eco-card {
-    width: 100%;
-  }
+/* =======================================
+   CINEMATIC BACKGROUND GRADIENT BLOB
+======================================= */
 
-  .footer {
-    grid-template-columns: 1fr;
-  }
+.cinematic-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 
-  .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
+  background: radial-gradient(
+    circle at 30% 70%,
+    rgba(80, 0, 255, 0.1),
+    transparent 80%
+  );
+  filter: blur(120px);         
+  animation: gradientMove 12s ease-in-out infinite alternate;
+}
+
+@keyframes gradientMove {
+  0% {
+    transform: translate(0, 0) scale(1);
   }
+  100% {
+    transform: translate(120px, -80px) scale(1.3);
+  }
+}
+
+/* =======================================
+   SCROLL REVEAL ANIMATION
+======================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.9s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

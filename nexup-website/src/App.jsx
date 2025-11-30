@@ -5,21 +5,17 @@ import { AnimatePresence } from "framer-motion";
 
 import "./App.css";
 
-
+/* Core layout components */
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import Main from "./components/Main";
 import ScrollToTop from "./components/ScrollToTop";
+import PageLayout from "./layout/PageLayout";
 
-/* ============================
-   IMPORT ALL PAGES
-============================ */
-
-/* Home */
+/* Pages */
 import Home from "./pages/Home";
 
 /* Ecosystem */
-import Ecosystem from "./pages/Ecosystem/Ecosystem.jsx";
+import Ecosystem from "./pages/Ecosystem/Ecosystem";
 import NexWorld from "./pages/Ecosystem/NexWorld";
 import NexNodes from "./pages/Ecosystem/NexNodes";
 import NexEngine from "./pages/Ecosystem/NexEngine";
@@ -27,7 +23,7 @@ import NexHousing from "./pages/Ecosystem/NexHousing";
 import Search from "./pages/Ecosystem/Search";
 
 /* About */
-import About from "./pages/About/About.jsx";
+import About from "./pages/About/About";
 import Vision from "./pages/About/Vision";
 import Team from "./pages/About/Team";
 import Stories from "./pages/About/Stories";
@@ -39,26 +35,22 @@ import News from "./pages/About/News";
 import Guidelines from "./pages/Support/Guidelines";
 import Help from "./pages/Support/Help";
 
-/* Other Pages */
+/* Other */
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-
 import SearchPage from "./pages/Search";
 
-/* ============================
-   PAGE TRANSITION WRAPPER 
-============================ */
 function AnimatedRoutesWrapper({ isOpen }) {
   const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
-      <Routes key={location.pathname} location={location}>
+      <Routes location={location} key={location.pathname}>
 
-        {/* HOME */}
-        <Route path="/" element={<Home isOpen={isOpen} />} />
+        {/* Home */}
+        <Route path="/" element={<Home />} />
 
-        {/* ECOSYSTEM */}
+        {/* Ecosystem */}
         <Route path="/ecosystem" element={<Ecosystem />} />
         <Route path="/ecosystem/nexworld" element={<NexWorld />} />
         <Route path="/ecosystem/nexnodes" element={<NexNodes />} />
@@ -66,7 +58,7 @@ function AnimatedRoutesWrapper({ isOpen }) {
         <Route path="/ecosystem/nexhousing" element={<NexHousing />} />
         <Route path="/ecosystem/search" element={<Search />} />
 
-        {/* ABOUT */}
+        {/* About */}
         <Route path="/about" element={<About />} />
         <Route path="/about/vision" element={<Vision />} />
         <Route path="/about/team" element={<Team />} />
@@ -75,14 +67,13 @@ function AnimatedRoutesWrapper({ isOpen }) {
         <Route path="/about/career" element={<Career />} />
         <Route path="/about/news" element={<News />} />
 
-        {/* SUPPORT */}
+        {/* Support */}
         <Route path="/support/guidelines" element={<Guidelines />} />
         <Route path="/support/help" element={<Help />} />
 
-        {/* OTHER */}
+        {/* Other */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
-
         <Route path="/search" element={<SearchPage />} />
 
       </Routes>
@@ -90,30 +81,20 @@ function AnimatedRoutesWrapper({ isOpen }) {
   );
 }
 
-/* ============================
-   MAIN APP COMPONENT
-============================ */
-function App() {
+export default function App() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSidebar = () => setIsOpen((prev) => !prev);
 
   return (
     <BrowserRouter>
-
       <ScrollToTop />
 
       <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <Header isOpen={isOpen} toggleSidebar={() => setIsOpen(prev => !prev)} />
 
-      <Header toggleSidebar={toggleSidebar} isOpen={isOpen} />
-
-      <Main isOpen={isOpen}>
+      {/* Unified Page Layout */}
+      <PageLayout isOpen={isOpen}>
         <AnimatedRoutesWrapper isOpen={isOpen} />
-      </Main>
-
+      </PageLayout>
     </BrowserRouter>
-  
   );
 }
-
-export default App;
