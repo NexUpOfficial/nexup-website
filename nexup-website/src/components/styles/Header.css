@@ -39,9 +39,7 @@
   align-items: flex-end;
   justify-content: space-between;
 
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  
 
   z-index: 2000;
 
@@ -52,6 +50,46 @@
     filter 760ms ease,
     backdrop-filter 680ms ease;
 }
+
+
+/* =======================================
+   HEADER CINEMATIC GRADIENT (✓ Correct)
+======================================= */
+
+.header-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(80, 120, 255, 0.36) 0%,
+    rgba(17, 0, 251 , 0.25) 35%,
+    rgba(0, 22, 101 , 0.3) 65%,
+    rgba(80, 120, 255, 0.22) 100%
+  );
+
+  filter: blur(60px);
+  opacity: 0.65;
+
+  animation: headerGlow 10s ease-in-out infinite alternate;
+}
+
+@keyframes headerGlow {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-60px, 20px) scale(1.25);
+  }
+}
+
+.header-left,
+.header-right {
+  position: relative;
+  z-index: 2; /* Keep content above gradient */
+}
+
 
 /* When scrolling DOWN (hide header) */
 .header.hide {
@@ -330,7 +368,7 @@
   .sidebar-icon-btn {
     width: 22px;
     height: 22px;
-    margin-left: 300px; /* Adjusted for tighter mobile layout */
+    margin-left: 270px; /* Adjusted for tighter mobile layout */
     margin-top: 10px;
   }
 
@@ -454,3 +492,4 @@
     user-select: none;
   }
 }
+

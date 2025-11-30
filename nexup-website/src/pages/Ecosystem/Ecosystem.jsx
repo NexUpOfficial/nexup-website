@@ -1,14 +1,15 @@
-// src/pages/Ecosystem.jsx
 import React from "react";
+import Main from "../../components/Main";
 import "../../page-styles/Ecosystem/Ecosystem.css";
 
-
-function Ecosystem() {
+function Ecosystem({ isOpen }) {
   return (
-    <div className="page-container">
-      <h1>Ecosystem</h1>
-      <p>Welcome to the NexWorld Ecosystem page.</p>
-    </div>
+    <Main isOpen={isOpen}>
+      <div className="eco-container">
+        <h1 className="eco-title">Ecosystem</h1>
+        <p>Welcome to NexWorld Ecosystem.</p>
+      </div>
+    </Main>
   );
 }
 
