@@ -7,15 +7,11 @@ import RisingSmoke from "../animations/RisingSmoke";
 function Sidebar({ isOpen, onClose }) {
   const [openSection, setOpenSection] = useState(null);
   const location = useLocation();
-
   const headerHeight = useHeaderHeight();
 
-  {/* Smoke */}
-  <div className="home-smoke">
-    <RisingSmoke />
-  </div>
-
-  /* Mobile swipe */
+  /* ------------------------
+       MOBILE SWIPE CLOSE
+  ------------------------- */
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
   const minSwipeDistance = 60;
@@ -25,12 +21,8 @@ function Sidebar({ isOpen, onClose }) {
 
     const el = document.querySelector(".sidebar");
 
-    const handleTouchStart = (e) =>
-      setTouchStartX(e.changedTouches[0].screenX);
-
-    const handleTouchMove = (e) =>
-      setTouchEndX(e.changedTouches[0].screenX);
-
+    const handleTouchStart = (e) => setTouchStartX(e.changedTouches[0].screenX);
+    const handleTouchMove = (e) => setTouchEndX(e.changedTouches[0].screenX);
     const handleTouchEnd = () => {
       if (touchStartX - touchEndX > minSwipeDistance) onClose?.();
     };
@@ -46,25 +38,29 @@ function Sidebar({ isOpen, onClose }) {
     };
   }, [isOpen, touchStartX, touchEndX]);
 
-  /* Auto-open sections */
+  /* ------------------------
+     AUTO OPEN ON ROUTE
+  ------------------------- */
   useEffect(() => {
-    if (location.pathname.startsWith("/ecosystem"))
-      setOpenSection("ecosystem");
-    else if (location.pathname.startsWith("/about"))
-      setOpenSection("about");
-    else if (location.pathname.startsWith("/account"))
+    if (location.pathname.startsWith("/ecosystem")) setOpenSection("ecosystem");
+    else if (location.pathname.startsWith("/about")) setOpenSection("about");
+    else if (location.pathname.startsWith("/safety") || location.pathname === "/dns" || location.pathname === "/login")
       setOpenSection("account");
   }, [location.pathname]);
 
-  /* Auto close on mobile */
+  /* ------------------------
+     AUTO CLOSE ON MOBILE
+  ------------------------- */
   useEffect(() => {
     if (window.innerWidth <= 768 && isOpen) onClose?.();
   }, [location.pathname]);
 
-  const toggle = (key) =>
-    setOpenSection((prev) => (prev === key ? null : key));
+  const toggle = (key) => setOpenSection((prev) => (prev === key ? null : key));
 
-  /* Data */
+  /* ------------------------
+            ROUTE ITEMS
+  ------------------------- */
+
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld" },
     { label: "NexNodes", to: "/ecosystem/nexnodes" },
@@ -82,21 +78,23 @@ function Sidebar({ isOpen, onClose }) {
     { label: "News", to: "/about/news" }
   ];
 
-  const accountItems = [
-    { label: "Login", to: "/account/login" },
-    { label: "DNS", to: "/account/dns" },
-    { label: "Safety Approach", to: "/account/safety-approach" },
-    { label: "Security & Privacy", to: "/account/security-privacy" },
-    { label: "Trust & Transparency", to: "/account/trust-transparency" }
-  ];
-
   const supportItems = [
     { label: "Guidelines", to: "/support/guidelines" },
     { label: "Help / Support", to: "/support/help" },
     { label: "Contact", to: "/contact" }
   ];
 
-  /* Scroll shadows */
+  const accountItems = [
+    { label: "Login", to: "/login" },
+    { label: "DNS", to: "/dns" },
+    { label: "Safety Approach", to: "/safety/approach" },
+    { label: "Security & Privacy", to: "/safety/privacy" },
+    { label: "Trust & Transparency", to: "/safety/transparency" }
+  ];
+
+  /* ------------------------
+        SCROLL SHADOWS
+  ------------------------- */
   useEffect(() => {
     const container = document.querySelector(".sidebar-inner");
     if (!container) return;
@@ -115,14 +113,46 @@ function Sidebar({ isOpen, onClose }) {
     return () => container.removeEventListener("scroll", handleShadow);
   }, []);
 
-  // ⭐ Drag to reorder sidebar items ⭐
-  const [draggedId, setDraggedId] = useState(null);
+  /* ------------------------
+    CLEAN DRAG & DROP SYSTEM
+  ------------------------- */
+
+  const [sectionOrder, setSectionOrder] = useState([
+    "main",
+    "ecosystem",
+    "about",
+    "support",
+    "account"
+  ]);
+
+  const onDragStart = (e, id) => e.dataTransfer.setData("id", id);
+  const onDrop = (e, id) => {
+    const draggedId = e.dataTransfer.getData("id");
+    if (draggedId === id) return;
+
+    const newOrder = [...sectionOrder];
+    const from = newOrder.indexOf(draggedId);
+    const to = newOrder.indexOf(id);
+
+    newOrder.splice(from, 1);
+    newOrder.splice(to, 0, draggedId);
+
+    setSectionOrder(newOrder);
+  };
+  const allowDrop = (e) => e.preventDefault();
+
+  /* ------------------------
+         SIDEBAR STRUCTURE
+  ------------------------- */
 
   const sidebarSections = {
     main: (
-      <>
+      <>  
+         
+         
 
         <div className="sidebar-section-label">MAIN</div>
+
         <NavLink
           to="/"
           end
@@ -135,6 +165,7 @@ function Sidebar({ isOpen, onClose }) {
         </NavLink>
       </>
     ),
+
     ecosystem: (
       <>
         <div className="sidebar-section-label">ECOSYSTEM</div>
@@ -147,10 +178,9 @@ function Sidebar({ isOpen, onClose }) {
         >
           <span className="left-indicator" />
           Ecosystem
-          <span className="arrow">
-            {openSection === "ecosystem" ? "▴" : "▾"}
-          </span>
+          <span className="arrow">{openSection === "ecosystem" ? "▴" : "▾"}</span>
         </button>
+
         <div
           className={
             "sidebar-submenu " +
@@ -162,8 +192,7 @@ function Sidebar({ isOpen, onClose }) {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                "sidebar-subitem sidebar-link" +
-                (isActive ? " active" : "")
+                "sidebar-subitem sidebar-link" + (isActive ? " active" : "")
               }
             >
               <span className="left-indicator" />
@@ -173,9 +202,11 @@ function Sidebar({ isOpen, onClose }) {
         </div>
       </>
     ),
+
     about: (
       <>
         <div className="sidebar-section-label">ABOUT</div>
+
         <button
           onClick={() => toggle("about")}
           className={
@@ -185,10 +216,9 @@ function Sidebar({ isOpen, onClose }) {
         >
           <span className="left-indicator" />
           About
-          <span className="arrow">
-            {openSection === "about" ? "▴" : "▾"}
-          </span>
+          <span className="arrow">{openSection === "about" ? "▴" : "▾"}</span>
         </button>
+
         <div
           className={
             "sidebar-submenu " +
@@ -200,8 +230,7 @@ function Sidebar({ isOpen, onClose }) {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                "sidebar-subitem sidebar-link" +
-                (isActive ? " active" : "")
+                "sidebar-subitem sidebar-link" + (isActive ? " active" : "")
               }
             >
               <span className="left-indicator" />
@@ -211,16 +240,17 @@ function Sidebar({ isOpen, onClose }) {
         </div>
       </>
     ),
+
     support: (
       <>
         <div className="sidebar-section-label">SUPPORT</div>
+
         {supportItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
             className={({ isActive }) =>
-              "sidebar-item sidebar-link" +
-              (isActive ? " active" : "")
+              "sidebar-item sidebar-link" + (isActive ? " active" : "")
             }
           >
             <span className="left-indicator" />
@@ -229,9 +259,11 @@ function Sidebar({ isOpen, onClose }) {
         ))}
       </>
     ),
+
     account: (
       <>
         <div className="sidebar-section-label">ACCOUNT & SAFETY</div>
+
         <button
           onClick={() => toggle("account")}
           className={
@@ -241,10 +273,9 @@ function Sidebar({ isOpen, onClose }) {
         >
           <span className="left-indicator" />
           Account & Safety
-          <span className="arrow">
-            {openSection === "account" ? "▴" : "▾"}
-          </span>
+          <span className="arrow">{openSection === "account" ? "▴" : "▾"}</span>
         </button>
+
         <div
           className={
             "sidebar-submenu " +
@@ -256,8 +287,7 @@ function Sidebar({ isOpen, onClose }) {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                "sidebar-subitem sidebar-link" +
-                (isActive ? " active" : "")
+                "sidebar-subitem sidebar-link" + (isActive ? " active" : "")
               }
             >
               <span className="left-indicator" />
@@ -269,83 +299,41 @@ function Sidebar({ isOpen, onClose }) {
     ),
   };
 
-  const initialSectionsOrder = ["main", "ecosystem", "about", "support", "account"];
-  const [sectionOrder, setSectionOrder] = useState(initialSectionsOrder);
-
-  const handleDragStart = (e, sectionId) => {
-    e.dataTransfer.setData("sectionId", sectionId);
-    setDraggedId(sectionId);
-    e.currentTarget.classList.add("dragging");
-  };
-
-  const handleDragEnd = (e) => {
-    e.currentTarget.classList.remove("dragging");
-    setDraggedId(null);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault(); // Essential to allow dropping
-  };
-
-  const handleDrop = (e, targetId) => {
-    e.preventDefault();
-    const sourceId = e.dataTransfer.getData("sectionId");
-
-    if (sourceId === targetId) return;
-
-    const newOrder = [...sectionOrder];
-    const sourceIndex = newOrder.indexOf(sourceId);
-    const targetIndex = newOrder.indexOf(targetId);
-
-    if (sourceIndex === -1 || targetIndex === -1) return;
-
-    // Remove the dragged item
-    newOrder.splice(sourceIndex, 1);
-    // Insert it at the target position
-    newOrder.splice(targetIndex, 0, sourceId);
-
-    setSectionOrder(newOrder);
-  };
-  // ⭐ Drag to reorder sidebar items ⭐
+  /* ------------------------
+         RETURN MARKUP
+  ------------------------- */
 
   return (
     <aside
       className={`sidebar ${isOpen ? "open" : ""}`}
       style={{
-        top: headerHeight + 30, // ⭐ Moved UP (previously +60)
+        top: headerHeight + 30,
         height: `calc(100vh - ${headerHeight + 30}px)`
       }}
     >
-
-      {/* 🔥 Smoke Background Behind Sidebar Content */}
+      {/* Smoke Background */}
       <div className="sidebar-smoke">
         <RisingSmoke />
       </div>
 
       <div className="sidebar-inner">
-
-        {/* Mapped and Draggable Sections */}
-        {sectionOrder.map((sectionId, index) => (
-          <React.Fragment key={sectionId}>
-            <div
-              className="sidebar-section"
-              draggable="true"
-              onDragStart={(e) => handleDragStart(e, sectionId)}
-              onDragEnd={handleDragEnd}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, sectionId)}
-              // Optional: Add a visual indicator for drop target
-              style={{ border: draggedId && draggedId !== sectionId ? '1px dashed #fff4' : 'none' }}
-            >
-              {sidebarSections[sectionId]}
-            </div>
-            {index < sectionOrder.length - 1 && <div className="sidebar-divider" />}
-          </React.Fragment>
+        {/* Render Reorderable Sections */}
+        {sectionOrder.map((id) => (
+          <div
+            key={id}
+            className="sidebar-section"
+            draggable
+            onDragStart={(e) => onDragStart(e, id)}
+            onDragOver={allowDrop}
+            onDrop={(e) => onDrop(e, id)}
+          >
+            {sidebarSections[id]}
+          </div>
         ))}
-
       </div>
     </aside>
   );
 }
 
 export default Sidebar;
+ 

@@ -2,8 +2,8 @@
    SIDEBAR — GLOBAL VARIABLES
 ========================================================= */
 :root {
-  --text-dim: rgba(255, 255, 255, 0.38);
-  --text-normal: rgba(255, 255, 255, 0.80);
+  --text-dim: rgba(255, 255, 255, 0.45);
+  --text-normal: rgba(255, 255, 255, 1);
   --text-strong: #ffffff;
 
   --hover-bg: rgba(255, 255, 255, 0.04);
@@ -14,30 +14,40 @@
 }
 
 /* =========================================================
-   OPENAI + NeXUP PREMIUM SIDEBAR
+    NeXUP PREMIUM SIDEBAR
 ========================================================= */
-
 .sidebar {
   position: fixed;
   top: 100px;
   left: 0;
   max-width: 230px;
-  height: calc(100vh - 110px);
+  height: auto;
 
-  /* Floating Panel Look */
+ background: black;
+
   box-shadow:
     0 6px 30px rgba(0,0,0,0.45),
     0 0 12px rgba(255,255,255,0.04) inset;
 
-  /* CLOSED STATE */
+  /* CLOSED STATE ONLY */
   transform: translateX(-110%);
-  opacity: 0.35;
-  filter: blur(4px) brightness(0.75);
+  opacity: 0;
+  filter: none;
+  pointer-events: none;          /* closed = not clickable */
 
   transition:
     transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 500ms ease,
     filter 600ms ease;
+
+  z-index: 3000; /* ← ALWAYS ABOVE page-frame */
+}
+
+.sidebar.open {
+  transform: translateX(0);
+  opacity: 1 !important;
+  filter: none !important;
+  pointer-events: auto !important;
 }
 
 /* Ensure the actual content stays above gradient */
@@ -47,11 +57,31 @@
   z-index: 2;
 }
 
-.sidebar.open {
-  transform: translateX(0);
-  opacity: 1;
-  filter: blur(0) brightness(1);
+/* Mobile-only blur behind sidebar */
+@media (max-width: 768px) {
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(10px);   /* ← BLUR HERE */
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1998;
+    animation: fadeIn 0.25s ease forwards;
+  }
 }
+
+/* On laptop/tablet — overlay visible but NO BLUR */
+@media (min-width: 769px) {
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0);  /* transparent */
+    backdrop-filter: none !important; 
+    -webkit-backdrop-filter: none !important;
+    pointer-events: none;       /* does not block clicks */
+  }
+}
+
 
 /* Large screens */
 @media (min-width: 1600px) {
@@ -63,17 +93,14 @@
 /* Mobile width */
 @media (max-width: 480px) {
   .sidebar {
-    width: 300px !important;
+    width: 600px !important;
+    z-index: 9999 !important;
+    background-color: rgb(0, 0, 0);
+    position: fixed;
   }
 }
 
-/* Mobile height fix */
-@media (max-width: 768px) {
-  .sidebar {
-    top: 72px !important;
-    height: calc(100vh - 72px) !important;
-  }
-}
+
 
 /* =========================================================
    INNER SCROLL + SHADOWS
@@ -160,7 +187,7 @@
   color: var(--text-normal);
 
   white-space: nowrap;
-  cursor: pointer;
+  cursor: grab;
   text-decoration: none;
 
   border-radius: 8px;

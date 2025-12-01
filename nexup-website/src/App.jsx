@@ -1,17 +1,16 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import "./App.css";
 
-/* Core layout components */
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import ScrollToTop from "./components/ScrollToTop";
 import PageLayout from "./layout/PageLayout";
 
-/* Pages */
+/* Home */
 import Home from "./pages/Home";
 
 /* Ecosystem */
@@ -20,7 +19,7 @@ import NexWorld from "./pages/Ecosystem/NexWorld";
 import NexNodes from "./pages/Ecosystem/NexNodes";
 import NexEngine from "./pages/Ecosystem/NexEngine";
 import NexHousing from "./pages/Ecosystem/NexHousing";
-import Search from "./pages/Ecosystem/Search";
+import EcosystemSearch from "./pages/Ecosystem/Search";
 
 /* About */
 import About from "./pages/About/About";
@@ -35,43 +34,106 @@ import News from "./pages/About/News";
 import Guidelines from "./pages/Support/Guidelines";
 import Help from "./pages/Support/Help";
 
+/* Safety */
+import SafetyApproach from "./pages/Safety/Approach";
+import Privacy from "./pages/Safety/Privacy";
+import Trust from "./pages/Safety/Trust";
+import Transparency from "./pages/Safety/Transparency";
+
 /* Other */
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import SearchPage from "./pages/Search";
 
-function AnimatedRoutesWrapper({ isOpen }) {
+/* Account */
+import DNS from "./pages/Account/DNS";
+
+
+/* ====================================================
+   Animated Route Wrapper
+==================================================== */
+function AnimatedRoutesWrapper() {
   const location = useLocation();
+
+  useEffect(() => {
+    const magneticStrength = 38;
+
+    const elements = document.querySelectorAll(
+      "button, a, .login-btn, .search-btn, .sidebar-icon-btn, .home-btn, .explore-btn, .mix-btn"
+    );
+
+    elements.forEach((el) => {
+      el.style.transition = "transform 0.18s ease";
+
+      const mouseMove = (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - (rect.left + rect.width / 2);
+        const y = e.clientY - (rect.top + rect.height / 2);
+
+        el.style.transform = `translate(${x / magneticStrength}px, ${y / magneticStrength}px) scale(1.05)`;
+      };
+
+      const mouseLeave = () => {
+        el.style.transform = "translate(0px, 0px) scale(1)";
+      };
+
+      el.addEventListener("mousemove", mouseMove);
+      el.addEventListener("mouseleave", mouseLeave);
+
+      el._mm = mouseMove;
+      el._ml = mouseLeave;
+    });
+
+    return () => {
+      elements.forEach((el) => {
+        el.removeEventListener("mousemove", el._mm);
+        el.removeEventListener("mouseleave", el._ml);
+      });
+    };
+  }, []);
 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
 
-        {/* Home */}
         <Route path="/" element={<Home />} />
 
         {/* Ecosystem */}
-        <Route path="/ecosystem" element={<Ecosystem />} />
-        <Route path="/ecosystem/nexworld" element={<NexWorld />} />
-        <Route path="/ecosystem/nexnodes" element={<NexNodes />} />
-        <Route path="/ecosystem/nexengine" element={<NexEngine />} />
-        <Route path="/ecosystem/nexhousing" element={<NexHousing />} />
-        <Route path="/ecosystem/search" element={<Search />} />
+        <Route path="ecosystem">
+          <Route index element={<Ecosystem />} />
+          <Route path="nexworld" element={<NexWorld />} />
+          <Route path="nexnodes" element={<NexNodes />} />
+          <Route path="nexengine" element={<NexEngine />} />
+          <Route path="nexhousing" element={<NexHousing />} />
+          <Route path="search" element={<EcosystemSearch />} />
+        </Route>
 
         {/* About */}
-        <Route path="/about" element={<About />} />
-        <Route path="/about/vision" element={<Vision />} />
-        <Route path="/about/team" element={<Team />} />
-        <Route path="/about/stories" element={<Stories />} />
-        <Route path="/about/company" element={<Company />} />
-        <Route path="/about/career" element={<Career />} />
-        <Route path="/about/news" element={<News />} />
+        <Route path="about">
+          <Route index element={<About />} />
+          <Route path="vision" element={<Vision />} />
+          <Route path="team" element={<Team />} />
+          <Route path="stories" element={<Stories />} />
+          <Route path="company" element={<Company />} />
+          <Route path="career" element={<Career />} />
+          <Route path="news" element={<News />} />
+        </Route>
 
         {/* Support */}
-        <Route path="/support/guidelines" element={<Guidelines />} />
-        <Route path="/support/help" element={<Help />} />
+        <Route path="support">
+          <Route path="guidelines" element={<Guidelines />} />
+          <Route path="help" element={<Help />} />
+        </Route>
 
-        {/* Other */}
+        {/* Safety */}
+        <Route path="safety">
+          <Route path="approach" element={<SafetyApproach />} />
+          <Route path="privacy" element={<Privacy />} />
+          <Route path="trust" element={<Trust />} />
+          <Route path="transparency" element={<Transparency />} />
+        </Route>
+
+        <Route path="/dns" element={<DNS />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<SearchPage />} />
@@ -81,20 +143,88 @@ function AnimatedRoutesWrapper({ isOpen }) {
   );
 }
 
+
+/* ====================================================
+   App Root with Bounce Effect
+==================================================== */
 export default function App() {
-  const [isOpen, setIsOpen] = useState(false);
+
+  /* Sidebar persistent state */
+  const [isOpen, setIsOpen] = useState(() =>
+    localStorage.getItem("sidebar_open") === "true"
+  );
+
+  const toggleSidebar = () => {
+    setIsOpen(prev => {
+      const newVal = !prev;
+      localStorage.setItem("sidebar_open", newVal);
+      return newVal;
+    });
+  };
+
+  const closeSidebar = () => {
+    setIsOpen(false);
+    localStorage.setItem("sidebar_open", "false");
+  };
+
+
+  /* ====================================================
+       BOUNCE EFFECT (Apple style)
+  ==================================================== */
+  useEffect(() => {
+    const container = document.querySelector(".bounce-scroll");
+    let bounceOffset = 0;
+    let bouncing = false;
+    let raf;
+
+    const animateBounce = () => {
+      bounceOffset *= 0.75;
+      container.style.transform = `translateY(${bounceOffset}px)`;
+
+      if (Math.abs(bounceOffset) > 0.5) {
+        raf = requestAnimationFrame(animateBounce);
+      } else {
+        container.style.transform = "translateY(0px)";
+        bouncing = false;
+      }
+    };
+
+    const onScroll = () => {
+      const atTop = container.scrollTop === 0;
+      const atBottom =
+        container.scrollTop + container.clientHeight >= container.scrollHeight;
+
+      if ((atTop || atBottom) && !bouncing) {
+        bouncing = true;
+        bounceOffset = atTop ? 35 : -35; // bounce strength
+        cancelAnimationFrame(raf);
+        animateBounce();
+      }
+    };
+
+    container.addEventListener("scroll", onScroll);
+
+    return () => {
+      container.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
 
   return (
     <BrowserRouter>
       <ScrollToTop />
 
-      <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <Header isOpen={isOpen} toggleSidebar={() => setIsOpen(prev => !prev)} />
+      <Sidebar isOpen={isOpen} onClose={closeSidebar} />
+      <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
-      {/* Unified Page Layout */}
-      <PageLayout isOpen={isOpen}>
-        <AnimatedRoutesWrapper isOpen={isOpen} />
-      </PageLayout>
+      {/* BOUNCE WRAPPER */}
+      <div className="bounce-scroll">
+        <PageLayout isOpen={isOpen}>
+          <AnimatedRoutesWrapper />
+        </PageLayout>
+      </div>
+
     </BrowserRouter>
   );
 }

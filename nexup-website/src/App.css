@@ -28,7 +28,7 @@ body {
 ================================*/
 ::selection {
   background: #fff;
-  color: #000;
+  color: #000; 
 }
 
 /* ===============================
@@ -45,13 +45,16 @@ a:hover {
 /* ===============================
    SCROLLBAR (hidden)
 ================================*/
+/* 🚫 Prevent ANY horizontal sliding on mobile */
 html, body {
-  overflow-y: scroll;
-  scrollbar-width: none;
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  cursor: grab;
 }
-::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
+
+/* Prevent transforms from causing jitter */
+#root {
+  overflow-x: hidden !important;
 }
 
 /* ===============================
@@ -60,7 +63,7 @@ html, body {
 button {
   background: none;
   border: none;
-  cursor: pointer;
+  cursor: grab !important;
   font-family: inherit;
 }
 
@@ -105,3 +108,51 @@ img {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* FORCE all buttons and links to use global grab cursor */
+button,
+a,
+.home-btn,
+.login-btn,
+.search-btn,
+.sidebar-icon-btn,
+.explore-btn,
+.mix-btn {
+  cursor: grab !important;
+}
+
+button:active,
+a:active,
+.home-btn:active,
+.login-btn:active,
+.search-btn:active,
+.sidebar-icon-btn:active,
+.explore-btn:active,
+.mix-btn:active {
+  cursor: grabbing !important;
+}
+button, a {
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+}
+
+/* Smooth cursor transitions globally */
+* {
+  transition: cursor 120ms ease, transform 120ms ease;
+}
+
+/* Make clickable elements behave like physical objects */
+button,
+a,
+.login-btn,
+.search-btn,
+.sidebar-icon-btn,
+.home-btn,
+.explore-btn,
+.mix-btn {
+  will-change: transform;
+  transform-origin: center;
+}
+
+

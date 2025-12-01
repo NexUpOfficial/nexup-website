@@ -63,10 +63,23 @@
 
     <!-- Initial Background Fallback (prevent white flash) -->
     <style>
-      body,
-      header {
-        background: #000;
-      }
+      html, body {
+  overflow-x: hidden !important;
+  width: 100%;
+}
+html {
+  scroll-behavior: smooth !important;
+  overscroll-behavior: none;     /* Prevents rubber-banding */
+}
+
+body {
+  -webkit-overflow-scrolling: touch; /* iOS inertia scroll */
+  scrollbar-width: thin;
+}
+* {
+  scroll-behavior: smooth;
+}
+
     </style>
   </head>
 

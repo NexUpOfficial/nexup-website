@@ -1,166 +1,217 @@
-/* ===================================================
-   NexUP Motion Layout — Motion v6 (Final, TV-Ready)
-   Clean • No Forced Background • AR/VR Stable
-   =================================================== */
+/* ===============================================
+   PAGE FRAME — Slide only, no scale
+=============================================== */
 
 .page-frame {
   position: relative;
   width: 100%;
+  max-width: 100%;
   min-height: calc(100vh - 80px);
 
-  /* No background — pages define their own */
-
-  box-shadow:
-    0 6px 22px rgba(0, 0, 0, 0.45),
-    0 18px 45px rgba(0, 0, 0, 0.55);
-
-  transform: translateX(0) scale(1);
-  max-width: 100%;
   margin: 0 auto;
-
-  overflow-y: auto;
   overflow-x: hidden;
+  overflow-y: visible;
+
+  transform: translateX(0);
 
   transition:
-    transform 780ms cubic-bezier(0.18, 0.9, 0.25, 1),
-    max-width 780ms cubic-bezier(0.18, 0.9, 0.25, 1),
-    margin-top 780ms cubic-bezier(0.18, 0.9, 0.25, 1),
-    box-shadow 780ms ease;
-
+    transform 680ms cubic-bezier(0.18, 0.9, 0.25, 1),
+    margin-top 480ms ease;
 }
 
-/* ============================================
-   GLOBAL CINEMATIC BACKGROUND (Every Page)
-   Matches Home + Header + Sidebar
-============================================ */
+/* Desktop / tablet: slide right when sidebar open */
+@media (min-width: 769px) {
+  .page-frame.open {
+    transform: none !important;
+  }
+}
+
+/* Mobile: never slide */
+@media (max-width: 768px) {
+  .page-frame.open {
+    transform: none;
+  }
+}
+
+/* ===============================================
+   SIDEBAR BLUR OVERLAY (behind sidebar, over page)
+=============================================== */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 2090;
+  animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===============================================
+   GLOBAL PAGE BACKGROUND
+=============================================== */
 
 .global-gradient {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 0;
   pointer-events: none;
+  z-index: 0;
 
   background: radial-gradient(
     circle at 30% 70%,
-    rgba(80, 0, 255, 0.1),
-    transparent 90%
+    rgba(80, 0, 255, 0.12),
+    transparent 80%
   );
-  filter: blur(120px);         
-  animation: gradientMove 12s ease-in-out infinite alternate;
+
+  filter: blur(140px);
+  animation: gradientMove 14s ease-in-out infinite alternate;
 }
 
 @keyframes gradientMove {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(120px, -80px) scale(1.3);
-  }
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(120px, -80px) scale(1.25); }
 }
 
-/* Sidebar open */
-.page-frame.open {
-  transform: translateX(130px) scale(0.93);
-  border-radius: 22px;
+/* ===============================================
+   PAGE INNER CONTENT
+=============================================== */
 
-  max-width: 80%;
-  box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.5),
-    0 26px 70px rgba(0, 0, 0, 0.55);
-}
-
-/* Tablets */
-@media (max-width: 1024px) {
-  .page-frame.open {
-    transform: translateX(115px) scale(0.935);
-    max-width: 84%;
-  }
-}
-
-/* Large phones */
-@media (max-width: 768px) {
-  .page-frame.open {
-    transform: translateX(90px) scale(0.955);
-    max-width: 88%;
-  }
-}
-
-/* Small phones */
-@media (max-width: 480px) {
-  .page-frame.open {
-    transform: translateX(65px) scale(0.975);
-    max-width: 92%;
-  }
-}
-
-/* TVs / Large screens */
-@media (min-width: 1600px) {
-  .page-frame.open {
-    transform: translateX(145px) scale(0.90);
-    max-width: 78%;
-    box-shadow:
-      0 16px 40px rgba(0, 0, 0, 0.55),
-      0 34px 90px rgba(0, 0, 0, 0.85);
-  }
-}
-
-/* Inner area */
 .page-inner {
   width: 100%;
   height: 100%;
-  padding: 0;
+  position: relative;
+  z-index: 2;
 }
 
-/* ===========================
-   Scroll To Top Button
-   =========================== */
+/* ===============================================
+   SCROLL TO TOP BUTTON
+=============================================== */
+
 .scroll-top-btn {
   position: fixed;
   bottom: 40px;
   right: 40px;
+
   width: 48px;
   height: 48px;
 
   border-radius: 50%;
-  background: #000;
-  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
   color: white;
-
   font-size: 20px;
-  cursor: pointer;
-  opacity: 0.85;
 
-  box-shadow: 0 8px 18px rgba(0,0,0,0.55);
-  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: grab;
+  opacity: 0.85;
+  z-index: 2200;
 
   transition:
-    right 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    bottom 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.3s ease,
-    opacity 0.3s;
-}
-
-.scroll-top-btn.arrow-shift {
-  right: 100px;
-  bottom: 100px;
-}
-
-/* TVs */
-@media (min-width: 1600px) {
-  .scroll-top-btn.arrow-shift {
-    right: 240px;
-  }
-}
-
-/* Phones */
-@media (max-width: 768px) {
-  .scroll-top-btn.arrow-shift {
-    right: 120px;
-  }
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease,
+    box-shadow 300ms ease;
 }
 
 .scroll-top-btn:hover {
   opacity: 1;
-  transform: translateY(-4px);
-  box-shadow: 0 12px 22px rgba(0,0,0,0.65);
+  transform: translateY(-6px) scale(1.08);
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.55),
+    0 4px 10px rgba(0, 0, 0, 0.40),
+    0 0 14px rgba(120, 160, 255, 0.25);
+}
+
+.scroll-top-btn:active {
+  cursor: grabbing;
+  transform: scale(0.88) translateY(2px);
+
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.55),
+    inset 0 -2px 6px rgba(255, 255, 255, 0.12),
+    0 6px 14px rgba(0, 0, 0, 0.55);
+}
+
+.scroll-top-btn::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.22) 45%,
+    rgba(255,255,255,0.35) 50%,
+    rgba(255,255,255,0.22) 55%,
+    rgba(255,255,255,0) 100%
+  );
+
+  transform: translateX(-150%) rotate(20deg);
+  opacity: 0;
+
+  transition:
+    transform 0.6s cubic-bezier(0.22,1,0.36,1),
+    opacity 0.3s ease;
+}
+
+.scroll-top-btn:active::before {
+  opacity: 1;
+  transform: translateX(150%) rotate(20deg);
+}
+
+/* Mobile positions */
+@media (max-width: 768px) {
+  .scroll-top-btn {
+    right: 16px;
+    bottom: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-top-btn {
+    right: 10px;
+    bottom: 28px;
+  }
+}
+
+/* ===============================================
+   BODY SCROLL LOCK (Mobile sidebar open)
+=============================================== */
+
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+
+/* ===============================================
+   BLUR BACKGROUND WHEN SIDEBAR OPENS (EXCEPT HEADER)
+=============================================== */
+
+.page-blur-layer {
+  position: fixed;
+  top: 80px;          /* height of header */
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 80px);
+
+  background: rgba(0,0,0,0.45);   /* subtle dim */
+  z-index: 1500;                  /* BELOW HEADER, ABOVE PAGE */
+  pointer-events: none;
+
+  animation: blurFade 0.3s ease forwards;
+}
+
+@keyframes blurFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
