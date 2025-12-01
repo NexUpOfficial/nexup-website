@@ -1,15 +1,11 @@
 /*
- * RESPONSIVE HEADER STYLES (NeXUP Motion)
- * This stylesheet is fully responsive and handles layouts for Mobile, Tablet,
- * Laptop, and large screens (TV), implementing the following rules:
- * 1. Smooth slide/fade animation for fixed header on scroll.
- * 2. Mobile: Login button is hidden.
- * 3. Mobile: Sidebar icon moves to the far right end (now flush with header padding).
+ * CLEAN + FIXED RESPONSIVE HEADER (NexUP)
+ * - Sidebar left on desktop
+ * - Sidebar right on mobile
+ * - No layout conflicts
+ * - Smooth scroll hide animation
  */
 
-/* ===========================
-   BASE
-=========================== */
 :root {
   --motion: 240ms cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -22,15 +18,14 @@
   --glass-blur: blur(14px);
 }
 
-/* =====================================
-   HEADER — SMOOTH SCROLL ANIMATION
-===================================== */
+/* =======================================
+   HEADER BASE
+======================================= */
 
 .header {
   width: 100%;
   height: 80px;
   padding: 16px 30px;
-
   position: fixed;
   top: 0;
   left: 0;
@@ -39,11 +34,7 @@
   align-items: flex-end;
   justify-content: space-between;
 
-  
-
   z-index: 2000;
-
-  /* ★ Smooth slide + fade effects */
   transition:
     transform 880ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 680ms ease,
@@ -51,119 +42,119 @@
     backdrop-filter 680ms ease;
 }
 
-
-/* =======================================
-   HEADER CINEMATIC GRADIENT (✓ Correct)
-======================================= */
-
-.header-gradient {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(80, 120, 255, 0.36) 0%,
-    rgba(17, 0, 251 , 0.25) 35%,
-    rgba(0, 22, 101 , 0.3) 65%,
-    rgba(80, 120, 255, 0.22) 100%
-  );
-
-  filter: blur(60px);
-  opacity: 0.65;
-
-  animation: headerGlow 10s ease-in-out infinite alternate;
-}
-
-@keyframes headerGlow {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(-60px, 20px) scale(1.25);
-  }
-}
-
-.header-left,
-.header-right {
-  position: relative;
-  z-index: 2; /* Keep content above gradient */
-}
-
-
-/* When scrolling DOWN (hide header) */
+/* SCROLL HIDE */
 .header.hide {
   transform: translateY(-120%);
   opacity: 0;
   backdrop-filter: blur(0px);
 }
 
-/* ===========================
-   LEFT SECTION
-=========================== */
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  height: 40px;
-  padding-bottom: 6px;
-  flex-shrink: 0;
+/* GRADIENT */
+.header-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.36) 0%,
+    rgba(0, 0, 0, 0.25) 35%,
+    rgba(0, 0, 0, 0.3) 65%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+
+  filter: blur(60px);
+  opacity: 0.65;
 }
 
-/* Title — Polished White (OpenAI Style) */
+.header-left,
+.header-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+/* =======================================
+   TITLE
+======================================= */
+
 .header-title {
   font-family: "Inter", sans-serif;
   font-size: 1.92rem;
   font-weight: 500;
-  color: #FFFFFF;
-  line-height: 1;
+  color: #fff;
   white-space: nowrap;
   user-select: none;
-  letter-spacing: 0.3px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  z-index: 3000 !important;
 }
 
-/* Smooth Fade */
-.fade-smooth {
-  animation: fadeSmooth var(--motion);
-}
+.big-title { font-size: 1.95rem !important; }
+.small-title { font-size: 1.25rem !important; }
+/* =======================================
+   SIDEBAR ICON — UPGRADED EFFECTS
+======================================= */
 
-@keyframes fadeSmooth {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ===========================
-   SIDEBAR ICON
-=========================== */
-.sidebar-icon-btn {
-  width: 24px;
-  height: 24px;
-  background: none;
-  border: none;
-  cursor: pointer;
-
-  margin-left: 20px;
-  margin-top: 10px;
-
-  filter: brightness(0.35);
-  transition: filter var(--motion);
-}
-
-.sidebar-icon-btn:hover {
-  filter: brightness(1);
-}
-
-.icon-wrapper {
-  width: 18px;
-  height: 18px;
-  position: relative;
-  transition: transform var(--motion);
-
+.sidebar-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+/* BUTTON — same size, upgraded behavior */
+.sidebar-icon-btn {
+  width: 24px;
+  height: 18px;
+
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+
+  background: none;
+  border: none;
+
+  cursor: grab;
+  filter: brightness(0.55);
+
+  transition:
+    filter 200ms ease,
+    transform 240ms cubic-bezier(0.22,1,0.36,1),
+    box-shadow 300ms ease;
+}
+
+/* HOVER EFFECT — soft scale + glow */
+.sidebar-icon-btn:hover {
+  filter: brightness(1);
+
+  transform: scale(1.10);
+
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.45),
+    0 0 10px rgba(120,160,255,0.22);
+}
+
+/* ACTIVE / PRESS — depth + grabbing cursor */
+.sidebar-icon-btn:active {
+  cursor: grabbing;
+
+  transform: scale(0.84) translateY(1px);
+
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.55),
+    inset 0 -2px 3px rgba(255,255,255,0.12),
+    0 4px 10px rgba(0,0,0,0.55);
+}
+
+/* ==============================
+   ICON TRANSITIONS (unchanged)
+================================ */
+
+.icon-wrapper {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  transition: transform var(--motion);
 }
 
 .icon-wrapper.open {
@@ -187,132 +178,415 @@
   opacity: 1;
   transform: translateY(0);
 }
+/* Force grabbing cursor for sidebar icon on click */
+.sidebar-icon-btn:active,
+.sidebar-icon-btn:active *,
+.sidebar-icon-wrapper:active {
+  cursor: grabbing !important;
+}
 
-/* Tooltip */
-.tooltip-container { position: relative; }
+/* =====================================================
+   APPLE GLASS TOOLTIP — MATCHES ALL HEADER UI ELEMENTS
+===================================================== */
 
 .diamond-tooltip {
   position: absolute;
   top: 40px;
   left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 14px;
-  font-size: 12px;
 
-  background: var(--white-18);
-  border: 1px solid var(--white-25);
-  border-radius: 8px;
-  white-space: nowrap !important;
-  backdrop-filter: blur(8px);
-  z-index: 1000; /* Ensure tooltip is above other content */
+  padding: 7px 16px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: white;
+
+  /* Apple-style frosted glass */
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+
+  white-space: nowrap;
+  transform: translateX(-50%);
+
+  opacity: 0;
+  animation: tooltipFadeUp 0.28s ease forwards;
+
+  z-index: 1000;
+
+  /* Soft Apple-style shadows */
+  box-shadow:
+    inset 0 1px 3px rgba(255, 255, 255, 0.25),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.28),
+
+    0 8px 18px rgba(0, 0, 0, 0.55), 
+    0 2px 6px rgba(0, 0, 0, 0.40),
+    0 0 10px rgba(120, 160, 255, 0.20); /* subtle blue halo */
 }
 
-/* ===========================
-   RIGHT SECTION
-=========================== */
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 18px;
+/* Smooth lift-in animation */
+@keyframes tooltipFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0px) scale(1);
+  }
+}
 
+
+/* =======================================
+   SEARCH + LOGIN
+======================================= */
+
+.header-right {
+  gap: 18px;
   padding-bottom: 10px;
   padding-right: 40px;
 }
 
-/* Search Button */
+/* =====================================================
+   SEARCH BUTTON — APPLE GLASS + ADVANCED EFFECTS
+===================================================== */
+
 .search-btn {
+  position: relative;
+  overflow: hidden;
+
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  background: var(--white-12);
-  border: none;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  /* Apple glass background */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  transition: background var(--motion), transform var(--motion);
+  /* No cursor pointer */
+  cursor: grab;
+
+  transition:
+    background 240ms ease,
+    border-color 240ms ease,
+    box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* -----------------------------------------------------
+   ADVANCED SHINE SWEEP
+----------------------------------------------------- */
+.search-btn::before {
+  content: "";
+  position: absolute;
+  inset: -40% 0 -40% 0;
+
+  background: linear-gradient(
+    115deg,
+    rgba(255,255,255,0.0) 0%,
+    rgba(255,255,255,0.08) 35%,
+    rgba(255,255,255,0.28) 50%,
+    rgba(255,255,255,0.08) 65%,
+    rgba(255,255,255,0.0) 100%
+  );
+
+  opacity: 0;
+  transform: translateX(-140%) rotate(12deg);
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* -----------------------------------------------------
+   HOVER EFFECT — Glass Lift + Depth + Glow
+----------------------------------------------------- */
 .search-btn:hover {
-  background: var(--white-20);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.30);
+
+  box-shadow:
+    inset 0 1px 3px rgba(255, 255, 255, 0.22),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.32),
+
+    0 8px 16px rgba(0, 0, 0, 0.55),
+    0 3px 8px rgba(0, 0, 0, 0.40),
+    0 0 12px rgba(120, 160, 255, 0.20);
+  cursor: grabbing;
   transform: scale(1.05);
 }
 
-/* Login Button */
-.login-btn {
-  padding: 6px 18px;
-  border-radius: 8px;
-  background: var(--white-12);
-  border: 1px solid var(--white-18);
-  color: #fff;
+/* -----------------------------------------------------
+   PRESS EFFECT — Depth + Inner Shadows + Tilt
+----------------------------------------------------- */
+.search-btn:active {
+  transform: scale(0.88) translateY(1px) rotateX(5deg);
+  cursor: grabbing;
+  box-shadow:
+    inset 0 3px 7px rgba(0, 0, 0, 0.55),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.14),
 
-  user-select: none;
+    0 4px 12px rgba(0, 0, 0, 0.55),
+    0 0 8px rgba(120, 160, 255, 0.18);
 
-  font-size: 0.95rem;
-  transition: transform var(--motion), background var(--motion);
-  cursor: pointer; /* Ensure clickability */
+  filter: brightness(0.92);
 }
 
-.login-btn:hover {
-  background: var(--white-18);
-  transform: scale(1.04);
-}
-
-/* ===========================
-   GLOW TEXT
-=========================== */
-.glow-text {
-  color: #ffffff;
-  text-shadow: none;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 24px;
-
-  text-shadow: none;
+/* Shine momentum */
+.search-btn:active::before {
   opacity: 1;
-
-  letter-spacing: 1px;
-  transform: none;
-  animation: none !important;
+  transform: translateX(160%) rotate(12deg);
+  transition-duration: 0.65s;
 }
 
-/* Small dynamic titles */
-.small-title {
-  font-size: 1.25rem !important;
-  font-weight: 600;
+/* -----------------------------------------------------
+   SEARCH ICON (SVG)
+----------------------------------------------------- */
+.search-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: white;
+  stroke-width: 2.2;
+  transition: transform 200ms ease, opacity 150ms ease;
 }
 
-.big-title {
-  font-size: 1.95rem !important;
+.search-btn:hover svg {
+  transform: scale(1.06);
 }
 
-/* Back Arrow Button */
+.search-btn:active svg {
+  transform: scale(0.92);
+  opacity: 0.92;
+  cursor: grabbing;
+}
+
+
+
+/* ============================================
+   LOGIN BUTTON — APPLE STYLE (MATCHES BACK ARROW)
+=============================================== */
+
+.login-btn {
+  position: relative;
+  overflow: hidden;
+
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+
+  padding: 7px 20px;
+  font-size: 0.96rem;
+  color: white;
+  font-weight: 500;
+
+  /* Glass base */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+
+  transition:
+    background 240ms ease,
+    border-color 240ms ease,
+    box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --------------------------------------------
+   ADVANCED SHINE LAYER
+-------------------------------------------- */
+.login-btn::before {
+  content: "";
+  position: absolute;
+  inset: -40% 0 -40% 0;
+
+  background: linear-gradient(
+    115deg,
+    rgba(255,255,255,0.0) 0%,
+    rgba(255,255,255,0.08) 35%,
+    rgba(255,255,255,0.28) 50%,
+    rgba(255,255,255,0.08) 65%,
+    rgba(255,255,255,0.0) 100%
+  );
+
+  opacity: 0;
+  transform: translateX(-140%) rotate(12deg);
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --------------------------------------------
+   HOVER EFFECT (GLASS LIFT + INNER SHADOW)
+-------------------------------------------- */
+.login-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.30);
+  cursor: grab;
+  /* Black depth + soft blue highlight */
+  box-shadow:
+    inset 0 1px 4px rgba(255, 255, 255, 0.25),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.35),
+
+    0 8px 20px rgba(0, 0, 0, 0.55),
+    0 3px 8px rgba(0, 0, 0, 0.40),
+    0 0 12px rgba(120, 160, 255, 0.22);
+
+  transform: scale(1.05);
+}
+
+/* --------------------------------------------
+   DEPTH PRESS + MOMENTUM SHINE
+-------------------------------------------- */
+.login-btn:active {
+  transform: scale(0.90) translateY(1px) rotateX(5deg);
+
+  box-shadow:
+    inset 0 3px 7px rgba(0, 0, 0, 0.55),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.14),
+
+    0 5px 14px rgba(0, 0, 0, 0.50),
+    0 0 8px rgba(120, 160, 255, 0.18);
+  cursor: grabbing;
+  filter: brightness(0.92);
+}
+
+.login-btn:active::before {
+  opacity: 1;
+  transform: translateX(160%) rotate(12deg);
+  transition-duration: 0.65s;
+}
+
+/* Prevent highlight wobble on mobile tap */
+.login-btn:focus {
+  outline: none;
+}
+
+/* FIX: Ensure grabbing cursor shows on click */
+.login-btn:active,
+.login-btn:active * {
+  cursor: grabbing !important;
+}
+
+
+/* ============================================
+   BACK ARROW BUTTON — ADVANCED APPLE STYLE
+   With: inner shadow + 3D tilt + dynamic shine
+=============================================== */
+
 .back-arrow-btn {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(255, 255, 255, 0.10);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
 
-  margin-right: 12px;
-  padding: 0;
+  /* VisionOS glass */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
-  cursor: pointer;
-  transition: background 220ms ease, transform 220ms ease, border-color 220ms ease;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+
+  margin-right: 18px;
+  cursor: grab;
+
+  transform: translateZ(0);
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* --------------------------------------------
+   1. ADVANCED SHINE LAYER (Direction-aware)
+-------------------------------------------- */
+.back-arrow-btn::before {
+  content: "";
+  position: absolute;
+  inset: -40% 0 -40% 0; /* expanded for smooth sweep */
+
+  background: linear-gradient(
+    115deg,
+    rgba(255,255,255,0.00) 0%,
+    rgba(255,255,255,0.08) 35%,
+    rgba(255,255,255,0.28) 50%,
+    rgba(255,255,255,0.08) 65%,
+    rgba(255,255,255,0.00) 100%
+  );
+
+  opacity: 0;
+  transform: translateX(-140%) rotate(12deg);
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --------------------------------------------
+   2. ADVANCED HOVER SHADOW + INNER SHADOW
+-------------------------------------------- */
 .back-arrow-btn:hover {
-  background: rgba(255,255,255,0.18);
-  border-color: rgba(255,255,255,0.25);
-  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.32);
+
+  box-shadow:
+    inset 0 1px 4px rgba(255, 255, 255, 0.25),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.35),
+
+    0 10px 26px rgba(0, 0, 0, 0.65),     /* deeper black */
+    0 4px 10px rgba(0, 0, 0, 0.45),     /* soft */
+    0 0 14px rgba(120, 160, 255, 0.25); /* subtle blue halo */
 }
 
+/* --------------------------------------------
+   3. ADVANCED PRESS EFFECT:
+      - 3D tilt
+      - depth press
+      - shine momentum
+-------------------------------------------- */
+.back-arrow-btn:active {
+  transform: scale(0.88) translateY(1px) rotateX(6deg);
+
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.55),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.14),
+
+    0 6px 14px rgba(0, 0, 0, 0.55),
+    0 0 8px rgba(120, 160, 255, 0.18);
+
+  filter: brightness(0.90);
+}
+
+/* MOMENTUM SHINE after release */
+.back-arrow-btn:active::before {
+  opacity: 1;
+  transform: translateX(160%) rotate(12deg);
+  transition-duration: 0.65s;
+}
+
+/* --------------------------------------------
+   4. MICRO MOTION ICON (Apple movement)
+-------------------------------------------- */
 .back-arrow-btn svg {
   width: 18px;
   height: 18px;
@@ -320,41 +594,26 @@
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
-  display: block;
+
+  transition: transform 200ms ease, opacity 150ms ease;
 }
 
-/* Fixed Sidebar Icon */
-.fixed-sidebar-icon {
-  margin-left: 14px;
-  display: flex;
-  align-items: center;
+.back-arrow-btn:hover svg {
+  transform: translateX(-2px);
 }
 
-/* NEW — APPEAR DISAPPEAR ANIMATIONS */
-.back-arrow-appear {
-  animation: arrowFadeIn 0.38s ease both;
+.back-arrow-btn:active svg {
+  transform: translateX(-1px) scale(0.95);
+  opacity: 0.92;
 }
 
-.back-arrow-disappear {
-  animation: arrowFadeOut 0.35s ease forwards;
-}
 
-@keyframes arrowFadeIn {
-  from { opacity: 0; transform: translateX(-14px) scale(0.85); }
-  to   { opacity: 1; transform: translateX(0) scale(1); }
-}
+/* =======================================
+   MOBILE RESPONSIVE (<768px)
+======================================= */
 
-@keyframes arrowFadeOut {
-  from { opacity: 1; transform: translateX(0) scale(1); }
-  to   { opacity: 0; transform: translateX(-14px) scale(0.85); }
-}
-
-/* =========================================================================
-   RESPONSIVE LAYOUTS
-   ========================================================================= */
-
-/* RESPONSIVE — MOBILE (< 768px) */
 @media (max-width: 768px) {
+
   .header {
     height: 72px;
     padding: 14px 16px;
@@ -364,132 +623,60 @@
     font-size: 1.55rem;
   }
 
-  /* Adjust sidebar icon size */
-  .sidebar-icon-btn {
-    width: 22px;
-    height: 22px;
-    margin-left: 270px; /* Adjusted for tighter mobile layout */
-    margin-top: 10px;
+  /* Mobile layout uses flex REORDERING */
+  .header-left {
+    flex: 1;
   }
 
-  .icon-wrapper {
-    transform: scale(0.9);
-  }
-
-  /* Right section: Search → Sidebar menu icon (icon at far right) */
   .header-right {
-    display: flex;
-    flex-direction: row;
+    flex: 1;
     justify-content: flex-end;
-    gap: 14px;
-    padding-bottom: 0;
-    /* --- FIX: Removing 10px padding to move sidebar icon further right --- */
-    padding-right: 50px; 
-    /* ------------------------------------------------------------------- */
-    align-items: center; 
+    gap: 10px;
+    padding-right: 0;
   }
 
-  /* 1. HIDE LOGIN BUTTON ON MOBILE */
+  /* Move sidebar icon to RIGHT */
+  .sidebar-icon-wrapper {
+    order: 3;
+  }
+
+  .sidebar-icon-btn {
+    margin: 0;
+    transform: scale(0.92);
+  }
+
+  .search-btn {
+    order: 2;
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Hide login */
   .login-btn {
     display: none !important;
   }
 
-  /* 2. SIDEBAR ICON TO FAR RIGHT */
-  .sidebar-icon-btn {
-    order: 2; /* pushes menu icon to right end */
-    transform: scale(0.92);
-    margin-right: -100px;filter: brightness(0.5);
-    transition: filter var(--motion);
-  }
-
-  /* 3. SEARCH BUTTON STAYS LEFT OF ICON */
-  .search-btn {
-    margin-right: 50px;
-    margin-bottom: 6px;
-    transform: scale(0.92);
-    width: 30px;
-    height: 30px;
-
-  }
-
-  /* Back Arrow Button adjustments */
-  .back-arrow-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
-    margin-right: 8px; /* Tighter spacing */
-    transform: none; /* remove initial desktop translation */
-  }
-
-  .back-arrow-btn svg {
-    width: 16px;
-    height: 16px;
-    transform: translateX(-0.5px);
-  }
-
-  /* Tooltip stays single line on mobile */
+  /* Tooltip tighter */
   .diamond-tooltip {
-    top: 46px;
-    left: 134%;
-    transform: translateX(-50%) !important;
-
+    font-size: 11px;
     padding: 6px 12px;
-    font-size: 11px;  
-    
-
-    white-space: nowrap !important;
-    max-width: none !important;
-    overflow: visible !important;
-  }
-
-  .tooltip-container {
-    position: relative;
   }
 }
 
-/* RESPONSIVE — TABLET (< 1024px) */
+/* =======================================
+   TABLET / LAPTOP / LARGE
+======================================= */
+
 @media (max-width: 1024px) {
-  .header-title {
-    font-size: 1.75rem;
-  }
-
-  .header-right {
-    padding-right: 20px;
-  }
+  .header-right { padding-right: 20px; }
 }
 
-/* RESPONSIVE — LAPTOP (≥ 1280px) */
 @media (min-width: 1280px) {
-  .header-title {
-    font-size: 2.05rem;
-  }
+  .header-title { font-size: 2.05rem; }
 }
 
-/* RESPONSIVE — LARGE SCREEN / TV (≥ 1600px) */
 @media (min-width: 1600px) {
-  .header {
-    height: 90px;
-    padding: 22px 40px;
-  }
-
-  .header-title {
-    font-size: 2.4rem;
-  }
-
-  .sidebar-icon-btn {
-    width: 28px;
-    height: 28px;
-  }
-
-  .search-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .login-btn {
-    font-size: 1.05rem;
-    padding: 8px 22px;
-    user-select: none;
-  }
+  .header { height: 90px; padding: 22px 40px; }
+  .header-title { font-size: 2.4rem; }
+  .search-btn { width: 40px; height: 40px; }
 }
-

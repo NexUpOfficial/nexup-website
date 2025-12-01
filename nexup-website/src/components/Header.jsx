@@ -8,18 +8,15 @@ function Header({ toggleSidebar, isOpen }) {
 
   const [showTooltip, setShowTooltip] = useState(false);
   const [mouseOffsetX, setMouseOffsetX] = useState(0);
-  const [hideHeader, setHideHeader] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
   const timer = useRef(null);
+
   const isMobile = window.innerWidth <= 768;
 
-  /* =======================================================
-     BROWSER TITLE + HEADER TITLE LOGIC
-  ======================================================== */
+  /* ==============================================
+     PAGE TITLES
+  ============================================== */
   const TITLE_MAP = {
     "/": "NexUP",
-
     "/ecosystem/nexworld": "NexWorld",
     "/ecosystem/nexnodes": "NexNodes",
     "/ecosystem/nexengine": "NexEngine",
@@ -41,31 +38,7 @@ function Header({ toggleSidebar, isOpen }) {
     "/search": "Search",
   };
 
-  const SIMPLE_TITLE = {
-    "/": "NexUP",
-
-    "/ecosystem/nexworld": "NexWorld",
-    "/ecosystem/nexnodes": "NexNodes",
-    "/ecosystem/nexengine": "NexEngine",
-    "/ecosystem/nexhousing": "NexHousing",
-    "/ecosystem/search": "Search Engine",
-
-    "/about/vision": "Vision",
-    "/about/team": "Team",
-    "/about/stories": "Stories",
-    "/about/company": "Company",
-    "/about/career": "Career",
-    "/about/news": "News",
-
-    "/support/guidelines": "Guidelines",
-    "/support/help": "Help / Support",
-
-    "/contact": "Contact",
-    "/login": "Login",
-    "/search": "Search",
-  };
-
-  const headerTitle = SIMPLE_TITLE[location.pathname] || "NexUP";
+  const headerTitle = TITLE_MAP[location.pathname] || "NexUP";
 
   useEffect(() => {
     document.title = TITLE_MAP[location.pathname] || "NexUP";
@@ -73,29 +46,35 @@ function Header({ toggleSidebar, isOpen }) {
 
   const isHome = location.pathname === "/";
 
-  /* =======================================================
-     HIDE HEADER ON SCROLL
-  ======================================================== */
+  /* ==============================================
+     SMOOTH HEADER HIDE ON SCROLL
+  ============================================== */
+  const [hideHeader, setHideHeader] = useState(false);
+
   useEffect(() => {
+    let lastY = 0;
+
     const handleScroll = () => {
       const current = window.scrollY;
-      if (current > lastScrollY && current > 20) setHideHeader(true);
+
+      if (current > lastY && current > 20) setHideHeader(true);
       else setHideHeader(false);
-      setLastScrollY(current);
+
+      lastY = current;
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
-  /* =======================================================
+  /* ==============================================
      TOOLTIP HANDLERS
-  ======================================================== */
+  ============================================== */
   const handleEnter = () => {
     if (isMobile) return;
     clearTimeout(timer.current);
     setShowTooltip(true);
-    timer.current = setTimeout(() => setShowTooltip(false), 500);
+    timer.current = setTimeout(() => setShowTooltip(false), 700);
   };
 
   const handleLeave = () => {
@@ -115,22 +94,20 @@ function Header({ toggleSidebar, isOpen }) {
     if (!isMobile) return;
     clearTimeout(timer.current);
     setShowTooltip(true);
-    timer.current = setTimeout(() => setShowTooltip(false), 500);
+    timer.current = setTimeout(() => setShowTooltip(false), 700);
   };
 
-  /* =======================================================
-     CLICK TITLE → ALWAYS GO HOME
-  ======================================================== */
+  /* ==============================================
+     TITLE CLICK
+  ============================================== */
   const navigateByTitle = () => {
-    if (location.pathname !== "/") {
-      navigate("/");
-    }
+    if (location.pathname !== "/") navigate("/");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* =======================================================
-     UI RENDER
-  ======================================================== */
+  /* ==============================================
+     RENDER
+  ============================================== */
   return (
     <header className={`header ${hideHeader ? "hide" : ""}`}>
       <div className="header-gradient"></div>
@@ -147,24 +124,23 @@ function Header({ toggleSidebar, isOpen }) {
           </button>
         )}
 
-        {/* DYNAMIC CLICKABLE TITLE */}
+        {/* TITLE */}
         <h1
           className={`header-title ${isHome ? "big-title" : "small-title"}`}
           onClick={navigateByTitle}
-          style={{ cursor: "pointer" }}
         >
           {headerTitle}
         </h1>
 
-        {/* SIDEBAR ICON */}
+        {/* SIDEBAR ICON — STAYS HERE ON DESKTOP */}
         <div
-          className="sidebar-icon-wrapper tooltip-container"
+          className="sidebar-icon-wrapper"
           onMouseEnter={handleEnter}
           onMouseLeave={handleLeave}
           onMouseMove={handleMove}
         >
           <button
-            className={`sidebar-icon-btn ${isOpen ? "is-open" : ""}`}
+            className="sidebar-icon-btn"
             onClick={() => {
               toggleSidebar();
               handleMobileTap();
@@ -175,13 +151,9 @@ function Header({ toggleSidebar, isOpen }) {
               <svg
                 className="icon bottom-icon"
                 viewBox="0 0 24 24"
-                width="22"
-                height="22"
                 fill="none"
                 stroke="white"
                 strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
               >
                 <rect x="4" y="4" width="16" height="16" rx="3" />
                 <line x1="4" y1="16" x2="20" y2="16" />
@@ -191,13 +163,9 @@ function Header({ toggleSidebar, isOpen }) {
               <svg
                 className="icon top-icon"
                 viewBox="0 0 24 24"
-                width="22"
-                height="22"
                 fill="none"
                 stroke="white"
                 strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
               >
                 <rect x="4" y="4" width="16" height="16" rx="3" />
                 <line x1="4" y1="8" x2="20" y2="8" />
@@ -221,27 +189,24 @@ function Header({ toggleSidebar, isOpen }) {
         </div>
       </div>
 
-      {/* RIGHT SECTION */}
+      {/* RIGHT SIDE */}
       <div className="header-right">
-
-        {/* SEARCH BUTTON */}
+        {/* SEARCH */}
         <button className="search-btn" onClick={() => navigate("/search")}>
           <svg
             width="22"
             height="22"
             viewBox="0 1 24 24"
-            fill="none"
             stroke="white"
             strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            fill="none"
           >
             <circle cx="11" cy="11" r="7" />
             <line x1="16.5" y1="16.5" x2="21" y2="21" />
           </svg>
         </button>
 
-        {/* LOGIN BUTTON */}
+        {/* LOGIN (hidden on mobile) */}
         <button className="login-btn" onClick={() => navigate("/login")}>
           Login
         </button>
