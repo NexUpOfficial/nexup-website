@@ -1,10 +1,15 @@
 // src/layout/PageLayout.jsx
 import React, { useState, useEffect, useRef } from "react";
-import useHeaderHeight from "../hooks/useHeaderHeight";
 import "./PageLayout.css";
 
 export default function PageLayout({ isOpen, children }) {
-  const headerHeight = useHeaderHeight();
+  
+  /* ============================
+     REMOVE useHeaderHeight Hook
+     Replace with fixed offset
+  ============================== */
+  const FIXED_HEADER_OFFSET = 90;
+
   const pageRef = useRef(null);
   const [showTop, setShowTop] = useState(false);
 
@@ -61,13 +66,13 @@ export default function PageLayout({ isOpen, children }) {
       <div className="global-gradient"></div>
 
       {/* PAGE BLUR (Header stays clear) */}
-      {isOpen && <div className="page-blur-layer"></div>}
+      <div className={`page-blur-layer ${isOpen ? "active" : ""}`}></div>
 
       {/* MAIN PAGE CONTENT */}
       <div
         ref={pageRef}
         className={frameClass}
-        style={{ marginTop: headerHeight }}
+        style={{ marginTop: FIXED_HEADER_OFFSET }}
       >
         <div className="page-inner">{children}</div>
       </div>

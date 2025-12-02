@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
+import RefreshPage from "./hooks/refresh/RefreshPage";
+import Loader from "./components/TopLoader/Loader";
+
 import "./App.css";
 
 import Header from "./components/Header";
@@ -43,7 +46,7 @@ import Transparency from "./pages/Safety/Transparency";
 /* Other */
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import SearchPage from "./pages/Search";
+import SearchPage from "./pages/Search/Search";
 
 /* Account */
 import DNS from "./pages/Account/DNS";
@@ -55,6 +58,57 @@ import DNS from "./pages/Account/DNS";
 function AnimatedRoutesWrapper() {
   const location = useLocation();
 
+  /* ----------------------------------------
+     HOLO PARALLAX + FADE DURING SCROLL
+  ---------------------------------------- */
+  useEffect(() => {
+    let timeout;
+
+    const handleScroll = () => {
+      document.body.classList.add("scrolling");
+
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        document.body.classList.remove("scrolling");
+      }, 500);
+    };
+
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+
+      document.documentElement.style.setProperty("--px", `${x}%`);
+      document.documentElement.style.setProperty("--py", `${y}%`);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  /* ----------------------------------------
+     🔥 ROUTE LOADING EVENTS → Neon Loader
+  ---------------------------------------- */
+  useEffect(() => {
+    window.dispatchEvent(new Event("route-loading-start"));
+
+    const timeout = setTimeout(() => {
+      window.dispatchEvent(new Event("route-loading-end"));
+    }, 800);
+
+    return () => {
+      clearTimeout(timeout);
+      window.dispatchEvent(new Event("route-loading-end"));
+    };
+  }, [location.pathname]);
+
+  /* ----------------------------------------
+     Magnetic Hover (original logic)
+  ---------------------------------------- */
   useEffect(() => {
     const magneticStrength = 38;
 
@@ -74,7 +128,7 @@ function AnimatedRoutesWrapper() {
       };
 
       const mouseLeave = () => {
-        el.style.transform = "translate(0px, 0px) scale(1)";
+        el.style.transform = "translate(0px,0px) scale(1)";
       };
 
       el.addEventListener("mousemove", mouseMove);
@@ -95,11 +149,10 @@ function AnimatedRoutesWrapper() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-
         <Route path="/" element={<Home />} />
 
         {/* Ecosystem */}
-        <Route path="ecosystem">
+          <Route path="ecosystem">
           <Route index element={<Ecosystem />} />
           <Route path="nexworld" element={<NexWorld />} />
           <Route path="nexnodes" element={<NexNodes />} />
@@ -137,7 +190,6 @@ function AnimatedRoutesWrapper() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<SearchPage />} />
-
       </Routes>
     </AnimatePresence>
   );
@@ -145,17 +197,15 @@ function AnimatedRoutesWrapper() {
 
 
 /* ====================================================
-   App Root with Bounce Effect
+   App Root + Bounce Effect
 ==================================================== */
 export default function App() {
-
-  /* Sidebar persistent state */
   const [isOpen, setIsOpen] = useState(() =>
     localStorage.getItem("sidebar_open") === "true"
   );
 
   const toggleSidebar = () => {
-    setIsOpen(prev => {
+    setIsOpen((prev) => {
       const newVal = !prev;
       localStorage.setItem("sidebar_open", newVal);
       return newVal;
@@ -167,10 +217,7 @@ export default function App() {
     localStorage.setItem("sidebar_open", "false");
   };
 
-
-  /* ====================================================
-       BOUNCE EFFECT (Apple style)
-  ==================================================== */
+  /* Bounce Scroll */
   useEffect(() => {
     const container = document.querySelector(".bounce-scroll");
     let bounceOffset = 0;
@@ -196,7 +243,7 @@ export default function App() {
 
       if ((atTop || atBottom) && !bouncing) {
         bouncing = true;
-        bounceOffset = atTop ? 35 : -35; // bounce strength
+        bounceOffset = atTop ? 35 : -35;
         cancelAnimationFrame(raf);
         animateBounce();
       }
@@ -210,21 +257,25 @@ export default function App() {
     };
   }, []);
 
-
   return (
     <BrowserRouter>
+      <Loader />
       <ScrollToTop />
 
       <Sidebar isOpen={isOpen} onClose={closeSidebar} />
       <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
-      {/* BOUNCE WRAPPER */}
       <div className="bounce-scroll">
         <PageLayout isOpen={isOpen}>
+          <RefreshPage
+            onOpenSidebar={toggleSidebar}
+            onCloseSidebar={closeSidebar}
+            isSidebarOpen={isOpen}
+          />
+
           <AnimatedRoutesWrapper />
         </PageLayout>
       </div>
-
     </BrowserRouter>
   );
 }

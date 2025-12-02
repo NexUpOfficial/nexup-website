@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./styles/Sidebar.css";
-import useHeaderHeight from "../hooks/useHeaderHeight";
+
 import RisingSmoke from "../animations/RisingSmoke";
 
 function Sidebar({ isOpen, onClose }) {
   const [openSection, setOpenSection] = useState(null);
   const location = useLocation();
-  const headerHeight = useHeaderHeight();
+
+  /* ======================================
+       REMOVE useHeaderHeight COMPLETELY
+     Replace with fixed top offset: 90px
+  ====================================== */
+  const FIXED_HEADER_OFFSET = 90;
 
   /* ------------------------
        MOBILE SWIPE CLOSE
@@ -44,7 +49,11 @@ function Sidebar({ isOpen, onClose }) {
   useEffect(() => {
     if (location.pathname.startsWith("/ecosystem")) setOpenSection("ecosystem");
     else if (location.pathname.startsWith("/about")) setOpenSection("about");
-    else if (location.pathname.startsWith("/safety") || location.pathname === "/dns" || location.pathname === "/login")
+    else if (
+      location.pathname.startsWith("/safety") ||
+      location.pathname === "/dns" ||
+      location.pathname === "/login"
+    )
       setOpenSection("account");
   }, [location.pathname]);
 
@@ -60,7 +69,6 @@ function Sidebar({ isOpen, onClose }) {
   /* ------------------------
             ROUTE ITEMS
   ------------------------- */
-
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld" },
     { label: "NexNodes", to: "/ecosystem/nexnodes" },
@@ -114,9 +122,8 @@ function Sidebar({ isOpen, onClose }) {
   }, []);
 
   /* ------------------------
-    CLEAN DRAG & DROP SYSTEM
+      DRAG & DROP SECTIONS
   ------------------------- */
-
   const [sectionOrder, setSectionOrder] = useState([
     "main",
     "ecosystem",
@@ -126,6 +133,7 @@ function Sidebar({ isOpen, onClose }) {
   ]);
 
   const onDragStart = (e, id) => e.dataTransfer.setData("id", id);
+
   const onDrop = (e, id) => {
     const draggedId = e.dataTransfer.getData("id");
     if (draggedId === id) return;
@@ -139,18 +147,15 @@ function Sidebar({ isOpen, onClose }) {
 
     setSectionOrder(newOrder);
   };
+
   const allowDrop = (e) => e.preventDefault();
 
   /* ------------------------
          SIDEBAR STRUCTURE
   ------------------------- */
-
   const sidebarSections = {
     main: (
-      <>  
-         
-         
-
+      <>
         <div className="sidebar-section-label">MAIN</div>
 
         <NavLink
@@ -296,19 +301,18 @@ function Sidebar({ isOpen, onClose }) {
           ))}
         </div>
       </>
-    ),
+    )
   };
 
   /* ------------------------
          RETURN MARKUP
   ------------------------- */
-
   return (
     <aside
       className={`sidebar ${isOpen ? "open" : ""}`}
       style={{
-        top: headerHeight + 30,
-        height: `calc(100vh - ${headerHeight + 30}px)`
+        top: FIXED_HEADER_OFFSET,
+        height: `calc(100vh - ${FIXED_HEADER_OFFSET}px)`
       }}
     >
       {/* Smoke Background */}
@@ -336,4 +340,3 @@ function Sidebar({ isOpen, onClose }) {
 }
 
 export default Sidebar;
- 
