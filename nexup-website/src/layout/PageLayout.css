@@ -19,13 +19,17 @@
     margin-top 480ms ease;
 }
 
-/* Desktop / tablet: slide right when sidebar open */
-@media (min-width: 769px) {
-  .page-frame.open {
-    transform: none !important;
-  }
+.page-frame.open {
+  filter: none !important;
+  backdrop-filter: none !important;
 }
 
+
+/* Desktop / tablet: slide right when sidebar open */
+@media (min-width:769px){
+  .page-frame.open { transform:none !important; }
+}
+ 
 /* Mobile: never slide */
 @media (max-width: 768px) {
   .page-frame.open {
@@ -41,8 +45,6 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   z-index: 2090;
   animation: fadeIn 0.25s ease forwards;
 }
@@ -64,7 +66,7 @@
 
   background: radial-gradient(
     circle at 30% 70%,
-    rgba(80, 0, 255, 0.12),
+    rgba(0, 0, 0, 0.12),
     transparent 80%
   );
 
@@ -196,20 +198,28 @@ body.no-scroll {
 /* ===============================================
    BLUR BACKGROUND WHEN SIDEBAR OPENS (EXCEPT HEADER)
 =============================================== */
-
 .page-blur-layer {
   position: fixed;
-  top: 80px;          /* height of header */
+  top: 80px;
   left: 0;
+
   width: 100%;
   height: calc(100vh - 80px);
 
-  background: rgba(0,0,0,0.45);   /* subtle dim */
-  z-index: 1500;                  /* BELOW HEADER, ABOVE PAGE */
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+
+  z-index: 1500;
   pointer-events: none;
 
-  animation: blurFade 0.3s ease forwards;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
+
+.page-blur-layer.active {
+  opacity: 1;
+}
+
 
 @keyframes blurFade {
   from { opacity: 0; }

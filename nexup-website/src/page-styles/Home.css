@@ -59,6 +59,11 @@
   position: relative;
   overflow: hidden;
   font-size: 3.6rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #a78bfa, #ffffff);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 /* Light sweep */
@@ -720,3 +725,5 @@
   cursor: grabbing;                 /* grabbing cursor */
   transform: scale(0.88) translateY(1px); /* Press feel */
 }
+
+

@@ -1,0 +1,199 @@
+/* ================================
+   Blur overlay while pulling
+================================ */
+.refresh-blur-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 9000;
+}
+
+.refresh-blur-overlay.visible {
+  opacity: 0.4;
+}
+
+/* ================================
+   Arrow + loader shell
+================================ */
+.refresh-arrow-shell {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9500;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+
+  background: rgba(15, 23, 42, 0.86);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+
+  transition:
+    transform 0.25s cubic-bezier(0.17, 0.67, 0.3, 1.4),
+    opacity 0.2s ease,
+    background 0.25s ease;
+  opacity: 0;
+}
+
+/* Only show when pulling or refreshing */
+.refresh-blur-overlay.visible ~ .refresh-arrow-shell {
+  opacity: 1;
+}
+
+/* Extra visual when refreshing */
+.refresh-arrow-shell.refreshing {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+/* ================================
+   Custom SVG Arrow
+================================ */
+.refresh-arrow-svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.25s cubic-bezier(0.17, 0.67, 0.3, 1.4);
+}
+
+.refresh-arrow-circle {
+  fill: none;
+  stroke: rgba(148, 163, 184, 0.65);
+  stroke-width: 1.5;
+}
+
+.refresh-arrow-stem {
+  stroke: #e5e7eb;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.refresh-arrow-head {
+  stroke: #e5e7eb;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ================================
+   Circular Loader (OpenAI style)
+================================ */
+.refresh-loader-svg {
+  width: 24px;
+  height: 24px;
+}
+
+.refresh-loader-track {
+  fill: none;
+  stroke: rgba(148, 163, 184, 0.35);
+  stroke-width: 3;
+}
+
+.refresh-loader-head {
+  fill: none;
+  stroke: #f9fafb;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 40 88;
+  stroke-dashoffset: 0;
+  animation: refresh-spin 0.8s linear infinite;
+}
+
+@keyframes refresh-spin {
+  to {
+    stroke-dashoffset: -128;
+    transform: rotate(360deg);
+  }
+}
+
+/* ================================
+   Mobile only hint
+================================ */
+@media (min-width: 901px) {
+  .refresh-blur-overlay,
+  .refresh-arrow-shell {
+    display: none;
+  }
+}
+
+/* ---------------------------------------
+   Arrow / Loader
+--------------------------------------- */
+.refresh-indicator {
+  position: fixed;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.arrow path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Circular loader */
+.loader {
+  animation: spin 1s linear infinite;
+}
+.loader circle {
+  stroke: white;
+  stroke-width: 4;
+  fill: none;
+  stroke-dasharray: 90;
+  stroke-dashoffset: 50;
+  animation: dash 1.3s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 90;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 90;
+  }
+}
+
+/* ---------------------------------------
+   Blur background while pulling
+--------------------------------------- */
+.pull-blur {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(18px);
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+/* ---------------------------------------
+   Page shift
+--------------------------------------- */
+.pull-shift {
+  transition: transform 0.28s cubic-bezier(0.17, 0.67, 0.3, 1.4);
+}
