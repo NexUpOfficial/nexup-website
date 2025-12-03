@@ -253,7 +253,7 @@ export default function Company() {
 
               <button
                 className="ghost-btn"
-                onClick={() => navigate("/career")}
+                onClick={() => navigate("/about/career")}
               >
                 Explore Careers →
               </button>

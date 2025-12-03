@@ -34,7 +34,7 @@ export default function Footer() {
             <Link to="/ecosystem/nexnodes">NexNode</Link>
             <Link to="/ecosystem/nexengine">NexEngine</Link>
             <Link to="/ecosystem/nexhousing">NexHousing</Link>
-            <Link to="/ecosystem/search">Search</Link>
+            <Link to="/ecosystem/Nexsearch">NexSearch Engine</Link>
           </div>
 
           {/* About */}

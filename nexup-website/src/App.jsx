@@ -22,7 +22,9 @@ import NexWorld from "./pages/Ecosystem/NexWorld";
 import NexNodes from "./pages/Ecosystem/NexNodes";
 import NexEngine from "./pages/Ecosystem/NexEngine";
 import NexHousing from "./pages/Ecosystem/NexHousing";
-import EcosystemSearch from "./pages/Ecosystem/Search";
+
+/* ✅ UPDATED IMPORT — matches new file name */
+import NexSearch from "./pages/Ecosystem/NexSearch";
 
 /* About */
 import About from "./pages/About/About";
@@ -107,7 +109,7 @@ function AnimatedRoutesWrapper() {
   }, [location.pathname]);
 
   /* ----------------------------------------
-     Magnetic Hover (original logic)
+     Magnetic Hover
   ---------------------------------------- */
   useEffect(() => {
     const magneticStrength = 38;
@@ -152,13 +154,15 @@ function AnimatedRoutesWrapper() {
         <Route path="/" element={<Home />} />
 
         {/* Ecosystem */}
-          <Route path="ecosystem">
+        <Route path="ecosystem">
           <Route index element={<Ecosystem />} />
           <Route path="nexworld" element={<NexWorld />} />
           <Route path="nexnodes" element={<NexNodes />} />
           <Route path="nexengine" element={<NexEngine />} />
           <Route path="nexhousing" element={<NexHousing />} />
-          <Route path="search" element={<EcosystemSearch />} />
+
+          {/* ✅ UPDATED ROUTE — now matches import */}
+          <Route path="nexsearch" element={<NexSearch />} />
         </Route>
 
         {/* About */}
