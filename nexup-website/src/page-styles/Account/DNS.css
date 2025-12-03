@@ -1,13 +1,13 @@
 /* ===========================================================
    PAGE WRAPPER
 =========================================================== */
-.contact-page {
+.dns-page {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.contact-wrapper {
+.dns-wrapper {
   flex: 1;
   width: 100%;
   max-width: 1100px;
@@ -22,26 +22,26 @@
 /* ===========================================================
    HERO
 =========================================================== */
-.contact-hero-section {
-  min-height: 60vh;
+.dns-hero-section {
+  min-height: 55vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.contact-hero {
+.dns-hero {
   max-width: 900px;
   text-align: center;
 }
 
-.contact-hero-title {
+.dns-hero-title {
   font-size: clamp(2.3rem, 4.5vw, 3.7rem);
   line-height: 1.2;
 }
 
-.contact-hero-sub {
+.dns-hero-sub {
   margin-top: 16px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
   opacity: 0.85;
 }
 
@@ -63,14 +63,14 @@
 }
 
 /* ===========================================================
-   SECTION WRAPPER
+   SECTION
 =========================================================== */
-.contact-section {
+.dns-section {
   display: flex;
   justify-content: center;
 }
 
-.contact-section-inner {
+.dns-section-inner {
   max-width: 1000px;
   display: flex;
   flex-direction: column;
@@ -95,15 +95,36 @@
 }
 
 /* ===========================================================
-   CONTACT GRID
+   TEXT & LISTS
 =========================================================== */
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+.dns-text {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  opacity: 0.85;
+  line-height: 1.7;
 }
 
-.contact-card {
+.dns-list {
+  list-style: disc;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 1.02rem;
+  opacity: 0.9;
+}
+
+/* ===========================================================
+   GRID CARDS
+=========================================================== */
+.dns-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.anchor-card,
+.security-card {
   background: #111;
   border-radius: 14px;
   border: 1px solid #2b2b2b;
@@ -111,143 +132,134 @@
   transition: 0.3s ease;
 }
 
-.contact-card:hover {
+.anchor-card:hover,
+.security-card:hover {
   border-color: #a78bfa;
   transform: translateY(-4px);
 }
 
-.contact-card h3 {
+.anchor-card h3,
+.security-card h3 {
   margin-bottom: 8px;
 }
 
-.contact-card p {
-  opacity: 0.85;
-}
-
-.contact-label {
-  display: inline-block;
-  margin-top: 10px;
-  opacity: 0.9;
-  font-size: 0.95rem;
-  color: #a78bfa;
-}
-
 /* ===========================================================
-   FORM
+   DEVICES TABLE
 =========================================================== */
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.contact-input,
-.contact-textarea {
-  width: 100%;
-  padding: 14px 18px;
-  background: #111;
+.devices-table {
+  margin-top: 16px;
+  border-radius: 12px;
   border: 1px solid #2b2b2b;
-  border-radius: 10px;
-  color: #e8e8e8;
-  font-size: 1rem;
+  overflow: hidden;
+  background: #0d0d0d;
+  font-size: 0.95rem;
 }
 
-.contact-input::placeholder,
-.contact-textarea::placeholder {
-  color: #777;
+.devices-header,
+.devices-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1.2fr;
+  padding: 10px 14px;
 }
 
-.contact-textarea {
-  height: 160px;
-  resize: none;
+.devices-header {
+  background: rgba(255,255,255,0.06);
+  font-weight: 600;
+}
+
+.devices-row:nth-child(even) {
+  background: rgba(255,255,255,0.02);
 }
 
 /* ===========================================================
-   LOCATION & SOCIAL
+   DEVELOPER NOTES
 =========================================================== */
-.contact-text {
-  opacity: 0.85;
-  line-height: 1.6;
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
+.developer-notes {
+  background: #111;
+  border-radius: 14px;
+  border: 1px solid #2b2b2b;
+  padding: 20px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  opacity: 0.9;
 }
 
-.social-links {
-  display: flex;
-  gap: 20px;
-  opacity: 0.85;
-  font-size: 1.1rem;
-  flex-wrap: wrap;
+.developer-notes code {
+  background: rgba(255,255,255,0.06);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 
 /* ===========================================================
    FINAL CTA
 =========================================================== */
-.contact-final-section {
+.dns-final-section {
   display: flex;
   justify-content: center;
 }
 
-.contact-final {
+.dns-final {
   max-width: 900px;
   text-align: center;
 }
 
 .final-big {
-  font-size: clamp(2.3rem, 5vw, 3.9rem);
-  line-height: 1.15;
+  font-size: clamp(2.2rem, 5vw, 3.7rem);
+  line-height: 1.2;
 }
 
 .final-text {
   margin-top: 14px;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
   opacity: 0.85;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
   line-height: 1.6;
 }
 
-/* ===========================================================
-   BUTTONS
-=========================================================== */
 .white-btn {
+  margin-top: 24px;
   padding: 14px 32px;
   background: #ffffff;
   color: #000;
-  border: none;
   border-radius: 10px;
+  border: none;
   font-size: 1.05rem;
   cursor: pointer;
   transition: 0.25s ease;
 }
 
 .white-btn:hover {
-  background: #e2e2e2;
+  background: #e8e8e8;
 }
 
 /* ===========================================================
    RESPONSIVE
 =========================================================== */
 @media (max-width: 768px) {
-  .contact-wrapper {
+  .dns-wrapper {
     padding: 40px 18px;
     gap: 70px;
+  }
+
+  .devices-header,
+  .devices-row {
+    grid-template-columns: 1.8fr 1.2fr 1fr 1.4fr;
+    padding: 8px 10px;
   }
 
   .white-btn {
     width: 100%;
   }
-
-  .social-links {
-    justify-content: center;
-  }
 }
 
 @media (min-width: 1440px) {
-  .contact-wrapper {
+  .dns-wrapper {
     max-width: 1300px;
   }
 }
 
 @media (min-width: 1920px) {
-  .contact-wrapper {
+  .dns-wrapper {
     max-width: 1600px;
   }
 }

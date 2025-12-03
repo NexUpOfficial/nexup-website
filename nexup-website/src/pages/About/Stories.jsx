@@ -244,12 +244,13 @@ export default function Stories() {
             </p>
 
             <div className="stories-final-actions">
-              <button
-                className="white-btn"
-                onClick={() => navigate("/career")}
-              >
-                Explore Careers →
-              </button>
+                <button
+  className="white-btn"
+  onClick={() => navigate("/about/career")}   // use full path
+>
+  Explore Careers →
+</button>
+
               <button
                 className="ghost-btn"
                 onClick={() => navigate("/contact")}

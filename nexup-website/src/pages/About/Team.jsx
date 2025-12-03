@@ -198,12 +198,14 @@ export default function Team() {
               of immersive and intelligent technology.
             </p>
 
-            <button
-              className="white-btn"
-              onClick={() => navigate("/career")}   // Proper routing
-            >
-              Explore Careers →
-            </button>
+          <button
+  className="white-btn"
+  onClick={() => navigate("/about/career")}   // use full path
+>
+  Explore Careers →
+</button>
+
+
           </motion.div>
         </section>
       </div>

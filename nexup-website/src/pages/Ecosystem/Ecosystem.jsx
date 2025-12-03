@@ -14,7 +14,7 @@ const NexWorld = React.lazy(() => import("./NexWorld"));
 const NexNodes = React.lazy(() => import("./NexNodes"));
 const NexEngine = React.lazy(() => import("./NexEngine"));
 const NexHousing = React.lazy(() => import("./NexHousing"));
-const EcosystemSearch = React.lazy(() => import("./Search"));
+const EcosystemSearch = React.lazy(() => import("./NexSearch"));
 
 /* Tab data */
 const TAB_DATA = [
@@ -39,7 +39,7 @@ const PRELOADERS = {
   nexnodes: () => import("./NexNodes"),
   nexengine: () => import("./NexEngine"),
   nexhousing: () => import("./NexHousing"),
-  search: () => import("./Search"),
+  search: () => import("./NexSearch"),
 };
 
 /* Skeleton loader */

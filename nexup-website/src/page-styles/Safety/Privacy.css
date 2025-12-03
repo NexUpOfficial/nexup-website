@@ -1,13 +1,13 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER — FOOTER ALIGNMENT
 =========================================================== */
-.contact-page {
+.privacy-page {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.contact-wrapper {
+.privacy-wrapper {
   flex: 1;
   width: 100%;
   max-width: 1100px;
@@ -22,30 +22,30 @@
 /* ===========================================================
    HERO
 =========================================================== */
-.contact-hero-section {
+.privacy-hero-section {
   min-height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.contact-hero {
+.privacy-hero {
   max-width: 900px;
   text-align: center;
 }
 
-.contact-hero-title {
-  font-size: clamp(2.3rem, 4.5vw, 3.7rem);
+.privacy-hero-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
   line-height: 1.2;
 }
 
-.contact-hero-sub {
+.privacy-hero-sub {
   margin-top: 16px;
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   opacity: 0.85;
 }
 
-/* Gradient */
+/* Gradient title */
 .gradient-title {
   background: linear-gradient(90deg, #a78bfa, #ffffff);
   -webkit-background-clip: text;
@@ -65,16 +65,16 @@
 /* ===========================================================
    SECTION WRAPPER
 =========================================================== */
-.contact-section {
+.privacy-section {
   display: flex;
   justify-content: center;
 }
 
-.contact-section-inner {
+.privacy-section-inner {
   max-width: 1000px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .section-title {
@@ -85,8 +85,8 @@
 
 .section-title::after {
   content: "";
-  height: 2px;
   width: 100%;
+  height: 2px;
   background: linear-gradient(90deg, #a78bfa, #ffffff);
   opacity: 0.5;
   position: absolute;
@@ -94,16 +94,23 @@
   left: 0;
 }
 
-/* ===========================================================
-   CONTACT GRID
-=========================================================== */
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+.privacy-text {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  opacity: 0.85;
+  line-height: 1.7;
 }
 
-.contact-card {
+/* ===========================================================
+   GRID CARDS
+=========================================================== */
+.privacy-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.privacy-card {
   background: #111;
   border-radius: 14px;
   border: 1px solid #2b2b2b;
@@ -111,83 +118,37 @@
   transition: 0.3s ease;
 }
 
-.contact-card:hover {
+.privacy-card:hover {
   border-color: #a78bfa;
   transform: translateY(-4px);
 }
 
-.contact-card h3 {
+.privacy-card h3 {
   margin-bottom: 8px;
 }
 
-.contact-card p {
-  opacity: 0.85;
-}
-
-.contact-label {
-  display: inline-block;
-  margin-top: 10px;
-  opacity: 0.9;
-  font-size: 0.95rem;
-  color: #a78bfa;
-}
-
 /* ===========================================================
-   FORM
+   LISTS
 =========================================================== */
-.contact-form {
+.privacy-list {
+  list-style: disc;
+  padding-left: 20px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-}
-
-.contact-input,
-.contact-textarea {
-  width: 100%;
-  padding: 14px 18px;
-  background: #111;
-  border: 1px solid #2b2b2b;
-  border-radius: 10px;
-  color: #e8e8e8;
-  font-size: 1rem;
-}
-
-.contact-input::placeholder,
-.contact-textarea::placeholder {
-  color: #777;
-}
-
-.contact-textarea {
-  height: 160px;
-  resize: none;
-}
-
-/* ===========================================================
-   LOCATION & SOCIAL
-=========================================================== */
-.contact-text {
-  opacity: 0.85;
-  line-height: 1.6;
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
-}
-
-.social-links {
-  display: flex;
-  gap: 20px;
-  opacity: 0.85;
-  font-size: 1.1rem;
-  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 1.02rem;
+  opacity: 0.88;
 }
 
 /* ===========================================================
    FINAL CTA
 =========================================================== */
-.contact-final-section {
+.privacy-final-section {
   display: flex;
   justify-content: center;
 }
 
-.contact-final {
+.privacy-final {
   max-width: 900px;
   text-align: center;
 }
@@ -199,55 +160,72 @@
 
 .final-text {
   margin-top: 14px;
-  opacity: 0.85;
   font-size: clamp(1.1rem, 2vw, 1.35rem);
+  opacity: 0.85;
   line-height: 1.6;
 }
 
-/* ===========================================================
-   BUTTONS
-=========================================================== */
+.privacy-final-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .white-btn {
   padding: 14px 32px;
   background: #ffffff;
   color: #000;
-  border: none;
   border-radius: 10px;
+  border: none;
   font-size: 1.05rem;
   cursor: pointer;
   transition: 0.25s ease;
 }
 
 .white-btn:hover {
-  background: #e2e2e2;
+  background: #e8e8e8;
+}
+
+.ghost-btn {
+  padding: 14px 32px;
+  background: transparent;
+  color: #e8e8e8;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.35);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.ghost-btn:hover {
+  background: rgba(255,255,255,0.06);
 }
 
 /* ===========================================================
    RESPONSIVE
 =========================================================== */
 @media (max-width: 768px) {
-  .contact-wrapper {
+  .privacy-wrapper {
     padding: 40px 18px;
     gap: 70px;
   }
 
-  .white-btn {
+  .white-btn,
+  .ghost-btn {
     width: 100%;
-  }
-
-  .social-links {
-    justify-content: center;
   }
 }
 
 @media (min-width: 1440px) {
-  .contact-wrapper {
+  .privacy-wrapper {
     max-width: 1300px;
   }
 }
 
 @media (min-width: 1920px) {
-  .contact-wrapper {
+  .privacy-wrapper {
     max-width: 1600px;
   }
 }
