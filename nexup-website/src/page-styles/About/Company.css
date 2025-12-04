@@ -87,9 +87,10 @@
   gap: 18px;
 }
 
+/* Improved readability for body text */
 .company-text {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  opacity: 0.85;
+  font-size: clamp(1.05rem, 2vw, 1.2rem); 
+  opacity: 0.95; /* Increased contrast */
   line-height: 1.7;
 }
 
@@ -98,15 +99,18 @@
 =========================================================== */
 .company-ceo-layout {
   display: grid;
-  gap: 24px;
+  gap: 32px; /* Increased gap */
   grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
   align-items: center;
   margin-top: 10px;
 }
 
+/* Responsive aspect ratio for image placeholder */
 .company-ceo-image {
   width: 100%;
-  height: 220px;
+  height: auto; 
+  padding-bottom: 75%; /* 4:3 aspect ratio */
+  position: relative;
   border-radius: 16px;
   background: #181818;
   border: 1px solid #2d2d2d;
@@ -114,6 +118,13 @@
   align-items: center;
   justify-content: center;
   color: #777;
+}
+
+.company-ceo-image * {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .company-ceo-text {
@@ -132,11 +143,15 @@
   opacity: 0.8;
 }
 
+/* Enhanced style for CEO quote */
 .company-ceo-quote {
-  margin-top: 8px;
-  font-size: 1.02rem;
-  opacity: 0.9;
-  line-height: 1.7;
+  margin-top: 16px;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem); 
+  opacity: 1; 
+  line-height: 1.6;
+  font-style: italic;
+  border-left: 4px solid #a78bfa; /* Accent line */
+  padding-left: 20px;
 }
 
 /* ===========================================================
@@ -200,23 +215,47 @@
   transition: 0.3s ease;
 }
 
+/* Added hover effect for consistency */
 .value-card:hover {
   border-color: #a78bfa;
-  transform: translateY(-4px);
+  transform: translateY(-4px); 
 }
 
 /* ===========================================================
-   ROADMAP
+   ROADMAP (Timeline visual enhancement)
 =========================================================== */
 .roadmap-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 30px; 
+  padding-left: 20px; 
+  border-left: 2px solid rgba(255, 255, 255, 0.1); /* The main vertical line */
+}
+
+.roadmap-item {
+  position: relative;
+  padding-left: 20px;
+}
+
+/* Circle or dot for each item on the timeline */
+.roadmap-item::before { 
+  content: "";
+  position: absolute;
+  left: -11px; 
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background: #a78bfa; 
+  border-radius: 50%;
+  border: 4px solid #000000; /* Use black/darker background color */
+  box-shadow: 0 0 0 1px #a78bfa; /* Subtle ring */
+  z-index: 10;
 }
 
 .roadmap-item span {
   font-weight: 600;
   font-size: 1.05rem;
+  display: block; 
 }
 
 .roadmap-item p {
@@ -232,13 +271,17 @@
   padding-left: 18px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 1.02rem;
-  opacity: 0.85;
+  gap: 10px; /* Increased gap */
+  font-size: 1.05rem;
+  opacity: 0.95; /* Increased contrast */
+}
+
+.company-culture-list li {
+    line-height: 1.6;
 }
 
 /* ===========================================================
-   FINAL CTA
+   FINAL CTA (Increased impact)
 =========================================================== */
 .company-final-section {
   display: flex;
@@ -251,13 +294,13 @@
 }
 
 .final-big {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  line-height: 1.15;
+  font-size: clamp(2.6rem, 5vw, 4.5rem); /* Bigger heading */
+  line-height: 1.1;
 }
 
 .final-text {
   margin-top: 14px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(1.2rem, 2vw, 1.45rem); /* Larger text */
   opacity: 0.85;
   line-height: 1.6;
 }
@@ -277,12 +320,14 @@
   border-radius: 10px;
   border: none;
   font-size: 1.05rem;
+  font-weight: 600; /* Added weight */
   cursor: pointer;
   transition: 0.25s ease;
 }
 
 .white-btn:hover {
   background: #e8e8e8;
+  transform: translateY(-2px); /* Subtle lift on hover */
 }
 
 .ghost-btn {
@@ -301,12 +346,13 @@
 }
 
 /* ===========================================================
-   BREAK LINE
+   BREAK LINE (Enhanced)
 =========================================================== */
 .break-line {
   width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.16);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.16);
+  opacity: 0.3;
 }
 
 /* ===========================================================
@@ -322,15 +368,38 @@
   .company-ceo-layout {
     grid-template-columns: 1fr;
   }
-
+  
+  /* Adjust aspect ratio for mobile when image takes full width */
   .company-ceo-image {
-    height: 200px;
+    padding-bottom: 60%; 
   }
 
   .white-btn,
   .ghost-btn {
     width: 100%;
   }
+}
+
+/* Desktop Styles for CEO Section Inversion */
+@media (min-width: 900px) {
+    .company-ceo-layout {
+        grid-template-areas: "image text";
+        grid-template-columns: minmax(280px, 350px) 1fr;
+    }
+
+    /* Invert layout for the specific section with the 'ceo-section-alt' class */
+    .ceo-section-alt .company-ceo-layout {
+        grid-template-areas: "text image";
+        grid-template-columns: 1fr minmax(280px, 350px);
+    }
+
+    .company-ceo-image {
+        grid-area: image;
+    }
+
+    .company-ceo-text {
+        grid-area: text;
+    }
 }
 
 @media (min-width: 1440px) {
