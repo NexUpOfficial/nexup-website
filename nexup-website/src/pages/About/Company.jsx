@@ -4,6 +4,12 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "../../page-styles/About/Company.css";
 import Footer from "../../components/Footer/Footer";
+// Assuming these small components are now imported from a dedicated file
+// import { CompanySection, BreakLine, EcosystemCard, ValueCard, RoadmapItem } from "../../components/About/CompanyComponents";
+
+// If you prefer to keep the components in this file (as in the original prompt), 
+// keep them at the bottom. For this example, I will keep them at the bottom 
+// and incorporate the new RoadmapItem component.
 
 export default function Company() {
   const navigate = useNavigate();
@@ -32,8 +38,8 @@ export default function Company() {
 
         <BreakLine />
 
-        {/* ================= CEO SECTION ================= */}
-        <CompanySection title="From Our Founder & CEO">
+        {/* ================= CEO SECTION - Added className for CSS inversion ================= */}
+        <CompanySection title="From Our Founder & CEO" className="ceo-section-alt"> 
           <div className="company-ceo-layout">
             <motion.div
               className="company-ceo-image placeholder-img"
@@ -188,27 +194,27 @@ export default function Company() {
 
         <BreakLine />
 
-        {/* ================= ROADMAP ================= */}
+        {/* ================= ROADMAP - Using new RoadmapItem component ================= */}
         <CompanySection title="Our Roadmap">
           <div className="roadmap-list">
-            <div className="roadmap-item">
-              <span>2025 – 2026</span>
-              <p>Foundation of NexNode, early spatial frameworks, and ecosystem architecture.</p>
-            </div>
-            <div className="roadmap-item">
-              <span>2026 – 2027</span>
-              <p>Early-access NexWorld environments, NexHousing pilots, and developer tooling.</p>
-            </div>
-            <div className="roadmap-item">
-              <span>2027 – 2030</span>
-              <p>Persistent digital worlds, global-scale spatial experiences, and fully realized NeX UP ecosystem.</p>
-            </div>
+            <RoadmapItem
+              yearRange="2025 – 2026"
+              description="Foundation of NexNode, early spatial frameworks, and ecosystem architecture."
+            />
+            <RoadmapItem
+              yearRange="2026 – 2027"
+              description="Early-access NexWorld environments, NexHousing pilots, and developer tooling."
+            />
+            <RoadmapItem
+              yearRange="2027 – 2030"
+              description="Persistent digital worlds, global-scale spatial experiences, and fully realized NeX UP ecosystem."
+            />
           </div>
         </CompanySection>
 
         <BreakLine />
 
-        {/* ================= CULTURE ================= */}
+        {/* ================= CULTURE - Content emphasis added ================= */}
         <CompanySection title="How We Work">
           <p className="company-text">
             NeX UP is built for people who want to explore, invent, and build systems
@@ -217,9 +223,9 @@ export default function Company() {
           </p>
 
           <ul className="company-culture-list">
-            <li>We prototype ideas quickly, test them deeply, and scale what works.</li>
-            <li>We work across disciplines — engineering, design, and research move together.</li>
-            <li>We value clarity, honesty, and ownership in everything we build.</li>
+            <li>We prototype ideas **quickly**, test them **deeply**, and scale what works.</li>
+            <li>We work across disciplines — **engineering, design, and research** move together.</li>
+            <li>We value **clarity, honesty, and ownership** in everything we build.</li>
           </ul>
         </CompanySection>
 
@@ -269,9 +275,9 @@ export default function Company() {
 
 /* ================= REUSABLE COMPONENTS ================= */
 
-function CompanySection({ title, children }) {
+function CompanySection({ title, children, className = "" }) {
   return (
-    <section className="company-section">
+    <section className={`company-section ${className}`}> {/* Added className prop */}
       <motion.div
         className="company-section-inner"
         initial={{ opacity: 0, y: 50 }}
@@ -288,6 +294,16 @@ function CompanySection({ title, children }) {
 
 function BreakLine() {
   return <div className="break-line" />;
+}
+
+// NEW COMPONENT FOR ROADMAP
+function RoadmapItem({ yearRange, description }) {
+  return (
+    <div className="roadmap-item">
+      <span>{yearRange}</span>
+      <p>{description}</p>
+    </div>
+  );
 }
 
 function EcosystemCard({ title, text }) {

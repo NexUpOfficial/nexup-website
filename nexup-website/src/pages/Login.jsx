@@ -20,7 +20,7 @@ export default function Login() {
             transition={{ duration: 1.1 }}
           >
             <h1 className="gradient-title login-hero-title">
-              Login System (DNS)
+              Login System 
             </h1>
 
             <p className="login-hero-sub">

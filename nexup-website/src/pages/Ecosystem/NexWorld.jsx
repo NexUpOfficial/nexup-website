@@ -10,25 +10,45 @@ export default function NexWorld({ isOpen }) {
 
   return (
     <div className="nexworld-page">
-      <div className="nexworld-wrapper">
-        {/* ================= HERO ================= */}
-        <section className="nexworld-hero-section">
+      
+      {/* ================= HERO SECTION (Full Width) ================= */}
+      {/* Moved outside wrapper to touch edges */}
+      <section className="nexworld-hero-section">
+        {/* Background Video */}
+        <div className="nexworld-video-background">
+          <video
+            src="https://res.cloudinary.com/dgzikn7nn/video/upload/Futuristic_AR_VR_NexUP_Universe_Entry_uglbhe.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="hero-video-element"
+          />
+          {/* Dark overlay to make text readable */}
+          <div className="video-overlay" />
+        </div>
+
+        {/* Hero Content Overlay */}
+        <div className="nexworld-hero-content">
           <motion.div
-            className="nexworld-hero"
+            className="nexworld-hero-text-container"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1 }}
           >
-            <h1 className="gradient-title nexworld-hero-title">NexWorld</h1>
+            {/* Removed 'gradient-title' class to make it white */}
+            <h1 className="nexworld-hero-title">NexWorld</h1>
             <p className="nexworld-hero-sub">
               A unified immersive universe where AR, VR, AI, and intelligent
               environments converge into a single living world.
             </p>
           </motion.div>
-        </section>
+        </div>
+      </section>
 
-        <BreakLine />
-
+      {/* ================= MAIN CONTENT WRAPPER ================= */}
+      <div className="nexworld-wrapper">
+        
         {/* ================= WHAT IS NEXWORLD ================= */}
         <NexWorldSection title="What is NexWorld?">
           <p className="nexworld-text">
@@ -126,40 +146,20 @@ export default function NexWorld({ isOpen }) {
 
         <BreakLine />
 
-        {/* ================= WORLD BUILDING PIPELINE ================= */}
+        {/* ================= PIPELINE ================= */}
         <NexWorldSection title="World Building Pipeline">
           <div className="pipeline-grid">
-            <StepCard
-              step="01"
-              title="Create a World"
-              text="Define the scope, scale, and purpose of your environment."
-            />
-            <StepCard
-              step="02"
-              title="Shape Spaces & Objects"
-              text="Design structures, terrain, rooms, and interactive elements."
-            />
-            <StepCard
-              step="03"
-              title="Add Logic & Intelligence"
-              text="Connect NexEngine behaviors, AI systems, and NexNodes intelligence."
-            />
-            <StepCard
-              step="04"
-              title="Test in AR / VR"
-              text="Experience the world from inside mixed or fully virtual reality."
-            />
-            <StepCard
-              step="05"
-              title="Publish to NexWorld"
-              text="Share with users, teams, or communities inside the NeX UP ecosystem."
-            />
+            <StepCard step="01" title="Create a World" text="Define the scope, scale, and purpose of your environment." />
+            <StepCard step="02" title="Shape Spaces & Objects" text="Design structures, terrain, rooms, and interactive elements." />
+            <StepCard step="03" title="Add Logic & Intelligence" text="Connect NexEngine behaviors, AI systems, and NexNodes intelligence." />
+            <StepCard step="04" title="Test in AR / VR" text="Experience the world from inside mixed or fully virtual reality." />
+            <StepCard step="05" title="Publish to NexWorld" text="Share with users, teams, or communities inside the NeX UP ecosystem." />
           </div>
         </NexWorldSection>
 
         <BreakLine />
 
-        {/* ================= AI & BEHAVIOR ================= */}
+        {/* ================= AI ================= */}
         <NexWorldSection title="AI-Driven World Behavior">
           <p className="nexworld-text">
             NexWorld environments are not static — they can react, adapt, and
@@ -179,40 +179,11 @@ export default function NexWorld({ isOpen }) {
         {/* ================= DIGITAL SPACES ================= */}
         <NexWorldSection title="Digital Spaces & Experiences">
           <div className="spaces-grid">
-            <SpaceCard
-              title="Virtual Workspaces"
-              text="Persistent rooms for collaboration, engineering, or design."
-            />
-            <SpaceCard
-              title="Events & Gatherings"
-              text="Immersive venues for launches, meetups, and performances."
-            />
-            <SpaceCard
-              title="Learning Environments"
-              text="Interactive classrooms and training simulations."
-            />
-            <SpaceCard
-              title="Concept Cities"
-              text="Explorable prototypes of future neighborhoods and infrastructure."
-            />
+            <SpaceCard title="Virtual Workspaces" text="Persistent rooms for collaboration, engineering, or design." />
+            <SpaceCard title="Events & Gatherings" text="Immersive venues for launches, meetups, and performances." />
+            <SpaceCard title="Learning Environments" text="Interactive classrooms and training simulations." />
+            <SpaceCard title="Concept Cities" text="Explorable prototypes of future neighborhoods and infrastructure." />
           </div>
-        </NexWorldSection>
-
-        <BreakLine />
-
-        {/* ================= FUTURE ================= */}
-        <NexWorldSection title="The Future of NexWorld">
-          <p className="nexworld-text">
-            NexWorld evolves as NeX UP grows. Over time, it will become a
-            network of interconnected intelligent realities.
-          </p>
-
-          <ul className="nexworld-list">
-            <li>Neural and natural input for shaping worlds in real time.</li>
-            <li>Cloud-streamed spaces accessible from lightweight devices.</li>
-            <li>Autonomous AI-run worlds with emergent behavior.</li>
-            <li>Interconnected environments that form entire digital civilizations.</li>
-          </ul>
         </NexWorldSection>
 
         <BreakLine />
@@ -235,22 +206,13 @@ export default function NexWorld({ isOpen }) {
             </p>
 
             <div className="nexworld-final-actions">
-              <button
-                className="white-btn"
-                onClick={() => navigate("/ecosystem")}
-              >
+              <button className="white-btn" onClick={() => navigate("/ecosystem")}>
                 Back to Ecosystem →
               </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/ecosystem/nexengine")}
-              >
+              <button className="ghost-btn" onClick={() => navigate("/ecosystem/nexengine")}>
                 Learn about NexEngine →
               </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/contact")}
-              >
+              <button className="ghost-btn" onClick={() => navigate("/contact")}>
                 Talk to NeX UP →
               </button>
             </div>
