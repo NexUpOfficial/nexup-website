@@ -112,7 +112,7 @@ function Sidebar({ isOpen, onClose }) {
     { label: "NexNodes", to: "/ecosystem/nexnodes" },
     { label: "NexEngine", to: "/ecosystem/nexengine" },
     { label: "NexHousing", to: "/ecosystem/nexhousing" },
-    { label: "Nex Search Engine", to: "/ecosystem/search" }
+    { label: "Nex Search Engine", to: "/ecosystem/nexsearch" }
   ];
 
   const aboutItems = [

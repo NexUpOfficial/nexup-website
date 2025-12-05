@@ -7,6 +7,24 @@
   flex-direction: column;
   background-color: #000;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* ⭐ 6. Subtle Background Movement */
+.nexhousing-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(184,169,255,0.08), transparent),
+              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05), transparent);
+  animation: drift 10s infinite alternate ease-in-out;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-20px, 10px); }
 }
 
 .nexhousing-wrapper {
@@ -24,12 +42,12 @@
 }
 
 /* ===========================================================
-   HERO SECTION (Blueprint Theme)
+   HERO SECTION
 =========================================================== */
 .nexhousing-hero-section {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 85vh;
   min-height: 600px;
   display: flex;
   justify-content: center;
@@ -37,30 +55,57 @@
   overflow: hidden;
 }
 
-/* Blueprint Grid Background */
-.blueprint-grid-bg {
+/* ⭐ 1. Glowing Layout Behind Hero Text */
+.nexhousing-hero-section::after {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(184,169,255,0.15), transparent 75%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: softPulse 8s infinite ease-in-out;
+  z-index: 0;
+}
+
+@keyframes softPulse {
+  0% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.15); }
+  100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Video Background */
+.hero-video-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
   z-index: 0;
 }
 
-.nexhousing-glow {
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay */
+.hero-overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 60%);
-  filter: blur(100px);
-  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.5) 80%,
+    #000000 100%
+  );
+  z-index: 1;
 }
 
 .nexhousing-hero-content {
@@ -68,6 +113,7 @@
   text-align: center;
   max-width: 900px;
   padding: 0 24px;
+  position: relative;
 }
 
 .hero-badge {
@@ -76,11 +122,12 @@
   gap: 8px;
   padding: 6px 14px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   font-family: monospace;
   font-size: 0.85rem;
-  color: #b8a9ff;
+  color: #fff;
   margin-bottom: 24px;
   letter-spacing: 1px;
 }
@@ -92,20 +139,22 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 24px;
+  text-shadow: 0 0 30px rgba(0,0,0,0.5);
 }
 
 .outline-text {
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
 }
 
 .nexhousing-hero-sub {
   font-size: clamp(1.1rem, 2vw, 1.4rem);
   max-width: 600px;
   margin: 0 auto;
-  opacity: 0.85;
+  opacity: 0.9;
   line-height: 1.6;
-  color: #d4d4d4;
+  color: #e0e0e0;
+  text-shadow: 0 0 20px rgba(0,0,0,0.8);
 }
 
 /* ===========================================================
@@ -142,7 +191,7 @@
 }
 
 /* ===========================================================
-   BENTO GRID (Modules)
+   BENTO GRID (⭐ 2. Spotlight & ⭐ 7. Icon Micro-Interaction)
 =========================================================== */
 .bento-grid {
   display: grid;
@@ -154,7 +203,7 @@
 .bento-card {
   background: rgba(20, 20, 20, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px; /* Architect style: sharp corners */
+  border-radius: 4px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -162,10 +211,26 @@
   min-height: 240px;
   transition: all 0.4s ease;
   backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Spotlight Effect */
+.bento-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x) var(--y), rgba(184,169,255,0.15), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.bento-card:hover::before {
+  opacity: 1;
 }
 
 .bento-card:hover {
-  background: rgba(255, 255, 255, 0.03);
   border-color: rgba(184, 169, 255, 0.4);
   transform: translateY(-5px);
 }
@@ -180,11 +245,18 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 20px;
+  position: relative; z-index: 1;
 }
 
+/* ⭐ 7. Icon Interaction */
 .card-icon {
   font-size: 1.5rem;
   color: #b8a9ff;
+  transition: transform 0.3s;
+}
+
+.bento-card:hover .card-icon {
+  transform: rotate(6deg) scale(1.1);
 }
 
 .card-label {
@@ -199,12 +271,14 @@
   font-size: 1.5rem;
   color: #fff;
   margin-bottom: 12px;
+  position: relative; z-index: 1;
 }
 
 .bento-card p {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.6;
+  position: relative; z-index: 1;
 }
 
 @media (max-width: 900px) {
@@ -213,7 +287,7 @@
 }
 
 /* ===========================================================
-   WORKFLOW STEPS
+   WORKFLOW STEPS (⭐ 3. Animated Connector)
 =========================================================== */
 .workflow-steps {
   display: flex;
@@ -257,7 +331,23 @@
   height: 2px;
   background: rgba(255,255,255,0.1);
   margin-top: 40px;
-  display: none; /* Hidden on mobile, handled by flex gap */
+  display: none;
+  position: relative; /* Context for line grow */
+}
+
+.step-connector::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #b8a9ff;
+  animation: lineGrow 1.5s infinite ease-in-out; /* Looping for visibility */
+}
+
+@keyframes lineGrow {
+  0% { width: 0%; opacity: 0; }
+  50% { width: 100%; opacity: 1; }
+  100% { width: 100%; opacity: 0; }
 }
 
 @media (min-width: 900px) {
@@ -265,7 +355,7 @@
 }
 
 /* ===========================================================
-   SMART INTEGRATION SPLIT
+   SMART INTEGRATION SPLIT (⭐ 4. Animated Grid Visual)
 =========================================================== */
 .smart-split {
   display: grid;
@@ -299,14 +389,40 @@
 .smart-visual {
   height: 300px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 1px dashed rgba(255,255,255,0.2);
+  gap: 20px;
+  overflow: hidden;
+  background: radial-gradient(circle, rgba(184,169,255,0.05), transparent 70%);
+  position: relative;
+}
+
+/* Animated Grid Overlay */
+.smart-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(#ffffff10 1px, transparent 1px), 
+                    linear-gradient(90deg, #ffffff10 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.3;
+  animation: gridMove 10s linear infinite;
+}
+
+@keyframes gridMove {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-30px, -30px); }
 }
 
 .visual-placeholder {
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.6);
   font-family: monospace;
+  z-index: 2;
+  background: rgba(0,0,0,0.5);
+  padding: 10px 20px;
+  border-radius: 4px;
 }
 
 @media (max-width: 768px) {
@@ -314,7 +430,7 @@
 }
 
 /* ===========================================================
-   ARCHITECT STUDIO GRID
+   ARCHITECT STUDIO GRID (⭐ 5. Gradient Border Glow)
 =========================================================== */
 .architecture-grid {
   display: grid;
@@ -326,6 +442,30 @@
   padding: 30px;
   border-left: 2px solid rgba(255,255,255,0.1);
   transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sim-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: conic-gradient(
+    from 0deg,
+    rgba(184,169,255,0.3),
+    transparent,
+    transparent,
+    rgba(184,169,255,0.4)
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.sim-card:hover::after {
+  opacity: 1;
+  filter: blur(20px);
 }
 
 .sim-meta {
@@ -335,17 +475,20 @@
   display: block;
   margin-bottom: 12px;
   text-transform: uppercase;
+  position: relative; z-index: 1;
 }
 
 .sim-card h3 {
   font-size: 1.4rem;
   color: #fff;
   margin-bottom: 8px;
+  position: relative; z-index: 1;
 }
 
 .sim-card p {
   color: rgba(255,255,255,0.7);
   font-size: 0.95rem;
+  position: relative; z-index: 1;
 }
 
 /* ===========================================================

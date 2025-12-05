@@ -1,4 +1,6 @@
-/* PAGE */
+/* ============================================
+   PAGE WRAPPER
+============================================ */
 .search-page {
   width: 100%;
   min-height: 100vh;
@@ -7,20 +9,32 @@
   flex-direction: column;
   background: #000000;
   align-items: center;
+  /* 3️⃣ FIX: Prevent entry animations (y:8, y:-12) from causing temporary scrollbars */
+  overflow-x: hidden; 
+  box-sizing: border-box;
 }
 
-/* INPUT WIDTH */
+/* ============================================
+   INPUT AREA
+============================================ */
 .underline-input-wrapper {
   width: 100%;
   max-width: 520px;
+  position: relative;
+  /* Ensure z-index is above results to prevent overlap issues */
+  z-index: 10; 
 }
 
 .input-container {
   position: relative;
   padding-bottom: 6px; /* Space for underline */
+  /* 1️⃣ FIX: Ensure specific height to contain absolute placeholder */
+  min-height: 50px; 
+  display: flex;
+  align-items: center;
 }
 
-/* GRADIENT UNDERLINE (works now) */
+/* GRADIENT UNDERLINE */
 .input-container::after {
   content: "";
   position: absolute;
@@ -36,26 +50,36 @@
 .underline-input {
   width: 100%;
   font-size: 20px;
-  padding: 12px 4px 8px; /* bottom a bit smaller because of underline */
+  padding: 12px 4px 8px;
   border: none;
   background: transparent;
   color: white;
   outline: none;
+  /* Ensure input sits on top of placeholder */
+  position: relative;
+  z-index: 2; 
+  background-color: transparent; 
 }
 
-/* ANIMATED PLACEHOLDER */
+/* ============================================
+   ANIMATED PLACEHOLDER FIX
+============================================ */
 .placeholder-animated {
   position: absolute;
   left: 4px;
   top: 50%;
-  transform: translateY(-50%);
+  /* 1️⃣ FIX: Strict vertical centering without causing overflow */
+  transform: translateY(-50%); 
   pointer-events: none;
   color: rgba(255, 255, 255, 0.45);
   font-size: 20px;
   height: 24px;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  overflow: hidden; /* Clips internal text motion */
+  white-space: nowrap;
+  max-width: 80%; /* Prevents horizontal overflow if text is long */
+  z-index: 1;
 }
 
 /* ============================================
@@ -65,7 +89,7 @@
   position: absolute;
   right: 40px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) !important; /* Force center */
   width: 30px;
   height: 30px;
 
@@ -80,26 +104,24 @@
 
   cursor: pointer;
   transition: background 180ms ease, opacity 180ms ease;
+  z-index: 5;
+  padding: 0 !important;
+  line-height: 1 !important;
 }
 
-/* Hover — Smooth glass opacity */
 .voice-btn:hover {
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* Disabled State */
 .voice-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
 
-/* Listening State — clean white bubble */
 .voice-btn.listening {
   background: rgba(255, 255, 255, 1) !important;
   color: black !important;
 }
-
-
 
 /* ============================================
    SEND BUTTON (Arrow)
@@ -108,7 +130,7 @@
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) !important; /* Force center */
   
   width: 30px;
   height: 30px;
@@ -128,40 +150,34 @@
 
   cursor: pointer;
   transition: background 180ms ease;
-}
-
-/* Hover — stronger opacity only */
-.send-btn:hover {
-  background: rgba(255, 255, 255, 1);
-}
-
-
-/* ============================================
-   GLOBAL FIX — lock positions, avoid movement
-============================================ */
-.voice-btn,
-.send-btn {
-  transform: translateY(-50%) !important;
+  z-index: 5;
   padding: 0 !important;
   line-height: 1 !important;
 }
 
+.send-btn:hover {
+  background: rgba(255, 255, 255, 1);
+}
 
-/* SEARCH RESULTS AREA */
+/* ============================================
+   SEARCH RESULTS AREA
+============================================ */
 .search-results {
-  margin-top: 20px;
+  /* 2️⃣ FIX: Ensure margin doesn't push page width out */
+  margin-top: 40px; 
   width: 100%;
   max-width: 900px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
+  padding-bottom: 40px; /* Safe space at bottom */
 }
 
 /* CATEGORY HEADER */
 .category-block {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .category-title {
@@ -169,18 +185,19 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
+  margin-left: 4px;
 }
 
 /* GRID OF CARDS */
 .category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
 /* OPENAI-STYLE SEARCH CARD */
 .search-card {
-  padding: 14px 16px;
+  padding: 16px 18px;
   border-radius: 14px;
 
   background: rgba(255, 255, 255, 0.04);
@@ -189,6 +206,9 @@
 
   cursor: pointer;
   transition: all 0.2s ease;
+  
+  /* 3️⃣ FIX: Ensure box shadow doesn't trigger scrollbars */
+  box-sizing: border-box; 
 }
 
 .search-card:hover {
@@ -196,7 +216,6 @@
   transform: translateY(-2px);
 }
 
-/* Active card for keyboard navigation */
 .search-card.active {
   border-color: rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.18);
@@ -207,13 +226,14 @@
   font-size: 16px;
   font-weight: 600;
   color: white;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .card-desc {
   font-size: 14px;
   color: rgba(230, 230, 230, 0.86);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 /* CARD META AREA */
@@ -225,7 +245,7 @@
 }
 
 .chip {
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 999px;
   font-size: 11px;
   text-transform: uppercase;
@@ -241,20 +261,19 @@
 
 /* ============================================
    📱 MOBILE RESPONSIVE (0px – 600px)
-   Input bar stays HIGH, not centered
 ============================================ */
 @media (max-width: 600px) {
-
-  /* Bring input bar UP near the top */
   .search-page {
     padding-top: 20px;
     justify-content: flex-start;
+    /* 3️⃣ FIX: Mobile strict overflow */
+    overflow-x: hidden;
   }
 
   .underline-input-wrapper {
     max-width: 92%;
-    margin-top: 10px; /* slight spacing */
-    transform: none; /* remove center shift */
+    margin-top: 10px; 
+    transform: none; 
   }
 
   .underline-input {
@@ -273,13 +292,12 @@
     font-size: 18px;
   }
 
-  /* Cards full width */
   .category-grid {
     grid-template-columns: 1fr;
   }
 
   .search-card {
-    padding: 12px 14px;
+    padding: 14px 16px;
   }
 }
 
@@ -287,7 +305,6 @@
    📺 LARGE SCREENS / TV MODE (1600px+)
 ============================================ */
 @media (min-width: 1600px) {
-
   .search-page {
     padding-top: 100px;
   }
@@ -308,7 +325,6 @@
     font-size: 16px;
   }
 
-  /* Bigger cards for TV display */
   .category-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
@@ -323,7 +339,6 @@
    💻 TABLET (600px – 1024px)
 ============================================ */
 @media (min-width: 600px) and (max-width: 1024px) {
-
   .underline-input-wrapper {
     max-width: 80%;
   }
@@ -342,7 +357,6 @@
 ============================================ */
 @media (min-width: 1024px) and (max-width: 1600px) {
   .underline-input-wrapper {
-    max-width: 520px; /* your original */
+    max-width: 520px;
   }
 }
-

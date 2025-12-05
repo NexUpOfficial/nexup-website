@@ -1,12 +1,12 @@
 // src/components/Footer/Footer.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion"; // ⭐ 8. Scroll Reveal
 import {
   FaYoutube,
   FaGithub,
   FaInstagram,
   FaTwitter,
-  FaSnapchat,
   FaLinkedinIn,
   FaArrowRight
 } from "react-icons/fa6";
@@ -14,7 +14,13 @@ import "./Footer.css";
 
 export default function Footer() {
   return (
-    <footer className="nx-footer">
+    <motion.footer 
+      className="nx-footer"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+    >
       <div className="nx-footer-container">
         
         {/* ================= TOP SECTION (Brand + Newsletter) ================= */}
@@ -49,7 +55,7 @@ export default function Footer() {
             <Link to="/ecosystem/nexengine">NexEngine</Link>
             <Link to="/ecosystem/nexnodes">NexNodes</Link>
             <Link to="/ecosystem/nexhousing">NexHousing</Link>
-            <Link to="/ecosystem/search">Search Engine</Link>
+            <Link to="/ecosystem/nexsearch">Search Engine</Link>
           </div>
 
           <div className="nx-col">
@@ -95,9 +101,9 @@ export default function Footer() {
           </div>
           
           <div className="nx-legal-links">
-            <Link to="/terms">Terms</Link>
-            <Link to="/privacy">Privacy</Link>
-            <Link to="/sitemap">Sitemap</Link>
+            <Link to="/sections/terms">Terms</Link>
+            <Link to="/safety/privacy">Privacy</Link>
+            <Link to="/safety/cookies">Cookies</Link>
           </div>
 
           <div className="nx-system-status">
@@ -107,6 +113,6 @@ export default function Footer() {
         </div>
 
       </div>
-    </footer>
+    </motion.footer>
   );
 }

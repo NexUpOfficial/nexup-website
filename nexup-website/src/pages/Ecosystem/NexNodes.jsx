@@ -1,5 +1,6 @@
 // src/pages/Ecosystem/NexNodes.jsx
 
+import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "../../page-styles/Ecosystem/NexNodes.css";
@@ -8,24 +9,51 @@ import Footer from "../../components/Footer/Footer";
 /* --- ANIMATION VARIANTS --- */
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
   }
 };
 
-/* --- MOCK DATA --- */
-const NETWORK_STATS = [
-  { label: "Global Nodes", value: "8,420" },
-  { label: "Avg Latency", value: "< 12ms" },
-  { label: "Uptime", value: "99.99%" },
-  { label: "Status", value: "Operational", status: "green" },
-];
+// ⭐ 2. Floating Node Component
+const FloatingNodes = () => {
+  const nodes = Array.from({ length: 15 });
+  return (
+    <div className="hero-floating-nodes">
+      {nodes.map((_, i) => (
+        <motion.div
+          key={i}
+          className="floating-node"
+          initial={{
+            x: Math.random() * 100 + "%",
+            y: Math.random() * 100 + "%",
+            opacity: 0.3,
+            scale: 0.5
+          }}
+          animate={{
+            y: [null, Math.random() * -50],
+            opacity: [0.3, 0.7, 0.3],
+          }}
+          transition={{
+            duration: Math.random() * 5 + 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: Math.random() * 2
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default function NexNodes() {
   const navigate = useNavigate();
@@ -35,7 +63,22 @@ export default function NexNodes() {
       
       {/* ================= HERO SECTION ================= */}
       <section className="nexnodes-hero-section">
-        <div className="nexnodes-glow" />
+        
+        {/* VIDEO BACKGROUND */}
+        <div className="hero-video-container">
+          <video 
+            className="hero-video" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1764942791/NexNodes_Energy_Network_Animation_ufdjqs.mp4" type="video/mp4" />
+          </video>
+          <div className="hero-overlay" />
+          {/* ⭐ 2. Floating Nodes Overlay */}
+          <FloatingNodes />
+        </div>
         
         <motion.div
           className="nexnodes-hero-content"
@@ -50,23 +93,6 @@ export default function NexNodes() {
             synchronized reality. Real-time computation at the edge.
           </p>
         </motion.div>
-
-        {/* Network Status Strip */}
-        <motion.div 
-          className="network-status-bar"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-        >
-          {NETWORK_STATS.map((stat, index) => (
-            <div key={index} className="status-item">
-              <span className="status-label">{stat.label}</span>
-              <span className={`status-value ${stat.status ? 'status-live' : ''}`}>
-                {stat.value}
-              </span>
-            </div>
-          ))}
-        </motion.div>
       </section>
 
       {/* ================= MAIN CONTENT ================= */}
@@ -78,7 +104,7 @@ export default function NexNodes() {
             className="intro-text-block"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
             <h2 className="gradient-title section-title">Synchronization Engine</h2>
@@ -99,39 +125,24 @@ export default function NexNodes() {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
-            {/* Wide Card */}
-            <motion.div className="bento-card card-wide" variants={fadeInUp}>
-              <div className="card-header">
-                <span className="card-id">SYS_01</span>
-                <span className="card-tag">Core</span>
-              </div>
-              <h3>Real-time Synchronization</h3>
-              <p>State-locking technology that keeps world physics, user positions, and environment updates aligned across thousands of concurrent sessions.</p>
-            </motion.div>
+            {/* ⭐ 4. Spotlight Bento Cards */}
+            <SpotlightCard className="card-wide" id="SYS_01" tag="Core" title="Real-time Synchronization">
+              State-locking technology that keeps world physics, user positions, and environment updates aligned across thousands of concurrent sessions.
+            </SpotlightCard>
 
-            {/* Tall Card */}
-            <motion.div className="bento-card card-tall" variants={fadeInUp}>
-              <div className="card-header">
-                <span className="card-id">SYS_02</span>
-              </div>
-              <h3>Decentralized Intelligence</h3>
-              <p>Distributes AI workloads between local devices (Edge) and cloud clusters to maximize performance and privacy.</p>
-            </motion.div>
+            <SpotlightCard className="card-tall" id="SYS_02" title="Decentralized Intelligence">
+              Distributes AI workloads between local devices (Edge) and cloud clusters to maximize performance and privacy.
+            </SpotlightCard>
 
-            {/* Standard Cards */}
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-header"><span className="card-id">SYS_03</span></div>
-              <h3>Edge Spatial Processing</h3>
-              <p>Lidar and camera inputs are processed locally for near-zero latency interaction.</p>
-            </motion.div>
+            <SpotlightCard className="" id="SYS_03" title="Edge Spatial Processing">
+              Lidar and camera inputs are processed locally for near-zero latency interaction.
+            </SpotlightCard>
 
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-header"><span className="card-id">SYS_04</span></div>
-              <h3>Secure Mesh Linking</h3>
-              <p>End-to-end encrypted tunnels connect headsets, phones, and displays.</p>
-            </motion.div>
+            <SpotlightCard className="" id="SYS_04" title="Secure Mesh Linking">
+              End-to-end encrypted tunnels connect headsets, phones, and displays.
+            </SpotlightCard>
           </motion.div>
         </NexNodesSection>
 
@@ -139,7 +150,13 @@ export default function NexNodes() {
 
         {/* ================= ARCHITECTURE STACK ================= */}
         <NexNodesSection title="Network Architecture">
-          <div className="architecture-stack">
+          <motion.div 
+            className="architecture-stack"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <StackLayer 
               level="L1" 
               name="Signal & Input" 
@@ -160,14 +177,20 @@ export default function NexNodes() {
               name="Security Mesh" 
               desc="Identity verification and data integrity enforcement." 
             />
-          </div>
+          </motion.div>
         </NexNodesSection>
 
         <BreakLine />
 
         {/* ================= MODES OF OPERATION ================= */}
         <NexNodesSection title="Node Configurations">
-          <div className="modes-list">
+          <motion.div 
+            className="modes-list"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <ModeRow 
               title="Local Node" 
               type="Client-Side" 
@@ -183,7 +206,7 @@ export default function NexNodes() {
               type="Adaptive" 
               desc="Dynamically offloads tasks based on bandwidth and battery life." 
             />
-          </div>
+          </motion.div>
         </NexNodesSection>
 
         <BreakLine />
@@ -225,17 +248,57 @@ export default function NexNodes() {
 /* ================= REUSABLE COMPONENTS ================= */
 
 function BreakLine() {
-  return <div className="break-line" />;
+  return (
+    <motion.div 
+      className="break-line" 
+      initial={{ scaleX: 0, opacity: 0 }}
+      whileInView={{ scaleX: 1, opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      viewport={{ once: true }}
+    />
+  );
 }
 
 function NexNodesSection({ title, children }) {
   return (
     <section className="nexnodes-section">
       <div className="nexnodes-section-inner">
-        <h2 className="gradient-title section-title">{title}</h2>
+        <motion.h2 
+          className="gradient-title section-title"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          {title}
+        </motion.h2>
         {children}
       </div>
     </section>
+  );
+}
+
+// ⭐ 4. Spotlight Card Component
+function SpotlightCard({ className, id, tag, title, children }) {
+  const handleMouseMove = (e) => {
+    const { left, top } = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--x', `${e.clientX - left}px`);
+    e.currentTarget.style.setProperty('--y', `${e.clientY - top}px`);
+  };
+
+  return (
+    <motion.div 
+      className={`bento-card ${className || ""}`}
+      onMouseMove={handleMouseMove}
+      variants={fadeInUp}
+    >
+      <div className="card-header">
+        <span className="card-id">{id}</span>
+        {tag && <span className="card-tag">{tag}</span>}
+      </div>
+      <h3>{title}</h3>
+      <p>{children}</p>
+    </motion.div>
   );
 }
 
@@ -243,6 +306,7 @@ function StackLayer({ level, name, desc }) {
   return (
     <motion.div 
       className="stack-layer"
+      variants={fadeInUp}
       whileHover={{ scale: 1.01, backgroundColor: "rgba(255,255,255,0.03)" }}
     >
       <div className="stack-level">{level}</div>
@@ -257,12 +321,15 @@ function StackLayer({ level, name, desc }) {
 
 function ModeRow({ title, type, desc }) {
   return (
-    <div className="mode-row">
+    <motion.div 
+      className="mode-row"
+      variants={fadeInUp}
+    >
       <div className="mode-header">
         <h3>{title}</h3>
         <span className="mode-badge">{type}</span>
       </div>
       <p>{desc}</p>
-    </div>
+    </motion.div>
   );
 }

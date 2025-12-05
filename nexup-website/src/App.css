@@ -258,3 +258,23 @@ a,
 }
 
 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important;
+}
+
+.nexworld-page,
+.nexnodes-page,
+.nexsearch-page,
+.nexhousing-page,
+.nexengine-page {
+  overflow-x: hidden;
+  overflow-y: clip;
+}
+
+.hero-video-container,
+.hero-video,
+.hero-overlay {
+  overflow: hidden;
+}

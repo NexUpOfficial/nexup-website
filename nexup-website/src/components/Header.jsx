@@ -7,12 +7,14 @@ import "./styles/Header.css";
    ============================================== */
 const TITLE_MAP = {
   "/": "NexUP",
+  "/ecosystem": "Ecosystem",
   "/ecosystem/nexworld": "NexWorld",
   "/ecosystem/nexnodes": "NexNodes",
   "/ecosystem/nexengine": "NexEngine",
   "/ecosystem/nexhousing": "NexHousing",
-  "/ecosystem/search": "Search Engine",
+  "/ecosystem/nexsearch": "NexSearch Engine",
 
+  "/about": "About Us",
   "/about/vision": "Vision",
   "/about/team": "Team",
   "/about/stories": "Stories",
@@ -26,6 +28,17 @@ const TITLE_MAP = {
   "/contact": "Contact",
   "/login": "Login",
   "/search": "Search",
+
+  "/safety/approach": "Safety Approach",
+  "/safety/privacy": "Privacy Policy",
+  "/safety/trust": "Trust & Safety",
+  "/safety/transparency": "Transparency Report",
+  "/safety/cookies": "Cookie Policy",
+
+  "/dns": "DNS Management",
+
+  "/sections/roadmap": "Roadmap",
+  "/sections/terms": "Terms of Service",
 };
 
 function Header({ toggleSidebar, isOpen }) {

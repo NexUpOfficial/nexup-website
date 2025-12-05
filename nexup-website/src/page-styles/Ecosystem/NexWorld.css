@@ -7,6 +7,18 @@
   flex-direction: column;
   background-color: #000;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* ⭐ 1. Soft Aurora Background */
+.nexworld-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(184,169,255,0.06), transparent 60%),
+              radial-gradient(circle at 80% 70%, rgba(100,70,255,0.05), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .nexworld-wrapper {
@@ -43,6 +55,7 @@
   width: 100%;
   height: 100%;
   z-index: 0;
+  /* ⭐ 2. Opacity handles via inline Framer Motion style now */
 }
 
 .hero-video-element {
@@ -51,7 +64,7 @@
   object-fit: cover;
 }
 
-/* Sophisticated Overlay: Darker at bottom for text readability */
+/* Sophisticated Overlay */
 .video-overlay {
   position: absolute;
   top: 0;
@@ -84,7 +97,6 @@
   letter-spacing: -0.02em;
   margin-bottom: 24px;
   text-transform: uppercase;
-  /* Subtle glow */
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
 }
 
@@ -95,6 +107,33 @@
   opacity: 0.9;
   line-height: 1.6;
   color: #d4d4d4;
+}
+
+/* ⭐ 8. Sound Toggle UI */
+.sound-toggle-ui {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: monospace;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sound-toggle-ui:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: #fff;
 }
 
 /* ===========================================================
@@ -163,18 +202,57 @@
   min-height: 220px;
   transition: all 0.4s ease;
   backdrop-filter: blur(10px);
+  position: relative; /* Context for video bg */
+  overflow: hidden; /* Clip video */
 }
 
+/* ⭐ 3. Hover Glow Border */
 .bento-card:hover {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(184, 169, 255, 0.4);
   transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(184,169,255,0.25);
 }
 
 /* Large card spans 2 columns */
 .large-card {
   grid-column: span 2;
-  background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(40,40,40,0.3));
+  background: #000; /* Darker base for video */
+}
+
+/* ⭐ 4. Mini Video Background */
+.bento-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bento-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+  transition: transform 0.6s ease;
+}
+
+.bento-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 100%);
+}
+
+.large-card:hover .bento-video-bg video {
+  transform: scale(1.05);
+  opacity: 0.25;
+}
+
+.card-content-layer {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-label {
@@ -190,12 +268,16 @@
   font-size: 1.5rem;
   color: #fff;
   margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
 }
 
 .bento-card p {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
+  position: relative;
+  z-index: 2;
 }
 
 /* Mobile Responsive Grid */
@@ -224,7 +306,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
   cursor: default;
   transition: background 0.3s ease;
-  padding-left: 20px; /* For hover effect space */
+  padding-left: 20px;
 }
 
 .world-type-row h3 {
@@ -257,24 +339,31 @@
 .pipeline-step {
   position: relative;
   padding-right: 20px;
+  overflow: hidden; /* Clip scanline */
 }
 
-/* Connective Line visual trick (optional) */
+/* ⭐ 6. Pipeline Scanline Animation */
 .pipeline-step::after {
   content: "";
   position: absolute;
   top: 40px;
   left: 0;
   width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.1);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: scanline 3s linear infinite;
   z-index: -1;
+}
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .step-number {
   font-size: 3.5rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.1); /* Subtle big number */
+  color: rgba(255, 255, 255, 0.1);
   line-height: 1;
   margin-bottom: 10px;
 }
@@ -349,40 +438,83 @@
 /* ===========================================================
    UTILITIES & BUTTONS
 =========================================================== */
+/* ⭐ 5. Subtle Pulse Divider */
 .break-line {
   width: 100%;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: glowline 4s infinite ease-in-out;
 }
 
-.white-btn {
-  background: #fff;
-  color: #000;
+@keyframes glowline {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; }
+}
+
+/* Button Base */
+.white-btn, .ghost-btn {
+  position: relative;
   padding: 16px 32px;
   border-radius: 8px;
-  border: none;
   font-weight: 600;
   font-size: 1.05rem;
   cursor: pointer;
   transition: 0.3s;
+  overflow: hidden; /* For teleport ring */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ⭐ 9. Futuristic Glow & ⭐ 10. Teleport Ring */
+.white-btn {
+  background: #fff;
+  color: #000;
+  border: none;
 }
 
 .white-btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255,255,255,0.4);
+}
+
+.white-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.1);
+  transform: scale(0);
+  transition: transform 0.4s ease;
+}
+
+.white-btn:hover::before {
+  transform: scale(1.6);
 }
 
 .ghost-btn {
   background: transparent;
   color: #fff;
-  padding: 16px 32px;
-  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.3s;
 }
 
 .ghost-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+}
+
+.ghost-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  transform: scale(0);
+  transition: transform 0.4s ease;
+}
+
+.ghost-btn:hover::before {
+  transform: scale(1.6);
 }

@@ -22,8 +22,6 @@ import NexWorld from "./pages/Ecosystem/NexWorld";
 import NexNodes from "./pages/Ecosystem/NexNodes";
 import NexEngine from "./pages/Ecosystem/NexEngine";
 import NexHousing from "./pages/Ecosystem/NexHousing";
-
-/* ✅ UPDATED IMPORT — matches new file name */
 import NexSearch from "./pages/Ecosystem/NexSearch";
 
 /* About */
@@ -44,6 +42,8 @@ import SafetyApproach from "./pages/Safety/Approach";
 import Privacy from "./pages/Safety/Privacy";
 import Trust from "./pages/Safety/Trust";
 import Transparency from "./pages/Safety/Transparency";
+import Cookies from "./pages/Safety/Cookies";
+
 
 /* Other */
 import Contact from "./pages/Contact";
@@ -53,6 +53,10 @@ import SearchPage from "./pages/Search/Search";
 /* Account */
 import DNS from "./pages/Account/DNS";
 
+/* Sections */
+import Roadmap from "./pages/sections/Roadmap";
+import Terms from "./pages/sections/Terms";
+
 
 /* ====================================================
    Animated Route Wrapper
@@ -60,15 +64,12 @@ import DNS from "./pages/Account/DNS";
 function AnimatedRoutesWrapper() {
   const location = useLocation();
 
-  /* ----------------------------------------
-     HOLO PARALLAX + FADE DURING SCROLL
-  ---------------------------------------- */
+  /* Movement + Scroll Effects */
   useEffect(() => {
     let timeout;
 
     const handleScroll = () => {
       document.body.classList.add("scrolling");
-
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         document.body.classList.remove("scrolling");
@@ -92,12 +93,9 @@ function AnimatedRoutesWrapper() {
     };
   }, []);
 
-  /* ----------------------------------------
-     🔥 ROUTE LOADING EVENTS → Neon Loader
-  ---------------------------------------- */
+  /* Neon Loading on Route Change */
   useEffect(() => {
     window.dispatchEvent(new Event("route-loading-start"));
-
     const timeout = setTimeout(() => {
       window.dispatchEvent(new Event("route-loading-end"));
     }, 800);
@@ -108,12 +106,9 @@ function AnimatedRoutesWrapper() {
     };
   }, [location.pathname]);
 
-  /* ----------------------------------------
-     Magnetic Hover
-  ---------------------------------------- */
+  /* Magnetic Hover */
   useEffect(() => {
     const magneticStrength = 38;
-
     const elements = document.querySelectorAll(
       "button, a, .login-btn, .search-btn, .sidebar-icon-btn, .home-btn, .explore-btn, .mix-btn"
     );
@@ -151,6 +146,7 @@ function AnimatedRoutesWrapper() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+        {/* Home */}
         <Route path="/" element={<Home />} />
 
         {/* Ecosystem */}
@@ -160,8 +156,6 @@ function AnimatedRoutesWrapper() {
           <Route path="nexnodes" element={<NexNodes />} />
           <Route path="nexengine" element={<NexEngine />} />
           <Route path="nexhousing" element={<NexHousing />} />
-
-          {/* ✅ UPDATED ROUTE — now matches import */}
           <Route path="nexsearch" element={<NexSearch />} />
         </Route>
 
@@ -188,17 +182,23 @@ function AnimatedRoutesWrapper() {
           <Route path="privacy" element={<Privacy />} />
           <Route path="trust" element={<Trust />} />
           <Route path="transparency" element={<Transparency />} />
+          <Route path="cookies" element={<Cookies />} />
         </Route>
 
+        {/* Other Routes */}
         <Route path="/dns" element={<DNS />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<SearchPage />} />
+
+        {/* Sections */}
+        <Route path="/sections/roadmap" element={<Roadmap />} />
+        <Route path="/sections/terms" element={<Terms />} />
+
       </Routes>
     </AnimatePresence>
   );
 }
-
 
 /* ====================================================
    App Root + Bounce Effect
@@ -221,7 +221,7 @@ export default function App() {
     localStorage.setItem("sidebar_open", "false");
   };
 
-  /* Bounce Scroll */
+  /* Bounce Scroll Effect */
   useEffect(() => {
     const container = document.querySelector(".bounce-scroll");
     let bounceOffset = 0;

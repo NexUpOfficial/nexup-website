@@ -13,24 +13,20 @@ import Footer from "../../components/Footer/Footer";
 /* --- ANIMATION VARIANTS --- */
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
   }
 };
-
-/* --- MOCK DATA --- */
-const ENGINE_STATS = [
-  { label: "Physics Thread", value: "0.4ms" },
-  { label: "Render Time", value: "8ms (120fps)" },
-  { label: "AI Agents", value: "Active" },
-  { label: "Spatial Map", value: "Synced" },
-];
 
 export default function NexEngine() {
   const navigate = useNavigate();
@@ -38,10 +34,22 @@ export default function NexEngine() {
   return (
     <div className="nexengine-page">
       
-      {/* ================= HERO SECTION (Engine Dashboard) ================= */}
+      {/* ================= HERO SECTION ================= */}
       <section className="nexengine-hero-section">
-        <div className="nexengine-grid-bg" />
-        <div className="nexengine-glow" />
+        
+        {/* VIDEO BACKGROUND */}
+        <div className="hero-video-container">
+          <video 
+            className="hero-video" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4" type="video/mp4" />
+          </video>
+          <div className="hero-overlay" />
+        </div>
         
         <motion.div
           className="nexengine-hero-content"
@@ -57,16 +65,6 @@ export default function NexEngine() {
             The intelligent kernel powering spatial computing, physics, 
             and adaptive AI across the NeX UP ecosystem.
           </p>
-
-          {/* Engine Status Strip */}
-          <div className="engine-status-strip">
-            {ENGINE_STATS.map((stat, i) => (
-              <div key={i} className="stat-block">
-                <span className="stat-label">{stat.label}</span>
-                <span className="stat-val">{stat.value}</span>
-              </div>
-            ))}
-          </div>
         </motion.div>
       </section>
 
@@ -78,7 +76,7 @@ export default function NexEngine() {
             className="intro-text-block glass-panel"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
             <h2 className="gradient-title section-title">Computation Layer</h2>
@@ -99,37 +97,24 @@ export default function NexEngine() {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
-            {/* Wide Card */}
-            <motion.div className="bento-card card-wide" variants={fadeInUp}>
-              <div className="card-header">
-                <FiZap className="card-icon" />
-                <span className="card-label">MOD_01</span>
-              </div>
-              <h3>Spatial Intelligence Core</h3>
-              <p>Real-time depth estimation, surface reconstruction, and semantic understanding of physical environments.</p>
-            </motion.div>
+            {/* ⭐ 3. Spotlight Cards */}
+            <SpotlightCard className="card-wide" icon={<FiZap />} id="MOD_01" title="Spatial Intelligence Core">
+              Real-time depth estimation, surface reconstruction, and semantic understanding of physical environments.
+            </SpotlightCard>
 
-            {/* Tall Card */}
-            <motion.div className="bento-card card-tall" variants={fadeInUp}>
-              <div className="card-header"><FiActivity className="card-icon" /></div>
-              <h3>Adaptive Physics</h3>
-              <p>Simulates mass, friction, and collision for millions of interactive objects concurrently.</p>
-            </motion.div>
+            <SpotlightCard className="card-tall" icon={<FiActivity />} title="Adaptive Physics">
+              Simulates mass, friction, and collision for millions of interactive objects concurrently.
+            </SpotlightCard>
 
-            {/* Standard Cards */}
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-header"><FiBox className="card-icon" /></div>
-              <h3>Volumetric Rendering</h3>
-              <p>High-fidelity light field rendering for holographic displays.</p>
-            </motion.div>
+            <SpotlightCard className="" icon={<FiBox />} title="Volumetric Rendering">
+              High-fidelity light field rendering for holographic displays.
+            </SpotlightCard>
 
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-header"><FiSettings className="card-icon" /></div>
-              <h3>Neural Optimization</h3>
-              <p>AI-driven LOD (Level of Detail) scaling based on gaze and attention.</p>
-            </motion.div>
+            <SpotlightCard className="" icon={<FiSettings />} title="Neural Optimization">
+              AI-driven LOD (Level of Detail) scaling based on gaze and attention.
+            </SpotlightCard>
           </motion.div>
         </NexEngineSection>
 
@@ -137,7 +122,13 @@ export default function NexEngine() {
 
         {/* ================= ARCHITECTURE STACK ================= */}
         <NexEngineSection title="Engine Stack">
-          <div className="engine-stack">
+          <motion.div 
+            className="engine-stack"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <StackLayer 
               level="L4" 
               title="Interaction Layer" 
@@ -158,15 +149,21 @@ export default function NexEngine() {
               title="Kernel" 
               desc="Thread Management, Memory, Hardware Abstraction" 
             />
-          </div>
+          </motion.div>
         </NexEngineSection>
 
         <BreakLine />
 
         {/* ================= CODE / DEVELOPER EXPERIENCE ================= */}
         <NexEngineSection title="Developer Experience">
-          <div className="dev-split">
-            <div className="dev-text">
+          <motion.div 
+            className="dev-split"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.div className="dev-text" variants={fadeInUp}>
               <p className="nexengine-text">
                 Build faster with the NexEngine SDK. Access low-level primitives 
                 or high-level prefabs.
@@ -176,8 +173,9 @@ export default function NexEngine() {
                 <li><FiCode /> <span>Visual Scripting for Designers</span></li>
                 <li><FiBox /> <span>Hot-reload Asset Pipeline</span></li>
               </ul>
-            </div>
-            <div className="code-window glass-panel">
+            </motion.div>
+            
+            <motion.div className="code-window glass-panel" variants={fadeInUp}>
               <div className="window-header">
                 <span className="dot red"></span>
                 <span className="dot yellow"></span>
@@ -203,20 +201,26 @@ fn main() {
     world.run();
 }`}
               </pre>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </NexEngineSection>
 
         <BreakLine />
 
         {/* ================= PERFORMANCE METRICS ================= */}
         <NexEngineSection title="Performance Targets">
-          <div className="metrics-grid">
+          <motion.div 
+            className="metrics-grid"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <MetricCard value="< 8ms" label="Motion-to-Photon Latency" />
             <MetricCard value="1M+" label="Active Entities / Scene" />
             <MetricCard value="120Hz" label="Target Refresh Rate" />
             <MetricCard value="8K" label="Texture Resolution Support" />
-          </div>
+          </motion.div>
         </NexEngineSection>
 
         <BreakLine />
@@ -258,17 +262,57 @@ fn main() {
 /* ================= COMPONENTS ================= */
 
 function BreakLine() {
-  return <div className="break-line" />;
+  return (
+    <motion.div 
+      className="break-line" 
+      initial={{ scaleX: 0, opacity: 0 }}
+      whileInView={{ scaleX: 1, opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      viewport={{ once: true }}
+    />
+  );
 }
 
 function NexEngineSection({ title, children }) {
   return (
     <section className="nexengine-section">
       <div className="nexengine-section-inner">
-        <h2 className="gradient-title section-title">{title}</h2>
+        <motion.h2 
+          className="gradient-title section-title"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          {title}
+        </motion.h2>
         {children}
       </div>
     </section>
+  );
+}
+
+// ⭐ 3. Spotlight Card Component
+function SpotlightCard({ className, icon, id, title, children }) {
+  const handleMouseMove = (e) => {
+    const { left, top } = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--x', `${e.clientX - left}px`);
+    e.currentTarget.style.setProperty('--y', `${e.clientY - top}px`);
+  };
+
+  return (
+    <motion.div 
+      className={`bento-card ${className || ""}`}
+      onMouseMove={handleMouseMove}
+      variants={fadeInUp}
+    >
+      <div className="card-header">
+        {icon}
+        {id && <span className="card-label">{id}</span>}
+      </div>
+      <h3>{title}</h3>
+      <p>{children}</p>
+    </motion.div>
   );
 }
 
@@ -276,7 +320,8 @@ function StackLayer({ level, title, desc }) {
   return (
     <motion.div 
       className="stack-layer"
-      whileHover={{ scale: 1.01, borderLeftColor: "#b8a9ff" }}
+      variants={fadeInUp}
+      whileHover={{ scale: 1.01, borderLeftColor: "#b8a9ff", transition: { duration: 0.2 } }}
     >
       <div className="stack-id">{level}</div>
       <div className="stack-content">
@@ -290,9 +335,12 @@ function StackLayer({ level, title, desc }) {
 
 function MetricCard({ value, label }) {
   return (
-    <div className="metric-card glass-panel-sm">
+    <motion.div 
+      className="metric-card glass-panel-sm"
+      variants={fadeInUp}
+    >
       <div className="metric-value">{value}</div>
       <div className="metric-label">{label}</div>
-    </div>
+    </motion.div>
   );
 }
