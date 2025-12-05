@@ -3,8 +3,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { 
-  FiEye, FiFileText, FiServer, FiActivity, 
-  FiCpu, FiShield, FiTrendingUp, FiDownload 
+  FiEye, FiFileText, FiActivity, 
+  FiShield, FiCheckCircle
 } from "react-icons/fi";
 import "../../page-styles/Safety/Transparency.css";
 import Footer from "../../components/Footer/Footer";
@@ -34,22 +34,22 @@ const ALGORITHM_DATA = [
   { title: "Moderation Queue", desc: "Flagged content is reviewed by human experts, not just automated bots." }
 ];
 
-const REPORT_STATS = [
-  { label: "Content Takedowns", value: "14.2k", trend: "+2% vs last Q" },
-  { label: "Govt. Requests", value: "12", trend: "0 rejected" },
-  { label: "Uptime Reliability", value: "99.99%", trend: "Stable" },
-  { label: "User Appeals", value: "98%", trend: "Resolved < 24h" }
-];
-
-/* --- VARIANTS --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+/* --- ANIMATION VARIANTS --- */
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
 };
 
 export default function Transparency() {
@@ -85,16 +85,16 @@ export default function Transparency() {
         <TransparencySection>
           <motion.div 
             className="principles-grid"
-            variants={containerVariants}
+            variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {PRINCIPLES.map((item, idx) => (
               <motion.div 
                 key={idx} 
                 className="principle-card glass-panel"
-                variants={itemVariants}
+                variants={fadeInUp}
               >
                 <div className="principle-icon">{item.icon}</div>
                 <h3>{item.title}</h3>
@@ -108,19 +108,30 @@ export default function Transparency() {
 
         {/* ================= ALGORITHM EXPLAINER ================= */}
         <TransparencySection title="Inside the Black Box">
-          <p className="centered-text">
-            We are demystifying the intelligent systems that power NeX UP. 
-            Here is how our core algorithms function:
-          </p>
-          <div className="algo-container">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <p className="centered-text">
+              We are demystifying the intelligent systems that power NeX UP. 
+              Here is how our core algorithms function:
+            </p>
+          </motion.div>
+          
+          <motion.div 
+            className="algo-container"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             {ALGORITHM_DATA.map((algo, idx) => (
               <motion.div 
                 key={idx} 
                 className="algo-card glass-panel-sm"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.15 }}
-                viewport={{ once: true }}
+                variants={fadeInUp}
               >
                 <div className="algo-marker" />
                 <div className="algo-content">
@@ -129,37 +140,6 @@ export default function Transparency() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        </TransparencySection>
-
-        <BreakLine />
-
-        {/* ================= TRANSPARENCY REPORT DASHBOARD ================= */}
-        <TransparencySection title="Transparency Report (Q4 2025)">
-          <motion.div 
-            className="report-dashboard glass-panel"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            <div className="report-header">
-              <h3>Enforcement & Requests</h3>
-              <button className="download-btn"><FiDownload /> PDF Report</button>
-            </div>
-            
-            <div className="stats-grid">
-              {REPORT_STATS.map((stat, idx) => (
-                <div key={idx} className="stat-item">
-                  <span className="stat-label">{stat.label}</span>
-                  <span className="stat-value">{stat.value}</span>
-                  <span className="stat-trend"><FiTrendingUp /> {stat.trend}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className="report-footer">
-              <p>Next report scheduled for: <strong>April 15, 2026</strong></p>
-            </div>
           </motion.div>
         </TransparencySection>
 
@@ -167,7 +147,13 @@ export default function Transparency() {
 
         {/* ================= DATA FLOW VISUALIZATION ================= */}
         <TransparencySection title="Your Data Journey">
-          <div className="data-journey">
+          <motion.div 
+            className="data-journey"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             <DataStep 
               step="01" 
               title="Collection" 
@@ -188,7 +174,7 @@ export default function Transparency() {
               title="Deletion" 
               text="Session data is wiped after use. You can request a full account wipe at any time." 
             />
-          </div>
+          </motion.div>
         </TransparencySection>
 
         <BreakLine />
@@ -233,35 +219,53 @@ export default function Transparency() {
 function TransparencySection({ title, children }) {
   return (
     <section className="transparency-section">
-      <motion.div
-        className="transparency-section-inner"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        {title && <h2 className="gradient-title section-title">{title}</h2>}
+      <div className="transparency-section-inner">
+        {title && (
+          <motion.h2 
+            className="gradient-title section-title"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            {title}
+          </motion.h2>
+        )}
         {children}
-      </motion.div>
+      </div>
     </section>
   );
 }
 
 function DataStep({ step, title, text }) {
   return (
-    <div className="data-step">
+    <motion.div 
+      className="data-step"
+      variants={fadeInUp}
+    >
       <div className="step-marker">
         <span className="step-num">{step}</span>
         <div className="step-line"></div>
       </div>
       <div className="step-content glass-panel-sm">
-        <h4>{title}</h4>
+        <div className="step-header">
+          <h4>{title}</h4>
+          <FiCheckCircle className="check-icon" />
+        </div>
         <p>{text}</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function BreakLine() {
-  return <div className="break-line" />;
+  return (
+    <motion.div 
+      className="break-line" 
+      initial={{ scaleX: 0, opacity: 0 }}
+      whileInView={{ scaleX: 1, opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      viewport={{ once: true }}
+    />
+  );
 }

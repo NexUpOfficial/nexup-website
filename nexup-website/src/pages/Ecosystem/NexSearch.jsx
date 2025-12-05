@@ -1,6 +1,7 @@
 // src/pages/Ecosystem/NexSearch.jsx
 
-import { motion } from "framer-motion";
+import React from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "../../page-styles/Ecosystem/NexSearch.css";
 import Footer from "../../components/Footer/Footer";
@@ -8,29 +9,53 @@ import Footer from "../../components/Footer/Footer";
 /* --- ANIMATION VARIANTS --- */
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
   }
 };
 
 export default function NexSearch() {
   const navigate = useNavigate();
 
+  // ⭐ 5. Parallax Logic
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 0.3], ["0%", "40%"]);
+
   return (
     <div className="nexsearch-page">
       
-      {/* ================= HERO SECTION (Search Simulation) ================= */}
+      {/* ================= HERO SECTION ================= */}
       <section className="nexsearch-hero-section">
-        <div className="nexsearch-glow" />
+        
+        {/* VIDEO BACKGROUND */}
+        <div className="hero-video-container">
+          <video 
+            className="hero-video" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4" type="video/mp4" />
+          </video>
+          {/* ⭐ 1. Live Scanning Grid Overlay */}
+          <div className="hero-scan-grid" />
+          <div className="hero-overlay" />
+        </div>
         
         <motion.div
           className="nexsearch-hero-content"
+          style={{ y: heroY }} // ⭐ 5. Parallax applied here
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: "easeOut" }}
@@ -60,7 +85,7 @@ export default function NexSearch() {
             className="intro-text-block glass-panel"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
             <h2 className="gradient-title section-title">Beyond Keywords</h2>
@@ -82,39 +107,28 @@ export default function NexSearch() {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
-            {/* Wide Card */}
-            <motion.div className="bento-card card-wide" variants={fadeInUp}>
-              <div className="card-label">01 // Spatial Query</div>
-              <h3>Geometry Aware</h3>
-              <p>Understands queries about locations, rooms, layouts, and proximity. "Show me coffee spots within 50 meters."</p>
-            </motion.div>
+            {/* ⭐ 6. Spotlight Cards */}
+            <SpotlightCard className="card-wide" label="01 // Spatial Query" title="Geometry Aware">
+              Understands queries about locations, rooms, layouts, and proximity. "Show me coffee spots within 50 meters."
+            </SpotlightCard>
 
-            {/* Standard Cards */}
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-label">02 // Vision</div>
-              <h3>Object Recognition</h3>
-              <p>Indexes 3D assets and physical objects identified by AR sensors.</p>
-            </motion.div>
+            <SpotlightCard className="" label="02 // Vision" title="Object Recognition">
+              Indexes 3D assets and physical objects identified by AR sensors.
+            </SpotlightCard>
 
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-label">03 // Semantics</div>
-              <h3>Contextual Intent</h3>
-              <p>Understands abstract requests like "a place to focus" based on environment data.</p>
-            </motion.div>
+            <SpotlightCard className="" label="03 // Semantics" title="Contextual Intent">
+              Understands abstract requests like "a place to focus" based on environment data.
+            </SpotlightCard>
 
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-label">04 // Discovery</div>
-              <h3>AR Layer Detection</h3>
-              <p>Finds hidden digital overlays, notes, and holograms anchored in reality.</p>
-            </motion.div>
+            <SpotlightCard className="" label="04 // Discovery" title="AR Layer Detection">
+              Finds hidden digital overlays, notes, and holograms anchored in reality.
+            </SpotlightCard>
 
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-label">05 // Knowledge</div>
-              <h3>Deep Graph</h3>
-              <p>Connects entities (people, places, things) into a navigable web of relations.</p>
-            </motion.div>
+            <SpotlightCard className="" label="05 // Knowledge" title="Deep Graph">
+              Connects entities (people, places, things) into a navigable web of relations.
+            </SpotlightCard>
           </motion.div>
         </NexSearchSection>
 
@@ -122,7 +136,13 @@ export default function NexSearch() {
 
         {/* ================= HOW IT WORKS (Process Flow) ================= */}
         <NexSearchSection title="Query Pipeline">
-          <div className="pipeline-container">
+          <motion.div 
+            className="pipeline-container"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <PipelineStep 
               num="01" 
               title="Input" 
@@ -143,14 +163,20 @@ export default function NexSearch() {
               title="Render" 
               text="Results appear as AR overlays or navigation paths." 
             />
-          </div>
+          </motion.div>
         </NexSearchSection>
 
         <BreakLine />
 
         {/* ================= USE CASES ================= */}
         <NexSearchSection title="Applications">
-          <div className="usecase-list">
+          <motion.div 
+            className="usecase-list"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <UseCaseRow 
               title="Navigation" 
               desc="Find specific rooms, exits, or assets inside complex digital twins." 
@@ -167,14 +193,20 @@ export default function NexSearch() {
               title="Safety Checks" 
               desc="Identify hazardous zones or restricted areas in simulation." 
             />
-          </div>
+          </motion.div>
         </NexSearchSection>
 
         <BreakLine />
 
         {/* ================= FUTURE ROADMAP ================= */}
         <NexSearchSection title="Future Intelligence">
-          <div className="roadmap-box glass-panel">
+          <motion.div 
+            className="roadmap-box glass-panel"
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             <p className="roadmap-text">
               NexSearch is evolving into a predictive engine. Future versions will anticipate 
               your needs based on your trajectory, schedule, and past interactions, 
@@ -185,7 +217,7 @@ export default function NexSearch() {
               <span>Neural search</span>
               <span>Cross-reality indexing</span>
             </div>
-          </div>
+          </motion.div>
         </NexSearchSection>
 
         <BreakLine />
@@ -226,29 +258,69 @@ export default function NexSearch() {
 /* ================= REUSABLE COMPONENTS ================= */
 
 function BreakLine() {
-  return <div className="break-line" />;
+  return (
+    <motion.div 
+      className="break-line" 
+      initial={{ scaleX: 0, opacity: 0 }}
+      whileInView={{ scaleX: 1, opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      viewport={{ once: true }}
+    />
+  );
 }
 
 function NexSearchSection({ title, children }) {
   return (
     <section className="nexsearch-section">
       <div className="nexsearch-section-inner">
-        <h2 className="gradient-title section-title">{title}</h2>
+        <motion.h2 
+          className="gradient-title section-title"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          {title}
+        </motion.h2>
         {children}
       </div>
     </section>
   );
 }
 
+// ⭐ 6. Spotlight Card Logic
+function SpotlightCard({ className, label, title, children }) {
+  const handleMouseMove = (e) => {
+    const { left, top } = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--x', `${e.clientX - left}px`);
+    e.currentTarget.style.setProperty('--y', `${e.clientY - top}px`);
+  };
+
+  return (
+    <motion.div 
+      className={`bento-card ${className || ""}`}
+      onMouseMove={handleMouseMove}
+      variants={fadeInUp}
+    >
+      <div className="card-label">{label}</div>
+      <h3>{title}</h3>
+      <p>{children}</p>
+    </motion.div>
+  );
+}
+
 function PipelineStep({ num, title, text }) {
   return (
-    <div className="pipeline-step glass-panel-sm">
+    <motion.div 
+      className="pipeline-step glass-panel-sm"
+      variants={fadeInUp}
+    >
       <div className="step-number">{num}</div>
       <div className="step-content">
         <h4>{title}</h4>
         <p>{text}</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -256,7 +328,8 @@ function UseCaseRow({ title, desc }) {
   return (
     <motion.div 
       className="usecase-row"
-      whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.03)" }}
+      variants={fadeInUp}
+      whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.03)", transition: { duration: 0.2 } }}
     >
       <h3>{title}</h3>
       <p>{desc}</p>

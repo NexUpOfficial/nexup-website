@@ -1,14 +1,20 @@
 // src/pages/Ecosystem/NexWorld.jsx
 
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { FiVolume2, FiVolumeX } from "react-icons/fi"; // Icons for Sound Toggle
 import "../../page-styles/Ecosystem/NexWorld.css";
 import Footer from "../../components/Footer/Footer";
 
 /* --- ANIMATION VARIANTS --- */
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
 };
 
 const staggerContainer = {
@@ -21,15 +27,23 @@ const staggerContainer = {
 
 export default function NexWorld() {
   const navigate = useNavigate();
+  
+  // ⭐ 2. Parallax Fade Logic
+  const { scrollYProgress } = useScroll();
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.1]);
 
   return (
     <div className="nexworld-page">
       
       {/* ================= HERO SECTION (Cinematic Video) ================= */}
       <section className="nexworld-hero-section">
-        <div className="nexworld-video-background">
+        <motion.div 
+          className="nexworld-video-background"
+          style={{ opacity: heroOpacity, scale: heroScale }} // Parallax effect
+        >
           <video
-            src="https://res.cloudinary.com/dgzikn7nn/video/upload/Futuristic_AR_VR_NexUP_Universe_Entry_uglbhe.mp4"
+            src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexWorld_Futuristic_Drone_Flythrough_f4pwmj.mp4" 
             autoPlay
             loop
             muted
@@ -37,6 +51,11 @@ export default function NexWorld() {
             className="hero-video-element"
           />
           <div className="video-overlay" />
+        </motion.div>
+
+        {/* ⭐ 8. Ambient Sound Toggle UI (Visual Only) */}
+        <div className="sound-toggle-ui">
+          <FiVolumeX /> <span>Sound Off</span>
         </div>
 
         <div className="nexworld-hero-content">
@@ -87,11 +106,20 @@ export default function NexWorld() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {/* Large Card */}
+            {/* Large Card with ⭐ 4. Mini Video Background */}
             <motion.div className="bento-card large-card" variants={fadeInUp}>
-              <div className="card-label">01 // Engine</div>
-              <h3>World Generation Engine</h3>
-              <p>Procedurally instantiates 3D worlds and mixed-reality spaces in real-time, adapting to device capabilities.</p>
+              <div className="bento-video-bg">
+                <video 
+                  autoPlay muted loop playsInline 
+                  src="https://cdn.pixabay.com/video/2020/06/18/42456-432230303_large.mp4" // Abstract Tech Texture
+                />
+                <div className="bento-video-overlay" />
+              </div>
+              <div className="card-content-layer">
+                <div className="card-label">01 // Engine</div>
+                <h3>World Generation Engine</h3>
+                <p>Procedurally instantiates 3D worlds and mixed-reality spaces in real-time, adapting to device capabilities.</p>
+              </div>
             </motion.div>
 
             {/* Medium Cards */}
@@ -219,11 +247,20 @@ function BreakLine() {
   return <div className="break-line" />;
 }
 
+// ⭐ 7. Micro Scroll Animation for Section Titles
 function NexWorldSection({ title, children }) {
   return (
     <section className="nexworld-section">
       <div className="nexworld-section-inner">
-        <h2 className="gradient-title section-title">{title}</h2>
+        <motion.h2 
+          className="gradient-title section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
+          {title}
+        </motion.h2>
         {children}
       </div>
     </section>

@@ -1,0 +1,199 @@
+/* src/page-styles/sections/Terms.css */
+
+:root {
+  --neon-purple: #b8a9ff;
+  --bg-black: #050505;
+  --glass-bg: rgba(20, 20, 20, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-dim: rgba(255, 255, 255, 0.5);
+}
+
+.terms-page {
+  background-color: var(--bg-black);
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* --- HEADER --- */
+.terms-header {
+  padding: 120px 24px 80px 24px;
+  text-align: center;
+  background: radial-gradient(circle at top center, rgba(74, 58, 255, 0.15), transparent 70%);
+}
+
+.doc-badge {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--neon-purple);
+  border: 1px solid rgba(184, 169, 255, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.terms-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.terms-subtitle {
+  color: var(--text-dim);
+  font-family: monospace;
+}
+
+/* --- LAYOUT GRID --- */
+.terms-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr; /* Sidebar width | Content width */
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 150px 24px;
+  position: relative;
+  /* CRITICAL: This allows the sidebar to be sticky. 
+     If it was 'stretch' (default), sticky wouldn't work. */
+  align-items: start; 
+}
+
+/* --- SIDEBAR NAVIGATION (STICKY) --- */
+.terms-sidebar {
+  position: sticky;
+  top: 120px; /* Distance from top of screen */
+  height: auto;
+  max-height: 80vh; /* Ensure it fits on screen */
+  overflow-y: auto; /* Scroll if list is too long */
+  padding-right: 20px;
+  border-right: 1px solid var(--glass-border);
+  
+  /* Hides scrollbar for cleaner look */
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border) transparent;
+}
+
+.terms-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.terms-sidebar li {
+  margin-bottom: 8px;
+}
+
+.terms-sidebar a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border-left: 2px solid transparent; /* Prepare for active state */
+}
+
+/* Hover State */
+.terms-sidebar a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ACTIVE STATE (Highlighted when scrolling) */
+.terms-sidebar a.active {
+  color: var(--neon-purple);
+  background: rgba(184, 169, 255, 0.1);
+  border-left: 2px solid var(--neon-purple);
+  padding-left: 16px; /* Subtle slide animation */
+  font-weight: 600;
+}
+
+/* --- MAIN CONTENT AREA --- */
+.terms-content {
+  display: flex;
+  flex-direction: column;
+  gap: 80px; /* Space between sections */
+}
+
+.terms-content section {
+  /* Offset to ensure header doesn't cover title when clicked */
+  scroll-margin-top: 120px; 
+}
+
+.terms-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #fff;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.terms-content p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 15px;
+}
+
+.terms-content ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.terms-content a {
+  color: var(--neon-purple);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184, 169, 255, 0.3);
+}
+
+/* --- RESPONSIVE (MOBILE) --- */
+@media (max-width: 900px) {
+  .terms-layout {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 40px;
+  }
+
+  /* Mobile Horizontal Scroll Sidebar */
+  .terms-sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100vw;
+    margin-left: -24px;
+    padding: 15px 24px;
+    background: rgba(5, 5, 5, 0.95);
+    backdrop-filter: blur(10px);
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+    max-height: none;
+    overflow-y: hidden;
+  }
+
+  .terms-sidebar ul {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    white-space: nowrap;
+    padding-bottom: 5px;
+  }
+
+  .terms-sidebar a {
+    background: rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+    border-left: none; /* Remove desktop border style */
+    font-size: 0.85rem;
+  }
+  
+  .terms-sidebar a.active {
+    background: var(--neon-purple);
+    color: #000;
+    border-left: none;
+    padding-left: 16px; /* Keep spacing consistent */
+  }
+}

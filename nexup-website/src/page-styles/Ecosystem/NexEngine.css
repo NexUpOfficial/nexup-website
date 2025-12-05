@@ -7,6 +7,27 @@
   flex-direction: column;
   background-color: #000;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* ⭐ 5. Procedural Grid Background */
+.nexengine-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(#ffffff10 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff10 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  animation: gridDrift 20s linear infinite;
+}
+
+@keyframes gridDrift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-40px, -40px); }
 }
 
 .nexengine-wrapper {
@@ -24,12 +45,12 @@
 }
 
 /* ===========================================================
-   HERO SECTION (Engine Dashboard Theme)
+   HERO SECTION
 =========================================================== */
 .nexengine-hero-section {
   position: relative;
   width: 100%;
-  height: 85vh;
+  height: 85vh; /* Standardized height */
   min-height: 600px;
   display: flex;
   justify-content: center;
@@ -37,30 +58,58 @@
   overflow: hidden;
 }
 
-/* Technical Grid Background */
-.nexengine-grid-bg {
+/* ⭐ 1. Kernel Pulse Glow */
+.nexengine-hero-section::after {
+  content: "";
+  position: absolute;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,169,255,0.15), transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: kernelPulse 8s infinite ease-in-out;
+  z-index: 0;
+}
+
+@keyframes kernelPulse {
+  0% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.2); }
+  100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Video Background */
+.hero-video-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    linear-gradient(rgba(184, 169, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(184, 169, 255, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
   z-index: 0;
 }
 
-.nexengine-glow {
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay */
+.hero-overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 60%);
-  filter: blur(100px);
-  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.5) 80%,
+    #000000 100%
+  );
+  z-index: 1;
 }
 
 .nexengine-hero-content {
@@ -68,6 +117,7 @@
   text-align: center;
   max-width: 900px;
   padding: 0 24px;
+  position: relative;
 }
 
 .hero-badge {
@@ -76,11 +126,12 @@
   gap: 8px;
   padding: 6px 14px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   font-family: monospace;
   font-size: 0.85rem;
-  color: #b8a9ff;
+  color: #fff;
   margin-bottom: 24px;
   letter-spacing: 1px;
 }
@@ -92,45 +143,17 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 24px;
+  text-shadow: 0 0 30px rgba(0,0,0,0.5);
 }
 
 .nexengine-hero-sub {
   font-size: clamp(1.1rem, 2vw, 1.4rem);
   max-width: 650px;
-  margin: 0 auto 50px auto;
-  opacity: 0.85;
+  margin: 0 auto;
+  opacity: 0.9;
   line-height: 1.6;
-  color: #d4d4d4;
-}
-
-/* Engine Status Strip */
-.engine-status-strip {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-
-.stat-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.stat-label {
-  font-family: monospace;
-  font-size: 0.8rem;
-  color: #888;
-  text-transform: uppercase;
-}
-
-.stat-val {
-  font-family: monospace;
-  font-size: 1.1rem;
-  color: #4ade80; /* Green */
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+  color: #e0e0e0;
+  text-shadow: 0 0 20px rgba(0,0,0,0.8);
 }
 
 /* ===========================================================
@@ -167,7 +190,7 @@
 }
 
 /* ===========================================================
-   BENTO GRID
+   BENTO GRID (⭐ 3. Spotlight + Hover Scale)
 =========================================================== */
 .bento-grid {
   display: grid;
@@ -187,12 +210,27 @@
   min-height: 240px;
   transition: all 0.4s ease;
   backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
 }
+
+/* Spotlight Effect */
+.bento-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x) var(--y), rgba(184,169,255,0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.bento-card:hover::before { opacity: 1; }
 
 .bento-card:hover {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(184, 169, 255, 0.4);
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.02);
 }
 
 .card-wide {
@@ -209,6 +247,7 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 20px;
+  position: relative; z-index: 1;
 }
 
 .card-icon {
@@ -228,12 +267,14 @@
   font-size: 1.5rem;
   color: #fff;
   margin-bottom: 12px;
+  position: relative; z-index: 1;
 }
 
 .bento-card p {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.6;
+  position: relative; z-index: 1;
 }
 
 @media (max-width: 900px) {
@@ -242,7 +283,7 @@
 }
 
 /* ===========================================================
-   ENGINE STACK
+   ENGINE STACK (⭐ 2. Streaming Lines)
 =========================================================== */
 .engine-stack {
   display: flex;
@@ -259,6 +300,7 @@
   border-left: 3px solid rgba(255, 255, 255, 0.1);
   transition: 0.3s ease;
   cursor: default;
+  position: relative;
 }
 
 .stack-id {
@@ -280,10 +322,29 @@
   color: #b8a9ff;
 }
 
+/* Streaming Data Animation */
 .stack-lines {
+  position: relative;
   height: 2px;
-  width: 100%;
   background: rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+
+.stack-lines::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50px;
+  width: 40px;
+  height: 100%;
+  background: #b8a9ff;
+  animation: stream 2.4s infinite linear;
+  opacity: 0.7;
+}
+
+@keyframes stream {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(300px); }
 }
 
 /* ===========================================================
@@ -347,6 +408,7 @@
   color: rgba(255,255,255,0.5);
 }
 
+/* ⭐ 4. Code Glow Animation */
 .code-content {
   padding: 24px;
   font-family: 'Courier New', monospace;
@@ -354,6 +416,12 @@
   color: #a78bfa;
   line-height: 1.6;
   overflow-x: auto;
+  animation: codeGlow 3s infinite alternate;
+}
+
+@keyframes codeGlow {
+  from { text-shadow: 0 0 2px rgba(184,169,255,0.4); }
+  to { text-shadow: 0 0 8px rgba(184,169,255,0.8); }
 }
 
 @media (max-width: 900px) {

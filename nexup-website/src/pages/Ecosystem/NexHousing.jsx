@@ -13,14 +13,18 @@ import Footer from "../../components/Footer/Footer";
 /* --- ANIMATION VARIANTS --- */
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
   }
 };
 
@@ -30,10 +34,22 @@ export default function NexHousing() {
   return (
     <div className="nexhousing-page">
       
-      {/* ================= HERO SECTION (Blueprint Theme) ================= */}
+      {/* ================= HERO SECTION ================= */}
       <section className="nexhousing-hero-section">
-        <div className="blueprint-grid-bg" />
-        <div className="nexhousing-glow" />
+        
+        {/* VIDEO BACKGROUND */}
+        <div className="hero-video-container">
+          <video 
+            className="hero-video" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4" type="video/mp4" />
+          </video>
+          <div className="hero-overlay" />
+        </div>
         
         <motion.div
           className="nexhousing-hero-content"
@@ -60,7 +76,7 @@ export default function NexHousing() {
             className="intro-text-block glass-panel"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
             <h2 className="gradient-title section-title">Spatial Living System</h2>
@@ -82,36 +98,28 @@ export default function NexHousing() {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
-            {/* Wide Card: Mapping */}
-            <motion.div className="bento-card card-wide" variants={fadeInUp}>
-              <div className="card-header">
-                <FiMaximize className="card-icon" />
-                <span className="card-label">01 // Scan</span>
-              </div>
+            {/* ⭐ 2. Spotlight Cards */}
+            <SpotlightCard className="card-wide" label="01 // Scan" icon={<FiMaximize />}>
               <h3>LiDAR Room Mapping</h3>
               <p>Instantly reconstruct your physical room into a 3D editable canvas using your device's sensors.</p>
-            </motion.div>
+            </SpotlightCard>
 
-            {/* Standard Cards */}
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-header"><FiBox className="card-icon" /></div>
+            <SpotlightCard className="" icon={<FiBox />}>
               <h3>Asset Projection</h3>
               <p>Place 1:1 scale virtual furniture with collision detection.</p>
-            </motion.div>
+            </SpotlightCard>
 
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-header"><FiSun className="card-icon" /></div>
+            <SpotlightCard className="" icon={<FiSun />}>
               <h3>Light Simulation</h3>
               <p>Ray-traced lighting previews based on time of day.</p>
-            </motion.div>
+            </SpotlightCard>
 
-            <motion.div className="bento-card" variants={fadeInUp}>
-              <div className="card-header"><FiLayout className="card-icon" /></div>
+            <SpotlightCard className="" icon={<FiLayout />}>
               <h3>AI Layouts</h3>
               <p>Generative suggestions for flow and ergonomics.</p>
-            </motion.div>
+            </SpotlightCard>
           </motion.div>
         </NexHousingSection>
 
@@ -119,13 +127,19 @@ export default function NexHousing() {
 
         {/* ================= WORKFLOW VISUALIZATION ================= */}
         <NexHousingSection title="Design Workflow">
-          
-          <div className="workflow-steps">
+          <motion.div 
+            className="workflow-steps"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <StepNode 
               num="01" 
               title="Capture" 
               desc="Scan boundaries, windows, and existing furniture." 
             />
+            {/* ⭐ 3. Animated Connector */}
             <div className="step-connector" />
             <StepNode 
               num="02" 
@@ -144,15 +158,21 @@ export default function NexHousing() {
               title="Deploy" 
               desc="Sync changes to smart devices via NexNode." 
             />
-          </div>
+          </motion.div>
         </NexHousingSection>
 
         <BreakLine />
 
         {/* ================= SMART INTEGRATION ================= */}
         <NexHousingSection title="Ambient Intelligence">
-          <div className="smart-split">
-            <div className="smart-content">
+          <motion.div 
+            className="smart-split"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.div className="smart-content" variants={fadeInUp}>
               <p className="nexhousing-text">
                 Your home shouldn't just be smart; it should be aware. NexHousing connects 
                 spatial layouts with IoT systems.
@@ -162,24 +182,28 @@ export default function NexHousing() {
                 <li><FiGrid /> <span>Spatial audio zones linked to room geometry</span></li>
                 <li><FiBox /> <span>Asset tracking for physical inventory</span></li>
               </ul>
-            </div>
-            <div className="smart-visual glass-panel">
-              
-
-[Image of smart home IoT network architecture]
-
+            </motion.div>
+            
+            {/* ⭐ 4. Animated Grid Visual */}
+            <motion.div className="smart-visual glass-panel" variants={fadeInUp}>
               <div className="visual-placeholder">
                 <span>IoT Mesh Visualization</span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </NexHousingSection>
 
         <BreakLine />
 
         {/* ================= CREATOR MODE ================= */}
         <NexHousingSection title="Architect Studio">
-          <div className="architecture-grid">
+          <motion.div 
+            className="architecture-grid"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <SimCard 
               title="Structure" 
               meta="Physics Layer"
@@ -195,7 +219,7 @@ export default function NexHousing() {
               meta="Data Layer"
               desc="Heatmap analysis of foot traffic and usage flow." 
             />
-          </div>
+          </motion.div>
         </NexHousingSection>
 
         <BreakLine />
@@ -237,27 +261,69 @@ export default function NexHousing() {
 /* ================= COMPONENTS ================= */
 
 function BreakLine() {
-  return <div className="break-line" />;
+  return (
+    <motion.div 
+      className="break-line"
+      initial={{ scaleX: 0, opacity: 0 }}
+      whileInView={{ scaleX: 1, opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      viewport={{ once: true }}
+    />
+  );
 }
 
 function NexHousingSection({ title, children }) {
   return (
     <section className="nexhousing-section">
       <div className="nexhousing-section-inner">
-        <h2 className="gradient-title section-title">{title}</h2>
+        <motion.h2 
+          className="gradient-title section-title"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          {title}
+        </motion.h2>
         {children}
       </div>
     </section>
   );
 }
 
+// ⭐ 2. Spotlight Card Logic
+function SpotlightCard({ className, label, icon, children }) {
+  const handleMouseMove = (e) => {
+    const { left, top } = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--x', `${e.clientX - left}px`);
+    e.currentTarget.style.setProperty('--y', `${e.clientY - top}px`);
+  };
+
+  return (
+    <motion.div 
+      className={`bento-card ${className || ""}`}
+      onMouseMove={handleMouseMove}
+      variants={fadeInUp}
+    >
+      <div className="card-header">
+        <span className="card-icon">{icon}</span>
+        {label && <span className="card-label">{label}</span>}
+      </div>
+      {children}
+    </motion.div>
+  );
+}
+
 function StepNode({ num, title, desc }) {
   return (
-    <div className="step-node glass-panel-sm">
+    <motion.div 
+      className="step-node glass-panel-sm"
+      variants={fadeInUp} 
+    >
       <span className="step-num">{num}</span>
       <h4>{title}</h4>
       <p>{desc}</p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -265,7 +331,8 @@ function SimCard({ title, meta, desc }) {
   return (
     <motion.div 
       className="sim-card glass-panel"
-      whileHover={{ y: -5, borderColor: "#b8a9ff" }}
+      variants={fadeInUp}
+      whileHover={{ y: -5, borderColor: "#b8a9ff", transition: { duration: 0.2 } }}
     >
       <span className="sim-meta">{meta}</span>
       <h3>{title}</h3>

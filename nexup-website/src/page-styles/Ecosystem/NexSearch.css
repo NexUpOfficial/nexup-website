@@ -29,7 +29,7 @@
 .nexsearch-hero-section {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 85vh; /* Taller for cinematic feel */
   min-height: 600px;
   display: flex;
   justify-content: center;
@@ -37,22 +37,66 @@
   overflow: hidden;
 }
 
-.nexsearch-glow {
+/* Video Background */
+.hero-video-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 60%);
-  filter: blur(100px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
-  pointer-events: none;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* ⭐ 4. Video Hover Zoom */
+  transition: transform 8s ease-out;
+}
+
+.nexsearch-hero-section:hover .hero-video {
+  transform: scale(1.05);
+}
+
+/* ⭐ 1. Scanning Grid Overlay */
+.hero-scan-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(184,169,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,169,255,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.15;
+  animation: gridMove 12s linear infinite;
+  z-index: 1;
+}
+
+@keyframes gridMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-40px); }
+}
+
+/* Overlay */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.5) 80%,
+    #000000 100%
+  );
+  z-index: 2;
 }
 
 .nexsearch-hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   max-width: 900px;
   text-align: center;
@@ -63,11 +107,12 @@
   display: inline-block;
   padding: 6px 14px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   font-family: monospace;
   font-size: 0.85rem;
-  color: #b8a9ff;
+  color: #fff;
   margin-bottom: 24px;
   letter-spacing: 1px;
 }
@@ -79,15 +124,17 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 24px;
+  text-shadow: 0 0 30px rgba(0,0,0,0.5);
 }
 
 .nexsearch-hero-sub {
   font-size: clamp(1.1rem, 2vw, 1.4rem);
   max-width: 600px;
   margin: 0 auto 50px auto;
-  opacity: 0.85;
+  opacity: 0.9;
   line-height: 1.6;
-  color: #d4d4d4;
+  color: #e0e0e0;
+  text-shadow: 0 0 20px rgba(0,0,0,0.8);
 }
 
 /* Hero Search Simulation */
@@ -95,7 +142,7 @@
   width: 100%;
   max-width: 700px;
   margin: 0 auto;
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(20, 20, 20, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   padding: 20px 30px;
@@ -103,7 +150,14 @@
   align-items: center;
   gap: 15px;
   box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  transition: all 0.3s;
+}
+
+/* ⭐ 2. Search Ripple on Hover */
+.hero-search-simulation:hover {
+  border-color: #b8a9ff;
+  box-shadow: 0 0 30px rgba(184,169,255,0.2);
 }
 
 .search-prompt {
@@ -114,17 +168,19 @@
 }
 
 .search-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   font-family: monospace;
   font-size: 1.1rem;
   flex: 1;
   text-align: left;
 }
 
+/* ⭐ 3. Cursor Blink + Glow */
 .search-cursor {
   color: #b8a9ff;
   animation: blink 1s infinite;
   font-weight: 700;
+  text-shadow: 0 0 8px #b8a9ff;
 }
 
 @keyframes blink { 50% { opacity: 0; } }
@@ -163,7 +219,7 @@
 }
 
 /* ===========================================================
-   BENTO GRID
+   BENTO GRID (⭐ 6. Spotlight Effect)
 =========================================================== */
 .bento-grid {
   display: grid;
@@ -183,10 +239,27 @@
   min-height: 240px;
   transition: all 0.4s ease;
   backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Spotlight Gradient */
+.bento-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x) var(--y), rgba(184,169,255,0.15), transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 0;
+}
+
+.bento-card:hover::before {
+  opacity: 1;
 }
 
 .bento-card:hover {
-  background: rgba(255, 255, 255, 0.03);
   border-color: rgba(184, 169, 255, 0.4);
   transform: translateY(-5px);
 }
@@ -203,18 +276,21 @@
   margin-bottom: 16px;
   opacity: 0.8;
   letter-spacing: 1px;
+  position: relative; z-index: 1;
 }
 
 .bento-card h3 {
   font-size: 1.5rem;
   color: #fff;
   margin-bottom: 12px;
+  position: relative; z-index: 1;
 }
 
 .bento-card p {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.6;
+  position: relative; z-index: 1;
 }
 
 @media (max-width: 900px) {
@@ -223,7 +299,7 @@
 }
 
 /* ===========================================================
-   PIPELINE STEPS
+   PIPELINE STEPS (⭐ 7. Progressive Line)
 =========================================================== */
 .pipeline-container {
   display: grid;
@@ -235,6 +311,23 @@
   padding: 30px;
   border-left: 2px solid rgba(184, 169, 255, 0.2);
   transition: 0.3s ease;
+  position: relative;
+}
+
+/* Progressive Line Animation */
+.pipeline-step::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 0%;
+  height: 2px;
+  background: #b8a9ff;
+  transition: width 0.4s ease;
+}
+
+.pipeline-step:hover::after {
+  width: 100%;
 }
 
 .pipeline-step:hover {
@@ -294,11 +387,27 @@
 }
 
 /* ===========================================================
-   ROADMAP BOX
+   ROADMAP BOX (⭐ 8. Parallax Glow)
 =========================================================== */
 .roadmap-box {
   padding: 50px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.roadmap-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(184,169,255,0.1), transparent 60%);
+  z-index: -1;
+  animation: pulseGlow 6s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { opacity: 0.1; }
+  100% { opacity: 0.25; }
 }
 
 .roadmap-text {
@@ -327,7 +436,7 @@
 }
 
 /* ===========================================================
-   FINAL CTA
+   FINAL CTA (⭐ 9. Portal Button)
 =========================================================== */
 .nexsearch-final-section {
   text-align: center;
@@ -383,6 +492,7 @@
   border-radius: 12px;
 }
 
+/* Button with Portal Effect */
 .white-btn {
   background: #fff;
   color: #000;
@@ -393,6 +503,22 @@
   font-size: 1.05rem;
   cursor: pointer;
   transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.white-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.1); /* Darker for light button */
+  transform: scale(0);
+  transition: 0.4s ease;
+}
+
+.white-btn:hover::before {
+  transform: scale(1.5);
 }
 
 .white-btn:hover {
@@ -409,6 +535,22 @@
   font-size: 1.05rem;
   cursor: pointer;
   transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.ghost-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  transform: scale(0);
+  transition: 0.4s ease;
+}
+
+.ghost-btn:hover::before {
+  transform: scale(1.5);
 }
 
 .ghost-btn:hover {

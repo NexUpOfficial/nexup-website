@@ -1,0 +1,251 @@
+/* src/page-styles/sections/Roadmap.css */
+
+:root {
+  --neon-purple: #b8a9ff;
+  --bg-black: #050505;
+  --glass-bg: rgba(20, 20, 20, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+.roadmap-page {
+  background-color: var(--bg-black);
+  min-height: 100vh;
+  color: #fff;
+  padding: 100px 24px;
+  overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+.roadmap-header {
+  text-align: center;
+  margin-bottom: 100px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header-badge {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 20px;
+  background: rgba(184, 169, 255, 0.1);
+  border: 1px solid rgba(184, 169, 255, 0.3);
+  color: var(--neon-purple);
+  font-family: monospace;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.roadmap-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #fff, var(--neon-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --- TIMELINE WRAPPER --- */
+.roadmap-timeline-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* Central Lines */
+.central-line-static {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.central-line-container {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  transform: translateX(-50%);
+  z-index: 1;
+  transform-origin: top;
+}
+
+.central-line-glow {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #4a3aff, #b8a9ff, #ff4aae);
+  box-shadow: 0 0 15px rgba(184, 169, 255, 0.5);
+  border-radius: 2px;
+}
+
+/* --- TIMELINE ROWS (ZIG ZAG) --- */
+.timeline-items {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 80px; /* Space between rows */
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 50%;
+}
+
+/* LEFT SIDE ITEMS */
+.timeline-row.left {
+  align-self: flex-start;
+  padding-right: 50px;
+  justify-content: flex-end; /* Keeps card near center */
+  text-align: left; /* FIX: Force text left alignment */
+}
+
+/* RIGHT SIDE ITEMS */
+.timeline-row.right {
+  align-self: flex-end;
+  padding-left: 50px;
+  justify-content: flex-start;
+  text-align: left; /* Ensure right side is also left aligned */
+}
+
+/* --- THE CARD STYLE --- */
+.timeline-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  transition: transform 0.3s, border-color 0.3s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  text-align: left !important; /* Forces left align everywhere */
+}
+
+.timeline-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(184, 169, 255, 0.4);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+  align-items: flex-start; /* Aligns title/badge to left */
+}
+
+.phase-id {
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.phase-title {
+  font-size: 1.8rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.phase-subtitle {
+  font-size: 1.1rem;
+  color: #ccc;
+  font-weight: 400;
+  margin: 0 0 15px 0;
+  font-family: monospace;
+}
+
+.phase-desc {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* --- NODES (DOTS) --- */
+.timeline-node {
+  position: absolute;
+  top: 30px;
+  width: 20px;
+  height: 20px;
+  z-index: 3;
+}
+
+.timeline-row.left .timeline-node { right: -10px; }
+.timeline-row.right .timeline-node { left: -10px; }
+
+.node-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #000;
+  border: 3px solid #fff;
+  position: relative;
+  z-index: 2;
+}
+
+.node-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  opacity: 0.4;
+  filter: blur(5px);
+  animation: pulseNode 3s infinite;
+  z-index: 1;
+}
+
+@keyframes pulseNode {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.2; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.2; }
+}
+
+/* --- RESPONSIVE DESIGN (Mobile) --- */
+@media (max-width: 900px) {
+  .roadmap-timeline-wrapper {
+    padding-left: 30px;
+  }
+
+  .central-line-static, .central-line-container {
+    left: 30px; 
+  }
+
+  .timeline-row {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  /* Reset alignment for mobile */
+  .timeline-row.left, 
+  .timeline-row.right {
+    align-self: flex-start;
+    padding-left: 50px;
+    padding-right: 0;
+    justify-content: flex-start;
+  }
+
+  .timeline-row.left .timeline-node,
+  .timeline-row.right .timeline-node {
+    left: 20px;
+    right: auto;
+  }
+}
