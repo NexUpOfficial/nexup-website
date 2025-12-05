@@ -56,6 +56,14 @@ export default function Career() {
 
   return (
     <div className="career-page">
+      {/* 11. Performance Optimization - Add global transform style */}
+      <style global jsx>{`
+        * {
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+        }
+      `}</style>
+      
       <div className="career-wrapper">
         
         {/* ================= HERO ================= */}
@@ -74,6 +82,8 @@ export default function Career() {
             <p className="career-sub">
               Join the architects, engineers, and dreamers defining the next era of intelligent digital reality.
             </p>
+            {/* ⭐ 9. Scroll Hint Cue */}
+            <div className="scroll-hint">↓</div>
           </motion.div>
         </section>
 
@@ -90,6 +100,7 @@ export default function Career() {
               transition={{ duration: 0.8 }}
             >
               <h3>More than code. Mission.</h3>
+              {/* ⭐ 8. Mobile readability improved via CSS */ }
               <p>
                 NeX UP isn't just a tech company. It's a laboratory for the future. 
                 We are bridging the gap between physical reality and digital intelligence.
@@ -106,7 +117,7 @@ export default function Career() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              
+              <div className="visual-placeholder">Spatial Computing Blueprint</div>
             </motion.div>
           </div>
         </CareerSection>
@@ -179,7 +190,10 @@ export default function Career() {
                   key={idx} 
                   className="role-ticket glass-panel"
                   variants={itemVariants}
-                  whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.05)" }}
+                  // ⭐ 4. Role Ticket Hover
+                  whileHover={{ x: 6, backgroundColor: "rgba(255,255,255,0.06)" }}
+                  // Apply will-change
+                  style={{ willChange: 'transform, background-color' }} 
                 >
                   <div className="role-info">
                     <h3>{role.title}</h3>
@@ -191,6 +205,7 @@ export default function Career() {
                   </div>
                   <div className="role-action">
                     <span>Apply Now</span>
+                    {/* ⭐ 6. Hover Ripple/Arrow */}
                     <span className="arrow">→</span>
                   </div>
                 </motion.div>
@@ -259,6 +274,8 @@ function CareerSection({ title, children }) {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true, margin: "-50px" }}
+        // 12. Use will-change for highly animated elements
+        style={{ willChange: 'transform, opacity' }} 
       >
         <h2 className="gradient-title section-title">{title}</h2>
         {children}

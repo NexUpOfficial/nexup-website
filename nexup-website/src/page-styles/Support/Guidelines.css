@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal + 1. Grid Background)
 =========================================================== */
 .guidelines-page {
   width: 100%;
@@ -7,6 +7,18 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  
+  /* Scrollbar Hide */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  
+  /* 1. Soft Grid Pattern */
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.guidelines-page::-webkit-scrollbar {
+  display: none;
 }
 
 .guidelines-wrapper {
@@ -33,6 +45,7 @@
   text-align: center;
 }
 
+/* 2. Enhanced Hero Glow */
 .guidelines-glow {
   position: absolute;
   top: 50%;
@@ -40,7 +53,7 @@
   transform: translate(-50%, -50%);
   width: 60vw;
   height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.04) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 65%);
   filter: blur(90px);
   z-index: 0;
   pointer-events: none;
@@ -110,7 +123,7 @@
 }
 
 /* ===========================================================
-   PRINCIPLES GRID
+   PRINCIPLES GRID (3. Hover Shift)
 =========================================================== */
 .principles-grid {
   display: grid;
@@ -123,6 +136,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* 3. Smooth Transitions */
+  transition: transform 0.3s ease, border-color 0.3s;
+}
+
+/* 3. Hover Lift */
+.principle-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(184,169,255,0.3);
 }
 
 .principle-icon {
@@ -147,7 +168,7 @@
 }
 
 /* ===========================================================
-   BEHAVIOR MATRIX (Allowed vs Prohibited)
+   BEHAVIOR MATRIX (4. & 5. Interactions)
 =========================================================== */
 .matrix-grid {
   display: grid;
@@ -160,6 +181,14 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* 4. Matrix Transition */
+  transition: transform 0.3s ease, background 0.3s;
+}
+
+/* 4. Matrix Hover Feedback */
+.matrix-col:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* Header Styling */
@@ -177,8 +206,13 @@
   color: #fff;
 }
 
-.icon-check { color: #4ade80; font-size: 1.4rem; }
-.icon-x { color: #f87171; font-size: 1.4rem; }
+.icon-check { color: #4ade80; font-size: 1.4rem; transition: 0.3s ease; }
+.icon-x { color: #f87171; font-size: 1.4rem; transition: 0.3s ease; }
+
+/* 5. Icon Scale on Hover */
+.matrix-col:hover .matrix-header svg {
+  transform: scale(1.15);
+}
 
 /* Allowed Column adjustments */
 .allowed-col {
@@ -212,7 +246,7 @@
 }
 
 /* ===========================================================
-   PROTOCOL LIST
+   PROTOCOL LIST (6. Glow Marker)
 =========================================================== */
 .protocol-container {
   display: flex;
@@ -236,9 +270,11 @@
   transition: 0.3s;
 }
 
+/* 6. Marker Animation & Glow */
 .protocol-item:hover .protocol-marker {
   background: #b8a9ff;
   height: 50px;
+  box-shadow: 0 0 12px rgba(184,169,255,0.4);
 }
 
 .protocol-content h3 {
@@ -253,7 +289,7 @@
 }
 
 /* ===========================================================
-   ENFORCEMENT BANNER
+   ENFORCEMENT BANNER (7. Backdrop Blur)
 =========================================================== */
 .enforcement-banner {
   display: flex;
@@ -262,6 +298,9 @@
   padding: 30px;
   background: rgba(20, 20, 20, 0.6);
   border: 1px solid rgba(184, 169, 255, 0.2);
+  /* 7. Premium Blur */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .enforcement-icon {
@@ -303,7 +342,7 @@
 }
 
 /* ===========================================================
-   FINAL CTA
+   FINAL CTA (10. Button Glow)
 =========================================================== */
 .guidelines-final-section {
   text-align: center;
@@ -352,13 +391,6 @@
   transition: all 0.3s ease;
 }
 
-.glass-panel:hover {
-  border-color: rgba(184, 169, 255, 0.3);
-  background: rgba(255, 255, 255, 0.04);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
 .white-btn {
   background: #fff;
   color: #000;
@@ -370,8 +402,10 @@
   transition: 0.3s;
 }
 
+/* 10. Final CTA Glow */
 .white-btn:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(184,169,255,0.25);
 }
 
 .ghost-btn {
@@ -386,14 +420,18 @@
   transition: 0.3s;
 }
 
+/* 10. Final CTA Glow */
 .ghost-btn:hover {
   background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 12px rgba(184,169,255,0.25);
 }
 
+/* 9. Increased Spacing */
 .guidelines-section {
   display: flex;
   justify-content: center;
   width: 100%;
+  margin-bottom: 50px;
 }
 
 .guidelines-section-inner {

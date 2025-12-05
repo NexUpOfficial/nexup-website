@@ -225,7 +225,8 @@ function TransparencySection({ title, children }) {
             className="gradient-title section-title"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            // 8. Added delay to section titles
+            transition={{ duration: 0.7, delay: 0.1 }}
             viewport={{ once: true }}
           >
             {title}

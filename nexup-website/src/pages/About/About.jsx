@@ -6,7 +6,7 @@ import React, {
   useMemo,
   Suspense,
 } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // Imported AnimatePresence
 import "../../page-styles/About/About.css";
 
 /* Lazy-loaded sub-pages */
@@ -72,21 +72,37 @@ const TabContent = React.memo(
     const ActiveComponent = COMPONENT_MAP[activeTab];
 
     return (
+      // The key is now passed to the component container below to trigger AnimatePresence
       <motion.div
+        key={activeTab} // Unique key for AnimatePresence
         className="about-content"
         ref={contentRef}
         role="tabpanel"
         id={`panel-${activeTab}`}
-        initial={{ opacity: 0, y: 20 }}
+        
+        // ⭐ 3. iOS-like swipe transition logic
+        initial={{ 
+          opacity: 0, 
+          y: 20, 
+          x: swipeOffset || 50, // Start offset if clicked, or match swipe drag
+        }}
         animate={{ 
           opacity: 1, 
           y: 0, 
-          x: swipeOffset 
+          x: swipeOffset || 0 // Use swipeOffset if dragging, otherwise 0
         }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        exit={{ 
+          opacity: 0, 
+          y: -20, 
+          x: swipeOffset ? swipeOffset * 2 : -50 // Exit opposite/outward
+        }}
+        transition={{ 
+          duration: 0.35, 
+          ease: [0.22, 1, 0.36, 1] // ⭐ 3. Custom iOS/Premium Ease Curve
+        }}
       >
         <Suspense fallback={<SkeletonFallback />}>
-          <ActiveComponent />
+          <ActiveComponent key={activeTab} /> {/* ⭐ 5. Clean component reset */}
         </Suspense>
       </motion.div>
     );
@@ -133,19 +149,26 @@ export default function About() {
     if (prev && PRELOADERS[prev]) PRELOADERS[prev]();
   }, [activeTab, tabKeys]);
 
-  /* Auto-scroll Tab Bar on Mobile */
+  /* Auto-scroll Tab Bar on Mobile & ⭐ 6. Smooth Scroll Behavior */
   useEffect(() => {
     if (tabListRef.current) {
       const activeEl = tabListRef.current.querySelector(`[data-tab="${activeTab}"]`);
       if (activeEl) {
         activeEl.scrollIntoView({
-          behavior: "smooth",
+          behavior: "smooth", // ⭐ 6. Part 1: Smooth scroll-into-view
           block: "nearest",
           inline: "center",
         });
       }
     }
   }, [activeTab]);
+  
+  // ⭐ 6. Part 2: Global Smooth Scroll
+  useEffect(() => {
+    // This is typically in global CSS, but we set it here for completeness
+    document.documentElement.style.scrollBehavior = 'smooth';
+    return () => document.documentElement.style.scrollBehavior = 'auto';
+  }, []);
 
   /* Change Tab */
   const changeTab = (key) => {
@@ -168,15 +191,24 @@ export default function About() {
 
   const onTouchEnd = (e) => {
     const dx = touchStartRef.current - e.changedTouches[0].clientX;
-    setSwipeOffset(0);
+    
+    // Clear offset immediately to let Framer Motion take over the animation
+    const currentOffset = swipeOffset; 
+    setSwipeOffset(0); 
 
     const i = tabKeys.indexOf(activeTab);
     let x = i;
 
-    if (dx > minSwipe) x = Math.min(i + 1, tabKeys.length - 1);
-    else if (dx < -minSwipe) x = Math.max(i - 1, 0);
+    // Determine swipe direction
+    if (dx > minSwipe) x = Math.min(i + 1, tabKeys.length - 1); // Swipe Left (Next tab)
+    else if (dx < -minSwipe) x = Math.max(i - 1, 0); // Swipe Right (Previous tab)
 
-    if (x !== i) changeTab(tabKeys[x]);
+    if (x !== i) {
+      changeTab(tabKeys[x]);
+    } else {
+        // If swipe failed, spring back to center
+        // This is handled automatically by Framer Motion when swipeOffset goes to 0
+    }
   };
 
   return (
@@ -204,6 +236,7 @@ export default function About() {
 
       {/* NAVIGATION DOCK */}
       <div className={`about-dock-wrapper ${hideHeader ? "dock-hidden" : ""}`}>
+        {/* ⭐ 2.3 Scroll indicator added in CSS */}
         <div className="about-dock" ref={tabListRef}>
           {TAB_DATA.map(({ key, name }) => (
             <button
@@ -232,14 +265,16 @@ export default function About() {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <TabContent
-          activeTab={activeTab}
-          contentRef={contentRef}
-          swipeOffset={swipeOffset}
-        />
+        <AnimatePresence mode="wait" initial={false}>
+          <TabContent
+            key={activeTab} // Unique key for AnimatePresence to trigger exit/enter
+            activeTab={activeTab}
+            contentRef={contentRef}
+            swipeOffset={swipeOffset}
+          />
+        </AnimatePresence>
       </div>
-
-     
+      
     </div>
   );
 }

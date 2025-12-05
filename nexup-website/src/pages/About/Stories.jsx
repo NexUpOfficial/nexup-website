@@ -1,6 +1,6 @@
 // src/pages/About/Stories.jsx
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "../../page-styles/About/Stories.css";
 import Footer from "../../components/Footer/Footer";
@@ -8,12 +8,24 @@ import Footer from "../../components/Footer/Footer";
 /* --- DATA CONSTANTS --- */
 const CATEGORIES = ["All", "Engineering", "Design", "Research", "Culture", "NexWorld"];
 
+/* 13. Tag Color Mapping */
+const TAG_COLORS = {
+  Engineering: "#5fb6ff",
+  Design: "#b8a9ff",
+  Research: "#8af9ff",
+  Culture: "#ffe59d",
+  NexWorld: "#ff9dff",
+  Announcements: "#ffffff"
+};
+
 const FEATURED_STORY = {
+  id: "featured-1",
   tag: "Design",
   title: "Designing the Future of Spatial Interfaces",
   desc: "How the NeX UP design team is shaping interaction patterns that feel natural inside AR, VR, and adaptive intelligent environments.",
   readTime: "8 min read",
   date: "Oct 12, 2025",
+  image: "https://res.cloudinary.com/dgzikn7nn/image/upload/v1709848523/nex-spatial-design.jpg" // Placeholder
 };
 
 const STORIES_DATA = [
@@ -23,7 +35,7 @@ const STORIES_DATA = [
     title: "How NexNode Synchronizes Spatial Intelligence",
     desc: "Exploring the architecture behind real-time, world-scale intelligent systems.",
     readTime: "6 min read",
-    size: "wide", // Takes up 2 columns
+    size: "wide", 
   },
   {
     id: 2,
@@ -66,21 +78,23 @@ const containerVariants = {
     opacity: 1,
     transition: { staggerChildren: 0.1 },
   },
+  exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 export default function Stories() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("All");
 
-  // Filter Logic (Simple implementation)
-  const filteredStories = activeCategory === "All" 
-    ? STORIES_DATA 
-    : STORIES_DATA.filter(story => story.tag === activeCategory);
+  const filteredStories = useMemo(() => {
+    return activeCategory === "All" 
+      ? STORIES_DATA 
+      : STORIES_DATA.filter(story => story.tag === activeCategory);
+  }, [activeCategory]);
 
   return (
     <div className="stories-page">
@@ -115,21 +129,28 @@ export default function Stories() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
+            onClick={() => navigate(`/stories/${FEATURED_STORY.id}`)}
           >
             <div className="featured-image-container">
-               <div className="featured-img placeholder-img">Featured Image</div>
+               {/* 15. Lazy Loading */}
+               <div className="featured-img placeholder-img">Featured Visual</div>
             </div>
 
             <div className="featured-content">
               <div className="meta-row">
-                <span className="story-tag tag-highlight">{FEATURED_STORY.tag}</span>
+                <span 
+                  className="story-tag tag-highlight"
+                  style={{ color: TAG_COLORS[FEATURED_STORY.tag] || '#b8a9ff' }}
+                >
+                  {FEATURED_STORY.tag}
+                </span>
                 <span className="story-date">{FEATURED_STORY.date} • {FEATURED_STORY.readTime}</span>
               </div>
 
               <h2 className="featured-title">{FEATURED_STORY.title}</h2>
               <p className="featured-text">{FEATURED_STORY.desc}</p>
 
-              <button className="read-more-btn">Read Full Story →</button>
+              <button className="read-more-btn">Read Full Story</button>
             </div>
           </motion.div>
         </section>
@@ -138,48 +159,71 @@ export default function Stories() {
 
         {/* ================= CATEGORY FILTER ================= */}
         <section className="category-section">
-          <div className="category-scroll">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                className={`category-pill ${activeCategory === cat ? "active" : ""}`}
-                onClick={() => setActiveCategory(cat)}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="category-scroll-container"> {/* Container for mobile scroll */}
+            <div className="category-scroll">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  className={`category-pill ${activeCategory === cat ? "active" : ""}`}
+                  onClick={() => setActiveCategory(cat)}
+                >
+                  {cat}
+                  {/* 4. Active Underline */}
+                  {activeCategory === cat && (
+                    <motion.div 
+                      className="active-line" 
+                      layoutId="underline"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* ================= STORIES GRID (BENTO STYLE) ================= */}
         <section className="stories-list-section">
-          <motion.div 
-            className="bento-grid"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            key={activeCategory} // Re-animate on filter change
-          >
-            {filteredStories.map((story) => (
-              <motion.div 
-                key={story.id} 
-                className={`story-card glass-panel card-${story.size}`}
-                variants={cardVariants}
-              >
-                <div className="card-image-wrapper">
-                  <div className="card-img placeholder-img">Image</div>
-                </div>
-                <div className="card-body">
-                  <div className="card-meta">
-                    <span className="story-tag">{story.tag}</span>
-                    <span className="read-time">{story.readTime}</span>
+          <AnimatePresence mode="wait">
+            {/* 5. Fade Transition on Category Change */}
+            <motion.div 
+              className="bento-grid"
+              key={activeCategory} 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {filteredStories.map((story) => (
+                <motion.div 
+                  key={story.id} 
+                  className={`story-card glass-panel card-${story.size}`}
+                  variants={cardVariants}
+                  // 14. Click Navigation
+                  onClick={() => navigate(`/stories/${story.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="card-image-wrapper">
+                    <div className="card-img placeholder-img">Image</div>
                   </div>
-                  <h3>{story.title}</h3>
-                  <p>{story.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                  <div className="card-body">
+                    <div className="card-meta">
+                      {/* 13. Dynamic Tag Color */}
+                      <span 
+                        className="story-tag"
+                        style={{ color: TAG_COLORS[story.tag] || '#fff' }}
+                      >
+                        {story.tag}
+                      </span>
+                      <span className="read-time">{story.readTime}</span>
+                    </div>
+                    <h3>{story.title}</h3>
+                    <p>{story.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </section>
 
         <BreakLine />

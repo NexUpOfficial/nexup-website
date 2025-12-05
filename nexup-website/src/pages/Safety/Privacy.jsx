@@ -45,12 +45,12 @@ const USER_RIGHTS = [
 /* --- VARIANTS --- */
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 export default function Privacy() {
@@ -70,6 +70,7 @@ export default function Privacy() {
             transition={{ duration: 1.1, ease: "easeOut" }}
           >
             <div className="status-badge">
+              {/* 2. Animated Status Dot */}
               <span className="status-dot"></span> Effective: {LAST_UPDATED}
             </div>
             <h1 className="gradient-title privacy-hero-title">
@@ -86,6 +87,7 @@ export default function Privacy() {
         {/* ================= PREAMBLE ================= */}
         <PrivacySection>
           <div className="privacy-intro glass-panel">
+            {/* 6. Intro Glow Beam (handled in CSS) */}
             <FiShield className="intro-icon" />
             <div className="intro-text">
               <h3>Our Core Promise</h3>
@@ -106,13 +108,14 @@ export default function Privacy() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {DATA_COLLECTION.map((item, idx) => (
               <motion.div 
                 key={idx} 
                 className="data-card glass-panel"
                 variants={itemVariants}
+                // 3. Hover Lift handled in CSS
               >
                 <div className="card-icon-wrapper">{item.icon}</div>
                 <h3>{item.title}</h3>
@@ -132,8 +135,10 @@ export default function Privacy() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
               <div className="shield-graphic">
+                {/* 4. Improved Shield Animation (CSS) */}
                 <FiLock />
               </div>
             </motion.div>
@@ -142,6 +147,7 @@ export default function Privacy() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
               <div className="security-item">
                 <h4>End-to-End Encryption</h4>
@@ -168,13 +174,14 @@ export default function Privacy() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {USER_RIGHTS.map((right, idx) => (
               <motion.div 
                 key={idx} 
                 className="right-card glass-panel-sm"
                 variants={itemVariants}
+                // 3. Hover Lift handled in CSS
               >
                 <h4>{right.title}</h4>
                 <p>{right.desc}</p>
@@ -197,6 +204,7 @@ export default function Privacy() {
               For a full list of sub-processors or to read the detailed legal text, please download the full PDF.
             </p>
             <button className="download-btn">
+              {/* 10. PDF Button Effect */}
               <FiFileText /> Download Full Policy (PDF)
             </button>
           </div>
@@ -245,9 +253,11 @@ function PrivacySection({ title, children }) {
         className="privacy-section-inner"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        // 8. Added delay for premium feel
+        transition={{ duration: 0.8, delay: 0.1 }} 
         viewport={{ once: true, margin: "-50px" }}
       >
+        {/* 5. Section Title Border (CSS) */}
         {title && <h2 className="gradient-title section-title">{title}</h2>}
         {children}
       </motion.div>

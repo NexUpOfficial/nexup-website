@@ -1,18 +1,21 @@
 // src/pages/About/News.jsx
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { FiArrowRight, FiActivity, FiTag, FiCalendar } from "react-icons/fi"; // Added Icons
 import "../../page-styles/About/News.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- DATA --- */
-const CATEGORIES = ["All", "Product", "Company", "Events", "Press"];
+/* --- 22. DATA CONSTANTS (Ideally moved to /data/news.js, kept here for single-file context) --- */
+const CATEGORIES = ["All", "Product", "Company", "Events", "Research", "Partnership"];
 
 const FEATURED_NEWS = {
+  id: "alpha-release",
   tag: "Major Release",
   title: "NexWorld Alpha: A New Step Toward Immersive Spatial Reality.",
   date: "Dec 10, 2025",
   desc: "NeX UP announces the NexWorld Alpha — a major milestone in building adaptive, immersive 3D environments that respond intelligently to context, behavior, and presence.",
+  image: "https://res.cloudinary.com/dgzikn7nn/image/upload/v1709848523/nexworld-alpha-thumb.jpg" // Placeholder URL
 };
 
 const NEWS_DATA = [
@@ -22,7 +25,8 @@ const NEWS_DATA = [
     title: "NexNode Developer Preview Now Open",
     date: "Nov 28, 2025",
     desc: "Developers can now begin experimenting with the NexNode intelligence network.",
-    size: "wide", // Takes 2 columns
+    size: "wide",
+    color: "purple" // 17. Brand Colors
   },
   {
     id: 2,
@@ -31,6 +35,7 @@ const NEWS_DATA = [
     date: "Nov 15, 2025",
     desc: "Accelerating the development of the spatial web.",
     size: "standard",
+    color: "gold"
   },
   {
     id: 3,
@@ -39,6 +44,7 @@ const NEWS_DATA = [
     date: "Oct 30, 2025",
     desc: "How neuroscience guides our AR/VR design.",
     size: "standard",
+    color: "teal"
   },
   {
     id: 4,
@@ -47,6 +53,7 @@ const NEWS_DATA = [
     date: "Oct 12, 2025",
     desc: "Save the date for our annual developer conference.",
     size: "standard",
+    color: "orange"
   },
   {
     id: 5,
@@ -55,6 +62,7 @@ const NEWS_DATA = [
     date: "Sep 20, 2025",
     desc: "Integrating NexEngine with next-gen glasses.",
     size: "standard",
+    color: "blue"
   },
 ];
 
@@ -70,31 +78,61 @@ const PRESS_DATA = [
   { outlet: "Wired", quote: "The most ambitious vision for the metaverse we've seen yet." },
 ];
 
-/* --- VARIANTS --- */
+/* --- ANIMATION VARIANTS --- */
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    // 21. Optimized Stagger
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 }, 
   },
+  exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
+
+/* --- 23. REUSABLE GLASS CARD COMPONENT --- */
+const GlassCard = ({ className = "", children, onClick, style }) => (
+  <motion.div 
+    className={`glass-panel ${className}`}
+    onClick={onClick}
+    variants={itemVariants}
+    // 20. Will-change
+    style={{ willChange: 'transform, opacity', ...style }}
+    whileHover={{ y: -6 }} // 5. Card Lift handled in Framer or CSS (using CSS for performance, this is fallback)
+  >
+    {children}
+  </motion.div>
+);
 
 export default function News() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("All");
 
+  // 15. Filter Logic
+  const filteredNews = useMemo(() => {
+    return activeCategory === "All" 
+      ? NEWS_DATA 
+      : NEWS_DATA.filter(n => n.tag === activeCategory);
+  }, [activeCategory]);
+
   return (
     <div className="news-page">
+      {/* 11. Performance Hint Global Style */}
+      <style global jsx>{`
+        .news-page * { backface-visibility: hidden; }
+      `}</style>
+
       <div className="news-wrapper">
         
         {/* ================= HERO ================= */}
         <section className="news-hero-section">
-          <div className="news-glow" />
+          {/* 2. Floating Glow Animation */}
+          <div className="news-glow" /> 
+          
           <motion.div
             className="news-hero-content"
             initial={{ opacity: 0, y: 40 }}
@@ -102,6 +140,7 @@ export default function News() {
             transition={{ duration: 1.1, ease: "easeOut" }}
           >
             <span className="hero-badge">Newsroom</span>
+            {/* 1. Animated Gradient Title */}
             <h1 className="gradient-title news-hero-title">
               The Pulse of NeX UP.
             </h1>
@@ -121,9 +160,13 @@ export default function News() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
+            // 16. Navigate on click
+            onClick={() => navigate(`/news/${FEATURED_NEWS.id}`)}
           >
-            <div className="featured-img placeholder-img">
-              <span>Featured Image</span>
+            <div className="featured-img">
+              {/* 3. Improved Featured Image Container */}
+              <div className="img-overlay-gradient" />
+              <span className="placeholder-text">Featured Visual</span>
             </div>
             <div className="featured-content">
               <div className="news-meta">
@@ -132,7 +175,7 @@ export default function News() {
               </div>
               <h2 className="featured-title">{FEATURED_NEWS.title}</h2>
               <p className="featured-desc">{FEATURED_NEWS.desc}</p>
-              <button className="read-link">Read Announcement →</button>
+              <button className="read-link">Read Announcement <FiArrowRight /></button>
             </div>
           </motion.div>
         </section>
@@ -141,49 +184,73 @@ export default function News() {
 
         {/* ================= CATEGORY FILTER ================= */}
         <section className="category-bar">
-          <div className="category-scroll">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                className={`category-pill ${activeCategory === cat ? "active" : ""}`}
-                onClick={() => setActiveCategory(cat)}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="category-scroll-mask"> {/* 12. Scroll Mask Container */}
+            <div className="category-scroll">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  className={`category-pill ${activeCategory === cat ? "active" : ""}`}
+                  onClick={() => setActiveCategory(cat)}
+                >
+                  {cat}
+                  {/* 7. Active Line Indicator */}
+                  {activeCategory === cat && (
+                    <motion.div 
+                      className="active-line" 
+                      layoutId="cat-line" 
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* ================= NEWS GRID (BENTO) ================= */}
         <NewsSection title="Latest Updates">
-          <motion.div 
-            className="news-bento-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {NEWS_DATA.map((news) => (
-              <motion.div 
-                key={news.id} 
-                className={`news-card glass-panel card-${news.size}`}
-                variants={itemVariants}
-              >
-                <div className="card-top">
-                  <span className="news-tag">{news.tag}</span>
-                  <span className="news-date">{news.date}</span>
-                </div>
-                <h3>{news.title}</h3>
-                <p>{news.desc}</p>
-                <div className="card-hover-arrow">→</div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <AnimatePresence mode="wait">
+            {/* 6. Animate Grid Reflow */}
+            <motion.div 
+              key={activeCategory}
+              className="news-bento-grid"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {filteredNews.map((news) => (
+                <GlassCard 
+                  key={news.id} 
+                  className={`news-card card-${news.size}`}
+                  // 14. Click Navigation
+                  onClick={() => navigate(`/news/${news.id}`)}
+                >
+                  <div className="card-top">
+                    {/* 17. Brand Color Tags */}
+                    <span className={`news-tag tag-${news.color || 'purple'}`}>
+                      <FiTag className="tag-icon"/> {news.tag}
+                    </span>
+                    <span className="news-date"><FiCalendar /> {news.date}</span>
+                  </div>
+                  <h3>{news.title}</h3>
+                  <p>{news.desc}</p>
+                  
+                  {/* 8. Image Support Placeholder (Gradient) */}
+                  <div className="card-mini-visual" /> 
+                  
+                  <div className="card-hover-arrow">
+                    <FiArrowRight />
+                  </div>
+                </GlassCard>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </NewsSection>
 
         <BreakLine />
 
-        {/* ================= CHANGELOG (Technical) ================= */}
+        {/* ================= CHANGELOG ================= */}
         <NewsSection title="Changelog">
           <div className="changelog-container">
             {UPDATES_LOG.map((log, idx) => (
@@ -210,20 +277,22 @@ export default function News() {
 
         <BreakLine />
 
-        {/* ================= PRESS & MEDIA ================= */}
+        {/* ================= PRESS ================= */}
         <NewsSection title="In The Media">
           <div className="press-grid">
             {PRESS_DATA.map((press, idx) => (
-              <motion.div 
+              <GlassCard 
                 key={idx} 
-                className="press-card glass-panel"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                className="press-card"
               >
-                <div className="press-logo">{press.outlet}</div>
+                {/* 18. Micro Icons / Logos */}
+                <div className="press-logo">
+                  <FiActivity className="press-icon"/> {press.outlet}
+                </div>
+                {/* 10. Quote Marks */}
+                <div className="quote-mark">“</div>
                 <p>"{press.quote}"</p>
-              </motion.div>
+              </GlassCard>
             ))}
           </div>
         </NewsSection>

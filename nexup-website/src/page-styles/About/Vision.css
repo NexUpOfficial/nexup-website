@@ -7,7 +7,14 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
-  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+  overflow-x: hidden;
+  /* Scrollbar Removal */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.vision-page::-webkit-scrollbar {
+  display: none;
 }
 
 .vision-wrapper {
@@ -19,7 +26,23 @@
   color: #f0f0f0;
   display: flex;
   flex-direction: column;
-  gap: 120px; /* Large breathable gaps */
+  gap: 120px;
+}
+
+/* ===========================================================
+   ANIMATIONS
+=========================================================== */
+/* 1. Kinetic Gradient Animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 2. Drifting Hero Glow */
+@keyframes driftGlow {
+  0%   { transform: translate(-48%, -52%) scale(1); }
+  100% { transform: translate(-52%, -48%) scale(1.08); }
 }
 
 /* ===========================================================
@@ -34,7 +57,7 @@
   text-align: center;
 }
 
-/* Ambient Glow Effect */
+/* 2. Ambient Glow Effect with Motion */
 .vision-glow {
   position: absolute;
   top: 50%;
@@ -43,14 +66,18 @@
   width: 60vw;
   height: 60vh;
   background: radial-gradient(circle, rgba(184, 169, 255, 0.07) 0%, transparent 60%);
-  filter: blur(60px);
+  /* A) Reduced Blur for Performance */
+  filter: blur(45px); 
   z-index: 0;
   pointer-events: none;
+  animation: driftGlow 12s ease-in-out infinite alternate;
 }
 
 .vision-hero-content {
   z-index: 1;
   max-width: 900px;
+  /* B) Performance Hint */
+  will-change: transform, opacity;
 }
 
 .big-hero-title {
@@ -70,12 +97,15 @@
 /* ===========================================================
    TYPOGRAPHY UTILITIES
 =========================================================== */
+/* 1. Animated Gradient Title */
 .gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  background: linear-gradient(90deg, #b8a9ff, #ffffff, #d4caff);
+  background-size: 200%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
+  animation: gradientShift 6s linear infinite;
 }
 
 .center-text {
@@ -87,6 +117,17 @@
   font-size: clamp(2rem, 3vw, 2.5rem);
   margin-bottom: 20px;
   display: inline-block;
+}
+
+/* 11. Section Intro Label */
+.section-intro-label {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 12px;
+  text-align: center;
+  width: 100%;
 }
 
 /* ===========================================================
@@ -120,6 +161,7 @@
   margin-bottom: 20px;
 }
 
+/* 9. Desktop Center Alignment */
 .concept-text-group .highlight-text {
   font-size: 1.4rem;
   font-weight: 500;
@@ -131,7 +173,17 @@
   display: inline-block;
 }
 
-/* Why Grid (Split Layout) */
+@media (min-width: 1024px) {
+  .concept-text-group .highlight-text {
+    text-align: center;
+    border-left: none;
+    border-top: 3px solid #b8a9ff;
+    padding-left: 0;
+    padding-top: 20px;
+  }
+}
+
+/* Why Grid */
 .why-grid {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
@@ -139,6 +191,11 @@
   align-items: center;
   width: 100%;
   max-width: 1000px;
+}
+
+/* 8. Responsive Width for Ultra-Wide */
+.why-content {
+  max-width: 650px;
 }
 
 .why-content p {
@@ -171,21 +228,28 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 32px;
   border-radius: 16px;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  /* B) Performance Hint */
+  will-change: transform, opacity;
 }
 
+/* 5. Hover Ripple Effect */
 .glass-panel:hover {
   transform: translateY(-8px);
-  border-color: rgba(184, 169, 255, 0.4);
+  border-color: rgba(184, 169, 255, 0.5);
   background: rgba(30, 30, 30, 0.7);
+  box-shadow: 0 8px 30px rgba(184,169,255,0.15);
 }
 
-.pillar-icon-line {
-  width: 40px;
-  height: 4px;
-  background: #b8a9ff;
+/* 4. Icon Styles */
+.pillar-icon-wrapper {
+  font-size: 2rem;
+  color: #b8a9ff;
   margin-bottom: 20px;
-  border-radius: 2px;
+  display: inline-flex;
+  padding: 10px;
+  background: rgba(184,169,255,0.1);
+  border-radius: 12px;
 }
 
 .glass-panel h3 {
@@ -211,6 +275,7 @@
   padding: 20px 0;
 }
 
+/* 6. Faint Connector Circles in Background Line */
 .timeline-line {
   position: absolute;
   left: 20px;
@@ -218,17 +283,21 @@
   bottom: 0;
   width: 2px;
   background: linear-gradient(180deg, #b8a9ff 0%, rgba(255,255,255,0.1) 100%);
+  background-image: radial-gradient(circle, rgba(184,169,255,0.5) 1px, transparent 1px);
+  background-size: 2px 120px; /* Small dots every 120px */
 }
 
 .timeline-item {
   position: relative;
   padding-left: 60px;
   margin-bottom: 50px;
+  /* B) Performance Hint */
+  will-change: transform, opacity;
 }
 
 .timeline-dot {
   position: absolute;
-  left: 13px; /* Center on line */
+  left: 13px;
   top: 6px;
   width: 16px;
   height: 16px;
@@ -266,10 +335,25 @@
   display: flex;
   justify-content: center;
   text-align: center;
+  position: relative;
+}
+
+/* 12. Final CTA Top Glow */
+.final-glow-top {
+  position: absolute;
+  top: -80px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: radial-gradient(circle, rgba(184,169,255,0.06), transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
 }
 
 .final-content {
   max-width: 800px;
+  position: relative;
+  z-index: 2;
 }
 
 .final-big {
@@ -283,6 +367,7 @@
   margin-bottom: 30px;
 }
 
+/* 10. CTA Button Glow Pulse */
 .white-btn {
   background: #fff;
   color: #000;
@@ -293,6 +378,21 @@
   font-size: 1.05rem;
   cursor: pointer;
   transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.white-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.35), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.white-btn:hover::after {
+  opacity: 1;
 }
 
 .white-btn:hover {
@@ -321,6 +421,11 @@
   .why-grid {
     grid-template-columns: 1fr;
     text-align: center;
+  }
+
+  /* A) Reduced Blur for Mobile */
+  .vision-glow {
+    filter: blur(45px);
   }
 
   .concept-text-group .highlight-text {

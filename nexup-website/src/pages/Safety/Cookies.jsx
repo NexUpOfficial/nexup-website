@@ -4,6 +4,20 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../page-styles/Safety/Cookies.css";
 
+/* --- VARIANTS --- */
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
 const Cookies = () => {
   // State for the checkboxes/toggles
   const [preferences, setPreferences] = useState({
@@ -15,14 +29,19 @@ const Cookies = () => {
 
   const [isSaved, setIsSaved] = useState(false);
 
-  // Toggle handler
+  // Toggle handler with future-proof haptic hint
   const toggleCookie = (type) => {
-    if (type === "essential") return; // Cannot toggle essential
+    if (type === "essential") return;
+    // 10. Haptic hint logic placeholder (for future AR/VR port)
+    if (navigator.vibrate) navigator.vibrate(10); 
+    
     setPreferences((prev) => ({ ...prev, [type]: !prev[type] }));
   };
 
   // Save handler
   const handleSave = (acceptAll = false) => {
+    if (navigator.vibrate) navigator.vibrate([10, 30, 10]); // Success haptic
+
     if (acceptAll) {
       setPreferences({
         essential: true,
@@ -40,14 +59,26 @@ const Cookies = () => {
 
   return (
     <div className="cookies-page">
-      <div className="cookies-header">
+      {/* 6. Page Fade In via CSS animation class */}
+      
+      <motion.div 
+        className="cookies-header"
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+      >
         <span className="doc-badge">PRIVACY PROTOCOL // V3.0</span>
         <h1 className="cookies-title">Data & Cookies</h1>
-      </div>
+      </motion.div>
 
-      <div className="cookies-container">
+      <motion.div 
+        className="cookies-container"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
         {/* --- POLICY CONTENT --- */}
-        <div className="cookies-text-panel">
+        <motion.div className="cookies-text-panel" variants={fadeInUp}>
           <section>
             <h2>1. What Are Cookies?</h2>
             <p>
@@ -74,10 +105,12 @@ const Cookies = () => {
               which data nodes NeXUP is allowed to access.
             </p>
           </section>
-        </div>
+        </motion.div>
 
         {/* --- INTERACTIVE CONTROL PANEL --- */}
-        <div className="cookies-control-panel">
+        <motion.div className="cookies-control-panel" variants={fadeInUp}>
+          {/* 1. Glow Added via CSS pseudo-element */}
+          
           <h3>Consent Configuration</h3>
           <p className="panel-desc">Customize your data stream preferences.</p>
 
@@ -89,7 +122,10 @@ const Cookies = () => {
                 <h4>System Core (Essential)</h4>
                 <p>Required for Nex-DNS login and security. Cannot be disabled.</p>
               </div>
-              <div className="toggle-switch active disabled"></div>
+              <div className="toggle-switch active disabled">
+                 {/* Knob added for consistency */}
+                 <div className="toggle-knob" style={{ transform: "translateX(22px)" }} />
+              </div>
             </div>
 
             {/* TOGGLE 2: PERFORMANCE */}
@@ -140,6 +176,7 @@ const Cookies = () => {
           <AnimatePresence mode="wait">
             {!isSaved ? (
               <motion.div 
+                key="actions"
                 className="action-buttons"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -154,6 +191,7 @@ const Cookies = () => {
               </motion.div>
             ) : (
               <motion.div 
+                key="success"
                 className="success-message"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -164,8 +202,8 @@ const Cookies = () => {
             )}
           </AnimatePresence>
           
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

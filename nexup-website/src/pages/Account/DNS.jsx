@@ -1,5 +1,5 @@
 // src/pages/Account/DNS.jsx
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -39,7 +39,8 @@ const TRUSTED_DEVICES = [
     icon: <FiCpu />,
     lastActive: "Now",
     location: "Hyderabad, IN",
-    status: "Trusted"
+    status: "Trusted",
+    statusType: "trusted" // 3. Category Color Logic
   },
   {
     id: 2,
@@ -48,7 +49,8 @@ const TRUSTED_DEVICES = [
     icon: <FiMonitor />,
     lastActive: "2 hours ago",
     location: "Hyderabad, IN",
-    status: "Trusted"
+    status: "Trusted",
+    statusType: "trusted"
   },
   {
     id: 3,
@@ -57,7 +59,8 @@ const TRUSTED_DEVICES = [
     icon: <FiSmartphone />,
     lastActive: "1 day ago",
     location: "Mumbai, IN",
-    status: "Expiring Soon"
+    status: "Expiring Soon",
+    statusType: "expiring"
   }
 ];
 
@@ -70,16 +73,27 @@ const SECURITY_LOGS = [
 /* --- VARIANTS --- */
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  visible: { 
+    opacity: 1, 
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 } 
+  },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 export default function DNS() {
   const navigate = useNavigate();
+  const terminalRef = useRef(null);
+
+  // 6. Auto-scroll Terminal
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, []);
 
   return (
     <div className="dns-page">
@@ -87,7 +101,9 @@ export default function DNS() {
         
         {/* ================= HERO DASHBOARD ================= */}
         <section className="dns-hero-section">
+          {/* 2. Kinetic Glow */}
           <div className="dns-glow" />
+          
           <motion.div
             className="dns-hero-content"
             initial={{ opacity: 0, y: 40 }}
@@ -95,6 +111,7 @@ export default function DNS() {
             transition={{ duration: 1.1, ease: "easeOut" }}
           >
             <div className="security-badge">
+              {/* 1. Smoother Pulse */}
               <span className="dot pulse"></span> System Secure
             </div>
             <h1 className="gradient-title dns-title">
@@ -103,6 +120,23 @@ export default function DNS() {
             <p className="dns-sub">
               Manage your decentralized identity anchors, trusted devices, and spatial verification keys.
             </p>
+
+            {/* 12. Security Score Meter */}
+            <div className="security-score-container">
+              <div className="score-label">
+                <span>Security Score</span>
+                <span className="score-val">94/100</span>
+              </div>
+              <div className="security-score-bar">
+                <motion.div 
+                  className="score-fill" 
+                  initial={{ width: 0 }}
+                  animate={{ width: "94%" }}
+                  transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+                />
+              </div>
+            </div>
+
           </motion.div>
         </section>
 
@@ -110,13 +144,12 @@ export default function DNS() {
 
         {/* ================= IDENTITY NODES ================= */}
         <DNSSection title="Identity Anchors">
-          [Image of distributed identity network architecture]
           <motion.div 
             className="node-grid"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {IDENTITY_NODES.map((node, idx) => (
               <motion.div 
@@ -125,7 +158,9 @@ export default function DNS() {
                 variants={itemVariants}
               >
                 <div className="node-header">
+                  {/* 4. Hover Glow on Icon */}
                   <div className="node-icon">{node.icon}</div>
+                  {/* 5. Animated Blinking Status */}
                   <span className={`node-status ${node.status.toLowerCase()}`}>{node.status}</span>
                 </div>
                 <h3>{node.title}</h3>
@@ -143,10 +178,12 @@ export default function DNS() {
             {TRUSTED_DEVICES.map((device, idx) => (
               <motion.div 
                 key={device.id} 
-                className="device-row glass-panel-sm"
+                // 3. Category Color Coding via class
+                className={`device-row glass-panel-sm ${device.statusType}`}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
+                // 11. Motion Delay Stagger
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
                 viewport={{ once: true }}
               >
                 <div className="device-left">
@@ -158,6 +195,7 @@ export default function DNS() {
                 </div>
                 <div className="device-right">
                   <span className="last-active">{device.lastActive}</span>
+                  {/* 9. Revoke Glow */}
                   <button className="revoke-btn">Revoke</button>
                 </div>
               </motion.div>
@@ -173,14 +211,18 @@ export default function DNS() {
           {/* Security Logs */}
           <div className="split-col">
             <h2 className="gradient-title section-title-sm">Security Log</h2>
-            <div className="log-terminal glass-panel">
+            <div className="log-terminal glass-panel" ref={terminalRef}>
               {SECURITY_LOGS.map((log, i) => (
                 <div key={i} className="log-entry">
                   <span className="log-time">[{log.time}]</span>
-                  <span className="log-event">{log.event}</span>
+                  {/* 7. Highlight IP */}
+                  <span className="log-event">
+                    {log.event} <span className="ip-addr">({log.ip})</span>
+                  </span>
                   <span className="log-status success">{log.status}</span>
                 </div>
               ))}
+              {/* 8. Animated Cursor */}
               <div className="log-cursor">_</div>
             </div>
           </div>
@@ -195,6 +237,7 @@ export default function DNS() {
               <p className="api-desc">
                 Programmatic access to identity verification and session management.
               </p>
+              {/* 10. Micro-interactions on Hover */}
               <div className="code-block">
                 <code>GET /api/v2/dns/anchors</code>
               </div>
@@ -212,6 +255,7 @@ export default function DNS() {
             className="dns-final glass-panel"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
             <div className="final-icon"><FiLock /></div>

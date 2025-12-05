@@ -9,6 +9,9 @@
   --text-dim: rgba(255, 255, 255, 0.6);
 }
 
+/* ===========================================================
+   PAGE WRAPPER (Scrollbar Removal + 6. Fade In)
+=========================================================== */
 .cookies-page {
   width: 100%;
   min-height: 100vh;
@@ -19,6 +22,26 @@
   flex-direction: column;
   align-items: center;
   font-family: 'Inter', sans-serif;
+  
+  /* Scrollbar Hide */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+
+  /* 6. Page Fade In */
+  animation: fadeIn 0.6s ease;
+
+  /* 7. Faint Pattern Grid */
+  background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.cookies-page::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- HEADER --- */
@@ -27,6 +50,7 @@
   margin-bottom: 60px;
 }
 
+/* 5. Badge Shimmer */
 .doc-badge {
   display: inline-block;
   font-family: monospace;
@@ -37,6 +61,14 @@
   border-radius: 20px;
   margin-bottom: 15px;
   letter-spacing: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,169,255,0.1), transparent);
+  background-size: 200%;
+  animation: badgeShimmer 4s linear infinite;
+}
+
+@keyframes badgeShimmer {
+  0% { background-position: 0%; }
+  100% { background-position: 200%; }
 }
 
 .cookies-title {
@@ -89,6 +121,18 @@
   padding: 30px;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  position: relative; /* Context for glow */
+  z-index: 1;
+}
+
+/* 1. Control Panel Floating Glow */
+.cookies-control-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at top right, rgba(184,169,255,0.12), transparent 60%);
+  z-index: -1;
 }
 
 .cookies-control-panel h3 {
@@ -122,18 +166,27 @@
   transition: all 0.2s;
 }
 
+/* 2. Micro Hover Lift */
 .cookie-toggle-row:hover {
   background: rgba(255,255,255,0.06);
+  transform: translateY(-2px);
 }
 
+/* 3. Smooth Shadow Glow when Active */
 .cookie-toggle-row.active {
   border-color: rgba(184, 169, 255, 0.3);
   background: rgba(184, 169, 255, 0.05);
+  box-shadow: 0 0 12px rgba(184,169,255,0.15);
 }
 
 .cookie-toggle-row.locked {
   cursor: default;
   opacity: 0.7;
+}
+
+/* Disable hover lift for locked items */
+.cookie-toggle-row.locked:hover {
+    transform: none;
 }
 
 .toggle-info h4 {
@@ -175,7 +228,8 @@
   height: 20px;
   background: #fff;
   border-radius: 50%;
-  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  /* 4. Premium Apple Easing */
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .toggle-switch.active .toggle-knob {
@@ -215,12 +269,14 @@
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .btn-secondary:hover {
   background: rgba(255,255,255,0.05);
   border-color: #fff;
+  /* 9. Hover Glow */
+  box-shadow: 0 0 10px rgba(184,169,255,0.2);
 }
 
 /* --- SUCCESS STATE --- */
@@ -237,6 +293,18 @@
   color: var(--neon-green);
   font-weight: 600;
   text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* 8. Success State Glow */
+.success-message::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(0,255,163,0.15), transparent 70%);
+  z-index: -1;
 }
 
 .success-icon {

@@ -1,15 +1,15 @@
-/* ===============================
+/* ============================================================
    GLOBAL RESET
-================================*/
+============================================================ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ===============================
+/* ============================================================
    BASE HTML + BODY
-================================*/
+============================================================ */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
@@ -19,25 +19,18 @@ body {
   font-family: "Inter", sans-serif;
   background: #000;
   color: #fff;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
   line-height: 1.6;
 }
 
-/* ===============================
-   TEXT SELECTION
-================================*/
 /* ============================================================
-   NEXUP x VisionOS — Animated Mist Selection
-   Soft drifting fog, no text-shadow
+   TEXT SELECTION — NEXUP Mist Effect
 ============================================================ */
-
 ::selection {
   background: rgba(203, 192, 255, 0.18);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   color: #ffffff;
-
-  /* Animated mist overlay */
   animation: nexupMist 1.4s ease-in-out infinite alternate;
 }
 
@@ -47,172 +40,105 @@ body {
   animation: nexupMist 1.4s ease-in-out infinite alternate;
 }
 
-/* Mist movement animation */
 @keyframes nexupMist {
   0% {
     background: rgba(203, 192, 255, 0.16);
-    backdrop-filter: blur(18px) saturate(150%);
-    transform: translateX(0px) translateY(0px);
+    transform: translate(0, 0);
   }
   50% {
     background: rgba(203, 192, 255, 0.22);
-    backdrop-filter: blur(22px) saturate(170%);
-    transform: translateX(4px) translateY(-3px);
+    transform: translate(4px, -3px);
   }
   100% {
     background: rgba(203, 192, 255, 0.20);
-    backdrop-filter: blur(20px) saturate(160%);
-    transform: translateX(-3px) translateY(2px);
+    transform: translate(-3px, 2px);
   }
 }
 
 /* ============================================================
-   NexUP — HOLO-PARALLAX Scrollbar (Quantum Motion Edition)
-   Living hologram effect | Micro-motion | Parallax shimmer
+   UNIVERSAL NO SCROLLBAR — ALL BROWSERS
 ============================================================ */
 
-::-webkit-scrollbar {
-  width: 8px;
-  background: transparent;
-  opacity: 0;
-  transition: opacity 0.35s ease;
+/* Chrome / Safari / Edge */
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
-/* Show only when scrolling */
-body.scrolling::-webkit-scrollbar {
-  opacity: 1;
-}
-
-/* Transparent track */
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Holo-Parallax Scroll Thumb */
-::-webkit-scrollbar-thumb {
-  background: radial-gradient(
-      circle at var(--px, 50%) var(--py, 50%),
-      rgba(168, 85, 247, 0.75),
-      rgba(139, 92, 246, 0.55),
-      rgba(96, 165, 250, 0.45),
-      rgba(125, 211, 252, 0.30)
-    ),
-    linear-gradient(
-      180deg,
-      rgba(147, 51, 234, 0.6),
-      rgba(167, 139, 250, 0.4),
-      rgba(125, 211, 252, 0.3)
-    );
-
-  background-blend-mode: screen;
-  border-radius: 20px;
-
-  box-shadow:
-    0 0 12px rgba(125, 211, 252, 0.45),
-    inset 0 0 12px rgba(168, 85, 247, 0.35);
-
-  backdrop-filter: blur(16px);
-  transition:
-    background-position 0.15s ease,
-    box-shadow 0.35s ease,
-    backdrop-filter 0.35s ease;
-}
-
-/* Hover = stronger holographic quantum glow */
-::-webkit-scrollbar-thumb:hover {
-  box-shadow:
-    0 0 25px rgba(125, 211, 252, 0.55),
-    inset 0 0 18px rgba(168, 85, 247, 0.6);
-  backdrop-filter: blur(20px);
-}
-
-/* Firefox support */
+/* Firefox */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(147, 51, 234, 0.65) transparent;
+  scrollbar-width: none !important;
 }
 
+/* Legacy Edge / IE */
+* {
+  -ms-overflow-style: none !important;
+}
 
-/* ===============================
+/* Prevent horizontal scroll everywhere */
+html,
+body,
+#root {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* Remove scroll from inner pages */
+.nexworld-page,
+.nexnodes-page,
+.nexsearch-page,
+.nexhousing-page,
+.nexengine-page {
+  overflow-x: hidden;
+  overflow-y: hidden !important;
+}
+
+/* No scrollbars for video wrappers */
+.hero-video-container,
+.hero-video,
+.hero-overlay {
+  overflow: hidden !important;
+}
+
+/* ============================================================
    LINKS
-================================*/
+============================================================ */
 a {
   color: inherit;
   text-decoration: none;
 }
+
 a:hover {
   opacity: 0.85;
 }
 
-/* ===============================
-   SCROLLBAR (hidden)
-================================*/
-/* 🚫 Prevent ANY horizontal sliding on mobile */
-html, body {
-  overflow-x: hidden !important;
-  max-width: 100% !important;
-  cursor: grab;
-}
-
-/* Prevent transforms from causing jitter */
-#root {
-  overflow-x: hidden !important;
-}
-
-/* ===============================
+/* ============================================================
    BUTTON + INPUT BASE
-================================*/
+============================================================ */
 button {
   background: none;
   border: none;
-  cursor: grab !important;
+  cursor: pointer !important;
   font-family: inherit;
 }
 
-input, textarea {
+input,
+textarea {
   font-family: inherit;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
   border: none;
 }
+
 input::placeholder,
 textarea::placeholder {
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
 }
 
-/* ===============================
-   IMAGE OPTIMIZATION
-================================*/
-img {
-  max-width: 100%;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* ===============================
-   SMOKE BACKGROUND WRAPPER
-================================*/
-.smoke-wrapper {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.85;
-}
-
-/* ===============================
-   FADE-IN UTILITY (KEEPED)
-================================*/
-.fade-in {
-  animation: fadeIn 0.4s ease forwards;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-
-/* FORCE all buttons and links to use global grab cursor */
+/* ============================================================
+   REMOVE Grab & Grabbing Cursor Entire Website
+============================================================ */
 button,
 a,
 .home-btn,
@@ -221,7 +147,7 @@ a,
 .sidebar-icon-btn,
 .explore-btn,
 .mix-btn {
-  cursor: grab !important;
+  cursor: pointer !important;
 }
 
 button:active,
@@ -232,49 +158,57 @@ a:active,
 .sidebar-icon-btn:active,
 .explore-btn:active,
 .mix-btn:active {
-  cursor: grabbing !important;
-}
-button, a {
-  -webkit-tap-highlight-color: transparent;
-  pointer-events: auto;
+  cursor: pointer !important;
 }
 
-/* Smooth cursor transitions globally */
-* {
-  transition: cursor 120ms ease, transform 120ms ease;
-}
-
-/* Make clickable elements behave like physical objects */
+/* Remove tap highlight on mobile */
 button,
-a,
-.login-btn,
-.search-btn,
-.sidebar-icon-btn,
-.home-btn,
-.explore-btn,
-.mix-btn {
-  will-change: transform;
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================================
+   IMAGE OPTIMIZATION
+============================================================ */
+img {
+  max-width: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ============================================================
+   SMOKE BACKGROUND WRAPPER
+============================================================ */
+.smoke-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* ============================================================
+   FADE-IN
+============================================================ */
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   SMOOTH INTERACTION
+============================================================ */
+* {
+  transition: transform 120ms ease;
   transform-origin: center;
-}
-
-
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden !important;
-}
-
-.nexworld-page,
-.nexnodes-page,
-.nexsearch-page,
-.nexhousing-page,
-.nexengine-page {
-  overflow-x: hidden;
-  overflow-y: clip;
-}
-
-.hero-video-container,
-.hero-video,
-.hero-overlay {
-  overflow: hidden;
 }

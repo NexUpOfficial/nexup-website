@@ -9,6 +9,14 @@
   --neon-purple: #b8a9ff;
 }
 
+/* ⭐ 6. Global Smooth Scroll setup (Requires global file or <style>) */
+/* Setting here for reference */
+html {
+  /* This ensures browser uses smooth scroll behavior */
+  scroll-behavior: smooth; 
+}
+
+
 .about-page {
   width: 100%;
   min-height: 100vh;
@@ -20,7 +28,22 @@
 }
 
 /* ===========================================================
-   AMBIENT BACKGROUND
+   ANIMATION KEYFRAMES
+=========================================================== */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ⭐ BONUS: Ultra-Premium Enhancement (Floating Blobs) */
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(80px, 60px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ===========================================================
+   AMBIENT BACKGROUND (BONUS) & HERO (1)
 =========================================================== */
 .about-ambient-bg {
   position: fixed;
@@ -37,9 +60,17 @@
   pointer-events: none;
 }
 
-/* ===========================================================
-   HERO SECTION
-=========================================================== */
+/* Floating Blob */
+.about-ambient-bg::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(184,169,255,0.08), transparent 60%);
+  animation: float 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
 .about-hero-section {
   position: relative;
   z-index: 1;
@@ -49,6 +80,14 @@
   align-items: center;
   text-align: center;
   padding: 120px 24px 60px;
+  
+  /* ⭐ 1. Parallax Background */
+  background: radial-gradient(
+    circle at 50% 20%,
+    rgba(184,169,255,0.08),
+    transparent 70%
+  );
+  background-attachment: fixed;
 }
 
 .about-hero-content {
@@ -87,17 +126,33 @@
 }
 
 /* ===========================================================
-   FLOATING DOCK (Navigation)
+   FLOATING DOCK (Navigation) (2 & 6)
 =========================================================== */
 .about-dock-wrapper {
   position: sticky;
-  top: 80px; /* Below Main Header */
+  top: 80px;
   z-index: 100;
   display: flex;
   justify-content: center;
   padding: 0 20px;
   margin-bottom: 40px;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+/* ⭐ 2.3 Add scroll indicator on mobile */
+.about-dock-wrapper::after {
+    content: "→";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.4);
+    font-size: 1.2rem;
+    animation: blink 1.5s infinite;
+    pointer-events: none;
+    z-index: 101; /* Above dock */
+    /* Hide by default, shown in media query */
+    display: none; 
 }
 
 .dock-hidden {
@@ -131,24 +186,53 @@
   position: relative;
   background: transparent;
   border: none;
-  padding: 10px 24px;
+  
+  /* ⭐ 6.1 Increase touch targets */
+  padding: 14px 22px; 
+  
   border-radius: 30px;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.95rem;
   font-weight: 500;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
+/* ⭐ 2.2 Add slight hover-lift */
 .dock-item:hover {
   color: #fff;
+  transform: translateY(-2px);
 }
 
 .dock-item.active {
   color: #fff;
   font-weight: 600;
 }
+
+/* ⭐ 2.1 Active-tab underline animation */
+.dock-item.active .dock-label {
+  position: relative;
+}
+
+.dock-item.active .dock-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  background: var(--neon-purple);
+  border-radius: 2px;
+  animation: fadeIn 0.25s ease-out;
+  transform-origin: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scaleX(0.8); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+
 
 /* Framer Motion Background Pill */
 .dock-pill-bg {
@@ -161,18 +245,22 @@
 }
 
 /* ===========================================================
-   CONTENT AREA
+   CONTENT AREA (4)
 =========================================================== */
 .about-content-wrapper {
-  flex: 1; /* Pushes footer down */
+  flex: 1;
   width: 100%;
   position: relative;
   z-index: 1;
   min-height: 60vh;
 }
 
+/* 4.2 Max width container and padding */
 .about-content {
   width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 /* Default Content Style */
@@ -235,20 +323,29 @@
   /* Dock adjustments for mobile */
   .about-dock-wrapper {
     top: 70px;
-    justify-content: flex-start; /* Allow left alignment if overflowing */
+    justify-content: flex-start;
     overflow-x: auto;
-    padding: 0; /* Full width scroll area */
+    padding: 0;
   }
 
   .about-dock {
-    margin: 0 16px; /* Margin from edges */
-    border-radius: 12px; /* Slightly squarer on mobile */
-    width: 100%;
-    justify-content: flex-start; /* Left align items to scroll */
+    margin: 0 16px;
+    border-radius: 12px;
+    width: auto; /* Allow natural width */
+    justify-content: flex-start;
   }
 
   .dock-item {
-    padding: 10px 18px;
+    padding: 12px 18px; /* Slightly adjusted padding for mobile */
     font-size: 0.9rem;
+  }
+  
+  /* Show scroll indicator on mobile */
+  .about-dock-wrapper::after {
+      display: block; 
+      /* Push it slightly off the right edge */
+      right: 5px; 
+      /* Reduce size/impact slightly */
+      font-size: 1rem; 
   }
 }

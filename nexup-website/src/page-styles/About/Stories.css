@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal)
 =========================================================== */
 .stories-page {
   width: 100%;
@@ -7,6 +7,13 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  /* Hide Scrollbar */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.stories-page::-webkit-scrollbar {
+  display: none;
 }
 
 .stories-wrapper {
@@ -19,6 +26,21 @@
   flex-direction: column;
   gap: 80px;
   color: #f0f0f0;
+}
+
+/* ===========================================================
+   ANIMATION KEYFRAMES
+=========================================================== */
+/* 2. Animated Title Gradient */
+@keyframes titleGlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* 4. Active Line Fade In */
+@keyframes fadeIn {
+  from { width: 0; opacity: 0; }
+  to { width: 40%; opacity: 1; }
 }
 
 /* ===========================================================
@@ -41,7 +63,8 @@
   width: 60vw;
   height: 50vh;
   background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
-  filter: blur(80px);
+  /* 19. Optimized Blur */
+  filter: blur(60px);
   z-index: 0;
   pointer-events: none;
 }
@@ -70,6 +93,17 @@
   margin-bottom: 20px;
 }
 
+/* 2. Animated Gradient Title */
+.gradient-title {
+  background: linear-gradient(90deg, #b8a9ff, #ffffff, #cbbdff);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  animation: titleGlow 4s linear infinite;
+}
+
 .stories-hero-sub {
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   opacity: 0.8;
@@ -89,8 +123,26 @@
   grid-template-columns: 1.2fr 1fr;
   gap: 40px;
   align-items: center;
-  padding: 0; /* Removing padding from glass panel for image bleed */
+  padding: 0;
   overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  /* 9. Depth Glass */
+  backdrop-filter: blur(14px) saturate(160%);
+}
+
+/* 6. Floating Glow Behind Featured */
+.featured-card::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(184,169,255,0.08), transparent 70%);
+  filter: blur(50px);
+  top: 50%;
+  left: 70%;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .featured-image-container {
@@ -112,8 +164,9 @@
   transition: transform 0.5s ease;
 }
 
+/* 7. Hover Tilt */
 .featured-card:hover .featured-img {
-  transform: scale(1.03);
+  transform: scale(1.03) rotate(0.5deg);
 }
 
 .featured-content {
@@ -135,11 +188,6 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: rgba(255,255,255,0.6);
-}
-
-.tag-highlight {
-  color: #b8a9ff;
 }
 
 .story-date {
@@ -172,6 +220,19 @@
   border-bottom: 1px solid #b8a9ff;
   padding-bottom: 4px;
   transition: 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+/* 8. Arrow Slide */
+.read-more-btn::after {
+  content: "→";
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.read-more-btn:hover::after {
+  transform: translateX(4px);
 }
 
 .read-more-btn:hover {
@@ -186,14 +247,23 @@
   justify-content: center;
 }
 
+/* 12. Scroll Container */
+.category-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 4px;
+}
+
 .category-scroll {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
+  min-width: max-content;
   justify-content: center;
+  padding: 0 10px;
 }
 
 .category-pill {
+  position: relative;
   padding: 10px 24px;
   border-radius: 30px;
   background: transparent;
@@ -202,6 +272,7 @@
   cursor: pointer;
   transition: all 0.25s ease;
   font-size: 0.95rem;
+  overflow: hidden;
 }
 
 .category-pill:hover {
@@ -211,10 +282,20 @@
 }
 
 .category-pill.active {
-  background: #fff;
-  border-color: #fff;
-  color: #000;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
   font-weight: 600;
+}
+
+/* 4. Active Underline */
+.active-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #b8a9ff;
 }
 
 /* ===========================================================
@@ -226,12 +307,10 @@
   gap: 24px;
 }
 
-/* Card Sizing Logic for Bento Effect */
 .card-wide {
   grid-column: span 2;
 }
 
-/* Fallback for smaller screens */
 @media (max-width: 800px) {
   .card-wide {
     grid-column: span 1;
@@ -244,6 +323,16 @@
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  cursor: pointer;
+  /* 1. Lift Transition */
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+/* 1. Card Lift & Shadow */
+.story-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  border-color: rgba(184, 169, 255, 0.3);
 }
 
 .card-image-wrapper {
@@ -345,14 +434,17 @@
   border: 1px solid rgba(255,255,255,0.1);
   color: #fff;
   outline: none;
+  transition: all 0.3s;
 }
 
+/* 10. Input Focus Glow */
 .newsletter-form input:focus {
   border-color: #b8a9ff;
+  box-shadow: 0 0 10px rgba(184, 169, 255, 0.2);
 }
 
 /* ===========================================================
-   FINAL CTA
+   FINAL CTA (11. Button Micro-interactions)
 =========================================================== */
 .stories-final-section {
   text-align: center;
@@ -384,27 +476,13 @@
 /* ===========================================================
    UTILITIES
 =========================================================== */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-}
-
 .glass-panel {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px) saturate(160%); /* 9. Glass Depth */
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
   transition: all 0.3s ease;
-}
-
-.glass-panel:hover {
-  transform: translateY(-5px);
-  border-color: rgba(184, 169, 255, 0.3);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .white-btn {
@@ -419,7 +497,8 @@
 }
 
 .white-btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-3px) scale(1.03); /* 11. CTA Lift */
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
 }
 
 .ghost-btn {
@@ -434,6 +513,7 @@
 
 .ghost-btn:hover {
   background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px) scale(1.03); /* 11. CTA Lift */
 }
 
 .break-line {
@@ -474,5 +554,15 @@
   .newsletter-form {
     width: 100%;
     flex-direction: column;
+  }
+
+  /* 12. Mobile Category Scroll */
+  .category-scroll {
+    justify-content: flex-start; 
+  }
+  
+  /* 12. Increased Image Height Mobile */
+  .card-image-wrapper {
+    height: 260px; 
   }
 }

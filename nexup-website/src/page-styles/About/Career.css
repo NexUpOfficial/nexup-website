@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   GLOBAL CSS FIXES (For Scrollbar Hiding)
 =========================================================== */
 .career-page {
   width: 100%;
@@ -7,8 +7,18 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  /* HIDE SCROLLBAR visually while retaining functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
+.career-page::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* ===========================================================
+   PAGE LAYOUT & WRAPPER
+=========================================================== */
 .career-wrapper {
   flex: 1;
   width: 100%;
@@ -19,6 +29,31 @@
   flex-direction: column;
   gap: 100px;
   color: #f0f0f0;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===========================================================
+   ANIMATION KEYFRAMES
+=========================================================== */
+
+/* ⭐ 1. Animated Gradient Shift */
+@keyframes glowShift {
+  0% { background-position: 0%; }
+  50% { background-position: 100%; }
+  100% { background-position: 0%; }
+}
+
+/* ⭐ 3. Parallax Glow Animation */
+@keyframes floatGlow {
+  from { transform: translate(-50%, -50%) scale(1); }
+  to   { transform: translate(-47%, -48%) scale(1.1); }
+}
+
+/* ⭐ 9. Scroll Hint Bounce */
+@keyframes hintBounce {
+  0%, 100% { transform: translate(-50%,0); }
+  50% { transform: translate(-50%,6px); }
 }
 
 /* ===========================================================
@@ -40,15 +75,21 @@
   transform: translate(-50%, -50%);
   width: 50vw;
   height: 50vh;
+  /* 10. Reduce shadow blur cost */
   background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 65%);
-  filter: blur(80px);
+  filter: blur(60px);
+  opacity: 0.8;
   z-index: 0;
   pointer-events: none;
+  /* ⭐ 3. Parallax Glow Motion */
+  animation: floatGlow 12s ease-in-out infinite alternate;
 }
 
 .career-hero-content {
   z-index: 1;
   max-width: 900px;
+  /* 12. Performance Hint */
+  will-change: transform, opacity;
 }
 
 .hero-badge {
@@ -77,6 +118,19 @@
   margin: 0 auto;
 }
 
+/* ⭐ 9. Scroll Hint Cue */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,.4);
+  font-size: 1.5rem;
+  animation: hintBounce 2s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 2;
+}
+
 /* ===========================================================
    MANIFESTO (Why Us)
 =========================================================== */
@@ -94,6 +148,7 @@
 }
 
 .manifesto-text p {
+  /* ⭐ 8. Improved mobile readability */
   font-size: 1.1rem;
   line-height: 1.7;
   color: rgba(255,255,255,0.75);
@@ -109,6 +164,11 @@
   font-style: italic;
   text-align: center;
   padding: 20px;
+}
+
+.visual-placeholder {
+  font-family: monospace;
+  font-size: 1rem;
 }
 
 /* ===========================================================
@@ -160,6 +220,12 @@
   flex-direction: column;
   justify-content: center;
   min-height: 160px;
+  transition: all 0.3s ease;
+}
+
+/* ⭐ 7. Shadow Pop on Team Cards */
+.team-card:hover {
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
 
 .team-card h3 {
@@ -174,7 +240,7 @@
 .roles-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0; /* Remove gap, use border for structure */
   width: 100%;
 }
 
@@ -185,10 +251,21 @@
   padding: 24px 32px;
   cursor: pointer;
   border-left: 3px solid transparent;
+  /* ⭐ 4. Role Ticket Hover Transition */
+  transition: all .25s cubic-bezier(.16,1,.3,1);
+  will-change: transform, background-color;
+}
+
+/* ⭐ 5. Add Divider Between Roles */
+.role-ticket + .role-ticket {
+  border-top: 1px solid rgba(255,255,255,0.07);
 }
 
 .role-ticket:hover {
   border-left-color: #b8a9ff;
+  /* ⭐ 4. Hover effect */
+  transform: translateX(6px);
+  background: rgba(255,255,255,0.06);
 }
 
 .role-info h3 {
@@ -225,6 +302,15 @@
 .role-ticket:hover .role-action {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* ⭐ 6. Hover Ripple/Arrow */
+.role-action span.arrow {
+  transition: transform .25s ease;
+}
+
+.role-ticket:hover .arrow {
+  transform: translateX(4px);
 }
 
 /* ===========================================================
@@ -303,14 +389,26 @@
 /* ===========================================================
    UTILITIES
 =========================================================== */
+
+/* ⭐ 1. Animated Gradient Titles */
 .gradient-title {
   background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  background-size: 200%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
+  animation: glowShift 6s ease infinite;
+  will-change: background-position;
 }
 
+@keyframes glowShift {
+  0% { background-position: 0%; }
+  50% { background-position: 100%; }
+  100% { background-position: 0%; }
+}
+
+/* ⭐ 2. Motion improvements for glass panels */
 .glass-panel {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
@@ -318,10 +416,11 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
   transition: all 0.3s ease;
+  will-change: transform, opacity;
 }
 
 .glass-panel:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) scale(1.015);
   border-color: rgba(184, 169, 255, 0.3);
   background: rgba(255, 255, 255, 0.05);
 }
@@ -370,6 +469,11 @@
   .manifesto-visual {
     height: 250px;
   }
+
+  .manifesto-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+  } /* ⭐ 8. Improvement */
 
   .role-ticket {
     flex-direction: column;

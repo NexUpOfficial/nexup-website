@@ -11,9 +11,22 @@
   position: relative;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
+  transition: background 0.5s ease;
 }
 
-/* 5. Animated Background Grid */
+/* ⭐ 14. Noise Texture Overlay */
+.login-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Fallback noise if image not available, using minimal SVG pattern */
+  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ⭐ 9. Animated Background Grid (Rotated) */
 .cyber-grid {
   position: absolute;
   width: 200%;
@@ -28,14 +41,20 @@
   animation: gridMove 20s linear infinite;
   z-index: 0;
   pointer-events: none;
+  transition: filter 0.5s ease;
+}
+
+/* ⭐ 13. Blur on Typing */
+.login-page.typing-mode .cyber-grid {
+  filter: blur(3px);
 }
 
 @keyframes gridMove {
-  0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-  100% { transform: perspective(500px) rotateX(60deg) translateY(60px); }
+  0% { transform: perspective(500px) rotateX(60deg) rotateZ(0deg) translateY(0); }
+  100% { transform: perspective(500px) rotateX(60deg) rotateZ(1deg) translateY(60px); }
 }
 
-/* 1. Particles */
+/* Particles */
 .particle-container {
   position: absolute;
   width: 100%;
@@ -51,7 +70,6 @@
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
-/* ⭐ 9. Reduce particle size on mobile */
 @media(max-width: 600px) {
   .particle {
     width: 1px !important;
@@ -96,7 +114,7 @@
 }
 
 /* ===========================================================
-   AI GREETING OVERLAY
+   AI GREETING OVERLAY (⭐ 1. Ambient Glow)
 =========================================================== */
 .ai-greeting-screen {
   position: fixed;
@@ -104,7 +122,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+  background: radial-gradient(circle, #0d0d0f 0%, #000 80%);
   z-index: 999;
   display: flex;
   flex-direction: column;
@@ -120,6 +138,26 @@
   margin-bottom: 20px;
   text-align: center;
   padding: 0 20px;
+}
+
+/* ⭐ 2. Typing Animation */
+.typing-effect {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #b8a9ff;
+  animation: typing 2s steps(30, end), blink-caret .75s step-end infinite;
+  width: 0;
+  animation-fill-mode: forwards; /* Stays visible */
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% } /* Adjust width fit or use max-content */
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #b8a9ff; }
 }
 
 .loader-line {
@@ -279,9 +317,14 @@
   z-index: 1;
   backdrop-filter: blur(20px);
   overflow: hidden;
+  transition: box-shadow 0.3s ease;
 }
 
-/* ⭐ 2. Hologram Sheen */
+/* ⭐ 5. Neon Rim on Typing */
+.card-active-glow {
+  box-shadow: 0 0 25px rgba(184,169,255,0.15);
+}
+
 .holo-sheen {
   position: absolute;
   top: 0; left: -100%;
@@ -314,7 +357,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; Removed to allow pulse out */
   border: 1px solid rgba(255,255,255,0.1);
   transition: 0.3s;
   z-index: 2;
@@ -324,18 +367,34 @@
   font-size: 1.5rem;
   color: #666;
   transition: 0.3s;
+  position: relative; z-index: 2;
 }
 
-/* ⭐ 3. Avatar Pulse Shadow */
+/* ⭐ 6. Pulse Ping Effect */
+.avatar-scanner::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(184,169,255,0.2);
+  opacity: 0;
+  z-index: 1;
+}
+
+.avatar-scanner.scanning::after {
+  animation: avatarPing 2s infinite;
+}
+
+@keyframes avatarPing {
+  0% { transform: scale(0.8); opacity: 0.2; }
+  50% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+
 .avatar-scanner.scanning {
   border-color: #b8a9ff;
-  animation: avatarPulse 2s infinite;
-}
-
-@keyframes avatarPulse {
-  0% { box-shadow: 0 0 10px rgba(184,169,255,0.3); }
-  50% { box-shadow: 0 0 25px rgba(184,169,255,0.6); }
-  100% { box-shadow: 0 0 10px rgba(184,169,255,0.3); }
+  box-shadow: 0 0 15px rgba(184, 169, 255, 0.3);
 }
 
 .avatar-scanner.scanning .avatar-icon {
@@ -351,6 +410,7 @@
   left: 0;
   opacity: 0;
   box-shadow: 0 0 10px #b8a9ff;
+  z-index: 3;
 }
 
 .avatar-scanner.scanning .scan-line {
@@ -435,12 +495,13 @@
   font-size: 1.1rem;
 }
 
-/* ⭐ 5. Social Lift + Glow */
+/* ⭐ 7. Magnetic Hover */
 .social-btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px) scale(1.05);
   background: rgba(255,255,255,0.15);
-  border-color: #b8a9ff;
+  border-color: rgba(184,169,255,0.6);
   color: #b8a9ff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 /* Divider */
@@ -454,18 +515,19 @@
   z-index: 2;
 }
 
+/* ⭐ 8. Soft Glow Divider */
 .auth-divider::before, .auth-divider::after {
   content: "";
   flex: 1;
   height: 1px;
-  background: rgba(255,255,255,0.1);
+  background: linear-gradient(90deg, transparent, rgba(184,169,255,0.3), transparent);
 }
 
 .auth-divider span {
   padding: 0 12px;
 }
 
-/* Inputs & Ripple */
+/* Inputs */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -478,7 +540,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 10px;
-  margin-bottom: 12px; /* Add spacing for stagger */
+  margin-bottom: 12px;
 }
 
 .input-icon {
@@ -515,7 +577,6 @@
   border-color: transparent;
 }
 
-/* ⭐ 4. Click Compress */
 .auth-form input:active {
   transform: scale(0.99);
 }
@@ -533,6 +594,15 @@
 .input-group:focus-within .input-border-glow {
   border-color: #b8a9ff;
   box-shadow: 0 0 15px rgba(184, 169, 255, 0.2) inset, 0 0 5px rgba(184, 169, 255, 0.5);
+}
+
+/* ⭐ 12. Input Success Glow */
+.input-group.success .input-border-glow {
+  border-color: #4ade80;
+  box-shadow: 0 0 10px rgba(74,222,128,0.3) inset;
+}
+.input-group.success .input-icon {
+  color: #4ade80;
 }
 
 /* Form Actions */
@@ -583,6 +653,7 @@
   z-index: 2;
 }
 
+/* ⭐ 10. Smoother Glow Trail */
 .glow-effect {
   position: absolute;
   top: 0;
@@ -593,6 +664,7 @@
   transform: translate(-50%, -50%);
   pointer-events: none;
   mix-blend-mode: overlay;
+  transition: transform 0.1s ease-out; /* Smooth follow */
 }
 
 .btn-content {

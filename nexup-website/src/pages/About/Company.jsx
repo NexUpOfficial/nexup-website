@@ -1,79 +1,18 @@
 // src/pages/About/Company.jsx
-import React from "react";
-import { motion } from "framer-motion";
+
+import React, { useState, useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { FiGlobe, FiCode, FiCpu, FiHome, FiSearch, FiCheck } from "react-icons/fi";
 import "../../page-styles/About/Company.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- DATA CONSTANTS --- */
-const ECOSYSTEM_DATA = [
-  {
-    title: "NexWorld",
-    text: "An immersive world engine that powers 3D environments, spatial AR, and interactive digital ecosystems.",
-  },
-  {
-    title: "NexNode",
-    text: "A network of intelligent nodes connecting data, users, and environments into one coherent digital universe.",
-  },
-  {
-    title: "NexEngine",
-    text: "The computation and intelligence core that processes context, behavior, and environmental signals in real time.",
-  },
-  {
-    title: "NexHousing",
-    text: "Spatial tools and systems for next-generation living, architecture, and digital property experiences.",
-  },
-  {
-    title: "NexSearch",
-    text: "A search layer for spatial and immersive contexts — enabling discovery inside 3D worlds and AR overlays.",
-  },
-];
-
-const VALUES_DATA = [
-  {
-    title: "Integrity",
-    text: "We design technology with transparency, respect, and responsibility — putting people and trust at the center.",
-  },
-  {
-    title: "Innovation",
-    text: "We experiment relentlessly, embracing new ideas and models that push beyond what exists today.",
-  },
-  {
-    title: "Humanity",
-    text: "Every system we build is meant to amplify human capability, making creativity and exploration easier.",
-  },
-];
-
-const ROADMAP_DATA = [
-  {
-    year: "2025 – 2026",
-    desc: "Foundation of NexNode, early spatial frameworks, and ecosystem architecture.",
-  },
-  {
-    year: "2026 – 2027",
-    desc: "Early-access NexWorld environments, NexHousing pilots, and developer tooling.",
-  },
-  {
-    year: "2027 – 2030",
-    desc: "Persistent digital worlds, global-scale spatial experiences, and fully realized NeX UP ecosystem.",
-  },
-];
-
-const STATS_DATA = [
-  { label: "Founded", value: "2025" },
-  { label: "Core Platforms", value: "5" },
-  { label: "Global Nodes", value: "12+" },
-  { label: "Vision", value: "∞" },
-];
-
-/* --- ANIMATION VARIANTS --- */
+/* --- ANIMATION VARIANTS (Existing) --- */
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.15, // Delays each child by 0.15s
-    },
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
   },
 };
 
@@ -82,12 +21,116 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
+// 20. Reusable GlassCard Component (Kept for context, unchanged)
+function GlassCard({ title, text, icon, className = "", children }) {
+  return (
+    <motion.div 
+      className={`glass-card-hover ${className}`}
+      variants={itemVariants}
+      style={{ willChange: 'transform, opacity' }} 
+    >
+      <div className="card-header-icon-wrapper">
+        {icon && <span className="card-icon">{icon}</span>}
+        <h3>{title}</h3>
+      </div>
+      <p>{text}</p>
+      {children}
+    </motion.div>
+  );
+}
+
+// 6. Stats Bar Animation Logic (Kept for context, unchanged)
+function AnimatedStat({ label, value, index }) {
+  const [currentValue, setCurrentValue] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  
+  useEffect(() => {
+    if (!isInView) return;
+    
+    const targetValue = parseFloat(value);
+    const isInfinity = value === "∞";
+    const duration = 1200;
+    let startTimestamp;
+
+    const animateCount = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = timestamp - startTimestamp;
+      const step = progress / duration;
+      
+      if (step < 1) {
+        setCurrentValue(Math.min(Math.floor(step * targetValue), targetValue));
+        requestAnimationFrame(animateCount);
+      } else {
+        setCurrentValue(targetValue);
+      }
+    };
+    
+    if (!isInfinity) {
+      requestAnimationFrame(animateCount);
+    }
+  }, [isInView, value]);
+
+  const displayValue = value === "∞" ? "∞" : (label === "Founded" ? value : currentValue + (label === "Global Nodes" ? '+' : ''));
+
+  return (
+    <motion.div 
+      ref={ref}
+      key={index} 
+      className="stat-item"
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      style={{ willChange: 'transform, opacity' }}
+    >
+      <span className="stat-value">{displayValue}</span>
+      <span className="stat-label">{label}</span>
+    </motion.div>
+  );
+}
+
+// --- DATA CONSTANTS (Kept for context) ---
+const ECOSYSTEM_DATA = [
+  { title: "NexWorld", text: "An immersive world engine that powers 3D environments, spatial AR, and interactive digital ecosystems.", icon: <FiGlobe /> },
+  { title: "NexNode", text: "A network of intelligent nodes connecting data, users, and environments into one coherent digital universe.", icon: <FiCpu /> },
+  { title: "NexEngine", text: "The computation and intelligence core that processes context, behavior, and environmental signals in real time.", icon: <FiCode /> },
+  { title: "NexHousing", text: "Spatial tools and systems for next-generation living, architecture, and digital property experiences.", icon: <FiHome /> },
+  { title: "NexSearch", text: "A search layer for spatial and immersive contexts — enabling discovery inside 3D worlds and AR overlays.", icon: <FiSearch /> },
+];
+const VALUES_DATA = [
+  { title: "Integrity", text: "We design technology with transparency, respect, and responsibility — putting people and trust at the center.", icon: <FiCheck /> },
+  { title: "Innovation", text: "We experiment relentlessly, embracing new ideas and models that push beyond what exists today.", icon: <FiCheck /> },
+  { title: "Humanity", text: "Every system we build is meant to amplify human capability, making creativity and exploration easier.", icon: <FiCheck /> },
+];
+const ROADMAP_DATA = [
+  { year: "2025 – 2026", desc: "Foundation of NexNode, early spatial frameworks, and ecosystem architecture." },
+  { year: "2026 – 2027", desc: "Early-access NexWorld environments, NexHousing pilots, and developer tooling." },
+  { year: "2027 – 2030", desc: "Persistent digital worlds, global-scale spatial experiences, and fully realized NeX UP ecosystem." },
+];
+const STATS_DATA = [
+  { label: "Founded", value: "2025" },
+  { label: "Core Platforms", value: "5" },
+  { label: "Global Nodes", value: "12+" },
+  { label: "Vision", value: "∞" },
+];
+// --- END DATA CONSTANTS ---
+
+
 export default function Company() {
   const navigate = useNavigate();
 
   return (
     <div className="company-page">
+      {/* 11. Performance Optimization - Add global transform style */}
+      <style global jsx>{`
+        * {
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+        }
+      `}</style>
+      
       <div className="company-wrapper">
+        
         {/* ================= HERO ================= */}
         <section className="company-hero-section">
           <motion.div
@@ -109,19 +152,12 @@ export default function Company() {
         <BreakLine />
 
         {/* ================= STATS BAR (NEW) ================= */}
-        <motion.div 
-          className="stats-container"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
+        <div className="stats-container">
+          {/* ⭐ 6. Animated Stats Bar */}
           {STATS_DATA.map((stat, index) => (
-            <div key={index} className="stat-item">
-              <span className="stat-value">{stat.value}</span>
-              <span className="stat-label">{stat.label}</span>
-            </div>
+            <AnimatedStat key={index} {...stat} index={index} />
           ))}
-        </motion.div>
+        </div>
 
         {/* ================= CEO SECTION ================= */}
         <CompanySection title="From Our Founder & CEO" className="ceo-section-alt">
@@ -132,9 +168,11 @@ export default function Company() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
+              style={{ willChange: 'transform, opacity' }}
             >
               <div className="company-ceo-image placeholder-img">
-                <span>CEO Photo</span>
+                <span className="placeholder-text">Jothish Gandham, CEO</span>
+                <div className="ceo-ambient-glow" />
               </div>
             </motion.div>
 
@@ -144,6 +182,7 @@ export default function Company() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
+              style={{ willChange: 'transform, opacity' }}
             >
               <h3 className="company-ceo-name">Jothish Gandham</h3>
               <p className="company-ceo-role">Founder</p>
@@ -185,6 +224,7 @@ export default function Company() {
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
+              style={{ willChange: 'transform, opacity' }}
             >
               <h2 className="gradient-title section-title-small">Our Mission</h2>
               <p className="company-text-small">
@@ -200,6 +240,7 @@ export default function Company() {
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
+              style={{ willChange: 'transform, opacity' }}
             >
               <h2 className="gradient-title section-title-small">Our Vision</h2>
               <p className="company-text-small">
@@ -220,7 +261,6 @@ export default function Company() {
             spatial computing and intelligent environments.
           </p>
           
-          {/* Staggered Container */}
           <motion.div
             className="ecosystem-grid"
             variants={containerVariants}
@@ -229,14 +269,13 @@ export default function Company() {
             viewport={{ once: true, amount: 0.1 }}
           >
             {ECOSYSTEM_DATA.map((item, idx) => (
-              <motion.div 
+              <GlassCard 
                 key={idx} 
-                className="ecosystem-card glass-card-hover"
-                variants={itemVariants}
-              >
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </motion.div>
+                title={item.title} 
+                text={item.text} 
+                icon={item.icon}
+                index={idx}
+              />
             ))}
           </motion.div>
         </CompanySection>
@@ -253,14 +292,13 @@ export default function Company() {
             viewport={{ once: true }}
           >
             {VALUES_DATA.map((val, idx) => (
-              <motion.div 
+              <GlassCard 
                 key={idx} 
-                className="value-card glass-card-hover"
-                variants={itemVariants}
-              >
-                <h3>{val.title}</h3>
-                <p>{val.text}</p>
-              </motion.div>
+                title={val.title} 
+                text={val.text} 
+                icon={val.icon || <FiCheck />}
+                index={idx}
+              />
             ))}
           </motion.div>
         </CompanySection>
@@ -278,6 +316,7 @@ export default function Company() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.2 }}
                 viewport={{ once: true }}
+                style={{ willChange: 'transform, opacity' }}
               >
                 <div className="roadmap-marker"></div>
                 <div className="roadmap-content">
@@ -299,6 +338,7 @@ export default function Company() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
+            style={{ willChange: 'transform, opacity' }}
           >
             <h2 className="gradient-title final-big">
               Collaborate with NeX UP
@@ -334,6 +374,7 @@ function CompanySection({ title, children, className = "" }) {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true, margin: "-50px" }}
+        style={{ willChange: 'transform, opacity' }} 
       >
         <h2 className="gradient-title section-title">{title}</h2>
         {children}
@@ -342,6 +383,16 @@ function CompanySection({ title, children, className = "" }) {
   );
 }
 
+// ⭐ 5. Horizontal Expanding BreakLine Component
 function BreakLine() {
-  return <div className="break-line" />;
+  return (
+    <motion.div 
+      className="break-line" 
+      initial={{ scaleX: 0, opacity: 0 }}
+      whileInView={{ scaleX: 1, opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      viewport={{ once: true }}
+      style={{ transformOrigin: 'center' }}
+    />
+  );
 }
