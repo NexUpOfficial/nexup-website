@@ -1,247 +1,385 @@
 /* ===========================================================
-   PAGE WRAPPER (ensures footer aligns perfectly like Home)
+   PAGE WRAPPER
 =========================================================== */
 .career-page {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
+  min-height: 100vh;
 }
 
-/* ===========================================================
-   BASE WRAPPER
-=========================================================== */
 .career-wrapper {
+  flex: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 24px;
-  color: #e8e8e8;
+  padding: 80px 24px;
   display: flex;
   flex-direction: column;
   gap: 100px;
+  color: #f0f0f0;
 }
 
 /* ===========================================================
-   HERO SECTION
+   HERO & GLOW
 =========================================================== */
-.career-hero-full {
-  min-height: 70vh;
+.career-hero-section {
+  min-height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  text-align: center;
 }
 
-.career-hero {
-  text-align: center;
+.career-glow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 65%);
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.career-hero-content {
+  z-index: 1;
   max-width: 900px;
-  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(184, 169, 255, 0.1);
+  border: 1px solid rgba(184, 169, 255, 0.2);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #b8a9ff;
+  margin-bottom: 24px;
 }
 
 .career-big-title {
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  -webkit-background-clip: text;
-  color: transparent;
-  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-  line-height: 1.2;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  line-height: 1.15;
+  margin-bottom: 20px;
 }
 
 .career-sub {
-  margin-top: 16px;
-  opacity: 0.85;
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  opacity: 0.8;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 /* ===========================================================
-   SECTION BASE
+   MANIFESTO (Why Us)
 =========================================================== */
-.default-section {
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.manifesto-text h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.manifesto-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 20px;
+}
+
+.manifesto-visual {
+  height: 350px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  color: rgba(255,255,255,0.3);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
 }
 
-.career-sec {
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+/* ===========================================================
+   BENEFITS GRID
+=========================================================== */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
 }
 
-/* GRADIENT TITLES */
-.section-title {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  -webkit-background-clip: text;
-  color: transparent;
-  position: relative;
-  padding-bottom: 10px;
+.benefit-card {
+  padding: 30px;
 }
 
-.section-title::after {
-  content: "";
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  opacity: 0.5;
-  position: absolute;
-  left: 0;
-  bottom: 0;
+.benefit-icon-line {
+  width: 30px;
+  height: 3px;
+  background: #b8a9ff;
+  margin-bottom: 16px;
+  border-radius: 2px;
 }
 
-.sec-text {
-  font-size: clamp(1.05rem, 2vw, 1.28rem);
-  opacity: 0.85;
-  white-space: pre-line;
-  line-height: 1.7;
+.benefit-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.benefit-card p {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 /* ===========================================================
    TEAMS GRID
 =========================================================== */
 .teams-grid {
-  margin-top: 32px;
   display: grid;
-  gap: 28px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
 }
 
 .team-card {
-  background: #111;
-  border: 1px solid #2a2a2a;
   padding: 24px;
-  border-radius: 14px;
-  transition: 0.3s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 160px;
 }
 
-.team-card:hover {
-  transform: translateY(-5px);
-  border-color: #a78bfa;
+.team-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #fff;
 }
 
 /* ===========================================================
-   ROLES GRID
+   ROLES LIST (Job Tickets)
 =========================================================== */
-.roles-grid {
-  margin-top: 32px;
-  display: grid;
-  gap: 28px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
 
-.role-card {
-  background: #111;
-  border: 1px solid #2a2a2a;
-  padding: 22px;
-  border-radius: 14px;
-  transition: 0.25s ease;
+.role-ticket {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
 }
 
-.role-card:hover {
-  border-color: #a78bfa;
-  transform: translateY(-5px);
+.role-ticket:hover {
+  border-left-color: #b8a9ff;
+}
+
+.role-info h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.role-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+}
+
+.role-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #b8a9ff;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.role-ticket:hover .role-action {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* ===========================================================
    LIFE AT NEX UP
 =========================================================== */
-.life-sec {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
 .life-grid {
-  margin-top: 32px;
   display: grid;
-  gap: 22px;
-
-  /* CENTER FIX */
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
 }
 
-.life-img {
-  background: #181818;
-  border: 1px solid #2d2d2d;
-  height: 180px;
-  border-radius: 14px;
+.life-card {
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.3s ease;
+}
+
+.life-card:hover {
+  transform: scale(1.02);
+  border-color: #b8a9ff;
+}
+
+.life-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  opacity: 0.85;
-  font-size: 1.1rem;
-  transition: 0.25s ease;
-}
-
-.life-img:hover {
-  opacity: 1;
-  transform: translateY(-4px);
+  align-items: center;
+  color: rgba(255,255,255,0.3);
+  background: linear-gradient(135deg, #111, #1a1a1a);
 }
 
 /* ===========================================================
    FINAL CTA
 =========================================================== */
-.career-final {
+.career-final-section {
+  display: flex;
+  justify-content: center;
   text-align: center;
-  max-width: 900px;
-  margin: 0 auto;
+}
+
+.career-final {
+  max-width: 800px;
 }
 
 .final-big {
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  margin-bottom: 16px;
 }
 
 .final-text {
-  margin-top: 14px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.85;
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 30px;
 }
 
 .white-btn {
-  margin-top: 26px;
-  padding: 14px 32px;
   background: #fff;
   color: #000;
-  border-radius: 10px;
+  padding: 14px 32px;
+  border-radius: 30px;
   border: none;
+  font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .white-btn:hover {
-  background: #e8e8e8;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
 /* ===========================================================
-   BREAK LINE
+   UTILITIES
 =========================================================== */
+.gradient-title {
+  background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+  transform: translateY(-5px);
+  border-color: rgba(184, 169, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.career-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.career-section-inner {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+
+.centered-title {
+  width: 100%;
+  text-align: center;
+}
+
 .break-line {
   width: 100%;
   height: 1px;
-  background: rgba(255,255,255,0.1);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
 }
 
 /* ===========================================================
-   RESPONSIVENESS
+   MEDIA QUERIES
 =========================================================== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .career-wrapper {
-    padding: 40px 18px;
+    padding: 60px 20px;
+    gap: 70px;
   }
-  .white-btn {
-    width: 100%;
+  
+  .manifesto-grid {
+    grid-template-columns: 1fr;
   }
-}
+  
+  .manifesto-visual {
+    height: 250px;
+  }
 
-@media (min-width: 1440px) {
-  .career-wrapper {
-    max-width: 1300px;
+  .role-ticket {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
-}
 
-@media (min-width: 1920px) {
-  .career-wrapper {
-    max-width: 1600px;
+  .role-action {
+    opacity: 1;
+    transform: none;
+    font-size: 0.9rem;
   }
 }

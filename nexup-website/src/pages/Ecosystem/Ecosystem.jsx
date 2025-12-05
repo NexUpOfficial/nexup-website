@@ -3,10 +3,10 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useCallback,
   useMemo,
   Suspense,
 } from "react";
+import { motion } from "framer-motion";
 import "../../page-styles/Ecosystem/Ecosystem.css";
 
 /* Lazy-loaded pages */
@@ -16,13 +16,13 @@ const NexEngine = React.lazy(() => import("./NexEngine"));
 const NexHousing = React.lazy(() => import("./NexHousing"));
 const EcosystemSearch = React.lazy(() => import("./NexSearch"));
 
-/* Tab data */
+/* Tab Data */
 const TAB_DATA = [
   { key: "nexworld", name: "NexWorld" },
   { key: "nexnodes", name: "NexNodes" },
   { key: "nexengine", name: "NexEngine" },
   { key: "nexhousing", name: "NexHousing" },
-  { key: "search", name: "Search Engine" },
+  { key: "search", name: "Search" },
 ];
 
 const COMPONENT_MAP = {
@@ -33,7 +33,7 @@ const COMPONENT_MAP = {
   search: EcosystemSearch,
 };
 
-/* Preloaders for next/previous tabs */
+/* Preloaders */
 const PRELOADERS = {
   nexworld: () => import("./NexWorld"),
   nexnodes: () => import("./NexNodes"),
@@ -42,37 +42,38 @@ const PRELOADERS = {
   search: () => import("./NexSearch"),
 };
 
-/* Skeleton loader */
+/* Skeleton Loader */
 function SkeletonFallback() {
   return (
     <div className="eco-loading">
-      <div className="eco-skeleton" />
+      <div className="eco-spinner" />
     </div>
   );
 }
 
-/* Tab content */
+/* Tab Content Wrapper */
 const TabContent = React.memo(
   ({ activeTab, isRevealing, contentRef, swipeOffset }) => {
     const ActiveComponent = COMPONENT_MAP[activeTab];
 
     return (
-      <div
-        className={`eco-content eco-reveal ${
-          isRevealing ? "eco-reveal-active" : ""
-        }`}
+      <motion.div
+        className="eco-content"
         ref={contentRef}
         role="tabpanel"
         id={`panel-${activeTab}`}
-        style={{
-          transform: `translateX(${swipeOffset}px)`,
-          opacity: 1 - Math.min(Math.abs(swipeOffset) / 200, 0.4),
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0, 
+          x: swipeOffset 
         }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <Suspense fallback={<SkeletonFallback />}>
           <ActiveComponent />
         </Suspense>
-      </div>
+      </motion.div>
     );
   }
 );
@@ -82,8 +83,6 @@ export default function Ecosystem() {
 
   const [activeTab, setActiveTab] = useState("nexworld");
   const [hideHeader, setHideHeader] = useState(false);
-  const [isRevealing, setIsRevealing] = useState(false);
-  const [heroAnimated, setHeroAnimated] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState(0);
 
   const minSwipe = 75;
@@ -91,24 +90,19 @@ export default function Ecosystem() {
   const contentRef = useRef(null);
   const tabListRef = useRef(null);
 
-  /* Deep linking */
+  /* Deep Linking */
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
     if (tabKeys.includes(hash)) setActiveTab(hash);
-  }, []);
+  }, [tabKeys]);
 
-  /* Hero revealed ONLY once */
-  useEffect(() => {
-    const t = setTimeout(() => setHeroAnimated(true), 50);
-    return () => clearTimeout(t);
-  }, []);
-
-  /* Hide header on scroll */
+  /* Scroll Header Logic */
   useEffect(() => {
     let last = window.scrollY;
     const onScroll = () => {
       const now = window.scrollY;
-      if (now > last && now > 200) setHideHeader(true);
+      // Only hide if we are scrolled down a bit
+      if (now > last && now > 100) setHideHeader(true);
       else setHideHeader(false);
       last = now;
     };
@@ -117,39 +111,39 @@ export default function Ecosystem() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Reveal animation on tab change */
-  useEffect(() => {
-    setIsRevealing(true);
-    const t = setTimeout(() => setIsRevealing(false), 600);
-    return () => clearTimeout(t);
-  }, [activeTab]);
-
-  /* Preload next + prev tabs */
+  /* Preload Adjacent Tabs */
   useEffect(() => {
     const index = tabKeys.indexOf(activeTab);
     const next = tabKeys[index + 1];
     const prev = tabKeys[index - 1];
 
-    if (PRELOADERS[next]) PRELOADERS[next]();
-    if (PRELOADERS[prev]) PRELOADERS[prev]();
+    if (next && PRELOADERS[next]) PRELOADERS[next]();
+    if (prev && PRELOADERS[prev]) PRELOADERS[prev]();
   }, [activeTab, tabKeys]);
 
-  /* Change tab */
+  /* Auto-scroll Tab Bar on Mobile */
+  useEffect(() => {
+    if (tabListRef.current) {
+      const activeEl = tabListRef.current.querySelector(`[data-tab="${activeTab}"]`);
+      if (activeEl) {
+        activeEl.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }
+  }, [activeTab]);
+
+  /* Change Tab */
   const changeTab = (key) => {
     if (key === activeTab) return;
-
     setActiveTab(key);
     window.history.replaceState(null, "", `#${key}`);
-
-    if (contentRef.current) {
-      window.scrollTo({
-        top: contentRef.current.offsetTop - 80,
-        behavior: "smooth",
-      });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* Swipe gestures */
+  /* Swipe Gestures */
   const onTouchStart = (e) => {
     touchStartRef.current = e.touches[0].clientX;
     setSwipeOffset(0);
@@ -157,7 +151,8 @@ export default function Ecosystem() {
 
   const onTouchMove = (e) => {
     const dx = e.touches[0].clientX - touchStartRef.current;
-    setSwipeOffset(dx * 0.45);
+    // Damping
+    setSwipeOffset(dx * 0.4);
   };
 
   const onTouchEnd = (e) => {
@@ -173,67 +168,54 @@ export default function Ecosystem() {
     if (x !== i) changeTab(tabKeys[x]);
   };
 
-  /* Keyboard navigation */
-  const onKeyDown = (e) => {
-    const i = tabKeys.indexOf(activeTab);
-    let x = i;
-
-    if (e.key === "ArrowRight") x = Math.min(i + 1, tabKeys.length - 1);
-    if (e.key === "ArrowLeft") x = Math.max(i - 1, 0);
-
-    if (x !== i) {
-      changeTab(tabKeys[x]);
-      const el = tabListRef.current?.querySelector(
-        `[data-tab-key="${tabKeys[x]}"]`
-      );
-      el?.focus();
-    }
-  };
-
   return (
-    <div className="eco-container">
-      {/* HERO */}
-      <section className="eco-hero">
-        <h1
-          className={`eco-title eco-reveal ${
-            heroAnimated ? "eco-reveal-active" : ""
-          }`}
-        >
-          Explore the NexUP Ecosystem
-        </h1>
+    <div className="eco-page">
+      {/* Background Ambience */}
+      <div className="eco-ambient-bg" />
 
-        <p
-          className={`eco-desc eco-reveal ${
-            heroAnimated ? "eco-reveal-active" : ""
-          }`}
+      {/* HERO */}
+      <section className="eco-hero-section">
+        <motion.div 
+          className="eco-hero-content"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
         >
-          Discover our platforms powering AR, VR, intelligence, and digital
-          reality — modular, connected, and built for the future.
-        </p>
+          <span className="eco-badge">The Unified Platform</span>
+          <h1 className="eco-title">
+            One Ecosystem. <br /> Infinite Realities.
+          </h1>
+          <p className="eco-desc">
+            Navigate the layers of the NeX UP universe. From the physics engine to the 
+            social fabric, everything is connected.
+          </p>
+        </motion.div>
       </section>
 
-      {/* TABS */}
-      <div className={`eco-tab-header ${hideHeader ? "hide-eco-header" : ""}`}>
-        <div
-          className="eco-tab-list"
-          role="tablist"
-          onKeyDown={onKeyDown}
-          ref={tabListRef}
-        >
+      {/* NAVIGATION DOCK */}
+      <div className={`eco-dock-wrapper ${hideHeader ? "dock-hidden" : ""}`}>
+        <div className="eco-dock" ref={tabListRef}>
           {TAB_DATA.map(({ key, name }) => (
-            <span
+            <button
               key={key}
-              data-tab-key={key}
-              className={activeTab === key ? "active" : ""}
+              data-tab={key}
               onClick={() => changeTab(key)}
+              className={`dock-item ${activeTab === key ? "active" : ""}`}
             >
-              {name}
-            </span>
+              {activeTab === key && (
+                <motion.div
+                  layoutId="dock-pill"
+                  className="dock-pill-bg"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+              <span className="dock-label">{name}</span>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* CONTENT */}
+      {/* DYNAMIC CONTENT */}
       <div
         className="eco-content-wrapper"
         onTouchStart={onTouchStart}
@@ -242,7 +224,6 @@ export default function Ecosystem() {
       >
         <TabContent
           activeTab={activeTab}
-          isRevealing={isRevealing}
           contentRef={contentRef}
           swipeOffset={swipeOffset}
         />

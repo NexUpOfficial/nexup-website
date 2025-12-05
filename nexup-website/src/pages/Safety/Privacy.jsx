@@ -1,9 +1,57 @@
 // src/pages/Support/Privacy.jsx
-
+import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { 
+  FiShield, FiLock, FiEye, FiDatabase, FiServer, 
+  FiUserCheck, FiGlobe, FiFileText 
+} from "react-icons/fi";
 import "../../page-styles/Safety/Privacy.css";
 import Footer from "../../components/Footer/Footer";
+
+/* --- DATA --- */
+const LAST_UPDATED = "December 10, 2025";
+
+const DATA_COLLECTION = [
+  {
+    icon: <FiUserCheck />,
+    title: "Identity Data",
+    text: "Name, email, and authentication tokens needed to secure your account."
+  },
+  {
+    icon: <FiGlobe />,
+    title: "Spatial Telemetry",
+    text: "Anonymized movement and interaction data to render AR/VR environments."
+  },
+  {
+    icon: <FiDatabase />,
+    title: "Usage Metrics",
+    text: "Performance logs and error reports to improve system stability."
+  },
+  {
+    icon: <FiServer />,
+    title: "Device Info",
+    text: "Hardware model, OS version, and network status for compatibility."
+  }
+];
+
+const USER_RIGHTS = [
+  { title: "Right to Access", desc: "Request a copy of all data linked to your profile." },
+  { title: "Right to Delete", desc: "Permanently remove your account and associated data." },
+  { title: "Right to Rectify", desc: "Correct inaccurate or incomplete personal information." },
+  { title: "Opt-Out", desc: "Withdraw consent for non-essential data processing." }
+];
+
+/* --- VARIANTS --- */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 export default function Privacy() {
   const navigate = useNavigate();
@@ -11,258 +59,202 @@ export default function Privacy() {
   return (
     <div className="privacy-page">
       <div className="privacy-wrapper">
-        {/* ============== HERO ============== */}
+        
+        {/* ================= HERO ================= */}
         <section className="privacy-hero-section">
+          <div className="privacy-glow" />
           <motion.div
-            className="privacy-hero"
+            className="privacy-hero-content"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+            transition={{ duration: 1.1, ease: "easeOut" }}
           >
+            <div className="status-badge">
+              <span className="status-dot"></span> Effective: {LAST_UPDATED}
+            </div>
             <h1 className="gradient-title privacy-hero-title">
-              Security & Privacy at NeX UP
+              Your Privacy, Secured.
             </h1>
             <p className="privacy-hero-sub">
-              How we think about protecting your data, your environments, and your
-              trust across the NeX UP ecosystem.
+              NeX UP is built on a foundation of trust. We believe transparency is the new standard for the spatial web.
             </p>
           </motion.div>
         </section>
 
         <BreakLine />
 
-        {/* ============== OVERVIEW ============== */}
-        <PrivacySection title="Our Approach">
-          <p className="privacy-text">
-            NeX UP is built on systems that connect people, spaces, and intelligent
-            environments. Security and privacy are not optional layers — they are
-            part of the core architecture.
-          </p>
-          <p className="privacy-text">
-            This page provides a high-level overview of how we handle data, protect
-            your environments, and give you control over your information.
-          </p>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ============== WHAT WE COLLECT ============== */}
-        <PrivacySection title="What We May Collect">
-          <div className="privacy-grid">
-            <PrivacyCard
-              title="Account Information"
-              text="Basic details like your name, email, and authentication data required to create and secure your account."
-            />
-            <PrivacyCard
-              title="Usage Data"
-              text="High-level information about how you use NeX UP features, so we can improve reliability and experience."
-            />
-            <PrivacyCard
-              title="Device & Technical Data"
-              text="Non-sensitive device, performance, and diagnostic details that help us maintain compatibility and stability."
-            />
-            <PrivacyCard
-              title="Spatial & Environment Signals"
-              text="In some experiences, anonymized or processed spatial data may be used to enable AR/VR features — not to track you personally."
-            />
+        {/* ================= PREAMBLE ================= */}
+        <PrivacySection>
+          <div className="privacy-intro glass-panel">
+            <FiShield className="intro-icon" />
+            <div className="intro-text">
+              <h3>Our Core Promise</h3>
+              <p>
+                We do not sell your personal data. We only collect what is necessary to build immersive, 
+                intelligent experiences. Security is not a feature; it is our architecture.
+              </p>
+            </div>
           </div>
         </PrivacySection>
 
         <BreakLine />
 
-        {/* ============== HOW WE USE DATA ============== */}
-        <PrivacySection title="How We Use Your Data">
-          <ul className="privacy-list">
-            <li>To provide and maintain NeX UP services and features.</li>
-            <li>To secure accounts, detect abuse, and prevent misuse.</li>
-            <li>To improve performance, reliability, and user experience.</li>
-            <li>To test and roll out new features in a safe manner.</li>
-            <li>To comply with legal, safety, or regulatory requirements where applicable.</li>
-          </ul>
+        {/* ================= DATA COLLECTION GRID ================= */}
+        <PrivacySection title="Data We Collect">
+          <motion.div 
+            className="data-grid"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {DATA_COLLECTION.map((item, idx) => (
+              <motion.div 
+                key={idx} 
+                className="data-card glass-panel"
+                variants={itemVariants}
+              >
+                <div className="card-icon-wrapper">{item.icon}</div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </PrivacySection>
 
         <BreakLine />
 
-        {/* ============== SECURITY PRACTICES ============== */}
-        <PrivacySection title="Security Practices">
-          <div className="privacy-grid">
-            <PrivacyCard
-              title="Layered Protection"
-              text="We use multiple layers of defense — from infrastructure-level safeguards to application checks."
-            />
-            <PrivacyCard
-              title="Access Control"
-              text="Only authorized systems and roles can access sensitive operations, following the principle of least privilege."
-            />
-            <PrivacyCard
-              title="Monitoring & Detection"
-              text="We monitor for unusual activity, potential abuse patterns, and system-level anomalies."
-            />
-            <PrivacyCard
-              title="Ongoing Improvements"
-              text="Security is never ‘done’ — we iterate, review, and evolve practices as the platform grows."
-            />
+        {/* ================= SECURITY PRACTICES ================= */}
+        <PrivacySection title="Defense-in-Depth">
+          <div className="security-layout">
+            <motion.div 
+              className="security-visual"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="shield-graphic">
+                <FiLock />
+              </div>
+            </motion.div>
+            <motion.div 
+              className="security-list"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="security-item">
+                <h4>End-to-End Encryption</h4>
+                <p>Data in transit and at rest is encrypted using industry-standard protocols (AES-256).</p>
+              </div>
+              <div className="security-item">
+                <h4>Access Control</h4>
+                <p>Strict role-based access ensures only authorized systems can process sensitive data.</p>
+              </div>
+              <div className="security-item">
+                <h4>Anomaly Detection</h4>
+                <p>AI-driven monitoring detects and blocks suspicious activity in real-time.</p>
+              </div>
+            </motion.div>
           </div>
         </PrivacySection>
 
         <BreakLine />
 
-        {/* ============== YOUR CONTROLS ============== */}
-        <PrivacySection title="Your Controls & Choices">
-          <p className="privacy-text">
-            Where possible, you stay in control of what is stored, how it’s used,
-            and how long it’s kept.
-          </p>
-          <ul className="privacy-list">
-            <li>Update or correct account information from your profile.</li>
-            <li>Adjust certain settings related to notifications or experiences.</li>
-            <li>Request deletion or export of certain data where supported.</li>
-            <li>Opt out of non-essential communications.</li>
-          </ul>
+        {/* ================= USER RIGHTS ================= */}
+        <PrivacySection title="Your Rights & Controls">
+          <motion.div 
+            className="rights-grid"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {USER_RIGHTS.map((right, idx) => (
+              <motion.div 
+                key={idx} 
+                className="right-card glass-panel-sm"
+                variants={itemVariants}
+              >
+                <h4>{right.title}</h4>
+                <p>{right.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </PrivacySection>
 
         <BreakLine />
 
-        {/* ============== COOKIES & ANALYTICS ============== */}
-        <PrivacySection title="Cookies & Analytics">
-          <p className="privacy-text">
-            NeX UP may use cookies or similar technologies to remember preferences,
-            keep you signed in, and understand basic usage patterns.
-          </p>
-          <p className="privacy-text">
-            Where analytics are used, they are focused on improving performance,
-            stability, and overall product experience — not on tracking you across
-            unrelated services.
-          </p>
+        {/* ================= LEGAL & THIRD PARTIES ================= */}
+        <PrivacySection title="Legal & Compliance">
+          <div className="legal-text-block">
+            <p>
+              NeX UP complies with major data protection regulations including GDPR and CCPA. 
+              We may share data with trusted third-party infrastructure providers (e.g., cloud hosting, payment processors) 
+              solely for the purpose of delivering our service.
+            </p>
+            <p>
+              For a full list of sub-processors or to read the detailed legal text, please download the full PDF.
+            </p>
+            <button className="download-btn">
+              <FiFileText /> Download Full Policy (PDF)
+            </button>
+          </div>
         </PrivacySection>
 
         <BreakLine />
 
-        {/* ============== THIRD-PARTY SERVICES ============== */}
-        <PrivacySection title="Third-Party Services">
-          <p className="privacy-text">
-            In some cases, NeX UP may integrate with third-party tools (for
-            example, for infrastructure, analytics, or authentication).  
-            These services are selected with care and are expected to follow strong
-            security and privacy standards.
-          </p>
-          <p className="privacy-text">
-            Where relevant, additional terms or disclosures may apply when you use
-            those integrations.
-          </p>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ============== CHILDREN & SENSITIVE USES ============== */}
-        <PrivacySection title="Sensitive Uses & Younger Users">
-          <p className="privacy-text">
-            NeX UP is primarily designed for professional, creative, and technical
-            use. It is not intended for unsupervised use by young children.
-          </p>
-          <p className="privacy-text">
-            Experiences should not be designed to target vulnerable groups with
-            manipulative, harmful, or deceptive systems.
-          </p>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ============== CHANGES ============== */}
-        <PrivacySection title="Changes to This Page">
-          <p className="privacy-text">
-            As NeX UP evolves, this Security & Privacy page may be updated to
-            reflect new features, safeguards, or requirements.
-          </p>
-          <p className="privacy-text">
-            When we make meaningful changes, we aim to communicate them through
-            product updates, notices, or other clear channels.
-          </p>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ============== FINAL CTA ============== */}
+        {/* ================= FINAL CTA ================= */}
         <section className="privacy-final-section">
           <motion.div
             className="privacy-final"
-            initial={{ opacity: 0, y: 60 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
             <h2 className="gradient-title final-big">
-              Questions, concerns, or feedback?
+              Data Protection Officer
             </h2>
             <p className="final-text">
-              If you’d like to understand more about how NeX UP handles security
-              and privacy, or if you believe something isn’t working as expected,
-              please reach out.
+              Have a specific concern regarding your data? Contact our DPO directly.
             </p>
-
             <div className="privacy-final-actions">
-              <button
-                className="white-btn"
-                onClick={() => navigate("/contact")}
-              >
-                Contact NeX UP →
+              <button className="white-btn" onClick={() => navigate("/contact")}>
+                Contact DPO
               </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/support/guidelines")}
-              >
-                View Guidelines →
-              </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/support/help")}
-              >
-                Go to Help Center →
+              <button className="ghost-btn" onClick={() => navigate("/support/help")}>
+                Help Center
               </button>
             </div>
           </motion.div>
         </section>
-      </div>
 
+      </div>
       <Footer />
     </div>
   );
 }
 
-/* ============== REUSABLE COMPONENTS ============== */
-
-function BreakLine() {
-  return <div className="break-line" />;
-}
+/* ================= COMPONENTS ================= */
 
 function PrivacySection({ title, children }) {
   return (
     <section className="privacy-section">
       <motion.div
         className="privacy-section-inner"
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-50px" }}
       >
-        <h2 className="gradient-title section-title">{title}</h2>
+        {title && <h2 className="gradient-title section-title">{title}</h2>}
         {children}
       </motion.div>
     </section>
   );
 }
 
-function PrivacyCard({ title, text }) {
-  return (
-    <motion.div
-      className="privacy-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
+function BreakLine() {
+  return <div className="break-line" />;
 }

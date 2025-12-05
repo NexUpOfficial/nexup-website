@@ -1,350 +1,395 @@
-          /* ============================================
-             HOME — Premium Cinematic Landing Page
-          ============================================ */
+/* ============================================
+   GLOBAL & ROOT VARIABLES
+============================================ */
+:root {
+  --neon-purple: #b8a9ff;
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(20, 20, 20, 0.4);
+  --bg-black: #050505;
+}
 
-          .home-container {
-            width: 100%;
-            background: #000000;
-            color: #fff;
-            overflow-x: hidden;
-            min-height: 100vh;
-          }
+.home-container {
+  width: 100%;
+  background: var(--bg-black);
+  color: #fff;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
 
-          /* ==============================================
-             HERO FULLSCREEN WRAPPER
-          ============================================== */
+/* ============================================
+   1. HERO SECTION (Immersive)
+============================================ */
+.hero-fullscreen-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
-          .hero-fullscreen-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100vh; /* Full Viewport Height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-          }
+.video-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
 
-          /* =======================================
-             1. BACKGROUND VIDEO LAYER
-          ======================================= */
+.bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8; /* Slight dim */
+}
 
-          .video-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-          }
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3); /* Base tint */
+}
 
-          .bg-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
+/* Vignette for cinematic focus */
+.video-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 40%, #050505 100%);
+  z-index: 1;
+}
 
-          /* Dark Overlay to make white text readable */
-          .video-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4); 
-            background: linear-gradient(
-              to bottom,
-              rgba(0, 0, 0, 0.3) 0%,
-              rgba(0, 0, 0, 0.6) 80%,
-              #000000 100%
-            );
-            z-index: 1;
-          }
+.hero-content-layer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 1000px;
+  padding: 0 24px;
+}
 
-          /* =======================================
-             2. HERO TEXT LAYER
-          ======================================= */
+/* Hero Badge */
+.hero-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  font-family: monospace;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--neon-purple);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
 
-          .hero-content-layer {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 0 20px;
-            width: 100%;
-          }
+/* Hero Typography */
+.home-title {
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
 
-          .home-hero {
-            max-width: 900px;
-            margin: 0 auto;
-          }
+.gradient-text {
+  background: linear-gradient(90deg, #fff, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
-          /* =======================================
-             TYPOGRAPHY & BUTTONS
-          ======================================= */
+.home-subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  color: rgba(255,255,255,0.85);
+  max-width: 650px;
+  margin: 0 auto 40px auto;
+  line-height: 1.6;
+}
 
-          .home-title {
-            position: relative;
-            margin-bottom: 1.2rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-            font-size: clamp(2.5rem, 6vw + 1rem, 4.5rem);
-          }
+/* Hero Buttons */
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
 
-          .home-subtitle {
-            opacity: 0.9;
-            margin-bottom: 2.5rem;
-            font-weight: 400;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-            font-size: clamp(1.1rem, 1.5vw + 0.5rem, 1.5rem);
-          }
+.primary-btn {
+  padding: 16px 36px;
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 
-          /* BUTTONS */
-          .home-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-          }
+.primary-btn:hover {
+  transform: scale(1.05);
+}
 
-          .home-btn {
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-          }
+.secondary-btn {
+  padding: 16px 36px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-weight: 500;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
 
-          .home-btn:hover {
-            transform: translateY(-3px);
-          }
-          .home-btn:active {
-            transform: scale(0.95);
-          }
+.secondary-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
 
-          /* Fill Button (Glassmorphism) */
-          .fill-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            color: #fff;
-          }
+/* ============================================
+   2. CONTENT FLOW & MANIFESTO
+============================================ */
+.content-flow {
+  position: relative;
+  z-index: 10;
+  background: var(--bg-black);
+  padding-bottom: 100px;
+}
 
-          .fill-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
-          }
+.section {
+  padding: 120px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-          /* Outline Button */
-          .outline-btn {
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            background: transparent;
-            color: #fff;
-          }
+.manifesto-section {
+  text-align: left;
+}
 
-          .outline-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #fff;
-          }
+.manifesto-text {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.2;
+  font-weight: 500;
+  color: rgba(255,255,255,0.5); /* Dimmed by default */
+}
 
-          /* Arrow Animation */
-          .arrow {
-            transition: transform 0.3s ease;
-          }
-          .home-btn:hover .arrow {
-            transform: translateX(4px);
-          }
+.manifesto-text .highlight {
+  color: #fff; /* Highlight keywords */
+}
 
-          /* =======================================
-             CONTENT FLOW (Below Hero)
-          ======================================= */
+.manifesto-sub {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 600px;
+  line-height: 1.7;
+  border-left: 2px solid var(--neon-purple);
+  padding-left: 20px;
+}
 
-          .content-flow {
-            position: relative;
-            z-index: 5;
-            background: #000;
-          }
+/* ============================================
+   3. BENTO GRID (Ecosystem)
+============================================ */
+.section-header {
+  margin-bottom: 50px;
+}
 
-          /* Sections */
-          .section {
-            padding: 6rem 1rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-          }
+.small-label {
+  font-family: monospace;
+  color: var(--neon-purple);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
 
-          .section-title {
-            margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, #a78bfa, #ffffff);
-            -webkit-background-clip: text;
-            color: transparent;
-            font-size: clamp(2rem, 3vw + 0.5rem, 3rem);
-          }
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
 
-          .section-text {
-            opacity: 0.8;
-            line-height: 1.8;
-            max-width: 800px;
-            margin: 0 auto;
-            font-size: clamp(1rem, 1vw + 0.2rem, 1.3rem);
-          }
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(250px, auto);
+  gap: 24px;
+}
 
-          /* =======================================
-             SCROLL REVEAL (HEAVY ANIMATION)
-          ======================================= */
+/* CARD BASE STYLE */
+.bento-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 30px;
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
 
-          .reveal {
-            opacity: 0;
-            /* Start lower and slightly smaller for dramatic "pop" effect */
-            transform: translateY(150px) scale(0.95);
-            /* Longer and more complex transition for smoothness */
-            transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* Note: transition-delay is handled by JavaScript */
-          }
+.bento-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(184, 169, 255, 0.4);
+  background: rgba(255,255,255,0.08);
+}
 
-          .reveal.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
+.bento-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
 
-          /* =======================================
-             PLATFORM CARDS
-          ======================================= */
+.bento-card p {
+  color: rgba(255,255,255,0.6);
+  font-size: 1rem;
+  line-height: 1.5;
+}
 
-          .platform-flex {
-            display: flex;
-            flex-direction: column;
-            gap: 3rem;
-            margin-top: 4rem;
-            align-items: center;
-          }
+/* SPECIFIC CARD SIZES */
+.card-large {
+  grid-column: span 2;
+  grid-row: span 2;
+  background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(40,40,40,0.6));
+}
 
-          .platform-row {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            width: 100%;
-          }
+.card-tall {
+  grid-row: span 2;
+}
 
-          .platform-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2.5rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            transition: 0.4s ease;
-            width: clamp(280px, 30vw, 360px);
-            text-align: left;
-            min-height: 250px;
-          }
+.card-wide {
+  grid-column: span 2;
+}
 
-          .platform-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(167, 139, 250, 0.5);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            background: rgba(255, 255, 255, 0.05);
-          }
+/* Card Visuals */
+.card-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  transition: opacity 0.4s;
+}
 
-          .platform-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #fff;
-          }
+.bento-card:hover .card-bg {
+  opacity: 0.4;
+}
 
-          .platform-card p {
-            opacity: 0.7;
-            line-height: 1.6;
-          }
+.world-bg {
+  background: radial-gradient(circle at top right, #4a3aff, transparent);
+}
 
-          /* Explore Btn in Platforms */
-          .explore-btn {
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
-            background: #a78bfa;
-            color: #000;
-            font-weight: bold;
-            border-radius: 30px;
-            text-decoration: none;
-            transition: 0.3s;
-          }
+.card-arrow {
+  display: inline-block;
+  margin-top: 20px;
+  font-weight: 600;
+  color: var(--neon-purple);
+  transition: transform 0.3s;
+}
 
-          .explore-btn:hover {
-            background: #fff;
-            transform: scale(1.05);
-          }
+.bento-card:hover .card-arrow {
+  transform: translateX(5px);
+}
 
-          /* =======================================
-             FOOTER STYLES
-          ======================================= */
+.tech-lines {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
+  opacity: 0.5;
+}
 
-          .footer-container {
-            width: 100%;
-            padding: 2.5rem 1rem;
-            background: #000;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            margin-top: 4rem;
-          }
+/* ============================================
+   4. FUTURE SECTION
+============================================ */
+.future-section {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
 
-          .footer-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.95rem;
-            opacity: 0.7;
-          }
+.future-box {
+  max-width: 800px;
+  padding: 60px;
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+}
 
-          .footer-links a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 20px;
-            transition: opacity 0.3s;
-          }
+.future-box h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #fff, #888);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
-          .footer-links a:hover {
-            opacity: 1;
-          }
+.future-box p {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 30px;
+}
 
-          @media (max-width: 600px) {
-            .footer-content {
-              flex-direction: column;
-              text-align: center;
-            }
-            .footer-links {
-              margin-top: 15px;
-            }
-            .footer-links a {
-              margin: 0 10px;
-            }
-          }
+.text-link {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid var(--neon-purple);
+  padding-bottom: 2px;
+  transition: color 0.3s;
+}
 
-          /* =======================================
-             MOBILE RESPONSIVENESS
-          ======================================= */
+.text-link:hover {
+  color: var(--neon-purple);
+}
 
-          @media (max-width: 768px) {
-            .home-buttons {
-              flex-direction: column;
-              align-items: center;
-              width: 100%;
-            }
-            .home-btn {
-              width: 80%;
-              justify-content: center;
-            }
+/* ============================================
+   SCROLL REVEAL ANIMATIONS
+============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 
-            .platform-card {
-              width: 90%;
-            }
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-            .section {
-              padding: 4rem 1rem;
-            }
-          }
+/* ============================================
+   RESPONSIVE DESIGN
+============================================ */
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card-large {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+  .card-tall {
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 3rem;
+  }
+  
+  .home-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .primary-btn, .secondary-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-wide, .card-large {
+    grid-column: span 1;
+  }
+}

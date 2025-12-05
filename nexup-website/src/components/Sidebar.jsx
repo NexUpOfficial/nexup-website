@@ -5,70 +5,108 @@ import "./styles/Sidebar.css";
 import RisingSmoke from "../animations/RisingSmoke";
 
 function Sidebar({ isOpen, onClose }) {
-  const [openSection, setOpenSection] = useState(null);
-  const location = useLocation();
+  // UX: Load persisted state from localStorage to remember user preferences
+  const [openSection, setOpenSection] = useState(() => {
+    return localStorage.getItem("sidebar_open_section") || null;
+  });
 
-  /* ======================================
-       REMOVE useHeaderHeight COMPLETELY
-     Replace with fixed top offset: 90px
-  ====================================== */
+  const [sectionOrder, setSectionOrder] = useState(() => {
+    const savedOrder = localStorage.getItem("sidebar_section_order");
+    return savedOrder ? JSON.parse(savedOrder) : ["main", "ecosystem", "about", "support", "account"];
+  });
+
+  const [isDragging, setIsDragging] = useState(null); // UX: Track dragging state
+  const location = useLocation();
   const FIXED_HEADER_OFFSET = 90;
 
   /* ------------------------
-       MOBILE SWIPE CLOSE
-  ------------------------- */
+       MOBILE SWIPE CLOSE (Improved)
+     ------------------------- */
   const [touchStartX, setTouchStartX] = useState(0);
-  const [touchEndX, setTouchEndX] = useState(0);
-  const minSwipeDistance = 60;
+  const [touchStartY, setTouchStartY] = useState(0);
 
   useEffect(() => {
     if (!isOpen) return;
-
     const el = document.querySelector(".sidebar");
 
-    const handleTouchStart = (e) => setTouchStartX(e.changedTouches[0].screenX);
-    const handleTouchMove = (e) => setTouchEndX(e.changedTouches[0].screenX);
-    const handleTouchEnd = () => {
-      if (touchStartX - touchEndX > minSwipeDistance) onClose?.();
+    const handleTouchStart = (e) => {
+      setTouchStartX(e.changedTouches[0].screenX);
+      setTouchStartY(e.changedTouches[0].screenY);
+    };
+
+    const handleTouchEnd = (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      
+      const xDiff = touchStartX - touchEndX;
+      const yDiff = Math.abs(touchStartY - touchEndY);
+
+      // UX: Only close if swipe is horizontal and distinct (ignore vertical scrolling swipes)
+      if (xDiff > 60 && yDiff < 30) { 
+        onClose?.();
+      }
     };
 
     el.addEventListener("touchstart", handleTouchStart);
-    el.addEventListener("touchmove", handleTouchMove);
     el.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       el.removeEventListener("touchstart", handleTouchStart);
-      el.removeEventListener("touchmove", handleTouchMove);
       el.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isOpen, touchStartX, touchEndX]);
+  }, [isOpen, touchStartX, touchStartY, onClose]);
 
   /* ------------------------
-     AUTO OPEN ON ROUTE
-  ------------------------- */
+       AUTO OPEN & PERSISTENCE
+     ------------------------- */
   useEffect(() => {
-    if (location.pathname.startsWith("/ecosystem")) setOpenSection("ecosystem");
-    else if (location.pathname.startsWith("/about")) setOpenSection("about");
-    else if (
-      location.pathname.startsWith("/safety") ||
-      location.pathname === "/dns" ||
-      location.pathname === "/login"
-    )
-      setOpenSection("account");
+    // UX: Save open section to local storage
+    if (openSection) {
+      localStorage.setItem("sidebar_open_section", openSection);
+    } else {
+      localStorage.removeItem("sidebar_open_section");
+    }
+  }, [openSection]);
+
+  // UX: Auto-highlight section based on route, but don't override manual toggle if user closed it
+  useEffect(() => {
+    // Only auto-open if nothing is stored or if it matches the route significantly
+    const path = location.pathname;
+    let targetSection = null;
+
+    if (path.startsWith("/ecosystem")) targetSection = "ecosystem";
+    else if (path.startsWith("/about")) targetSection = "about";
+    else if (path.startsWith("/safety") || path === "/dns" || path === "/login") targetSection = "account";
+
+    if (targetSection && openSection !== targetSection) {
+       setOpenSection(targetSection);
+    }
   }, [location.pathname]);
 
   /* ------------------------
-     AUTO CLOSE ON MOBILE
-  ------------------------- */
+       AUTO CLOSE ON MOBILE
+     ------------------------- */
   useEffect(() => {
     if (window.innerWidth <= 768 && isOpen) onClose?.();
   }, [location.pathname]);
 
-  const toggle = (key) => setOpenSection((prev) => (prev === key ? null : key));
+  /* ------------------------
+       TOGGLE HANDLER (Keyboard + Click)
+     ------------------------- */
+  const toggle = (key) => {
+    setOpenSection((prev) => (prev === key ? null : key));
+  };
+
+  const handleKeyDown = (e, key) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggle(key);
+    }
+  };
 
   /* ------------------------
-            ROUTE ITEMS
-  ------------------------- */
+            DATA
+     ------------------------- */
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld" },
     { label: "NexNodes", to: "/ecosystem/nexnodes" },
@@ -102,15 +140,14 @@ function Sidebar({ isOpen, onClose }) {
 
   /* ------------------------
         SCROLL SHADOWS
-  ------------------------- */
+     ------------------------- */
   useEffect(() => {
     const container = document.querySelector(".sidebar-inner");
     if (!container) return;
 
     const handleShadow = () => {
       const atTop = container.scrollTop <= 0;
-      const atBottom =
-        container.scrollHeight - container.scrollTop <= container.clientHeight;
+      const atBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 1; // +1 buffer
 
       container.classList.toggle("shadow-top", !atTop);
       container.classList.toggle("shadow-bottom", !atBottom);
@@ -122,17 +159,24 @@ function Sidebar({ isOpen, onClose }) {
   }, []);
 
   /* ------------------------
-      DRAG & DROP SECTIONS
-  ------------------------- */
-  const [sectionOrder, setSectionOrder] = useState([
-    "main",
-    "ecosystem",
-    "about",
-    "support",
-    "account"
-  ]);
+       DRAG & DROP UX
+     ------------------------- */
+  const onDragStart = (e, id) => {
+    setIsDragging(id);
+    e.dataTransfer.setData("id", id);
+    e.dataTransfer.effectAllowed = "move";
+    // UX: Add a slight delay to the visual class change so the ghost image isn't styled
+    setTimeout(() => {
+        const el = document.getElementById(`section-${id}`);
+        if(el) el.classList.add('dragging');
+    }, 0);
+  };
 
-  const onDragStart = (e, id) => e.dataTransfer.setData("id", id);
+  const onDragEnd = (e, id) => {
+    setIsDragging(null);
+    const el = document.getElementById(`section-${id}`);
+    if(el) el.classList.remove('dragging');
+  };
 
   const onDrop = (e, id) => {
     const draggedId = e.dataTransfer.getData("id");
@@ -146,25 +190,20 @@ function Sidebar({ isOpen, onClose }) {
     newOrder.splice(to, 0, draggedId);
 
     setSectionOrder(newOrder);
+    // UX: Save new order to persistence
+    localStorage.setItem("sidebar_section_order", JSON.stringify(newOrder));
   };
 
   const allowDrop = (e) => e.preventDefault();
 
   /* ------------------------
-         SIDEBAR STRUCTURE
-  ------------------------- */
+        RENDER SECTIONS
+     ------------------------- */
   const sidebarSections = {
     main: (
       <>
         <div className="sidebar-section-label">MAIN</div>
-
-        <NavLink
-          to="/"
-          end
-          className={({ isActive }) =>
-            "sidebar-item sidebar-link" + (isActive ? " active" : "")
-          }
-        >
+        <NavLink to="/" end className={({ isActive }) => "sidebar-item sidebar-link" + (isActive ? " active" : "")}>
           <span className="left-indicator" />
           Home
         </NavLink>
@@ -174,32 +213,21 @@ function Sidebar({ isOpen, onClose }) {
     ecosystem: (
       <>
         <div className="sidebar-section-label">ECOSYSTEM</div>
-        <button
+        <div
+          role="button"
+          tabIndex={0}
           onClick={() => toggle("ecosystem")}
-          className={
-            "sidebar-item sidebar-parent" +
-            (openSection === "ecosystem" ? " open" : "")
-          }
+          onKeyDown={(e) => handleKeyDown(e, "ecosystem")}
+          className={"sidebar-item sidebar-parent" + (openSection === "ecosystem" ? " open" : "")}
+          aria-expanded={openSection === "ecosystem"}
         >
           <span className="left-indicator" />
           Ecosystem
           <span className="arrow">{openSection === "ecosystem" ? "▴" : "▾"}</span>
-        </button>
-
-        <div
-          className={
-            "sidebar-submenu " +
-            (openSection === "ecosystem" ? "expand" : "collapse")
-          }
-        >
+        </div>
+        <div className={"sidebar-submenu " + (openSection === "ecosystem" ? "expand" : "collapse")}>
           {ecosystemItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                "sidebar-subitem sidebar-link" + (isActive ? " active" : "")
-              }
-            >
+            <NavLink key={item.to} to={item.to} className={({ isActive }) => "sidebar-subitem sidebar-link" + (isActive ? " active" : "")}>
               <span className="left-indicator" />
               {item.label}
             </NavLink>
@@ -211,33 +239,21 @@ function Sidebar({ isOpen, onClose }) {
     about: (
       <>
         <div className="sidebar-section-label">ABOUT</div>
-
-        <button
+        <div
+          role="button"
+          tabIndex={0}
           onClick={() => toggle("about")}
-          className={
-            "sidebar-item sidebar-parent" +
-            (openSection === "about" ? " open" : "")
-          }
+          onKeyDown={(e) => handleKeyDown(e, "about")}
+          className={"sidebar-item sidebar-parent" + (openSection === "about" ? " open" : "")}
+          aria-expanded={openSection === "about"}
         >
           <span className="left-indicator" />
           About
           <span className="arrow">{openSection === "about" ? "▴" : "▾"}</span>
-        </button>
-
-        <div
-          className={
-            "sidebar-submenu " +
-            (openSection === "about" ? "expand" : "collapse")
-          }
-        >
+        </div>
+        <div className={"sidebar-submenu " + (openSection === "about" ? "expand" : "collapse")}>
           {aboutItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                "sidebar-subitem sidebar-link" + (isActive ? " active" : "")
-              }
-            >
+            <NavLink key={item.to} to={item.to} className={({ isActive }) => "sidebar-subitem sidebar-link" + (isActive ? " active" : "")}>
               <span className="left-indicator" />
               {item.label}
             </NavLink>
@@ -249,15 +265,8 @@ function Sidebar({ isOpen, onClose }) {
     support: (
       <>
         <div className="sidebar-section-label">SUPPORT</div>
-
         {supportItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) =>
-              "sidebar-item sidebar-link" + (isActive ? " active" : "")
-            }
-          >
+          <NavLink key={item.to} to={item.to} className={({ isActive }) => "sidebar-item sidebar-link" + (isActive ? " active" : "")}>
             <span className="left-indicator" />
             {item.label}
           </NavLink>
@@ -268,33 +277,21 @@ function Sidebar({ isOpen, onClose }) {
     account: (
       <>
         <div className="sidebar-section-label">ACCOUNT & SAFETY</div>
-
-        <button
+        <div
+          role="button"
+          tabIndex={0}
           onClick={() => toggle("account")}
-          className={
-            "sidebar-item sidebar-parent" +
-            (openSection === "account" ? " open" : "")
-          }
+          onKeyDown={(e) => handleKeyDown(e, "account")}
+          className={"sidebar-item sidebar-parent" + (openSection === "account" ? " open" : "")}
+          aria-expanded={openSection === "account"}
         >
           <span className="left-indicator" />
           Account & Safety
           <span className="arrow">{openSection === "account" ? "▴" : "▾"}</span>
-        </button>
-
-        <div
-          className={
-            "sidebar-submenu " +
-            (openSection === "account" ? "expand" : "collapse")
-          }
-        >
+        </div>
+        <div className={"sidebar-submenu " + (openSection === "account" ? "expand" : "collapse")}>
           {accountItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                "sidebar-subitem sidebar-link" + (isActive ? " active" : "")
-              }
-            >
+            <NavLink key={item.to} to={item.to} className={({ isActive }) => "sidebar-subitem sidebar-link" + (isActive ? " active" : "")}>
               <span className="left-indicator" />
               {item.label}
             </NavLink>
@@ -304,9 +301,6 @@ function Sidebar({ isOpen, onClose }) {
     )
   };
 
-  /* ------------------------
-         RETURN MARKUP
-  ------------------------- */
   return (
     <aside
       className={`sidebar ${isOpen ? "open" : ""}`}
@@ -314,22 +308,24 @@ function Sidebar({ isOpen, onClose }) {
         top: FIXED_HEADER_OFFSET,
         height: `calc(100vh - ${FIXED_HEADER_OFFSET}px)`
       }}
+      aria-hidden={!isOpen}
     >
-      {/* Smoke Background */}
       <div className="sidebar-smoke">
         <RisingSmoke />
       </div>
 
       <div className="sidebar-inner">
-        {/* Render Reorderable Sections */}
         {sectionOrder.map((id) => (
           <div
             key={id}
-            className="sidebar-section"
-            draggable
+            id={`section-${id}`}
+            className={`sidebar-section ${isDragging === id ? 'dragging' : ''}`}
+            draggable="true"
             onDragStart={(e) => onDragStart(e, id)}
+            onDragEnd={(e) => onDragEnd(e, id)}
             onDragOver={allowDrop}
             onDrop={(e) => onDrop(e, id)}
+            title="Drag to reorder"
           >
             {sidebarSections[id]}
           </div>

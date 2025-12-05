@@ -5,279 +5,480 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #000;
+  overflow-x: hidden;
 }
 
 .nexengine-wrapper {
   flex: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 100px 24px;
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 120px;
   color: #e8e8e8;
+  position: relative;
+  z-index: 2;
 }
 
 /* ===========================================================
-   HERO
+   HERO SECTION (Engine Dashboard Theme)
 =========================================================== */
 .nexengine-hero-section {
-  min-height: 60vh;
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  min-height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
-.nexengine-hero {
-  max-width: 900px;
+/* Technical Grid Background */
+.nexengine-grid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(184, 169, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184, 169, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 0;
+}
+
+.nexengine-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 60%);
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.nexengine-hero-content {
+  z-index: 2;
   text-align: center;
+  max-width: 900px;
+  padding: 0 24px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #b8a9ff;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
 }
 
 .nexengine-hero-title {
-  font-size: clamp(2.4rem, 4.8vw, 3.8rem);
-  line-height: 1.2;
+  color: #ffffff;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
 }
 
 .nexengine-hero-sub {
-  margin-top: 16px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  max-width: 650px;
+  margin: 0 auto 50px auto;
   opacity: 0.85;
+  line-height: 1.6;
+  color: #d4d4d4;
 }
 
-/* Gradient */
-.gradient-title {
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  -webkit-background-clip: text;
-  color: transparent;
+/* Engine Status Strip */
+.engine-status-strip {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-label {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.stat-val {
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: #4ade80; /* Green */
   font-weight: 700;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
 }
 
 /* ===========================================================
-   BREAK LINE
-=========================================================== */
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.16);
-}
-
-/* ===========================================================
-   SECTION
+   INTRO SECTION
 =========================================================== */
 .nexengine-section {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .nexengine-section-inner {
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.intro-text-block {
+  text-align: center;
+  padding: 60px 40px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .section-title {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  padding-bottom: 10px;
-  position: relative;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 40px;
+  display: inline-block;
 }
 
-.section-title::after {
-  content: "";
-  height: 2px;
+.large-text {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  line-height: 1.6;
+  color: #e0e0e0;
+}
+
+/* ===========================================================
+   BENTO GRID
+=========================================================== */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
   width: 100%;
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  opacity: 0.5;
-  position: absolute;
-  left: 0;
-  bottom: 0;
 }
 
-/* Text + lists */
-.nexengine-text {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  opacity: 0.85;
-  line-height: 1.7;
-}
-
-.nexengine-list {
-  list-style: disc;
-  padding-left: 22px;
+.bento-card {
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 1.02rem;
-  opacity: 0.9;
+  justify-content: flex-start;
+  min-height: 240px;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
 }
 
-/* ===========================================================
-   GRID CARDS
-=========================================================== */
-.nexengine-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.bento-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(184, 169, 255, 0.4);
+  transform: translateY(-5px);
 }
 
-.small-grid {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.card-wide {
+  grid-column: span 2;
+  background: linear-gradient(135deg, rgba(25,25,25,0.8), rgba(45,45,45,0.4));
 }
 
-.capability-card,
-.layer-card,
-.tool-card,
-.step-card {
-  background: #111;
-  border-radius: 14px;
-  border: 1px solid #2b2b2b;
-  padding: 22px;
-  transition: 0.3s ease;
+.card-tall {
+  grid-row: span 2;
 }
 
-.capability-card:hover,
-.layer-card:hover,
-.tool-card:hover,
-.step-card:hover {
-  border-color: #a78bfa;
-  transform: translateY(-4px);
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.capability-card h3,
-.layer-card h3,
-.tool-card h3,
-.step-card h3 {
-  margin-bottom: 8px;
+.card-icon {
+  font-size: 1.5rem;
+  color: #b8a9ff;
 }
 
-/* ===========================================================
-   LAYERS GRID
-=========================================================== */
-.layers-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-/* ===========================================================
-   TOOLS GRID
-=========================================================== */
-.tools-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-/* ===========================================================
-   WORKFLOW
-=========================================================== */
-.workflow-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-.step-badge {
-  display: inline-block;
-  margin-bottom: 8px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid #a78bfa;
+.card-label {
+  font-family: monospace;
   font-size: 0.8rem;
-  opacity: 0.9;
+  color: #b8a9ff;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.bento-card h3 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.bento-card p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .card-wide, .card-tall { grid-column: span 1; grid-row: span 1; }
+}
+
+/* ===========================================================
+   ENGINE STACK
+=========================================================== */
+.engine-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stack-layer {
+  display: grid;
+  grid-template-columns: 60px 1fr 40px;
+  align-items: center;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid rgba(255, 255, 255, 0.1);
+  transition: 0.3s ease;
+  cursor: default;
+}
+
+.stack-id {
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.stack-content h3 {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.stack-content p {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #b8a9ff;
+}
+
+.stack-lines {
+  height: 2px;
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+}
+
+/* ===========================================================
+   DEV SPLIT SECTION
+=========================================================== */
+.dev-split {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.tech-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tech-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+.tech-list li svg {
+  color: #b8a9ff;
+  font-size: 1.2rem;
+}
+
+/* Code Window */
+.code-window {
+  background: #0d0d0d;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.window-header {
+  background: rgba(255,255,255,0.05);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.filename {
+  margin-left: 12px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.code-content {
+  padding: 24px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #a78bfa;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .dev-split { grid-template-columns: 1fr; }
+}
+
+/* ===========================================================
+   PERFORMANCE METRICS
+=========================================================== */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.metric-card {
+  text-align: center;
+  padding: 30px;
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.metric-label {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
 }
 
 /* ===========================================================
    FINAL CTA
 =========================================================== */
 .nexengine-final-section {
+  text-align: center;
   display: flex;
   justify-content: center;
 }
 
 .nexengine-final {
-  max-width: 900px;
-  text-align: center;
+  max-width: 800px;
 }
 
 .final-big {
-  font-size: clamp(2.3rem, 5vw, 3.9rem);
-  line-height: 1.15;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  margin-bottom: 20px;
 }
 
 .final-text {
-  margin-top: 14px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.85;
-  line-height: 1.6;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
 }
 
 .nexengine-final-actions {
-  margin-top: 24px;
   display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
   justify-content: center;
-}
-
-/* Buttons */
-.white-btn {
-  padding: 14px 32px;
-  background: #ffffff;
-  color: #000;
-  border-radius: 10px;
-  border: none;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.white-btn:hover {
-  background: #e8e8e8;
-}
-
-.ghost-btn {
-  padding: 14px 32px;
-  background: transparent;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #e8e8e8;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.ghost-btn:hover {
-  background: rgba(255,255,255,0.06);
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 /* ===========================================================
-   RESPONSIVE
+   UTILITIES
 =========================================================== */
-@media (max-width: 768px) {
-  .nexengine-wrapper {
-    padding: 40px 18px;
-    gap: 70px;
-  }
-
-  .white-btn,
-  .ghost-btn {
-    width: 100%;
-  }
+.gradient-title {
+  background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
-@media (min-width: 1440px) {
-  .nexengine-wrapper {
-    max-width: 1300px;
-  }
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
 }
 
-@media (min-width: 1920px) {
-  .nexengine-wrapper {
-    max-width: 1600px;
-  }
+.glass-panel-sm {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.white-btn {
+  background: #fff;
+  color: #000;
+  padding: 16px 32px;
+  border-radius: 4px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.white-btn:hover {
+  transform: scale(1.03);
+}
+
+.ghost-btn {
+  background: transparent;
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+
+.break-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
 }

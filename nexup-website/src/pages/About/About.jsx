@@ -3,10 +3,10 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useCallback,
   useMemo,
   Suspense,
 } from "react";
+import { motion } from "framer-motion";
 import "../../page-styles/About/About.css";
 
 /* Lazy-loaded sub-pages */
@@ -17,9 +17,9 @@ const Company = React.lazy(() => import("./Company"));
 const Career = React.lazy(() => import("./Career"));
 const News = React.lazy(() => import("./News"));
 
-/* Tab map */
+/* Tab Data */
 const TAB_DATA = [
-  { key: "about", name: "About" },
+  { key: "about", name: "Overview" },
   { key: "vision", name: "Vision" },
   { key: "team", name: "Team" },
   { key: "stories", name: "Stories" },
@@ -47,7 +47,7 @@ const COMPONENT_MAP = {
   ),
 };
 
-/* Preloaders for instant switching */
+/* Preloaders */
 const PRELOADERS = {
   vision: () => import("./Vision"),
   team: () => import("./Team"),
@@ -57,37 +57,38 @@ const PRELOADERS = {
   news: () => import("./News"),
 };
 
-/* Skeleton loader */
+/* Skeleton Loader */
 function SkeletonFallback() {
   return (
-    <div className="tab-loading-state" aria-busy="true">
-      <div className="about-skeleton" />
+    <div className="about-loading">
+      <div className="about-spinner" />
     </div>
   );
 }
 
-/* Tab content component */
+/* Tab Content Wrapper */
 const TabContent = React.memo(
-  ({ activeTab, isRevealing, contentRef, swipeOffset }) => {
+  ({ activeTab, contentRef, swipeOffset }) => {
     const ActiveComponent = COMPONENT_MAP[activeTab];
 
     return (
-      <div
-        className={`about-content about-reveal ${
-          isRevealing ? "about-reveal-active" : ""
-        }`}
+      <motion.div
+        className="about-content"
         ref={contentRef}
         role="tabpanel"
         id={`panel-${activeTab}`}
-        style={{
-          transform: `translateX(${swipeOffset}px)`,
-          opacity: 1 - Math.min(Math.abs(swipeOffset) / 200, 0.4),
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0, 
+          x: swipeOffset 
         }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <Suspense fallback={<SkeletonFallback />}>
           <ActiveComponent />
         </Suspense>
-      </div>
+      </motion.div>
     );
   }
 );
@@ -95,40 +96,26 @@ const TabContent = React.memo(
 export default function About() {
   const tabKeys = useMemo(() => TAB_DATA.map((t) => t.key), []);
   const [activeTab, setActiveTab] = useState("about");
-
   const [hideHeader, setHideHeader] = useState(false);
-
-  const [isRevealing, setIsRevealing] = useState(false);
-
   const [swipeOffset, setSwipeOffset] = useState(0);
 
-  const [heroAnimated, setHeroAnimated] = useState(false);
-
+  const minSwipe = 75;
   const touchStartRef = useRef(0);
   const contentRef = useRef(null);
   const tabListRef = useRef(null);
-  const minSwipe = 75;
 
-  /* Deep linking */
+  /* Deep Linking */
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
     if (tabKeys.includes(hash)) setActiveTab(hash);
-  }, []);
+  }, [tabKeys]);
 
-  /* Hero animate ONCE */
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setHeroAnimated(true);
-    }, 50);
-    return () => clearTimeout(t);
-  }, []);
-
-  /* Hide/show header on scroll */
+  /* Scroll Header Logic */
   useEffect(() => {
     let last = window.scrollY;
     const onScroll = () => {
       const now = window.scrollY;
-      if (now > last && now > 200) setHideHeader(true);
+      if (now > last && now > 100) setHideHeader(true);
       else setHideHeader(false);
       last = now;
     };
@@ -136,37 +123,39 @@ export default function About() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Tab reveal animation */
-  useEffect(() => {
-    setIsRevealing(true);
-    const t = setTimeout(() => setIsRevealing(false), 600);
-    return () => clearTimeout(t);
-  }, [activeTab]);
-
-  /* Preload next + prev tabs */
+  /* Preload Adjacent Tabs */
   useEffect(() => {
     const index = tabKeys.indexOf(activeTab);
     const next = tabKeys[index + 1];
     const prev = tabKeys[index - 1];
-    if (PRELOADERS[next]) PRELOADERS[next]();
-    if (PRELOADERS[prev]) PRELOADERS[prev]();
+
+    if (next && PRELOADERS[next]) PRELOADERS[next]();
+    if (prev && PRELOADERS[prev]) PRELOADERS[prev]();
   }, [activeTab, tabKeys]);
 
-  /* Change tab */
-  const changeTab = (tab) => {
-    if (tab === activeTab) return;
-    setActiveTab(tab);
-    window.history.replaceState(null, "", `#${tab}`);
-
-    if (contentRef.current) {
-      window.scrollTo({
-        top: contentRef.current.offsetTop - 80,
-        behavior: "smooth",
-      });
+  /* Auto-scroll Tab Bar on Mobile */
+  useEffect(() => {
+    if (tabListRef.current) {
+      const activeEl = tabListRef.current.querySelector(`[data-tab="${activeTab}"]`);
+      if (activeEl) {
+        activeEl.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
     }
+  }, [activeTab]);
+
+  /* Change Tab */
+  const changeTab = (key) => {
+    if (key === activeTab) return;
+    setActiveTab(key);
+    window.history.replaceState(null, "", `#${key}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* Touch gestures */
+  /* Swipe Gestures */
   const onTouchStart = (e) => {
     touchStartRef.current = e.touches[0].clientX;
     setSwipeOffset(0);
@@ -174,7 +163,7 @@ export default function About() {
 
   const onTouchMove = (e) => {
     const dx = e.touches[0].clientX - touchStartRef.current;
-    setSwipeOffset(dx * 0.45);
+    setSwipeOffset(dx * 0.4);
   };
 
   const onTouchEnd = (e) => {
@@ -182,75 +171,61 @@ export default function About() {
     setSwipeOffset(0);
 
     const i = tabKeys.indexOf(activeTab);
-    let nextIndex = i;
-
-    if (dx > minSwipe) nextIndex = Math.min(i + 1, tabKeys.length - 1);
-    else if (dx < -minSwipe) nextIndex = Math.max(i - 1, 0);
-
-    if (nextIndex !== i) changeTab(tabKeys[nextIndex]);
-  };
-
-  /* Keyboard navigation */
-  const onKeyDown = (e) => {
-    const i = tabKeys.indexOf(activeTab);
     let x = i;
 
-    if (e.key === "ArrowRight") x = Math.min(i + 1, tabKeys.length - 1);
-    if (e.key === "ArrowLeft") x = Math.max(i - 1, 0);
+    if (dx > minSwipe) x = Math.min(i + 1, tabKeys.length - 1);
+    else if (dx < -minSwipe) x = Math.max(i - 1, 0);
 
-    if (x !== i) {
-      changeTab(tabKeys[x]);
-      const el = tabListRef.current?.querySelector(
-        `[data-tab-key="${tabKeys[x]}"]`
-      );
-      el?.focus();
-    }
+    if (x !== i) changeTab(tabKeys[x]);
   };
 
   return (
-    <div className="about-container">
-      {/* HERO - animate ONLY on first load */}
-      <section className="about-hero">
-        <h1
-          className={`about-title about-reveal ${
-            heroAnimated ? "about-reveal-active" : ""
-          }`}
-        >
-          About NeX UP
-        </h1>
+    <div className="about-page">
+      {/* Background Ambience */}
+      <div className="about-ambient-bg" />
 
-        <p
-          className={`about-desc about-reveal ${
-            heroAnimated ? "about-reveal-active" : ""
-          }`}
+      {/* HERO */}
+      <section className="about-hero-section">
+        <motion.div 
+          className="about-hero-content"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
         >
-          Explore our journey, teams, values, and how we build the digital future.
-        </p>
+          <span className="about-badge">Who We Are</span>
+          <h1 className="about-title">
+            Defining the Future <br /> of Digital Reality.
+          </h1>
+          <p className="about-desc">
+            Explore our journey, teams, values, and the vision behind NeX UP.
+          </p>
+        </motion.div>
       </section>
 
-      {/* TABS HEADER */}
-      <div className={`about-tab-header ${hideHeader ? "hide-about-header" : ""}`}>
-        <div
-          className="about-tab-list"
-          onKeyDown={onKeyDown}
-          ref={tabListRef}
-          role="tablist"
-        >
+      {/* NAVIGATION DOCK */}
+      <div className={`about-dock-wrapper ${hideHeader ? "dock-hidden" : ""}`}>
+        <div className="about-dock" ref={tabListRef}>
           {TAB_DATA.map(({ key, name }) => (
-            <span
+            <button
               key={key}
-              data-tab-key={key}
-              className={activeTab === key ? "active" : ""}
+              data-tab={key}
               onClick={() => changeTab(key)}
-              tabIndex="0"
+              className={`dock-item ${activeTab === key ? "active" : ""}`}
             >
-              {name}
-            </span>
+              {activeTab === key && (
+                <motion.div
+                  layoutId="about-dock-pill"
+                  className="dock-pill-bg"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+              <span className="dock-label">{name}</span>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* CONTENT */}
+      {/* DYNAMIC CONTENT */}
       <div
         className="about-content-wrapper"
         onTouchStart={onTouchStart}
@@ -259,11 +234,12 @@ export default function About() {
       >
         <TabContent
           activeTab={activeTab}
-          isRevealing={isRevealing}
           contentRef={contentRef}
           swipeOffset={swipeOffset}
         />
       </div>
+
+     
     </div>
   );
 }

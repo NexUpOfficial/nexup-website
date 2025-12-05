@@ -1,43 +1,41 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE LAYOUT & BACKGROUND
 =========================================================== */
 .nexworld-page {
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #000; /* Ensure black bg behind potential gaps */
+  background-color: #000;
+  overflow-x: hidden;
 }
 
-/* Wrapper now only controls content AFTER the hero */
 .nexworld-wrapper {
   flex: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 24px; /* Increased top padding slightly */
+  padding: 100px 24px;
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 120px;
   color: #e8e8e8;
   position: relative;
-  z-index: 2; /* Sits above any potential fixed backgrounds */
+  z-index: 2;
 }
 
 /* ===========================================================
-   HERO SECTION (NEW: Full Width Video)
+   HERO SECTION (Cinematic)
 =========================================================== */
 .nexworld-hero-section {
   position: relative;
   width: 100%;
-  height: 85vh; /* Takes up 85% of viewport height */
-  min-height: 600px;
+  height: 90vh; /* Taller hero */
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Crops video if it spills */
+  overflow: hidden;
 }
 
-/* Video Container Background */
 .nexworld-video-background {
   position: absolute;
   top: 0;
@@ -50,11 +48,10 @@
 .hero-video-element {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures video fills screen without stretching */
-  display: block;
+  object-fit: cover;
 }
 
-/* Dark Gradient Overlay for Readability */
+/* Sophisticated Overlay: Darker at bottom for text readability */
 .video-overlay {
   position: absolute;
   top: 0;
@@ -63,301 +60,329 @@
   height: 100%;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.4) 60%,
     rgba(0, 0, 0, 1) 100%
   );
   z-index: 1;
 }
 
-/* Text Content Wrapper */
 .nexworld-hero-content {
   position: relative;
-  z-index: 2; /* Sits on top of video and overlay */
+  z-index: 2;
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   padding: 0 24px;
   text-align: center;
 }
 
-.nexworld-hero-text-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ===========================================================
-   HERO TITLE (White)
-=========================================================== */
 .nexworld-hero-title {
-  color: #ffffff; /* Explicitly White */
-  font-size: clamp(3rem, 6vw, 5rem);
-  line-height: 1.1;
-  margin-bottom: 20px;
-  font-weight: 700;
-  /* Soft white glow for legibility over video */
-  text-shadow: 0px 0px 30px rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  font-size: clamp(4rem, 8vw, 7rem); /* Massive Impact Font */
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  /* Subtle glow */
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
 }
 
 .nexworld-hero-sub {
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-  max-width: 700px;
-  opacity: 0.95;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Shadow for readability on video */
-  color: #f0f0f0;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.9;
+  line-height: 1.6;
+  color: #d4d4d4;
 }
 
-/* Gradient title (Used for Section Headers only now) */
+/* ===========================================================
+   TYPOGRAPHY & SECTIONS
+=========================================================== */
 .gradient-title {
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
+  background: linear-gradient(90deg, #b8a9ff, #ffffff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
 }
 
-/* ===========================================================
-   BREAK LINE
-=========================================================== */
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-}
-
-/* ===========================================================
-   SECTION
-=========================================================== */
 .nexworld-section {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .nexworld-section-inner {
-  width: 100%; /* Ensure inner takes full available width */
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
 }
 
 .section-title {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  padding-bottom: 12px;
-  position: relative;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 40px;
   display: inline-block;
-  margin-bottom: 10px;
 }
 
-.section-title::after {
-  content: "";
-  height: 2px;
-  width: 60px; /* Stylish short line */
-  background: #a78bfa;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  box-shadow: 0 0 10px #a78bfa;
+.nexworld-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.large-text {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  line-height: 1.5;
+  color: #fff;
+  max-width: 900px;
+}
+
+.intro-text-block {
+  text-align: left;
 }
 
 /* ===========================================================
-   TEXT & LISTS
+   BENTO GRID (Core Architecture)
 =========================================================== */
-.nexworld-text {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  opacity: 0.85;
-  line-height: 1.7;
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
 }
 
-.nexworld-list {
-  list-style: none; /* Removed default bullets for custom look */
-  padding-left: 0;
+.bento-card {
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-size: 1.05rem;
-  opacity: 0.9;
+  justify-content: space-between;
+  min-height: 220px;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
 }
 
-.nexworld-list li {
-  position: relative;
-  padding-left: 24px;
+.bento-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(184, 169, 255, 0.4);
+  transform: translateY(-5px);
 }
 
-.nexworld-list li::before {
-  content: "•";
-  color: #a78bfa;
-  position: absolute;
-  left: 0;
+/* Large card spans 2 columns */
+.large-card {
+  grid-column: span 2;
+  background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(40,40,40,0.3));
+}
+
+.card-label {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #b8a9ff;
+  margin-bottom: 20px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.bento-card h3 {
   font-size: 1.5rem;
-  line-height: 1rem;
-  top: 4px;
-}
-
-/* ===========================================================
-   GRIDS & RICH CARDS
-=========================================================== */
-.nexworld-grid,
-.worldtype-grid,
-.pipeline-grid,
-.spaces-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.core-card,
-.worldtype-card,
-.step-card,
-.space-card {
-  background: rgba(20, 20, 20, 0.6); /* Semi-transparent */
-  backdrop-filter: blur(10px); /* Glass effect */
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 26px;
-  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.core-card:hover,
-.worldtype-card:hover,
-.step-card:hover,
-.space-card:hover {
-  border-color: #a78bfa;
-  background: rgba(167, 139, 250, 0.05);
-  transform: translateY(-6px);
-  box-shadow: 0 10px 30px -10px rgba(167, 139, 250, 0.15);
-}
-
-.core-card h3,
-.worldtype-card h3,
-.step-card h3,
-.space-card h3 {
-  margin-bottom: 10px;
-  font-size: 1.3rem;
   color: #fff;
+  margin-bottom: 10px;
 }
 
-.core-card p,
-.worldtype-card p,
-.step-card p,
-.space-card p {
-  color: #ccc;
-  font-size: 0.95rem;
+.bento-card p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
 }
 
-/* Step badge */
-.step-badge {
-  display: inline-block;
-  margin-bottom: 12px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: rgba(167, 139, 250, 0.1);
-  border: 1px solid rgba(167, 139, 250, 0.5);
-  color: #a78bfa;
-  font-size: 0.85rem;
-  font-weight: 600;
+/* Mobile Responsive Grid */
+@media (max-width: 900px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .large-card {
+    grid-column: span 1;
+  }
+}
+
+/* ===========================================================
+   WORLD TYPES (Minimal List)
+=========================================================== */
+.world-types-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.world-type-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  cursor: default;
+  transition: background 0.3s ease;
+  padding-left: 20px; /* For hover effect space */
+}
+
+.world-type-row h3 {
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+.world-type-row p {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.6);
+}
+
+@media (max-width: 768px) {
+  .world-type-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* ===========================================================
+   PIPELINE (Big Numbers)
+=========================================================== */
+.pipeline-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.pipeline-step {
+  position: relative;
+  padding-right: 20px;
+}
+
+/* Connective Line visual trick (optional) */
+.pipeline-step::after {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  z-index: -1;
+}
+
+.step-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.1); /* Subtle big number */
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.step-content h4 {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.step-content p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.6);
+}
+
+@media (max-width: 768px) {
+  .pipeline-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+/* ===========================================================
+   ECOSYSTEM CONNECTION BOX
+=========================================================== */
+.connection-box {
+  background: rgba(184, 169, 255, 0.03);
+  border: 1px solid rgba(184, 169, 255, 0.15);
+  border-radius: 20px;
+  padding: 60px;
+  text-align: center;
+}
+
+.centered-text {
+  max-width: 700px;
+  margin: 20px auto 0;
+  font-size: 1.2rem;
 }
 
 /* ===========================================================
    FINAL CTA
 =========================================================== */
 .nexworld-final-section {
+  text-align: center;
   display: flex;
   justify-content: center;
-  padding-bottom: 40px;
 }
 
 .nexworld-final {
-  max-width: 900px;
-  text-align: center;
+  max-width: 800px;
 }
 
 .final-big {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  line-height: 1.15;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  margin-bottom: 20px;
 }
 
 .final-text {
-  margin-top: 16px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.85;
-  line-height: 1.6;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
 }
 
 .nexworld-final-actions {
-  margin-top: 32px;
   display: flex;
+  justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
-  justify-content: center;
-}
-
-/* Buttons */
-.white-btn {
-  padding: 16px 36px;
-  background: #ffffff;
-  color: #000;
-  border-radius: 12px;
-  border: none;
-  font-size: 1.05rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.white-btn:hover {
-  background: #e0e0e0;
-  transform: scale(1.03);
-  box-shadow: 0 0 20px rgba(255,255,255,0.4);
-}
-
-.ghost-btn {
-  padding: 16px 36px;
-  background: transparent;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.3);
-  color: #e8e8e8;
-  font-size: 1.05rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.ghost-btn:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: #fff;
 }
 
 /* ===========================================================
-   RESPONSIVE
+   UTILITIES & BUTTONS
 =========================================================== */
-@media (max-width: 768px) {
-  .nexworld-hero-section {
-    height: 70vh; /* Slightly smaller on mobile */
-  }
-
-  .nexworld-wrapper {
-    padding: 60px 18px;
-    gap: 70px;
-  }
-
-  .white-btn,
-  .ghost-btn {
-    width: 100%;
-  }
+.break-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
 }
 
-@media (min-width: 1440px) {
-  .nexworld-wrapper {
-    max-width: 1300px;
-  }
+.white-btn {
+  background: #fff;
+  color: #000;
+  padding: 16px 32px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-@media (min-width: 1920px) {
-  .nexworld-wrapper {
-    max-width: 1600px;
-  }
+.white-btn:hover {
+  transform: scale(1.05);
+}
+
+.ghost-btn {
+  background: transparent;
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
 }

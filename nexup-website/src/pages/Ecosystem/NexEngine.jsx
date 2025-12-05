@@ -1,224 +1,222 @@
 // src/pages/Ecosystem/NexEngine.jsx
 
+import React from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { 
+  FiCpu, FiActivity, FiLayers, FiCode, 
+  FiSettings, FiZap, FiBox, FiTerminal 
+} from "react-icons/fi";
 import "../../page-styles/Ecosystem/NexEngine.css";
 import Footer from "../../components/Footer/Footer";
 
+/* --- ANIMATION VARIANTS --- */
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+/* --- MOCK DATA --- */
+const ENGINE_STATS = [
+  { label: "Physics Thread", value: "0.4ms" },
+  { label: "Render Time", value: "8ms (120fps)" },
+  { label: "AI Agents", value: "Active" },
+  { label: "Spatial Map", value: "Synced" },
+];
+
 export default function NexEngine() {
+  const navigate = useNavigate();
+
   return (
     <div className="nexengine-page">
+      
+      {/* ================= HERO SECTION (Engine Dashboard) ================= */}
+      <section className="nexengine-hero-section">
+        <div className="nexengine-grid-bg" />
+        <div className="nexengine-glow" />
+        
+        <motion.div
+          className="nexengine-hero-content"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease: "easeOut" }}
+        >
+          <div className="hero-badge"><FiCpu /> Runtime Core v4.2</div>
+          <h1 className="nexengine-hero-title">
+            The Reality Engine.
+          </h1>
+          <p className="nexengine-hero-sub">
+            The intelligent kernel powering spatial computing, physics, 
+            and adaptive AI across the NeX UP ecosystem.
+          </p>
+
+          {/* Engine Status Strip */}
+          <div className="engine-status-strip">
+            {ENGINE_STATS.map((stat, i) => (
+              <div key={i} className="stat-block">
+                <span className="stat-label">{stat.label}</span>
+                <span className="stat-val">{stat.value}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
       <div className="nexengine-wrapper">
-        {/* ================= HERO ================= */}
-        <section className="nexengine-hero-section">
-          <motion.div
-            className="nexengine-hero"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+        
+        {/* ================= INTRO ================= */}
+        <section className="nexengine-section intro-section">
+          <motion.div 
+            className="intro-text-block glass-panel"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
           >
-            <h1 className="gradient-title nexengine-hero-title">NexEngine</h1>
-            <p className="nexengine-hero-sub">
-              The intelligent core that powers spatial computing, immersive worlds,
-              and adaptive experiences across the NeX UP ecosystem.
+            <h2 className="gradient-title section-title">Computation Layer</h2>
+            <p className="nexengine-text large-text">
+              NexEngine is the brain behind the pixels. It processes spatial data, 
+              orchestrates world behavior, and optimizes AR/VR rendering in real-time. 
+              It transforms raw sensor input into living, breathing digital reality.
             </p>
           </motion.div>
         </section>
 
         <BreakLine />
 
-        {/* ================= WHAT IS NEXENGINE ================= */}
-        <NexEngineSection title="What is NexEngine?">
-          <p className="nexengine-text">
-            NexEngine is the real-time computation and intelligence layer of NeX UP.  
-            It processes spatial data, orchestrates world behavior, optimizes AR/VR
-            rendering, and connects NexWorld, NexNode, NexHousing, and other systems
-            into one cohesive engine.
-          </p>
-          <p className="nexengine-text">
-            Think of it as the brain that understands space, context, and interaction —
-            running behind every immersive experience built on NeX UP.
-          </p>
+        {/* ================= CAPABILITIES (Bento Grid) ================= */}
+        <NexEngineSection title="System Modules">
+          <motion.div 
+            className="bento-grid"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {/* Wide Card */}
+            <motion.div className="bento-card card-wide" variants={fadeInUp}>
+              <div className="card-header">
+                <FiZap className="card-icon" />
+                <span className="card-label">MOD_01</span>
+              </div>
+              <h3>Spatial Intelligence Core</h3>
+              <p>Real-time depth estimation, surface reconstruction, and semantic understanding of physical environments.</p>
+            </motion.div>
+
+            {/* Tall Card */}
+            <motion.div className="bento-card card-tall" variants={fadeInUp}>
+              <div className="card-header"><FiActivity className="card-icon" /></div>
+              <h3>Adaptive Physics</h3>
+              <p>Simulates mass, friction, and collision for millions of interactive objects concurrently.</p>
+            </motion.div>
+
+            {/* Standard Cards */}
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-header"><FiBox className="card-icon" /></div>
+              <h3>Volumetric Rendering</h3>
+              <p>High-fidelity light field rendering for holographic displays.</p>
+            </motion.div>
+
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-header"><FiSettings className="card-icon" /></div>
+              <h3>Neural Optimization</h3>
+              <p>AI-driven LOD (Level of Detail) scaling based on gaze and attention.</p>
+            </motion.div>
+          </motion.div>
         </NexEngineSection>
 
         <BreakLine />
 
-        {/* ================= CAPABILITIES ================= */}
-        <NexEngineSection title="Key Capabilities">
-          <div className="nexengine-grid">
-            <CapabilityCard
-              title="Spatial Intelligence Core"
-              text="Understands environments, surfaces, depth, and context to power adaptive digital reality."
+        {/* ================= ARCHITECTURE STACK ================= */}
+        <NexEngineSection title="Engine Stack">
+          <div className="engine-stack">
+            <StackLayer 
+              level="L4" 
+              title="Interaction Layer" 
+              desc="Gestures, Gaze, Voice, Neural Input" 
             />
-            <CapabilityCard
-              title="Real-time World Engine"
-              text="Drives live 3D scenes, physics, environment states, and interactive elements."
+            <StackLayer 
+              level="L3" 
+              title="Simulation Layer" 
+              desc="Physics, AI Agents, Weather, Time" 
             />
-            <CapabilityCard
-              title="Adaptive Interaction Layer"
-              text="Connects user actions, gaze, gestures, and movement with responsive world behavior."
+            <StackLayer 
+              level="L2" 
+              title="Spatial Layer" 
+              desc="Mapping, Anchoring, Persistence" 
             />
-            <CapabilityCard
-              title="NexNode Integration"
-              text="Works with NexNode to synchronize intelligence across devices, systems, and locations."
-            />
-            <CapabilityCard
-              title="AI-Driven Optimization"
-              text="Continuously optimizes performance, latency, and quality based on context."
-            />
-            <CapabilityCard
-              title="Simulation & Testing"
-              text="Runs scenario simulations for environments before deployment into live experiences."
+            <StackLayer 
+              level="L1" 
+              title="Kernel" 
+              desc="Thread Management, Memory, Hardware Abstraction" 
             />
           </div>
         </NexEngineSection>
 
         <BreakLine />
 
-        {/* ================= POWERS NEXWORLD ================= */}
-        <NexEngineSection title="How NexEngine Powers NexWorld">
-          <p className="nexengine-text">
-            NexWorld is built on top of NexEngine. Every city, room, environment,
-            and interactive scene is computed, rendered, and updated through NexEngine’s
-            layered architecture.
-          </p>
+        {/* ================= CODE / DEVELOPER EXPERIENCE ================= */}
+        <NexEngineSection title="Developer Experience">
+          <div className="dev-split">
+            <div className="dev-text">
+              <p className="nexengine-text">
+                Build faster with the NexEngine SDK. Access low-level primitives 
+                or high-level prefabs.
+              </p>
+              <ul className="tech-list">
+                <li><FiTerminal /> <span>Direct C++ / Rust Bindings</span></li>
+                <li><FiCode /> <span>Visual Scripting for Designers</span></li>
+                <li><FiBox /> <span>Hot-reload Asset Pipeline</span></li>
+              </ul>
+            </div>
+            <div className="code-window glass-panel">
+              <div className="window-header">
+                <span className="dot red"></span>
+                <span className="dot yellow"></span>
+                <span className="dot green"></span>
+                <span className="filename">world_init.rs</span>
+              </div>
+              <pre className="code-content">
+{`use nex_engine::prelude::*;
 
-          <div className="nexengine-grid small-grid">
-            <CapabilityCard
-              title="Scene Generation"
-              text="Renders immersive 3D spaces and mixed reality overlays at runtime."
-            />
-            <CapabilityCard
-              title="Physics & Behavior"
-              text="Controls motion, interactions, and cause–effect relationships in the world."
-            />
-            <CapabilityCard
-              title="Context Awareness"
-              text="Uses spatial and usage signals to adapt worlds in real-time."
-            />
+fn main() {
+    let mut world = World::new();
+    
+    // Initialize Spatial Physics
+    world.add_plugin(PhysicsPlugin::default());
+    
+    // Spawn Intelligent Agent
+    world.spawn((
+        SpatialBundle::default(),
+        AIBehavior::Autonomous,
+        RigidBody::Dynamic,
+    ));
+
+    world.run();
+}`}
+              </pre>
+            </div>
           </div>
         </NexEngineSection>
 
         <BreakLine />
 
-        {/* ================= ENGINE LAYERS ================= */}
-        <NexEngineSection title="Engine Architecture Layers">
-          <div className="layers-grid">
-            <LayerCard
-              title="Rendering Layer"
-              text="Drives visuals, lighting, shaders, and spatial composition across AR/VR devices."
-            />
-            <LayerCard
-              title="AI & Behavior Layer"
-              text="Controls non-linear interactions, responses, and environment logic."
-            />
-            <LayerCard
-              title="Spatial Mapping Layer"
-              text="Understands geometry, depth, and the relationship between physical and virtual spaces."
-            />
-            <LayerCard
-              title="Simulation Layer"
-              text="Runs experiments, world states, and test conditions safely."
-            />
-            <LayerCard
-              title="Interaction Layer"
-              text="Bridges inputs like gaze, gestures, controllers, and touch into consistent responses."
-            />
-            <LayerCard
-              title="Security & Safety Layer"
-              text="Enforces boundaries, safety constraints, and environment-level protections."
-            />
+        {/* ================= PERFORMANCE METRICS ================= */}
+        <NexEngineSection title="Performance Targets">
+          <div className="metrics-grid">
+            <MetricCard value="< 8ms" label="Motion-to-Photon Latency" />
+            <MetricCard value="1M+" label="Active Entities / Scene" />
+            <MetricCard value="120Hz" label="Target Refresh Rate" />
+            <MetricCard value="8K" label="Texture Resolution Support" />
           </div>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= TOOLS & SDKS ================= */}
-        <NexEngineSection title="Tools & SDKs">
-          <div className="tools-grid">
-            <ToolCard
-              title="NexEngine SDK"
-              text="Core engine integration for developers building immersive applications."
-            />
-            <ToolCard
-              title="World Editor Tools"
-              text="Create, configure, and test environments before deployment."
-            />
-            <ToolCard
-              title="Simulation Console"
-              text="Run controlled scenarios, stress tests, and behavior checks."
-            />
-            <ToolCard
-              title="Diagnostics & Telemetry"
-              text="Monitor performance, latency, and world state in real time."
-            />
-          </div>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= PERFORMANCE ================= */}
-        <NexEngineSection title="Performance & Optimization">
-          <p className="nexengine-text">
-            NexEngine is engineered for low-latency, high-fidelity experiences that scale from
-            a single room to entire virtual cities.
-          </p>
-
-          <ul className="nexengine-list">
-            <li>Multi-threaded spatial computation for high responsiveness.</li>
-            <li>Adaptive quality scaling based on device and network.</li>
-            <li>Efficient world streaming and asset management.</li>
-            <li>Real-time optimization for AR/VR motion and rendering.</li>
-          </ul>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= DEVELOPER WORKFLOW ================= */}
-        <NexEngineSection title="Developer Workflow with NexEngine">
-          <div className="workflow-grid">
-            <StepCard
-              step="01"
-              title="Define the World"
-              text="Start with spatial layouts, environments, and core world parameters."
-            />
-            <StepCard
-              step="02"
-              title="Add Interactions"
-              text="Design inputs, triggers, and responses for users inside the world."
-            />
-            <StepCard
-              step="03"
-              title="Embed Intelligence"
-              text="Use NexEngine logic & NexNode intelligence to make environments adaptive."
-            />
-            <StepCard
-              step="04"
-              title="Test & Simulate"
-              text="Run through AR/VR simulations, stress tests, and safety checks."
-            />
-            <StepCard
-              step="05"
-              title="Deploy with NexUP"
-              text="Publish to NexWorld or integrated platforms via the NeX UP ecosystem."
-            />
-          </div>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= FUTURE ================= */}
-        <NexEngineSection title="The Future of NexEngine">
-          <p className="nexengine-text">
-            NexEngine will continue evolving into a more intelligent, context-aware,
-            and neural-integrated engine — enabling:
-          </p>
-
-          <ul className="nexengine-list">
-            <li>Neural interfaces and more natural input methods.</li>
-            <li>Deeper integration with real-world data streams.</li>
-            <li>Richer simulations for architecture, cities, and digital twins.</li>
-            <li>Creator tools that feel like sketching reality itself.</li>
-          </ul>
         </NexEngineSection>
 
         <BreakLine />
@@ -233,31 +231,19 @@ export default function NexEngine() {
             viewport={{ once: true }}
           >
             <h2 className="gradient-title final-big">
-              Build your next world on NexEngine.
+              Power your imagination.
             </h2>
             <p className="final-text">
-              From prototype experiments to full-scale immersive platforms,
-              NexEngine is the foundation for intelligent, spatial experiences.
+              Start building high-fidelity spatial experiences with the engine 
+              designed for the next era of computing.
             </p>
 
             <div className="nexengine-final-actions">
-              <button
-                className="white-btn"
-                onClick={() => window.location.assign("/nexworld")}
-              >
-                Explore NexWorld →
+              <button className="white-btn" onClick={() => navigate("/contact")}>
+                Get SDK Access
               </button>
-              <button
-                className="ghost-btn"
-                onClick={() => window.location.assign("/support/help")}
-              >
-                Developer Help →
-              </button>
-              <button
-                className="ghost-btn"
-                onClick={() => window.location.assign("/contact")}
-              >
-                Talk to NeX UP →
+              <button className="ghost-btn" onClick={() => navigate("/support/help")}>
+                Read Docs
               </button>
             </div>
           </motion.div>
@@ -269,7 +255,7 @@ export default function NexEngine() {
   );
 }
 
-/* ================= REUSABLE COMPONENTS ================= */
+/* ================= COMPONENTS ================= */
 
 function BreakLine() {
   return <div className="break-line" />;
@@ -278,77 +264,35 @@ function BreakLine() {
 function NexEngineSection({ title, children }) {
   return (
     <section className="nexengine-section">
-      <motion.div
-        className="nexengine-section-inner"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
-      >
+      <div className="nexengine-section-inner">
         <h2 className="gradient-title section-title">{title}</h2>
         {children}
-      </motion.div>
+      </div>
     </section>
   );
 }
 
-function CapabilityCard({ title, text }) {
+function StackLayer({ level, title, desc }) {
   return (
-    <motion.div
-      className="capability-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
+    <motion.div 
+      className="stack-layer"
+      whileHover={{ scale: 1.01, borderLeftColor: "#b8a9ff" }}
     >
-      <h3>{title}</h3>
-      <p>{text}</p>
+      <div className="stack-id">{level}</div>
+      <div className="stack-content">
+        <h3>{title}</h3>
+        <p>{desc}</p>
+      </div>
+      <div className="stack-lines" />
     </motion.div>
   );
 }
 
-function LayerCard({ title, text }) {
+function MetricCard({ value, label }) {
   return (
-    <motion.div
-      className="layer-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function ToolCard({ title, text }) {
-  return (
-    <motion.div
-      className="tool-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function StepCard({ step, title, text }) {
-  return (
-    <motion.div
-      className="step-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <span className="step-badge">{step}</span>
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
+    <div className="metric-card glass-panel-sm">
+      <div className="metric-value">{value}</div>
+      <div className="metric-label">{label}</div>
+    </div>
   );
 }

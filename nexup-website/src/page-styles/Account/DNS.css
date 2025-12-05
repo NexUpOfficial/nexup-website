@@ -5,6 +5,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
+  min-height: 100vh;
 }
 
 .dns-wrapper {
@@ -12,183 +14,301 @@
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 80px 24px;
   display: flex;
   flex-direction: column;
-  gap: 90px;
-  color: #e8e8e8;
+  gap: 100px;
+  color: #f0f0f0;
 }
 
 /* ===========================================================
-   HERO
+   HERO DASHBOARD
 =========================================================== */
 .dns-hero-section {
-  min-height: 55vh;
+  min-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.dns-hero {
-  max-width: 900px;
+  position: relative;
   text-align: center;
 }
 
-.dns-hero-title {
-  font-size: clamp(2.3rem, 4.5vw, 3.7rem);
-  line-height: 1.2;
-}
-
-.dns-hero-sub {
-  margin-top: 16px;
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
-  opacity: 0.85;
-}
-
-/* Gradient */
-.gradient-title {
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  -webkit-background-clip: text;
-  color: transparent;
-  font-weight: 700;
-}
-
-/* ===========================================================
-   BREAK LINE
-=========================================================== */
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.16);
-}
-
-/* ===========================================================
-   SECTION
-=========================================================== */
-.dns-section {
-  display: flex;
-  justify-content: center;
-}
-
-.dns-section-inner {
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.section-title {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  padding-bottom: 10px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  height: 2px;
-  width: 100%;
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  opacity: 0.5;
+.dns-glow {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
+  filter: blur(90px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.dns-hero-content {
+  z-index: 1;
+  max-width: 800px;
+}
+
+.security-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.dns-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.dns-sub {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  opacity: 0.8;
+  max-width: 650px;
+  margin: 0 auto;
 }
 
 /* ===========================================================
-   TEXT & LISTS
+   IDENTITY NODES
 =========================================================== */
-.dns-text {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  opacity: 0.85;
-  line-height: 1.7;
+.node-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
 }
 
-.dns-list {
-  list-style: disc;
-  padding-left: 22px;
+.node-card {
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 1.02rem;
-  opacity: 0.9;
 }
 
-/* ===========================================================
-   GRID CARDS
-=========================================================== */
-.dns-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.node-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
 }
 
-.anchor-card,
-.security-card {
-  background: #111;
-  border-radius: 14px;
-  border: 1px solid #2b2b2b;
-  padding: 22px;
-  transition: 0.3s ease;
+.node-icon {
+  font-size: 1.8rem;
+  color: #b8a9ff;
+  padding: 12px;
+  background: rgba(184, 169, 255, 0.1);
+  border-radius: 12px;
 }
 
-.anchor-card:hover,
-.security-card:hover {
-  border-color: #a78bfa;
-  transform: translateY(-4px);
+.node-status {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.anchor-card h3,
-.security-card h3 {
+.node-status.active { background: rgba(74, 222, 128, 0.1); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.2); }
+.node-status.standby { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.2); }
+.node-status.beta { background: rgba(96, 165, 250, 0.1); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.2); }
+
+.node-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
   margin-bottom: 8px;
 }
 
-/* ===========================================================
-   DEVICES TABLE
-=========================================================== */
-.devices-table {
-  margin-top: 16px;
-  border-radius: 12px;
-  border: 1px solid #2b2b2b;
-  overflow: hidden;
-  background: #0d0d0d;
+.node-card p {
+  color: rgba(255,255,255,0.7);
   font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.devices-header,
-.devices-row {
+/* ===========================================================
+   DEVICE LIST
+=========================================================== */
+.device-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.device-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  transition: 0.3s ease;
+}
+
+.device-row:hover {
+  transform: translateX(5px);
+  background: rgba(255,255,255,0.05);
+}
+
+.device-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.device-icon-box {
+  font-size: 1.5rem;
+  color: #fff;
+  opacity: 0.8;
+}
+
+.device-info h4 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.device-meta {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.device-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.last-active {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  font-family: monospace;
+}
+
+.revoke-btn {
+  background: transparent;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.revoke-btn:hover {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+/* ===========================================================
+   SPLIT SECTION (LOGS & API)
+=========================================================== */
+.split-section {
   display: grid;
-  grid-template-columns: 2fr 1.2fr 1fr 1.2fr;
-  padding: 10px 14px;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
 }
 
-.devices-header {
-  background: rgba(255,255,255,0.06);
-  font-weight: 600;
+.section-title-sm {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  display: block;
 }
 
-.devices-row:nth-child(even) {
-  background: rgba(255,255,255,0.02);
+/* Log Terminal */
+.log-terminal {
+  padding: 24px;
+  background: #0d0d0d;
+  font-family: 'Courier New', monospace;
+  height: 250px;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* ===========================================================
-   DEVELOPER NOTES
-=========================================================== */
-.developer-notes {
-  background: #111;
-  border-radius: 14px;
-  border: 1px solid #2b2b2b;
-  padding: 20px;
+.log-entry {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  gap: 10px;
+}
+
+.log-time { color: #666; }
+.log-event { color: #fff; }
+.log-status.success { color: #4ade80; }
+
+.log-cursor {
+  animation: blink 1s infinite;
+  color: #b8a9ff;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+/* API Card */
+.api-card {
+  padding: 30px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.api-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  color: #b8a9ff;
+}
+
+.api-desc {
   font-size: 0.95rem;
-  line-height: 1.7;
-  opacity: 0.9;
+  color: rgba(255,255,255,0.7);
 }
 
-.developer-notes code {
-  background: rgba(255,255,255,0.06);
-  padding: 2px 6px;
+.code-block {
+  background: rgba(0,0,0,0.3);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #4ade80;
+}
+
+.ghost-btn-sm {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 8px 16px;
   border-radius: 6px;
   font-size: 0.9rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: 0.3s;
+}
+
+.ghost-btn-sm:hover {
+  border-color: #fff;
 }
 
 /* ===========================================================
@@ -200,66 +320,127 @@
 }
 
 .dns-final {
-  max-width: 900px;
+  width: 100%;
+  max-width: 700px;
+  padding: 40px;
   text-align: center;
 }
 
-.final-big {
-  font-size: clamp(2.2rem, 5vw, 3.7rem);
-  line-height: 1.2;
+.final-icon {
+  font-size: 2.5rem;
+  color: #b8a9ff;
+  margin-bottom: 16px;
 }
 
-.final-text {
-  margin-top: 14px;
-  font-size: clamp(1.05rem, 2vw, 1.3rem);
-  opacity: 0.85;
-  line-height: 1.6;
+.dns-final h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #fff;
 }
 
-.white-btn {
-  margin-top: 24px;
-  padding: 14px 32px;
-  background: #ffffff;
-  color: #000;
-  border-radius: 10px;
-  border: none;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.25s ease;
+.dns-final p {
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 30px;
 }
 
-.white-btn:hover {
-  background: #e8e8e8;
+.final-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
 }
 
 /* ===========================================================
-   RESPONSIVE
+   UTILITIES
+=========================================================== */
+.gradient-title {
+  background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(184, 169, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.glass-panel-sm {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.white-btn {
+  background: #fff;
+  color: #000;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.white-btn:hover {
+  transform: scale(1.05);
+}
+
+.ghost-btn {
+  background: transparent;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dns-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.dns-section-inner {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+
+.break-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+/* ===========================================================
+   MEDIA QUERIES
 =========================================================== */
 @media (max-width: 768px) {
-  .dns-wrapper {
-    padding: 40px 18px;
-    gap: 70px;
-  }
-
-  .devices-header,
-  .devices-row {
-    grid-template-columns: 1.8fr 1.2fr 1fr 1.4fr;
-    padding: 8px 10px;
-  }
-
-  .white-btn {
-    width: 100%;
-  }
-}
-
-@media (min-width: 1440px) {
-  .dns-wrapper {
-    max-width: 1300px;
-  }
-}
-
-@media (min-width: 1920px) {
-  .dns-wrapper {
-    max-width: 1600px;
-  }
+  .dns-wrapper { padding: 60px 20px; gap: 70px; }
+  .split-section { grid-template-columns: 1fr; gap: 30px; }
+  .device-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .device-right { width: 100%; justify-content: space-between; }
 }
