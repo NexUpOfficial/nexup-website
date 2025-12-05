@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal + 1. Grid Background)
 =========================================================== */
 .transparency-page {
   width: 100%;
@@ -7,6 +7,17 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  /* Scrollbar Hide */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  
+  /* 1. Background Grid Pattern */
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.transparency-page::-webkit-scrollbar {
+  display: none;
 }
 
 .transparency-wrapper {
@@ -33,6 +44,7 @@
   text-align: center;
 }
 
+/* 2. Hero Glow Improvement */
 .transparency-glow {
   position: absolute;
   top: 50%;
@@ -40,7 +52,7 @@
   transform: translate(-50%, -50%);
   width: 60vw;
   height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 60%);
   filter: blur(90px);
   z-index: 0;
   pointer-events: none;
@@ -78,12 +90,13 @@
 }
 
 /* ===========================================================
-   PRINCIPLES GRID
+   PRINCIPLES GRID (9. Ambient Hover + 10. Spacing)
 =========================================================== */
 .principles-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
+  margin-top: 20px; /* 10. Spacing */
 }
 
 .principle-card {
@@ -91,6 +104,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+/* 9. Ambient Hover Effect */
+.principle-card:hover {
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-6px);
+  border-color: rgba(184,169,255,0.3);
 }
 
 .principle-icon {
@@ -115,7 +136,7 @@
 }
 
 /* ===========================================================
-   ALGORITHM EXPLAINER
+   ALGORITHM EXPLAINER (4. Marker Line + 10. Spacing)
 =========================================================== */
 .centered-text {
   text-align: center;
@@ -129,6 +150,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 10px; /* 10. Spacing */
 }
 
 .algo-card {
@@ -136,15 +158,17 @@
   align-items: center;
   gap: 20px;
   padding: 24px;
+  transition: transform 0.3s ease;
 }
 
+/* 4. Glowing Marker Line */
 .algo-marker {
   width: 4px;
   height: 100%;
   min-height: 40px;
-  background: #b8a9ff;
+  background: linear-gradient(#b8a9ff, #ffffff);
   border-radius: 4px;
-  box-shadow: 0 0 10px rgba(184, 169, 255, 0.4);
+  box-shadow: 0 0 16px rgba(184,169,255,0.45);
 }
 
 .algo-content h4 {
@@ -158,7 +182,7 @@
 }
 
 /* ===========================================================
-   DATA JOURNEY
+   DATA JOURNEY (5. Active Animation + 6. Badge + 7. Glow Line)
 =========================================================== */
 .data-journey {
   display: flex;
@@ -178,17 +202,28 @@
   align-items: center;
 }
 
+/* 6. Step Number Badge */
 .step-num {
   font-family: monospace;
   color: #b8a9ff;
   font-weight: 700;
   margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(184,169,255,0.15);
+  font-size: 0.9rem;
 }
 
+/* 7. Vertical Connecting Glow Line */
 .step-line {
   flex: 1;
   width: 2px;
-  background: rgba(255,255,255,0.1);
+  background: linear-gradient(
+    to bottom,
+    rgba(184,169,255,0.1),
+    rgba(184,169,255,0.4),
+    rgba(184,169,255,0.1)
+  );
   min-height: 60px;
 }
 
@@ -200,6 +235,13 @@
 .step-content {
   padding: 24px;
   margin-bottom: 24px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+/* 5. Active Ping Animation on Hover */
+.data-step:hover .step-content {
+  border-color: rgba(184,169,255,0.3);
+  background: rgba(255,255,255,0.04);
 }
 
 .step-header {
@@ -292,6 +334,14 @@
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+/* 3. Small Card Hover */
+.glass-panel-sm:hover {
+  transform: translateY(-4px);
+  border-color: rgba(184,169,255,0.25);
+  background: rgba(255,255,255,0.04);
 }
 
 .white-btn {

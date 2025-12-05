@@ -43,12 +43,12 @@ const COMPLIANCE_BADGES = [
 /* --- VARIANTS --- */
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 export default function Trust() {
@@ -60,7 +60,9 @@ export default function Trust() {
         
         {/* ================= HERO ================= */}
         <section className="trust-hero-section">
+          {/* 2. Improved Glow (CSS) */}
           <div className="trust-glow" />
+          
           <motion.div
             className="trust-hero-content"
             initial={{ opacity: 0, y: 40 }}
@@ -91,6 +93,7 @@ export default function Trust() {
           >
             <div className="manifesto-icon"><FiLock /></div>
             <h2>The NeX UP Promise</h2>
+            {/* 9. Improved Line Height */}
             <p>
               In an era of digital uncertainty, we promise to be a stable foundation. 
               We will never sell your personal data. We will never manipulate your reality 
@@ -106,13 +109,14 @@ export default function Trust() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {PRINCIPLES.map((item, idx) => (
               <motion.div 
                 key={idx} 
                 className="trust-card glass-panel"
                 variants={itemVariants}
+                // 3. Hover Effect handled in CSS
               >
                 <div className="trust-icon">{item.icon}</div>
                 <h3>{item.title}</h3>
@@ -129,11 +133,13 @@ export default function Trust() {
           <p className="centered-intro">
             We adhere to rigorous global standards to ensure your data and experience remain secure.
           </p>
+          {/* Bonus: Margin Bottom */}
           <div className="compliance-row">
             {COMPLIANCE_BADGES.map((badge, idx) => (
               <motion.div 
                 key={idx} 
                 className="compliance-badge"
+                // 5. Hover Glow handled in CSS, Motion used for scale
                 whileHover={{ scale: 1.05 }}
               >
                 <div className="badge-dot" style={{ background: badge.color }} />
@@ -154,13 +160,14 @@ export default function Trust() {
                 are designed to be tools for human creativity, not black boxes of manipulation.
               </p>
               <ul className="ethics-list">
+                {/* 10. Interactive List Items */}
                 <li><FiCheckSquare /> No hidden behavioral nudging.</li>
                 <li><FiCheckSquare /> Transparent algorithmic ranking.</li>
                 <li><FiCheckSquare /> User control over AI assistance levels.</li>
               </ul>
             </div>
             <div className="ethics-visual glass-panel-sm">
-              {/* Abstract Visual Placeholder */}
+              {/* 6. Animated Visual */}
               <div className="visual-circle" />
               <div className="visual-bar" />
               <div className="visual-bar short" />
@@ -177,7 +184,9 @@ export default function Trust() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
+            {/* Bonus: Fade-in Icon */}
             <div className="reporting-icon">
               <FiAlertCircle />
             </div>

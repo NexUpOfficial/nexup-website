@@ -18,7 +18,7 @@ const contentVariants = {
   visible: { opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
 };
 
-// ⭐ 1. Input Stagger Animation
+// Input Stagger Animation
 const inputVariants = {
   hidden: { opacity: 0, y: 15 },
   visible: (i) => ({ 
@@ -45,6 +45,8 @@ const ParticleField = () => {
             opacity: 0,
           }}
           animate={{
+            // ⭐ 3. Horizontal Drift
+            x: [null, Math.random() * 40 - 20],
             y: [null, Math.random() * -100],
             opacity: [0, 0.4, 0],
           }}
@@ -85,6 +87,7 @@ const GlowButton = ({ children, className, onClick }) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
+      {/* ⭐ 10. Scaled Glow Effect */}
       <motion.div className="glow-effect" style={{ x, y }} />
       <span className="btn-content">{children}</span>
     </motion.button>
@@ -97,14 +100,16 @@ export default function Login() {
   const [showGreeting, setShowGreeting] = useState(true);
   const [greetingStep, setGreetingStep] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
+  const [emailValid, setEmailValid] = useState(false); // ⭐ 12. Success Glow State
 
   // 3D Tilt Logic
   const cardRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [5, -5]), { stiffness: 150, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-5, 5]), { stiffness: 150, damping: 20 });
+  // ⭐ 4. Increased Rotation for Depth
+  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [10, -10]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-10, 10]), { stiffness: 150, damping: 20 });
 
   const handleCardMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -120,16 +125,20 @@ export default function Login() {
     mouseY.set(0);
   };
 
-  // ⭐ 6. & 10. AI Greeting Sequence + Escape Key
+  const handleEmailChange = (e) => {
+    // Simple regex for email validation visual cue
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value);
+    setEmailValid(isValid);
+  };
+
+  // AI Greeting Sequence + Escape Key
   useEffect(() => {
-    // Escape key listener
     const skip = (e) => { if (e.key === "Escape") setShowGreeting(false); };
     window.addEventListener("keydown", skip);
 
-    // Sequence timers
-    const timer1 = setTimeout(() => setGreetingStep(1), 1500); // "Initializing"
-    const timer2 = setTimeout(() => setGreetingStep(2), 3000); // "Synchronizing" (New Step)
-    const timer3 = setTimeout(() => setShowGreeting(false), 4500); // Exit
+    const timer1 = setTimeout(() => setGreetingStep(1), 2000); // "Initializing"
+    const timer2 = setTimeout(() => setGreetingStep(2), 4000); // "Synchronizing"
+    const timer3 = setTimeout(() => setShowGreeting(false), 6000); // Exit
 
     return () => {
       clearTimeout(timer1);
@@ -145,16 +154,16 @@ export default function Login() {
       <div className="ai-greeting-screen">
         <AnimatePresence mode="wait">
           {greetingStep === 0 && (
-            <motion.h2 key="step1" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text">
-              Welcome back, Explorer.
-            </motion.h2>
+            <motion.div key="step1" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text-container">
+              {/* ⭐ 2. Typing Animation */}
+              <h2 className="ai-text typing-effect">Welcome back, Explorer.</h2>
+            </motion.div>
           )}
           {greetingStep === 1 && (
             <motion.h2 key="step2" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text">
               Initializing Secure Gateway...
             </motion.h2>
           )}
-          {/* ⭐ 6. New Step */}
           {greetingStep === 2 && (
             <motion.h2 key="step3" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text">
               Synchronizing Reality Layers...
@@ -169,7 +178,8 @@ export default function Login() {
   }
 
   return (
-    <div className="login-page">
+    // ⭐ 13. Blur Interaction on Background Grid
+    <div className={`login-page ${isTyping ? "typing-mode" : ""}`}>
       <div className="cyber-grid" />
       <ParticleField />
       <div className="login-glow-top" />
@@ -219,11 +229,12 @@ export default function Login() {
             onMouseLeave={handleCardMouseLeave}
           >
             <div className="neon-border-box">
-              <div className="auth-card glass-panel">
+              {/* ⭐ 5. Neon Rim on Card during Typing */}
+              <div className={`auth-card glass-panel ${isTyping ? "card-active-glow" : ""}`}>
                 
-                {/* ⭐ 2. Hologram Sheen */}
                 <div className="holo-sheen" />
 
+                {/* ⭐ 6. Pulse Ping Avatar */}
                 <div className={`avatar-scanner ${isTyping ? "scanning" : ""}`}>
                   <div className="scan-line"></div>
                   <FiCpu className="avatar-icon" />
@@ -249,7 +260,6 @@ export default function Login() {
                   <span>Or use email protocol</span>
                 </div>
 
-                {/* ⭐ 8. Tab Switch Spring Animation + ⭐ 1. Input Stagger */}
                 <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -278,8 +288,9 @@ export default function Login() {
                         </motion.div>
                       )}
                       
+                      {/* ⭐ 12. Input Success Glow */}
                       <motion.div 
-                        className="input-group"
+                        className={`input-group ${emailValid ? "success" : ""}`}
                         custom={1}
                         variants={inputVariants}
                         initial="hidden"
@@ -292,6 +303,7 @@ export default function Login() {
                           required 
                           onFocus={() => setIsTyping(true)}
                           onBlur={() => setIsTyping(false)}
+                          onChange={handleEmailChange}
                         />
                         <div className="input-border-glow" />
                       </motion.div>
@@ -327,7 +339,6 @@ export default function Login() {
                     </div>
                   )}
 
-                  {/* ⭐ 7. Placeholder Navigation */}
                   <GlowButton className="submit-btn" onClick={() => navigate("/")}>
                     {isLogin ? "Authenticate" : "Initialize Account"} <FiArrowRight />
                   </GlowButton>

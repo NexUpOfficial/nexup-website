@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal)
 =========================================================== */
 .dns-page {
   width: 100%;
@@ -7,6 +7,13 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  /* Hide Scrollbar */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.dns-page::-webkit-scrollbar {
+  display: none;
 }
 
 .dns-wrapper {
@@ -22,6 +29,28 @@
 }
 
 /* ===========================================================
+   ANIMATION KEYFRAMES
+=========================================================== */
+/* 1. Smoother Pulse */
+@keyframes pulse-green {
+  0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+  100% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* 2. Kinetic Glow Drift */
+@keyframes floatGlow {
+  from { transform: translate(-48%, -52%) scale(1); }
+  to { transform: translate(-52%, -48%) scale(1.08); }
+}
+
+/* 5. Active Status Blink */
+@keyframes activeBlink {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; text-shadow: 0 0 8px currentColor; }
+}
+
+/* ===========================================================
    HERO DASHBOARD
 =========================================================== */
 .dns-hero-section {
@@ -33,6 +62,7 @@
   text-align: center;
 }
 
+/* 2. Kinetic Glow Background */
 .dns-glow {
   position: absolute;
   top: 50%;
@@ -44,6 +74,7 @@
   filter: blur(90px);
   z-index: 0;
   pointer-events: none;
+  animation: floatGlow 14s ease-in-out infinite alternate;
 }
 
 .dns-hero-content {
@@ -70,14 +101,7 @@
   height: 8px;
   background: #4ade80;
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
-  animation: pulse-green 2s infinite;
-}
-
-@keyframes pulse-green {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+  animation: pulse-green 3s infinite ease-in-out; /* 1. Updated duration/easing */
 }
 
 .dns-title {
@@ -90,7 +114,43 @@
   font-size: clamp(1.1rem, 2vw, 1.3rem);
   opacity: 0.8;
   max-width: 650px;
+  margin: 0 auto 40px auto;
+}
+
+/* 12. Security Score Meter */
+.security-score-container {
+  max-width: 400px;
   margin: 0 auto;
+  text-align: left;
+}
+
+.score-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.score-val {
+  color: #4ade80;
+  font-family: monospace;
+}
+
+.security-score-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #b8ffa9);
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
 }
 
 /* ===========================================================
@@ -121,6 +181,13 @@
   padding: 12px;
   background: rgba(184, 169, 255, 0.1);
   border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 4. Hover Glow on Icons */
+.node-icon:hover {
+  box-shadow: 0 0 20px rgba(184,169,255,0.3);
+  transform: scale(1.05);
 }
 
 .node-status {
@@ -131,7 +198,13 @@
   letter-spacing: 0.5px;
 }
 
-.node-status.active { background: rgba(74, 222, 128, 0.1); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.2); }
+/* 5. Active Blink Animation */
+.node-status.active { 
+  background: rgba(74, 222, 128, 0.1); 
+  color: #4ade80; 
+  border: 1px solid rgba(74, 222, 128, 0.2); 
+  animation: activeBlink 2.5s infinite ease-in-out;
+}
 .node-status.standby { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.2); }
 .node-status.beta { background: rgba(96, 165, 250, 0.1); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.2); }
 
@@ -148,7 +221,7 @@
 }
 
 /* ===========================================================
-   DEVICE LIST
+   DEVICE LIST (3. Color Coding)
 =========================================================== */
 .device-list {
   display: flex;
@@ -162,11 +235,22 @@
   justify-content: space-between;
   padding: 20px 24px;
   transition: 0.3s ease;
+  border-left: 4px solid transparent; /* Base border */
 }
+
+/* 3. Color Coding */
+.device-row.trusted { border-left-color: #4ade80; }
+.device-row.expiring { border-left-color: #fbbf24; }
+.device-row.danger { border-left-color: #f87171; }
 
 .device-row:hover {
   transform: translateX(5px);
   background: rgba(255,255,255,0.05);
+}
+
+/* 14. Mobile Divider (Default fallback, handled in media query for stack) */
+@media (max-width: 768px) {
+    .device-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
 }
 
 .device-left {
@@ -215,8 +299,10 @@
   transition: 0.2s;
 }
 
+/* 9. Revoke Button Glow */
 .revoke-btn:hover {
   background: rgba(248, 113, 113, 0.1);
+  box-shadow: 0 0 12px rgba(248,113,113,0.4);
 }
 
 /* ===========================================================
@@ -242,23 +328,36 @@
   height: 250px;
   overflow-y: auto;
   border: 1px solid rgba(255,255,255,0.1);
+  /* Scrollbar style for terminal */
+  scrollbar-width: thin;
+  scrollbar-color: #333 #0d0d0d;
 }
 
 .log-entry {
   margin-bottom: 10px;
   font-size: 0.9rem;
-  display: grid;
-  grid-template-columns: 80px 1fr 80px;
+  display: flex;
   gap: 10px;
+  justify-content: space-between; /* Better spacing for flex */
 }
 
-.log-time { color: #666; }
-.log-event { color: #fff; }
-.log-status.success { color: #4ade80; }
+.log-time { color: #666; min-width: 80px; }
+.log-event { color: #fff; flex: 1; }
 
+/* 7. Highlight IP */
+.ip-addr {
+  color: #60a5fa;
+  font-family: monospace;
+  margin-left: 6px;
+}
+
+.log-status.success { color: #4ade80; text-align: right; }
+
+/* 8. Animated Cursor */
 .log-cursor {
-  animation: blink 1s infinite;
+  animation: blink 0.7s steps(1) infinite;
   color: #b8a9ff;
+  display: inline-block;
 }
 
 @keyframes blink { 50% { opacity: 0; } }
@@ -293,6 +392,13 @@
   font-family: monospace;
   font-size: 0.9rem;
   color: #4ade80;
+  transition: 0.3s ease;
+}
+
+/* 10. API Micro-Interaction */
+.api-card:hover .code-block {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
 }
 
 .ghost-btn-sm {
@@ -309,10 +415,11 @@
 
 .ghost-btn-sm:hover {
   border-color: #fff;
+  background: rgba(255,255,255,0.05);
 }
 
 /* ===========================================================
-   FINAL CTA
+   FINAL CTA (15. Glow Upgrade)
 =========================================================== */
 .dns-final-section {
   display: flex;
@@ -324,29 +431,50 @@
   max-width: 700px;
   padding: 40px;
   text-align: center;
+  position: relative;
+  overflow: hidden; /* Clip the pseudo-element glow */
+}
+
+/* 15. CTA Background Glow */
+.dns-final::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(184,169,255,0.08), transparent 70%);
+  opacity: 0;
+  transition: 0.4s;
+  pointer-events: none;
+}
+
+.dns-final:hover::before {
+  opacity: 1;
 }
 
 .final-icon {
   font-size: 2.5rem;
   color: #b8a9ff;
   margin-bottom: 16px;
+  position: relative; z-index: 1;
 }
 
 .dns-final h2 {
   font-size: 1.8rem;
   margin-bottom: 10px;
   color: #fff;
+  position: relative; z-index: 1;
 }
 
 .dns-final p {
   color: rgba(255,255,255,0.7);
   margin-bottom: 30px;
+  position: relative; z-index: 1;
 }
 
 .final-actions {
   display: flex;
   justify-content: center;
   gap: 16px;
+  position: relative; z-index: 1;
 }
 
 /* ===========================================================
@@ -441,6 +569,15 @@
 @media (max-width: 768px) {
   .dns-wrapper { padding: 60px 20px; gap: 70px; }
   .split-section { grid-template-columns: 1fr; gap: 30px; }
-  .device-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .device-row { flex-direction: column; align-items: flex-start; gap: 16px; border-left-width: 0px; border-top: 4px solid transparent; }
+  
+  /* Mobile border logic fix */
+  .device-row.trusted { border-top-color: #4ade80; }
+  .device-row.expiring { border-top-color: #fbbf24; }
+  .device-row.danger { border-top-color: #f87171; }
+  
   .device-right { width: 100%; justify-content: space-between; }
+  
+  .log-entry { flex-direction: column; gap: 4px; }
+  .log-time { min-width: auto; opacity: 0.5; font-size: 0.8rem; }
 }

@@ -1,6 +1,6 @@
 // src/pages/Support/Help.jsx
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { 
   FiSearch, FiBook, FiCpu, FiUser, FiCreditCard, 
@@ -87,7 +87,7 @@ export default function Help() {
           >
             <h1 className="gradient-title help-title">How can we help?</h1>
             
-            {/* Search Input */}
+            {/* 2. Search Input Animation (CSS handles focus scale) */}
             <div className="search-container glass-panel">
               <FiSearch className="search-icon" />
               <input 
@@ -97,7 +97,7 @@ export default function Help() {
               />
             </div>
 
-            {/* Popular Chips */}
+            {/* 5. Popular Chips Animation */}
             <div className="popular-searches">
               <span>Popular:</span>
               {POPULAR_SEARCHES.map((term, i) => (
@@ -108,7 +108,8 @@ export default function Help() {
         </section>
 
         {/* ================= SYSTEM STATUS BAR ================= */}
-        <div className="system-status-bar">
+        {/* 9. Hover Status Bar */}
+        <div className="system-status-bar" onClick={() => navigate("/status")}>
           <div className="status-indicator">
             <span className="status-dot" style={{ background: SYSTEM_STATUS.color }}></span>
             <span className="status-text">{SYSTEM_STATUS.status}: {SYSTEM_STATUS.message}</span>
@@ -125,13 +126,14 @@ export default function Help() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {CATEGORIES.map((cat, idx) => (
               <motion.div 
                 key={idx} 
                 className="category-card glass-panel"
                 variants={itemVariants}
+                // 3. & 4. Hover Glow & Border handled in CSS
               >
                 <div className="cat-icon-wrapper">{cat.icon}</div>
                 <div className="cat-info">
@@ -153,7 +155,7 @@ export default function Help() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {RECENT_ARTICLES.map((article, idx) => (
               <motion.div 
@@ -161,6 +163,7 @@ export default function Help() {
                 className="article-row glass-panel-sm"
                 variants={itemVariants}
               >
+                {/* 6. Icon Scale on Hover (CSS) */}
                 <div className="article-icon">
                   <FiFileText />
                 </div>
@@ -200,6 +203,7 @@ export default function Help() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            // 10. Hover Animation (CSS)
           >
             <div className="final-icon">
               <FiHelpCircle />
@@ -233,7 +237,16 @@ function HelpSection({ title, children }) {
         transition={{ duration: 0.8 }}
         viewport={{ once: true, margin: "-50px" }}
       >
-        <h2 className="gradient-title section-title">{title}</h2>
+        {/* Bonus: Motion Title */}
+        <motion.h2 
+          className="gradient-title section-title"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          {title}
+        </motion.h2>
         {children}
       </motion.div>
     </section>
@@ -253,17 +266,22 @@ function FAQItem({ question, answer }) {
     >
       <div className="faq-header">
         <h4>{question}</h4>
-        <span className="faq-toggle">{isOpen ? "−" : "+"}</span>
+        {/* 8. Rotation Animation */}
+        <span className="faq-toggle">{isOpen ? "−" : "+"}</span> 
       </div>
-      {isOpen && (
-        <motion.div 
-          className="faq-body"
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-        >
-          <p>{answer}</p>
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            className="faq-body"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <p>{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

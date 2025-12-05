@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal + 10. Fade In)
 =========================================================== */
 .safety-approach-page {
   width: 100%;
@@ -7,6 +7,26 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  
+  /* Scrollbar Hide */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+
+  /* 10. Global Page Fade In */
+  animation: fadePage 0.6s ease;
+  
+  /* Optional: Soft Grid */
+  background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.safety-approach-page::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes fadePage {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .safety-approach-wrapper {
@@ -22,6 +42,35 @@
 }
 
 /* ===========================================================
+   ANIMATION KEYFRAMES
+=========================================================== */
+/* 1. Floating Glow */
+@keyframes floatGlow {
+  from { transform: translate(-50%, -50%) scale(1); }
+  to   { transform: translate(-48%, -52%) scale(1.08); }
+}
+
+/* 2. Badge Pulse */
+@keyframes badgePulse {
+  0% { background: rgba(255,255,255,0.05); }
+  50% { background: rgba(255,255,255,0.08); }
+  100% { background: rgba(255,255,255,0.05); }
+}
+
+/* 6. Scan Line */
+@keyframes scanLine {
+  0% { background-position: 0% 0; }
+  100% { background-position: 300% 0; }
+}
+
+/* 8. Alert Pulse */
+@keyframes alertPulse {
+  0% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.9; transform: scale(1); }
+}
+
+/* ===========================================================
    HERO
 =========================================================== */
 .safety-hero-section {
@@ -33,6 +82,7 @@
   text-align: center;
 }
 
+/* 1. Animated Floating Glow */
 .safety-glow {
   position: absolute;
   top: 50%;
@@ -44,6 +94,7 @@
   filter: blur(90px);
   z-index: 0;
   pointer-events: none;
+  animation: floatGlow 12s ease-in-out infinite alternate;
 }
 
 .safety-hero {
@@ -51,6 +102,7 @@
   max-width: 800px;
 }
 
+/* 2. Pulsing Badge */
 .hero-badge {
   display: inline-block;
   padding: 6px 14px;
@@ -62,6 +114,7 @@
   text-transform: uppercase;
   color: #b8a9ff;
   margin-bottom: 24px;
+  animation: badgePulse 4s infinite ease-in-out;
 }
 
 .safety-hero-title {
@@ -97,6 +150,23 @@
   text-align: center;
   padding: 40px;
   border: 1px solid rgba(184, 169, 255, 0.2);
+  position: relative; /* Context for overlay */
+  overflow: hidden;
+}
+
+/* 4. Radial Highlight Overlay */
+.philosophy-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(184,169,255,0.05), transparent 70%);
+  border-radius: inherit;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.philosophy-stat:hover::before {
+  opacity: 1;
 }
 
 .stat-number {
@@ -108,6 +178,7 @@
   color: transparent;
   line-height: 1;
   margin-bottom: 10px;
+  position: relative; z-index: 1;
 }
 
 .stat-label {
@@ -115,6 +186,11 @@
   font-weight: 600;
   color: #fff;
   margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+
+.philosophy-stat p {
+  position: relative; z-index: 1;
 }
 
 /* ===========================================================
@@ -131,6 +207,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* 3. Hover Transition */
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, background 0.3s;
+}
+
+/* 3. Card Lift & Depth */
+.framework-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(184,169,255,0.3);
+  background: rgba(30, 30, 30, 0.6);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 .framework-icon {
@@ -169,6 +255,15 @@
   grid-template-columns: 300px 1fr;
   gap: 30px;
   align-items: center;
+  /* 5. Accent Bar Base */
+  border-left: 3px solid rgba(184,169,255,0.25);
+  transition: border-color 0.3s ease;
+}
+
+/* 5. Accent Bar Hover */
+.protocol-row:hover {
+  border-left-color: rgba(184,169,255,0.6);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .protocol-header {
@@ -204,7 +299,7 @@
 }
 
 .protocol-list li svg {
-  color: #4ade80; /* Green check */
+  color: #4ade80;
   margin-top: 4px;
   flex-shrink: 0;
 }
@@ -217,14 +312,20 @@
   margin-top: 40px;
 }
 
-/* Connecting Line */
+/* 6. Animated Connecting Line */
 .risk-line {
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(184,169,255,0.3), transparent);
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(184,169,255,0.4), 
+    transparent
+  );
+  background-size: 300% 100%;
+  animation: scanLine 4s infinite linear;
   z-index: 0;
 }
 
@@ -259,6 +360,14 @@
   padding: 4px 8px;
   background: rgba(184,169,255,0.1);
   border-radius: 4px;
+  transition: 0.3s;
+}
+
+/* 7. Number Glow */
+.risk-step:hover .step-number {
+  box-shadow: 0 0 12px rgba(184,169,255,0.4);
+  background: rgba(184,169,255,0.2);
+  color: #fff;
 }
 
 .risk-step h4 {
@@ -293,11 +402,13 @@
   max-width: 700px;
 }
 
+/* 8. Alert Icon Glow */
 .final-icon-wrapper {
   display: inline-block;
   font-size: 2.5rem;
   color: #fbbf24;
   margin-bottom: 20px;
+  animation: alertPulse 2.8s infinite ease-in-out;
 }
 
 .final-big {
@@ -405,5 +516,15 @@
   
   /* Stack Risk Steps vertically on mobile */
   .risk-steps { grid-template-columns: 1fr; gap: 16px; }
+  
+  /* 9. Mobile Divider for Steps */
+  .risk-step {
+    border-left: 2px solid rgba(184,169,255,0.2);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
   .risk-line { display: none; }
 }

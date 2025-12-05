@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal + 1. Grid Background)
 =========================================================== */
 .trust-page {
   width: 100%;
@@ -7,6 +7,18 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  
+  /* Scrollbar Hide */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  
+  /* 1. Soft Grid Pattern */
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.trust-page::-webkit-scrollbar {
+  display: none;
 }
 
 .trust-wrapper {
@@ -33,6 +45,7 @@
   text-align: center;
 }
 
+/* 2. Improved Hero Glow */
 .trust-glow {
   position: absolute;
   top: 50%;
@@ -40,7 +53,7 @@
   transform: translate(-50%, -50%);
   width: 60vw;
   height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 65%);
   filter: blur(90px);
   z-index: 0;
   pointer-events: none;
@@ -86,6 +99,11 @@
   border: 1px solid rgba(184, 169, 255, 0.2);
 }
 
+/* 4. Mobile Padding Fix */
+@media (max-width: 768px) {
+  .manifesto-card { padding: 40px 20px; }
+}
+
 .manifesto-icon {
   font-size: 3rem;
   color: #b8a9ff;
@@ -100,7 +118,8 @@
 
 .manifesto-card p {
   font-size: 1.25rem;
-  line-height: 1.7;
+  /* 9. Improved Line Height */
+  line-height: 1.8; 
   color: rgba(255, 255, 255, 0.85);
   max-width: 800px;
   margin: 0 auto;
@@ -120,6 +139,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* 3. Hover Transition */
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, background 0.3s;
+}
+
+/* 3. Card Lift & Glow */
+.trust-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(184,169,255,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 .trust-icon {
@@ -154,11 +183,13 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
+/* Bonus: Spacing */
 .compliance-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  margin-bottom: 20px;
 }
 
 .compliance-badge {
@@ -172,6 +203,13 @@
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.9);
   cursor: default;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+/* 5. Badge Hover Glow */
+.compliance-badge:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(184,169,255,0.3);
 }
 
 .badge-dot {
@@ -212,6 +250,13 @@
   gap: 12px;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease, color 0.3s;
+}
+
+/* 10. Ethics Item Interaction */
+.ethics-list li:hover {
+  color: #fff;
+  transform: translateX(4px);
 }
 
 .ethics-list li svg {
@@ -230,12 +275,19 @@
   gap: 20px;
 }
 
+/* 6. Animated Visual */
 .visual-circle {
   width: 80px;
   height: 80px;
   border: 2px solid #b8a9ff;
   border-radius: 50%;
   box-shadow: 0 0 20px rgba(184, 169, 255, 0.3);
+  animation: pulseCircle 4s infinite ease-in-out;
+}
+
+@keyframes pulseCircle {
+  0%,100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.07); opacity: 1; }
 }
 
 .visual-bar {
@@ -259,6 +311,8 @@
   padding: 40px;
   background: rgba(20, 20, 20, 0.6);
   border: 1px solid rgba(184, 169, 255, 0.2);
+  /* 7. Shadow Lift */
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
 }
 
 .reporting-icon {
@@ -267,6 +321,13 @@
   padding: 16px;
   background: rgba(251, 191, 36, 0.1);
   border-radius: 50%;
+  /* Bonus: Appear Animation */
+  animation: appear 1s ease forwards;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .reporting-content {
@@ -306,6 +367,8 @@
   text-align: center;
   display: flex;
   justify-content: center;
+  /* 8. Breathing Room */
+  margin-bottom: 60px;
 }
 
 .trust-final {
@@ -347,6 +410,8 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
   transition: all 0.3s ease;
+  /* Bonus: Inner Shadow */
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.04);
 }
 
 .glass-panel:hover {

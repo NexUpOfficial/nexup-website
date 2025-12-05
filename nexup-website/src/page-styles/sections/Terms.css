@@ -1,199 +1,226 @@
-/* src/page-styles/sections/Terms.css */
-
-:root {
-  --neon-purple: #b8a9ff;
-  --bg-black: #050505;
-  --glass-bg: rgba(20, 20, 20, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-dim: rgba(255, 255, 255, 0.5);
-}
-
+/* ===========================================================
+   PAGE WRAPPER (1. Grid Background + Scrollbar Fix)
+=========================================================== */
 .terms-page {
-  background-color: var(--bg-black);
+  width: 100%;
   min-height: 100vh;
+  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
+  
+  /* 1. Soft Grid */
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  
   color: #fff;
   font-family: 'Inter', sans-serif;
-  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  
+  /* Hide Scrollbar */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
 }
 
-/* --- HEADER --- */
+.terms-page::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===========================================================
+   HEADER
+=========================================================== */
 .terms-header {
-  padding: 120px 24px 80px 24px;
+  padding: 120px 24px 60px;
   text-align: center;
-  background: radial-gradient(circle at top center, rgba(74, 58, 255, 0.15), transparent 70%);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* 2. Hero Glow */
+.terms-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 65%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* 8. Unified Badge */
 .doc-badge {
   display: inline-block;
   font-family: monospace;
   font-size: 0.8rem;
-  color: var(--neon-purple);
+  color: #b8a9ff;
   border: 1px solid rgba(184, 169, 255, 0.3);
   padding: 4px 12px;
   border-radius: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   letter-spacing: 1px;
+  background: rgba(184, 169, 255, 0.05);
 }
 
 .terms-title {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800;
-  margin-bottom: 15px;
+  margin: 0 0 10px 0;
+  line-height: 1.1;
 }
 
 .terms-subtitle {
-  color: var(--text-dim);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
   font-family: monospace;
 }
 
-/* --- LAYOUT GRID --- */
+/* ===========================================================
+   LAYOUT (Sidebar + Content)
+=========================================================== */
 .terms-layout {
   display: grid;
-  grid-template-columns: 280px 1fr; /* Sidebar width | Content width */
-  gap: 60px;
-  max-width: 1200px;
+  grid-template-columns: 280px 1fr;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 24px 150px 24px;
+  width: 100%;
+  padding: 0 24px 100px;
+  gap: 60px;
   position: relative;
-  /* CRITICAL: This allows the sidebar to be sticky. 
-     If it was 'stretch' (default), sticky wouldn't work. */
-  align-items: start; 
+  z-index: 1;
 }
 
-/* --- SIDEBAR NAVIGATION (STICKY) --- */
+/* SIDEBAR */
 .terms-sidebar {
   position: sticky;
-  top: 120px; /* Distance from top of screen */
-  height: auto;
-  max-height: 80vh; /* Ensure it fits on screen */
-  overflow-y: auto; /* Scroll if list is too long */
+  top: 100px;
+  height: fit-content;
   padding-right: 20px;
-  border-right: 1px solid var(--glass-border);
-  
-  /* Hides scrollbar for cleaner look */
-  scrollbar-width: thin;
-  scrollbar-color: var(--glass-border) transparent;
+  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
 .terms-sidebar ul {
   list-style: none;
   padding: 0;
-  margin: 0;
-}
-
-.terms-sidebar li {
-  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .terms-sidebar a {
-  color: var(--text-dim);
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: all 0.3s;
   display: block;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border-left: 2px solid transparent; /* Prepare for active state */
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  padding: 4px 0;
+  /* 4. Sidebar Glow Indicator Base */
+  border-left: 3px solid transparent;
+  padding-left: 12px;
+  margin-left: -15px; /* Align visually */
 }
 
-/* Hover State */
+/* 4. Sidebar Active & Hover */
 .terms-sidebar a:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(4px);
 }
 
-/* ACTIVE STATE (Highlighted when scrolling) */
 .terms-sidebar a.active {
-  color: var(--neon-purple);
-  background: rgba(184, 169, 255, 0.1);
-  border-left: 2px solid var(--neon-purple);
-  padding-left: 16px; /* Subtle slide animation */
+  color: #b8a9ff;
   font-weight: 600;
+  border-left: 3px solid #b8a9ff;
+  background: linear-gradient(90deg, rgba(184,169,255,0.1), transparent);
 }
 
-/* --- MAIN CONTENT AREA --- */
+/* MAIN CONTENT */
 .terms-content {
   display: flex;
   flex-direction: column;
-  gap: 80px; /* Space between sections */
+  /* 6. Spacing handled by BreakLine & margin */
 }
 
-.terms-content section {
-  /* Offset to ensure header doesn't cover title when clicked */
-  scroll-margin-top: 120px; 
+/* 3. Glass Panel for Sections */
+.terms-block {
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s ease;
 }
 
-.terms-content h2 {
-  font-size: 1.8rem;
+.terms-block:hover {
+  border-color: rgba(184, 169, 255, 0.2);
+}
+
+.terms-block h2 {
+  font-size: 1.6rem;
   margin-bottom: 20px;
   color: #fff;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.terms-content p {
+.terms-block p {
   font-size: 1.05rem;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
-.terms-content ul {
-  list-style: disc;
-  padding-left: 20px;
-  margin-bottom: 20px;
-  color: rgba(255, 255, 255, 0.8);
+.terms-block p:last-child {
+  margin-bottom: 0;
 }
 
-.terms-content a {
-  color: var(--neon-purple);
+.terms-block strong {
+  color: #fff;
+}
+
+.terms-block a {
+  color: #b8a9ff;
   text-decoration: none;
-  border-bottom: 1px solid rgba(184, 169, 255, 0.3);
+  border-bottom: 1px solid transparent;
+  transition: 0.2s;
 }
 
-/* --- RESPONSIVE (MOBILE) --- */
+.terms-block a:hover {
+  border-bottom-color: #b8a9ff;
+}
+
+/* 7. Subtle Divider */
+.break-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  margin: 30px 0;
+  opacity: 0.6;
+}
+
+/* ===========================================================
+   RESPONSIVE
+=========================================================== */
 @media (max-width: 900px) {
   .terms-layout {
-    grid-template-columns: 1fr; /* Stack vertically */
+    grid-template-columns: 1fr;
     gap: 40px;
   }
 
-  /* Mobile Horizontal Scroll Sidebar */
+  /* Hide Sidebar on Mobile (or convert to dropdown if needed, keeping simple for now) */
   .terms-sidebar {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    width: 100vw;
-    margin-left: -24px;
-    padding: 15px 24px;
-    background: rgba(5, 5, 5, 0.95);
-    backdrop-filter: blur(10px);
-    border-right: none;
-    border-bottom: 1px solid var(--glass-border);
-    max-height: none;
-    overflow-y: hidden;
+    display: none; 
   }
 
-  .terms-sidebar ul {
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-    white-space: nowrap;
-    padding-bottom: 5px;
-  }
-
-  .terms-sidebar a {
-    background: rgba(255,255,255,0.1);
-    padding: 8px 16px;
-    border-radius: 20px;
-    border-left: none; /* Remove desktop border style */
-    font-size: 0.85rem;
+  .terms-header {
+    padding-top: 80px;
   }
   
-  .terms-sidebar a.active {
-    background: var(--neon-purple);
-    color: #000;
-    border-left: none;
-    padding-left: 16px; /* Keep spacing consistent */
+  .terms-block {
+    padding: 24px;
   }
 }

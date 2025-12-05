@@ -55,13 +55,13 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.15 },
   },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 export default function Guidelines() {
@@ -73,7 +73,9 @@ export default function Guidelines() {
         
         {/* ================= HERO ================= */}
         <section className="guidelines-hero-section">
+          {/* 2. Enhanced Glow */}
           <div className="guidelines-glow" />
+          
           <motion.div
             className="guidelines-hero-content"
             initial={{ opacity: 0, y: 40 }}
@@ -122,13 +124,14 @@ export default function Guidelines() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {PRINCIPLES.map((item, idx) => (
               <motion.div 
                 key={idx} 
                 className="principle-card glass-panel"
                 variants={itemVariants}
+                // 3. Hover shift handled in CSS
               >
                 <div className="principle-icon">{item.icon}</div>
                 <h3>{item.title}</h3>
@@ -149,8 +152,10 @@ export default function Guidelines() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
               <div className="matrix-header">
+                {/* 5. Micro-animation on hover (CSS) */}
                 <FiCheck className="icon-check" />
                 <h3>Encouraged</h3>
               </div>
@@ -169,6 +174,7 @@ export default function Guidelines() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
               <div className="matrix-header">
                 <FiX className="icon-x" />
@@ -189,7 +195,13 @@ export default function Guidelines() {
 
         {/* ================= DEVELOPER & SPATIAL GUIDELINES ================= */}
         <GuidelinesSection title="Spatial & Developer Protocol">
-          <div className="protocol-container">
+          <motion.div 
+            className="protocol-container"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <ProtocolItem 
               title="Avoid Dangerous Simulations"
               text="Do not create worlds that encourage unsafe physical actions (e.g., running blindly) or disorientation."
@@ -202,7 +214,7 @@ export default function Guidelines() {
               title="Transparency"
               text="Clearly disclose when environments are simulated, AI-generated, or experimental."
             />
-          </div>
+          </motion.div>
         </GuidelinesSection>
 
         <BreakLine />
@@ -214,6 +226,7 @@ export default function Guidelines() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
             <div className="enforcement-icon">
               <FiAlertTriangle />
@@ -267,6 +280,7 @@ export default function Guidelines() {
 
 function GuidelinesSection({ title, children }) {
   return (
+    // 9. Increased spacing via CSS class
     <section className="guidelines-section">
       <motion.div
         className="guidelines-section-inner"
@@ -275,7 +289,18 @@ function GuidelinesSection({ title, children }) {
         transition={{ duration: 0.8 }}
         viewport={{ once: true, margin: "-50px" }}
       >
-        {title && <h2 className="gradient-title section-title">{title}</h2>}
+        {/* 8. Animated Section Title */}
+        {title && (
+          <motion.h2 
+            className="gradient-title section-title"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            {title}
+          </motion.h2>
+        )}
         {children}
       </motion.div>
     </section>
@@ -286,8 +311,9 @@ function ProtocolItem({ title, text }) {
   return (
     <motion.div 
       className="protocol-item glass-panel"
-      whileHover={{ x: 10, borderColor: "#b8a9ff" }}
+      variants={itemVariants}
     >
+      {/* 6. Animated Marker Glow (CSS) */}
       <div className="protocol-marker" />
       <div className="protocol-content">
         <h3>{title}</h3>
@@ -297,6 +323,16 @@ function ProtocolItem({ title, text }) {
   );
 }
 
+// ⭐ Bonus: Scroll-Triggered Divider Animation
 function BreakLine() {
-  return <div className="break-line" />;
+  return (
+    <motion.div 
+      className="break-line" 
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      viewport={{ once: true }}
+      style={{ originX: 0 }} // Transform origin left
+    />
+  );
 }

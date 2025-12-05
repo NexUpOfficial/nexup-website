@@ -9,12 +9,9 @@
   -webkit-backdrop-filter: blur(10px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  /* Removed 'visible' class transition, controlled by opacity prop */
+  transition: opacity 0.25s ease; 
   z-index: 9000;
-}
-
-.refresh-blur-overlay.visible {
-  opacity: 0.4;
 }
 
 /* ================================
@@ -24,7 +21,13 @@
   position: fixed;
   top: 18px;
   left: 50%;
-  transform: translateX(-50%);
+  /* 1️⃣ Add Elastic / Spring-back animation (was 0.25s) */
+  transition:
+    transform 0.35s cubic-bezier(0.17, 0.67, 0.3, 1.4),
+    opacity 0.2s ease,
+    background 0.25s ease;
+  
+  transform: translateX(-50%) translateY(0); /* Reset for hook manipulation */
   z-index: 9500;
 
   display: flex;
@@ -36,27 +39,24 @@
   border-radius: 999px;
 
   background: rgba(15, 23, 42, 0.86);
-  border: 1px solid rgba(148, 163, 184, 0.5);
+  /* 8️⃣ Match NeX UP theme colors */
+  border: 1px solid rgba(184, 169, 255, 0.5); 
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-
-  transition:
-    transform 0.25s cubic-bezier(0.17, 0.67, 0.3, 1.4),
-    opacity 0.2s ease,
-    background 0.25s ease;
   opacity: 0;
 }
 
-/* Only show when pulling or refreshing */
+/* Only show when pulling or refreshing (via CSS neighbour selector trick) */
 .refresh-blur-overlay.visible ~ .refresh-arrow-shell {
   opacity: 1;
 }
 
 /* Extra visual when refreshing */
 .refresh-arrow-shell.refreshing {
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(184, 169, 255, 0.95); /* Neon purple glow */
+  box-shadow: 0 0 20px rgba(184, 169, 255, 0.6);
 }
 
 /* ================================
@@ -65,39 +65,38 @@
 .refresh-arrow-svg {
   width: 24px;
   height: 24px;
-  transition: transform 0.25s cubic-bezier(0.17, 0.67, 0.3, 1.4);
+  /* Rotation controlled by pull Y state (0 -> 200 deg) */
+  transition: transform 0.25s cubic-bezier(0.17, 0.67, 0.3, 1.4); 
 }
 
 .refresh-arrow-circle {
   fill: none;
-  stroke: rgba(148, 163, 184, 0.65);
+  stroke: rgba(184, 169, 255, 0.4); /* NeX UP Purple Track */
   stroke-width: 1.5;
 }
 
-.refresh-arrow-stem {
-  stroke: #e5e7eb;
+.refresh-arrow-stem, .refresh-arrow-head {
+  stroke: #ffffff; 
   stroke-width: 1.8;
   stroke-linecap: round;
 }
 
 .refresh-arrow-head {
-  stroke: #e5e7eb;
-  stroke-width: 1.8;
-  stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 /* ================================
-   Circular Loader (OpenAI style)
+   Circular Loader (NeX UP style)
 ================================ */
 .refresh-loader-svg {
   width: 24px;
   height: 24px;
+  transform-origin: center;
 }
 
 .refresh-loader-track {
   fill: none;
-  stroke: rgba(148, 163, 184, 0.35);
+  stroke: rgba(184, 169, 255, 0.35); /* NeX UP Purple Track */
   stroke-width: 3;
 }
 
@@ -108,92 +107,55 @@
   stroke-linecap: round;
   stroke-dasharray: 40 88;
   stroke-dashoffset: 0;
-  animation: refresh-spin 0.8s linear infinite;
+  /* 3️⃣ Loader animation improvement: Add easing to rotation keyframe */
+  animation: refresh-spin 1.2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite; 
 }
 
+/* New keyframe for smoother rotation */
 @keyframes refresh-spin {
-  to {
-    stroke-dashoffset: -128;
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); stroke-dashoffset: 40; }
+  50% { transform: rotate(180deg); stroke-dashoffset: 128; }
+  100% { transform: rotate(360deg); stroke-dashoffset: 40; }
 }
 
 /* ================================
-   Mobile only hint
+   ⭐ B. Sparkle Particle Dust Effect
+================================ */
+.refresh-sparkle-dust {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  /* Tiny particles floating out */
+  box-shadow: 
+    0 0 8px 3px rgba(255, 255, 255, 0.4),
+    20px -20px 0 0 rgba(184, 169, 255, 0.2),
+    -15px 15px 0 0 rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  animation: sparkle-burst 0.8s ease-out;
+  pointer-events: none;
+}
+
+/* Trigger only when shell enters refreshing mode */
+.refresh-arrow-shell.refreshing .refresh-sparkle-dust {
+  opacity: 1;
+  animation: sparkle-burst 0.8s ease-out;
+}
+
+@keyframes sparkle-burst {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+
+/* ================================
+   Mobile only hint - Hide on Desktop
 ================================ */
 @media (min-width: 901px) {
   .refresh-blur-overlay,
   .refresh-arrow-shell {
     display: none;
   }
-}
-
-/* ---------------------------------------
-   Arrow / Loader
---------------------------------------- */
-.refresh-indicator {
-  position: fixed;
-  top: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-.arrow path {
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Circular loader */
-.loader {
-  animation: spin 1s linear infinite;
-}
-.loader circle {
-  stroke: white;
-  stroke-width: 4;
-  fill: none;
-  stroke-dasharray: 90;
-  stroke-dashoffset: 50;
-  animation: dash 1.3s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 90;
-  }
-  50% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 90;
-  }
-}
-
-/* ---------------------------------------
-   Blur background while pulling
---------------------------------------- */
-.pull-blur {
-  position: fixed;
-  inset: 0;
-  backdrop-filter: blur(18px);
-  background: rgba(0, 0, 0, 0.25);
-  pointer-events: none;
-  z-index: 999;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-/* ---------------------------------------
-   Page shift
---------------------------------------- */
-.pull-shift {
-  transition: transform 0.28s cubic-bezier(0.17, 0.67, 0.3, 1.4);
 }

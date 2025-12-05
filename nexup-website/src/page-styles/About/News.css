@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal)
 =========================================================== */
 .news-page {
   width: 100%;
@@ -7,6 +7,13 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  /* Scrollbar Hide */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.news-page::-webkit-scrollbar {
+  display: none;
 }
 
 .news-wrapper {
@@ -22,6 +29,29 @@
 }
 
 /* ===========================================================
+   ANIMATION KEYFRAMES
+=========================================================== */
+/* 1. Kinetic Gradient */
+@keyframes glowShift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* 2. Floating Glow Parallax */
+@keyframes floatGlow {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  to   { transform: translate(-48%, -45%) scale(1.1); opacity: 0.9; }
+}
+
+/* 9. Changelog Pulse */
+@keyframes pulseMarker {
+  0% { box-shadow: 0 0 0 0 rgba(184, 169, 255, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(184, 169, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(184, 169, 255, 0); }
+}
+
+/* ===========================================================
    HERO & GLOW
 =========================================================== */
 .news-hero-section {
@@ -33,6 +63,7 @@
   text-align: center;
 }
 
+/* 2. & 19. Hero Glow */
 .news-glow {
   position: absolute;
   top: 50%;
@@ -40,10 +71,13 @@
   transform: translate(-50%, -50%);
   width: 50vw;
   height: 50vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
-  filter: blur(80px);
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 60%);
+  /* 19. Reduced Blur */
+  filter: blur(60px);
+  opacity: 0.85;
   z-index: 0;
   pointer-events: none;
+  animation: floatGlow 10s ease-in-out infinite alternate;
 }
 
 .news-hero-content {
@@ -78,7 +112,7 @@
 }
 
 /* ===========================================================
-   FEATURED CARD
+   FEATURED CARD (3. Visual Hierarchy)
 =========================================================== */
 .news-featured {
   width: 100%;
@@ -91,7 +125,12 @@
   align-items: center;
   padding: 0;
   overflow: hidden;
+  cursor: pointer;
+  /* 20. Performance */
+  will-change: transform;
 }
+
+/* 11. Mobile Stack Animation handled in Media Query */
 
 .featured-img {
   width: 100%;
@@ -103,6 +142,23 @@
   justify-content: center;
   align-items: center;
   color: #666;
+  position: relative;
+  overflow: hidden; /* For inner shadow */
+}
+
+/* 3. Inner Shadow & Gradient */
+.img-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  z-index: 1;
+}
+
+.placeholder-text {
+  z-index: 2;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .featured-content {
@@ -135,6 +191,11 @@
   line-height: 1.2;
   margin-bottom: 16px;
   color: #fff;
+  transition: color 0.3s;
+}
+
+.featured-card:hover .featured-title {
+  color: #b8a9ff;
 }
 
 .featured-desc {
@@ -151,13 +212,15 @@
   font-size: 1rem;
   cursor: pointer;
   align-self: flex-start;
-  border-bottom: 1px solid #b8a9ff;
-  padding-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   transition: 0.3s;
 }
 
 .read-link:hover {
   color: #b8a9ff;
+  gap: 12px; /* Arrow slide */
 }
 
 /* ===========================================================
@@ -168,14 +231,26 @@
   justify-content: center;
 }
 
+/* 12. Scroll Mask */
+.category-scroll-mask {
+  width: 100%;
+  overflow-x: auto;
+  padding: 4px;
+  /* Mask gradient for fade edges */
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
 .category-scroll {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
   justify-content: center;
+  min-width: max-content; /* Ensure scrollability */
+  padding: 0 20px;
 }
 
 .category-pill {
+  position: relative;
   padding: 10px 24px;
   border-radius: 30px;
   background: transparent;
@@ -183,13 +258,37 @@
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: all 0.25s ease;
+  overflow: hidden;
 }
 
-.category-pill:hover, .category-pill.active {
+/* 4. Hover Elevation */
+.category-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(255,255,255,0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.category-pill.active {
   background: #fff;
   border-color: #fff;
   color: #000;
   font-weight: 600;
+  /* Reset hover transform for active state stability */
+  transform: none; 
+  box-shadow: none;
+}
+
+/* 7. Active Line Indicator */
+.active-line {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: #000; /* Contrast against white pill */
+  border-radius: 2px;
 }
 
 /* ===========================================================
@@ -199,6 +298,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
+  width: 100%;
 }
 
 .card-wide {
@@ -213,9 +313,19 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 200px;
+  /* justify-content: space-between; */ /* Changed for better layout */
+  min-height: 240px;
   position: relative;
+  cursor: pointer;
+  /* 5. Lift Shadow already in GlassCard hover, enhanced here */
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+/* 5. Enhanced Card Hover */
+.news-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  border-color: rgba(184, 169, 255, 0.3);
 }
 
 .card-top {
@@ -223,15 +333,30 @@
   justify-content: space-between;
   margin-bottom: 16px;
   font-size: 0.85rem;
+  align-items: center;
 }
 
+/* 17. Brand Colors for Tags */
 .news-tag {
-  color: #b8a9ff;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+.tag-purple { color: #b8a9ff; }
+.tag-teal { color: #2dd4bf; }
+.tag-orange { color: #fb923c; }
+.tag-gold { color: #fbbf24; }
+.tag-blue { color: #60a5fa; }
 
 .news-date {
   color: rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .news-card h3 {
@@ -245,6 +370,16 @@
   font-size: 1rem;
   color: rgba(255,255,255,0.7);
   line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* 8. Mini Visual Placeholder */
+.card-mini-visual {
+  height: 60px;
+  width: 100%;
+  margin-top: auto;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), transparent);
+  border-radius: 8px;
 }
 
 .card-hover-arrow {
@@ -269,7 +404,7 @@
 .changelog-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   border-left: 2px solid rgba(255,255,255,0.1);
   padding-left: 30px;
 }
@@ -278,6 +413,7 @@
   position: relative;
 }
 
+/* 9. Glowing Pulse Marker */
 .changelog-item::before {
   content: "";
   position: absolute;
@@ -288,6 +424,7 @@
   background: #0b0b0c;
   border: 2px solid #b8a9ff;
   border-radius: 50%;
+  animation: pulseMarker 3s infinite ease;
 }
 
 .changelog-meta {
@@ -333,17 +470,33 @@
 
 .press-card {
   padding: 30px;
-  text-align: center;
+  text-align: left;
+  position: relative;
 }
 
+/* 18. Micro Icon */
 .press-logo {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #fff;
   margin-bottom: 16px;
-  opacity: 0.5;
+  opacity: 0.6;
   text-transform: uppercase;
   letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 10. Quote Mark */
+.quote-mark {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 4rem;
+  line-height: 1;
+  font-family: serif;
+  color: rgba(255,255,255,0.05);
 }
 
 .press-card p {
@@ -351,6 +504,7 @@
   font-style: italic;
   color: rgba(255,255,255,0.9);
   line-height: 1.6;
+  position: relative; z-index: 1;
 }
 
 /* ===========================================================
@@ -391,6 +545,13 @@
   border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
   width: 300px;
+  transition: 0.3s;
+}
+
+.newsletter-form-simple input:focus {
+  border-color: #b8a9ff;
+  box-shadow: 0 0 15px rgba(184,169,255,0.2);
+  outline: none;
 }
 
 .press-contact-link {
@@ -411,25 +572,29 @@
 /* ===========================================================
    UTILITIES
 =========================================================== */
+/* 1. Animated Gradient Title */
 .gradient-title {
   background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
+  animation: glowShift 6s ease infinite alternate;
 }
 
 .glass-panel {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
+  /* 19. Reduced Blur */
+  backdrop-filter: blur(12px); 
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .glass-panel:hover {
-  transform: translateY(-5px);
+  /* 5. Lift Effect defined on specific cards, but this is base behavior */
   border-color: rgba(184, 169, 255, 0.3);
   background: rgba(255, 255, 255, 0.05);
 }
@@ -442,10 +607,12 @@
   border: none;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .white-btn:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
 }
 
 .news-section {
@@ -471,11 +638,28 @@
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
 }
 
+/* ===========================================================
+   MEDIA QUERIES
+=========================================================== */
 @media (max-width: 768px) {
+  /* 13. Reduced Padding */
   .news-wrapper { padding: 60px 20px; gap: 70px; }
-  .featured-card { grid-template-columns: 1fr; }
+  
+  /* 11. Featured Stack Animation */
+  .featured-card { 
+    grid-template-columns: 1fr; 
+    animation: fadeUp 0.6s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .featured-img { height: 250px; min-height: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .featured-content { padding: 24px; }
+  
   .newsletter-form-simple { flex-direction: column; width: 100%; }
   .newsletter-form-simple input { width: 100%; }
+  
+  .category-scroll { justify-content: flex-start; } /* Allow left align scroll */
 }

@@ -1,5 +1,5 @@
 /* ===========================================================
-   PAGE WRAPPER
+   PAGE WRAPPER (Scrollbar Removal + 1. Grid Background)
 =========================================================== */
 .help-page {
   width: 100%;
@@ -7,6 +7,18 @@
   flex-direction: column;
   background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
   min-height: 100vh;
+  
+  /* Hide Scrollbar */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  
+  /* 1. Soft Grid Pattern */
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.help-page::-webkit-scrollbar {
+  display: none;
 }
 
 .help-wrapper {
@@ -69,10 +81,12 @@
   transition: all 0.3s ease;
 }
 
+/* 2. Focus Scale & Shadow */
 .search-container:focus-within {
   background: rgba(255, 255, 255, 0.1);
   border-color: #b8a9ff;
   box-shadow: 0 0 20px rgba(184, 169, 255, 0.15);
+  transform: scale(1.01);
 }
 
 .search-icon {
@@ -117,10 +131,12 @@
   font-size: 0.85rem;
 }
 
+/* 5. Chip Hover Pop */
 .search-chip:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: #b8a9ff;
   color: #fff;
+  transform: translateY(-2px);
 }
 
 /* ===========================================================
@@ -137,6 +153,13 @@
   font-size: 0.9rem;
   margin-top: -40px; /* Pull it up closer to hero */
   backdrop-filter: blur(10px);
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+}
+
+/* 9. Status Bar Hover */
+.system-status-bar:hover {
+  border-color: rgba(184, 169, 255, 0.3);
 }
 
 .status-indicator {
@@ -158,12 +181,15 @@
 
 .status-link {
   color: #b8a9ff;
-  cursor: pointer;
   font-weight: 500;
 }
 
+.status-link:hover {
+  text-decoration: underline;
+}
+
 /* ===========================================================
-   CATEGORY GRID
+   CATEGORY GRID (3 & 4. Card Glow & Border)
 =========================================================== */
 .category-grid {
   display: grid;
@@ -179,6 +205,8 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  /* 4. Default Border for smooth transition */
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
 .cat-icon-wrapper {
@@ -212,9 +240,11 @@
   color: #b8a9ff;
 }
 
+/* 3. Hover Glow */
 .category-card:hover {
   transform: translateY(-4px);
   border-color: rgba(184, 169, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(184, 169, 255, 0.15);
 }
 
 .category-card:hover .cat-arrow {
@@ -223,7 +253,7 @@
 }
 
 /* ===========================================================
-   ARTICLE LIST (With Meta Data)
+   ARTICLE LIST (6. Icon Scale)
 =========================================================== */
 .articles-list {
   display: flex;
@@ -251,6 +281,13 @@
   padding: 10px;
   background: rgba(255,255,255,0.03);
   border-radius: 8px;
+  transition: transform 0.3s ease, color 0.3s;
+}
+
+/* 6. Icon Interaction */
+.article-row:hover .article-icon {
+  transform: scale(1.1);
+  color: #fff;
 }
 
 .article-main {
@@ -292,7 +329,7 @@
 }
 
 /* ===========================================================
-   FAQ ACCORDION
+   FAQ ACCORDION (7 & 8. Animations)
 =========================================================== */
 .faq-container {
   display: flex;
@@ -304,6 +341,12 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
   padding-bottom: 16px;
   cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+/* 7. Border Highlight */
+.faq-item.open {
+  border-color: #b8a9ff;
 }
 
 .faq-header {
@@ -325,6 +368,14 @@
 .faq-toggle {
   font-size: 1.5rem;
   color: rgba(255,255,255,0.5);
+  /* 8. Icon Rotation */
+  transition: transform 0.3s ease;
+  display: inline-block; /* Needed for transform */
+}
+
+.faq-item.open .faq-toggle {
+  transform: rotate(180deg); /* Flip minus if using + to x icon logic, or just visual spin */
+  color: #fff;
 }
 
 .faq-body {
@@ -338,7 +389,7 @@
 }
 
 /* ===========================================================
-   FINAL CTA
+   FINAL CTA (10. Hover Glow)
 =========================================================== */
 .help-final {
   display: flex;
@@ -347,6 +398,13 @@
   padding: 40px;
   gap: 30px;
   flex-wrap: wrap;
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+
+/* 10. Final CTA Interaction */
+.help-final:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(184,169,255,0.15);
 }
 
 .final-icon {
