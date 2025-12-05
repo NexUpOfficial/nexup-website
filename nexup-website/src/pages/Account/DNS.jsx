@@ -1,9 +1,82 @@
 // src/pages/Account/DNS.jsx
-
+import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { 
+  FiShield, FiSmartphone, FiMonitor, FiCpu, 
+  FiActivity, FiLock, FiTerminal, FiKey, FiGlobe 
+} from "react-icons/fi";
 import "../../page-styles/Account/DNS.css";
 import Footer from "../../components/Footer/Footer";
+
+/* --- DATA --- */
+const IDENTITY_NODES = [
+  { 
+    icon: <FiKey />, 
+    title: "Primary Anchor", 
+    status: "Active", 
+    desc: "Root identity verified via biometric hash." 
+  },
+  { 
+    icon: <FiShield />, 
+    title: "Backup Protocol", 
+    status: "Standby", 
+    desc: "Recovery phrase stored in cold storage." 
+  },
+  { 
+    icon: <FiGlobe />, 
+    title: "Spatial ID", 
+    status: "Beta", 
+    desc: "Location-based trust signal (San Francisco)." 
+  }
+];
+
+const TRUSTED_DEVICES = [
+  {
+    id: 1,
+    name: "NeX Vision Pro",
+    type: "Headset",
+    icon: <FiCpu />,
+    lastActive: "Now",
+    location: "Hyderabad, IN",
+    status: "Trusted"
+  },
+  {
+    id: 2,
+    name: "MacBook Pro M3",
+    type: "Workstation",
+    icon: <FiMonitor />,
+    lastActive: "2 hours ago",
+    location: "Hyderabad, IN",
+    status: "Trusted"
+  },
+  {
+    id: 3,
+    name: "iPhone 16",
+    type: "Mobile",
+    icon: <FiSmartphone />,
+    lastActive: "1 day ago",
+    location: "Mumbai, IN",
+    status: "Expiring Soon"
+  }
+];
+
+const SECURITY_LOGS = [
+  { time: "10:42 AM", event: "Login Attempt", status: "Success", ip: "192.168.1.1" },
+  { time: "09:15 AM", event: "Key Rotation", status: "Completed", ip: "System" },
+  { time: "Yesterday", event: "New Device Added", status: "Verified", ip: "10.0.0.42" },
+];
+
+/* --- VARIANTS --- */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 export default function DNS() {
   const navigate = useNavigate();
@@ -11,235 +84,169 @@ export default function DNS() {
   return (
     <div className="dns-page">
       <div className="dns-wrapper">
-        {/* ================= HERO ================= */}
+        
+        {/* ================= HERO DASHBOARD ================= */}
         <section className="dns-hero-section">
+          <div className="dns-glow" />
           <motion.div
-            className="dns-hero"
+            className="dns-hero-content"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+            transition={{ duration: 1.1, ease: "easeOut" }}
           >
-            <h1 className="gradient-title dns-hero-title">
-              DNS Settings
+            <div className="security-badge">
+              <span className="dot pulse"></span> System Secure
+            </div>
+            <h1 className="gradient-title dns-title">
+              Distributed NeX Security.
             </h1>
-            <p className="dns-hero-sub">
-              Distributed NeX Security — identity anchors, trusted devices, and
-              future security notes for the NeX UP ecosystem.
+            <p className="dns-sub">
+              Manage your decentralized identity anchors, trusted devices, and spatial verification keys.
             </p>
           </motion.div>
         </section>
 
         <BreakLine />
 
-        {/* ================= IDENTITY OVERVIEW ================= */}
-        <DNSSection title="Identity Overview">
-          <p className="dns-text">
-            DNS (Distributed NeX Security) is the identity and security backbone
-            of NeX UP. It defines how users, devices, and environments are
-            authenticated and trusted across NexWorld, NexEngine, NexNodes, and
-            other systems.
-          </p>
-          <p className="dns-text">
-            Each identity is represented by a set of anchors, trust scores,
-            device links, and security rules that evolve over time as the
-            ecosystem grows.
-          </p>
-        </DNSSection>
-
-        <BreakLine />
-
-        {/* ================= IDENTITY ANCHORS ================= */}
+        {/* ================= IDENTITY NODES ================= */}
         <DNSSection title="Identity Anchors">
-          <div className="dns-grid">
-            <AnchorCard
-              title="Primary Anchor"
-              text="The core identity root used to verify the user across NeX UP systems."
-            />
-            <AnchorCard
-              title="Backup Anchor"
-              text="Secondary identity path used for recovery or long-term verification."
-            />
-            <AnchorCard
-              title="Device-bound Anchor"
-              text="Identity components tied to specific trusted devices."
-            />
-            <AnchorCard
-              title="Recovery Anchor"
-              text="Emergency route for account restoration and security resets."
-            />
-            <AnchorCard
-              title="Temporal Anchor"
-              text="(Future) Time-bound keys that rotate based on session age and risk."
-            />
+          [Image of distributed identity network architecture]
+          <motion.div 
+            className="node-grid"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {IDENTITY_NODES.map((node, idx) => (
+              <motion.div 
+                key={idx} 
+                className="node-card glass-panel"
+                variants={itemVariants}
+              >
+                <div className="node-header">
+                  <div className="node-icon">{node.icon}</div>
+                  <span className={`node-status ${node.status.toLowerCase()}`}>{node.status}</span>
+                </div>
+                <h3>{node.title}</h3>
+                <p>{node.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </DNSSection>
+
+        <BreakLine />
+
+        {/* ================= DEVICE MANAGER ================= */}
+        <DNSSection title="Active Sessions & Devices">
+          <div className="device-list">
+            {TRUSTED_DEVICES.map((device, idx) => (
+              <motion.div 
+                key={device.id} 
+                className="device-row glass-panel-sm"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="device-left">
+                  <div className="device-icon-box">{device.icon}</div>
+                  <div className="device-info">
+                    <h4>{device.name}</h4>
+                    <span className="device-meta">{device.type} • {device.location}</span>
+                  </div>
+                </div>
+                <div className="device-right">
+                  <span className="last-active">{device.lastActive}</span>
+                  <button className="revoke-btn">Revoke</button>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </DNSSection>
 
         <BreakLine />
 
-        {/* ================= TRUSTED DEVICES ================= */}
-        <DNSSection title="Trusted Devices (Concept Notes)">
-          <p className="dns-text">
-            DNS maintains a conceptual list of trusted devices. In future
-            versions, this section will link to live device management.
-          </p>
-
-          <div className="devices-table">
-            <div className="devices-header">
-              <span>Device</span>
-              <span>Type</span>
-              <span>Trust Level</span>
-              <span>Last Verified</span>
-            </div>
-
-            <div className="devices-row">
-              <span>Primary AR Headset</span>
-              <span>Wearable</span>
-              <span>High</span>
-              <span>— planned</span>
-            </div>
-            <div className="devices-row">
-              <span>NeX UP Desktop</span>
-              <span>Workstation</span>
-              <span>Medium</span>
-              <span>— planned</span>
-            </div>
-            <div className="devices-row">
-              <span>Mobile Companion</span>
-              <span>Phone</span>
-              <span>Contextual</span>
-              <span>— planned</span>
+        {/* ================= SECURITY LOGS & DEVELOPER ================= */}
+        <div className="split-section">
+          
+          {/* Security Logs */}
+          <div className="split-col">
+            <h2 className="gradient-title section-title-sm">Security Log</h2>
+            <div className="log-terminal glass-panel">
+              {SECURITY_LOGS.map((log, i) => (
+                <div key={i} className="log-entry">
+                  <span className="log-time">[{log.time}]</span>
+                  <span className="log-event">{log.event}</span>
+                  <span className="log-status success">{log.status}</span>
+                </div>
+              ))}
+              <div className="log-cursor">_</div>
             </div>
           </div>
-        </DNSSection>
 
-        <BreakLine />
-
-        {/* ================= SECURITY LAYERS ================= */}
-        <DNSSection title="Security Layers">
-          <div className="dns-grid">
-            <SecurityCard
-              title="Encryption Layer"
-              text="Protects communication between clients, worlds, and NeX UP services."
-            />
-            <SecurityCard
-              title="Authentication Layer"
-              text="Verifies identity using DNS anchors, device trust, and credentials."
-            />
-            <SecurityCard
-              title="Spatial Verification"
-              text="(Future) Uses spatial position, environment, and movement as part of identity."
-            />
-            <SecurityCard
-              title="Behavior Signature"
-              text="(Future) Recognizes familiar interaction patterns to enhance trust signals."
-            />
-            <SecurityCard
-              title="Cross-World Sync"
-              text="Keeps identity consistent across NexWorld environments and sessions."
-            />
-            <SecurityCard
-              title="Emergency Recovery"
-              text="Supports escape hatches, lockouts, and safe account recovery protocols."
-            />
+          {/* Developer API */}
+          <div className="split-col">
+            <h2 className="gradient-title section-title-sm">Developer API</h2>
+            <div className="api-card glass-panel">
+              <div className="api-header">
+                <FiTerminal /> <span>DNS Endpoint</span>
+              </div>
+              <p className="api-desc">
+                Programmatic access to identity verification and session management.
+              </p>
+              <div className="code-block">
+                <code>GET /api/v2/dns/anchors</code>
+              </div>
+              <button className="ghost-btn-sm">View Documentation</button>
+            </div>
           </div>
-        </DNSSection>
 
-        <BreakLine />
-
-        {/* ================= SESSION INTELLIGENCE ================= */}
-        <DNSSection title="Session Intelligence Notes">
-          <p className="dns-text">
-            Future DNS implementations will include adaptive session handling:
-          </p>
-          <ul className="dns-list">
-            <li>Session length based on device type and sensitivity.</li>
-            <li>Context-aware re-authentication for critical actions.</li>
-            <li>Multi-factor checks triggered by unusual behavior.</li>
-            <li>World-level session boundaries for NexWorld experiences.</li>
-          </ul>
-        </DNSSection>
-
-        <BreakLine />
-
-        {/* ================= DEVELOPER NOTES ================= */}
-        <DNSSection title="Developer Notes (Internal)">
-          <div className="developer-notes">
-            <p>
-              • Future API: <code>/api/dns/anchors</code> — list and manage identity anchors.
-            </p>
-            <p>
-              • Future API: <code>/api/dns/devices</code> — inspect and update trusted devices.
-            </p>
-            <p>
-              • Key rotation policy: time-based + risk-based, integrated with NexNodes.
-            </p>
-            <p>
-              • Long-term goal: unify DNS with environment-aware authentication from Safety & Trust layers.
-            </p>
-          </div>
-        </DNSSection>
-
-        <BreakLine />
-
-        {/* ================= ROADMAP ================= */}
-        <DNSSection title="Future DNS Roadmap">
-          <ul className="dns-list">
-            <li>Biometric and neural-linked DNS identity.</li>
-            <li>Spatial presence as part of authentication.</li>
-            <li>Identity shards distributed across NexNodes for resilience.</li>
-            <li>Deep integration with Trust, Safety, and Transparency systems.</li>
-          </ul>
-        </DNSSection>
+        </div>
 
         <BreakLine />
 
         {/* ================= FINAL CTA ================= */}
         <section className="dns-final-section">
           <motion.div
-            className="dns-final"
-            initial={{ opacity: 0, y: 60 }}
+            className="dns-final glass-panel"
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <h2 className="gradient-title final-big">
-              Need help with DNS or identity?
-            </h2>
-            <p className="final-text">
-              Use this space as a living document for how DNS will evolve.
-              For user-facing issues, route everything through support.
+            <div className="final-icon"><FiLock /></div>
+            <h2>Secure your digital reality.</h2>
+            <p>
+              Enable 2-Factor Authentication and spatial verification to maximize your security score.
             </p>
-
-            <button
-              className="white-btn"
-              onClick={() => navigate("/contact")}
-            >
-              Contact Support →
-            </button>
+            <div className="final-actions">
+              <button className="white-btn" onClick={() => navigate("/settings/security")}>
+                Configure 2FA
+              </button>
+              <button className="ghost-btn" onClick={() => navigate("/contact")}>
+                Report Breach
+              </button>
+            </div>
           </motion.div>
         </section>
-      </div>
 
+      </div>
       <Footer />
     </div>
   );
 }
 
-/* ================= REUSABLE COMPONENTS ================= */
-
-function BreakLine() {
-  return <div className="break-line" />;
-}
+/* ================= COMPONENTS ================= */
 
 function DNSSection({ title, children }) {
   return (
     <section className="dns-section">
       <motion.div
         className="dns-section-inner"
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-50px" }}
       >
         <h2 className="gradient-title section-title">{title}</h2>
         {children}
@@ -248,32 +255,6 @@ function DNSSection({ title, children }) {
   );
 }
 
-function AnchorCard({ title, text }) {
-  return (
-    <motion.div
-      className="anchor-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function SecurityCard({ title, text }) {
-  return (
-    <motion.div
-      className="security-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
+function BreakLine() {
+  return <div className="break-line" />;
 }

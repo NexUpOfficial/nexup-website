@@ -1,416 +1,292 @@
-/* ====================================================
-   NEXUP PREMIUM FOOTER (NOT OPENAI, CUSTOM DESIGN)
-   Clean • AR/VR Ready • Gradient-Integrated
-   ==================================================== */
+/* src/components/Footer/Footer.css */
 
-.nx-footer {
-  width: 100%;
-  padding: 4rem 3rem 2.5rem;
-  color: #d6d6d6;
-  z-index: 99999;
-  cursor: grab;
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
+:root {
+  --footer-bg: #050505;
+  --footer-border: rgba(255, 255, 255, 0.1);
+  --footer-text: #888;
+  --footer-text-hover: #fff;
+  --footer-accent: #b8a9ff;
 }
 
-/* Wrapper */
-.nx-footer-wrapper {
+/* =========================================================
+   FOOTER CONTAINER
+========================================================= */
+.nx-footer {
+  width: 100%;
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--footer-text);
+  padding: 80px 24px 40px;
+  margin-top: auto; /* Pushes footer to bottom if flex container */
+}
+
+.nx-footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* =========================================================
+   TOP SECTION (Brand + Newsletter)
+========================================================= */
+.nx-footer-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 4rem;
   flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 60px;
 }
 
-/* Brand Section */
-.nx-footer-brand {
-  max-width: 260px;
+.nx-brand-block {
+  max-width: 400px;
 }
 
-.nx-footer-brand h3 {
+.nx-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #fff;
-  font-size: 1.7rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
 }
 
-.nx-footer-brand p {
-  opacity: 0.75;
-  line-height: 1.5;
+.nx-mission {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--footer-text);
+}
+
+/* Newsletter */
+.nx-newsletter {
+  max-width: 350px;
+  width: 100%;
+}
+
+.nx-newsletter label {
+  display: block;
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.nx-input-wrapper {
+  display: flex;
+  position: relative;
+}
+
+.nx-input-wrapper input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--footer-border);
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #fff;
   font-size: 0.95rem;
+  transition: 0.3s ease;
+  outline: none;
 }
 
-/* Columns */
-.nx-footer-columns {
+.nx-input-wrapper input:focus {
+  border-color: var(--footer-accent);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nx-input-wrapper button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 1rem;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+
+.nx-input-wrapper button:hover {
+  opacity: 1;
+  color: var(--footer-accent);
+}
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+.nx-separator {
+  width: 100%;
+  height: 1px;
+  background: var(--footer-border);
+  margin: 0;
+}
+
+/* =========================================================
+   MIDDLE GRID (Links)
+========================================================= */
+.nx-footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 3rem;
-  flex: 1;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  padding: 60px 0;
+}
+
+.nx-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .nx-col h4 {
-  color: #fff;
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
-  letter-spacing: 0.5px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
-/* Link styles */
 .nx-col a {
-  display: block;
-  font-size: 0.9rem;
-  margin-bottom: 0.4rem;
-  color: #c9c9c9;
   text-decoration: none;
-  opacity: 0.8;
-  transition: all 0.25s ease;
-}
-
-/* Beautiful hover (not underline) */
-.nx-col a:hover {
-  opacity: 1;
-  color: #fff;
-  transform: translateX(6px);
-  cursor: grab;
-}
-
-/* Social Icons */
-.nx-footer-social {
-  margin-top: 2.4rem;
+  color: var(--footer-text);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
   display: flex;
-  gap: 1.2rem;
-  font-size: 1.4rem;
+  align-items: center;
+  gap: 8px;
 }
 
-.nx-footer-social a {
-  color: #bdbdbd;
-  transition: 0.25s ease;
+.nx-col a:hover {
+  color: var(--footer-text-hover);
+  transform: translateX(2px);
 }
 
-.nx-footer-social a:hover {
-  color: #fff;
-  transform: translateY(-4px);
-  cursor: grab;
+/* Hiring Badge */
+.hiring-badge {
+  font-size: 0.7rem;
+  background: rgba(184, 169, 255, 0.1);
+  color: var(--footer-accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
 }
 
-/* Bottom copyright */
+/* Social Icons (Mini Row) */
+.social-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.social-row a {
+  font-size: 1.2rem;
+  color: #666;
+  transition: 0.3s;
+}
+
+/* Brand Colors on Hover */
+.social-row a.x:hover { color: #fff; }
+.social-row a.github:hover { color: #fff; }
+.social-row a.linkedin:hover { color: #0a66c2; }
+.social-row a.youtube:hover { color: #ff0000; }
+.social-row a.instagram:hover { color: #e1306c; }
+
+/* =========================================================
+   BOTTOM BAR
+========================================================= */
 .nx-footer-bottom {
-  margin-top: 3rem;
-  text-align: center;
-  opacity: 0.65;
-  font-size: 0.88rem;
-}
-/* ====================================================
-   NEXUP PREMIUM FOOTER — FINAL MERGED RESPONSIVE FILE
-   Fluid • Foldable-Ready • TV Optimized
-==================================================== */
-
-/* Base Footer */
-.nx-footer {
-  width: 100%;
-  padding: 4rem 3rem 2.5rem;
-  color: #d6d6d6;
-  z-index: 99999;
-}
-
-/* Wrapper */
-.nx-footer-wrapper {
+  padding-top: 30px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 4rem;
+  align-items: center;
   flex-wrap: wrap;
+  gap: 20px;
+  font-size: 0.85rem;
 }
 
-/* Brand */
-.nx-footer-brand {
-  max-width: 260px;
-}
-
-.nx-footer-brand h3 {
-  color: #fff;
-  font-size: 1.7rem;
-  margin-bottom: 0.6rem;
-}
-
-.nx-footer-brand p {
-  opacity: 0.75;
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-/* Footer Columns */
-.nx-footer-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 3rem;
-  flex: 1;
-}
-
-.nx-col h4 {
-  color: #fff;
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
-  letter-spacing: 0.5px;
-}
-
-.nx-col a {
-  display: block;
-  font-size: 0.9rem;
-  margin-bottom: 0.4rem;
-  color: #c9c9c9;
-  text-decoration: none;
-  opacity: 0.8;
-  transition: all 0.25s ease;
-}
-
-/* Hover effect */
-.nx-col a:hover {
-  opacity: 1;
-  color: #fff;
-  transform: translateX(6px);
-}
-
-/* Social Icons */
-.nx-footer-social {
-  margin-top: 2.4rem;
+.nx-legal-links {
   display: flex;
-  gap: 1.2rem;
-  font-size: 1.4rem;
+  gap: 24px;
 }
 
-.nx-footer-social a {
-  color: #bdbdbd;
-  transition: 0.25s ease;
+.nx-legal-links a {
+  text-decoration: none;
+  color: var(--footer-text);
+  transition: color 0.2s;
 }
 
-.nx-footer-social a:hover {
-  transform: translateY(-4px);
+.nx-legal-links a:hover {
+  color: #fff;
 }
 
-/* Brand Color Hovers */
-.nx-footer-social a.youtube:hover { color: #ff0000; }
-.nx-footer-social a.github:hover { color: #ffffff; }
-.nx-footer-social a.instagram:hover { color: #e1306c; }
-.nx-footer-social a.x:hover { color: #ffffff; }
-.nx-footer-social a.snapchat:hover { color: #fffc00; }
-.nx-footer-social a.linkedin:hover { color: #0a66c2; }
-
-/* Bottom */
-.nx-footer-bottom {
-  margin-top: 3rem;
-  text-align: center;
-  opacity: 0.65;
-  font-size: 0.88rem;
+/* System Status */
+.nx-system-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4ade80; /* Success Green */
+  font-family: monospace;
+  font-size: 0.8rem;
+  background: rgba(74, 222, 128, 0.1);
+  padding: 6px 12px;
+  border-radius: 20px;
 }
 
-/* ====================================================
-   FLUID RESPONSIVE SCALING (clamp + vw system)
-==================================================== */
-
-.nx-footer {
-  padding: clamp(2rem, 3vw, 5rem)
-           clamp(1.4rem, 3vw, 7rem)
-           clamp(1.5rem, 2vw, 3.5rem);
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #4ade80;
+  animation: pulse 2s infinite;
 }
 
-.nx-footer-brand h3 {
-  font-size: clamp(1.4rem, 1.6vw, 2.1rem);
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
-.nx-footer-brand p {
-  font-size: clamp(0.85rem, 0.9vw, 1.1rem);
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 900px) {
+  .nx-footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.nx-col h4 {
-  font-size: clamp(0.9rem, 0.95vw, 1.2rem);
-}
+@media (max-width: 600px) {
+  .nx-footer {
+    padding: 60px 20px 30px;
+  }
 
-.nx-col a {
-  font-size: clamp(0.85rem, 0.9vw, 1rem);
-}
-
-.nx-footer-social {
-  font-size: clamp(1.2rem, 1.6vw, 1.7rem);
-}
-
-/* ====================================================
-   RESPONSIVE BREAKPOINTS
-==================================================== */
-
-/* 💻 Laptops / Small Desktops (<=1200px) */
-@media (max-width: 1200px) {
-  .nx-footer-wrapper { gap: 3rem; }
-  .nx-footer-columns { gap: 2.4rem; }
-}
-
-/* 📱 Tablets & Large Phones (<=992px) */
-@media (max-width: 992px) {
-  .nx-footer-wrapper {
+  .nx-footer-top {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 2.5rem;
+    gap: 30px;
   }
 
-  .nx-footer-columns {
-    width: 100%;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-}
-
-/* 📱 Mobiles (<=768px) */
-@media (max-width: 768px) {
-  .nx-footer-columns {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.8rem;
+  .nx-newsletter {
+    max-width: 100%;
   }
 
-  .nx-footer-social {
-    font-size: 1.3rem;
-    margin-top: 2rem;
-  }
-
-  .nx-footer-bottom { font-size: 0.8rem; }
-}
-
-/* 📱 Small Mobiles (<=480px) */
-@media (max-width: 480px) {
-  .nx-footer-columns {
+  .nx-footer-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .nx-footer-social {
-    justify-content: center;
-    flex-wrap: wrap;
-    row-gap: 0.8rem;
-  }
-
-  .nx-footer-brand h3,
-  .nx-footer-brand p {
-    text-align: center;
-  }
-}
-
-/* ====================================================
-   FOLDABLE PHONES SUPPORT (Fold / Flip)
-==================================================== */
-
-/* 📲 Folded (outer screen) 320–400px */
-@media (max-width: 400px) and (max-height: 900px) {
-  .nx-footer { padding: 1.8rem 1rem 1.6rem; }
-
-  .nx-footer-columns {
-    grid-template-columns: 1fr;
-    gap: 1.2rem;
-  }
-
-  .nx-footer-social {
-    justify-content: center;
-    gap: 1rem;
-  }
-}
-
-/* 📖 Unfolded inner screen (600–900px) */
-@media (min-width: 600px) and (max-width: 900px) and (max-height: 1200px) {
-  .nx-footer-columns {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.4rem;
-  }
-
-  .nx-footer-wrapper { gap: 3rem; }
-}
-
-/* ====================================================
-   LARGE DESKTOPS / TVs / ULTRA-WIDE
-==================================================== */
-
-@media (min-width: 1600px) {
-  .nx-footer-wrapper {
-    max-width: 1500px;
-    margin: 0 auto;
-  }
-}
-
-/* 4K TV (>=2000px) */
-@media (min-width: 2000px) {
-  .nx-footer {
-    padding: 6rem 10rem 4rem;
-  }
-
-  .nx-footer-wrapper {
-    max-width: 1800px;
-  }
-}
-
-/* 5K / 6K UltraWide (>=2560px) */
-@media (min-width: 2560px) {
-  .nx-footer {
-    padding: 7rem 12rem 4.5rem;
-  }
-
-  .nx-footer-brand h3 {
-    font-size: 2.4rem;
+    gap: 30px;
   }
 
   .nx-footer-bottom {
-    font-size: 1.1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
-}
-
-/* Extra micro-breakpoints */
-@media (max-width: 390px) {
-  .nx-footer-columns { grid-template-columns: 1fr; }
-}
-
-/* ====================================================
-   SOCIAL ICON BRAND COLORS (HOVER)
-   ==================================================== */
-
-   /* Base icons */
-.nx-footer-social {
-  margin-top: 2.4rem;
-  display: flex;
-  gap: 1.2rem;
-  font-size: 1.4rem;
-}
-
-.nx-footer-social a {
-  color: #bdbdbd;
-  transition: transform 0.25s ease, color 0.25s ease;
-}
-
-/* Generic hover lift */
-.nx-footer-social a:hover {
-  transform: translateY(-4px);
-}
-
-/* Brand colors — SOLID, SAFE, NO BREAK */
-
-/* YouTube */
-.nx-footer-social a.youtube:hover {
-  color: #ff0000;
-}
-
-/* GitHub */
-.nx-footer-social a.github:hover {
-  color: #ffffff;
-}
-
-/* Instagram — official magenta/pink tone */
-.nx-footer-social a.instagram:hover {
-  color: #e1306c;
-}
-
-/* X (Twitter) — white */
-.nx-footer-social a.x:hover {
-  color: #ffffff;
-}
-
-/* Snapchat — neon yellow */
-.nx-footer-social a.snapchat:hover {
-  color: #fffc00;
-}
-
-/* LinkedIn — brand blue */
-.nx-footer-social a.linkedin:hover {
-  color: #0a66c2;
+  
+  .nx-system-status {
+    margin-top: 10px;
+  }
 }

@@ -1,22 +1,41 @@
 /* ===========================================================
-   PAGE WRAPPER — FOOTER ALIGNMENT
+   PAGE WRAPPER
 =========================================================== */
 .company-page {
   width: 100%;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
+  min-height: 100vh;
 }
 
 .company-wrapper {
-  flex: 1; /* ensures footer sits after content */
+  flex: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 24px;
-  color: #e8e8e8;
+  padding: 80px 24px;
+  color: #f0f0f0;
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 100px; /* More breathing room */
+}
+
+/* ===========================================================
+   TYPOGRAPHY & GRADIENTS
+=========================================================== */
+.gradient-title {
+  background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.centered-intro {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 30px auto;
 }
 
 /* ===========================================================
@@ -27,71 +46,73 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+/* Optional: Subtle background glow behind hero */
+.company-hero-section::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(184,169,255,0.08) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .company-hero {
   text-align: center;
   max-width: 900px;
+  z-index: 1;
 }
 
 .company-hero-title {
-  font-size: clamp(2.3rem, 4.5vw, 3.6rem);
-  line-height: 1.2;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .company-hero-sub {
-  margin-top: 16px;
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  opacity: 0.85;
+  margin-top: 20px;
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 /* ===========================================================
-   GLOBAL TITLES
+   STATS BAR (NEW)
 =========================================================== */
-.gradient-title {
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  -webkit-background-clip: text;
-  color: transparent;
-  font-weight: 700;
-}
-
-.section-title {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  padding-bottom: 10px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  opacity: 0.5;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-}
-
-/* ===========================================================
-   GENERIC SECTION
-=========================================================== */
-.company-section {
+.stats-container {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.company-section-inner {
-  max-width: 1000px;
+.stat-item {
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 18px;
 }
 
-/* Improved readability for body text */
-.company-text {
-  font-size: clamp(1.05rem, 2vw, 1.2rem); 
-  opacity: 0.95; /* Increased contrast */
-  line-height: 1.7;
+.stat-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
 }
 
 /* ===========================================================
@@ -99,317 +120,261 @@
 =========================================================== */
 .company-ceo-layout {
   display: grid;
-  gap: 32px; /* Increased gap */
-  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 40px;
   align-items: center;
-  margin-top: 10px;
+  grid-template-columns: 1fr;
 }
 
-/* Responsive aspect ratio for image placeholder */
-.company-ceo-image {
-  width: 100%;
-  height: auto; 
-  padding-bottom: 75%; /* 4:3 aspect ratio */
+.company-ceo-image-wrapper {
   position: relative;
-  border-radius: 16px;
-  background: #181818;
-  border: 1px solid #2d2d2d;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.company-ceo-image {
+  padding-bottom: 100%; /* Square aspect ratio */
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #777;
+  color: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
 }
 
-.company-ceo-image * {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.company-ceo-text {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.company-ceo-quote {
+  margin-top: 24px;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-style: italic;
+  border-left: 3px solid #b8a9ff;
+  padding-left: 24px;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .company-ceo-name {
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
 }
-
 .company-ceo-role {
+  color: #b8a9ff;
   font-size: 0.95rem;
-  opacity: 0.8;
-}
-
-/* Enhanced style for CEO quote */
-.company-ceo-quote {
-  margin-top: 16px;
-  font-size: clamp(1.1rem, 1.8vw, 1.4rem); 
-  opacity: 1; 
-  line-height: 1.6;
-  font-style: italic;
-  border-left: 4px solid #a78bfa; /* Accent line */
-  padding-left: 20px;
+  margin-bottom: 16px;
 }
 
 /* ===========================================================
-   MISSION & VISION
+   GLASS PANELS (Mission/Vision)
 =========================================================== */
 .company-mission-vision {
   display: grid;
-  gap: 28px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
-.company-mission-block,
-.company-vision-block {
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 30px;
+  border-radius: 16px;
+}
+
+.section-title-small {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+}
+
+/* ===========================================================
+   ECOSYSTEM & VALUES (Grids)
+=========================================================== */
+.ecosystem-grid, .values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.glass-card-hover {
+  background: rgba(18, 18, 18, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  border-radius: 14px;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-5px);
+  border-color: rgba(184, 169, 255, 0.4);
+  background: rgba(184, 169, 255, 0.05);
+}
+
+.glass-card-hover h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.glass-card-hover p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+/* ===========================================================
+   ROADMAP (Timeline)
+=========================================================== */
+.roadmap-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-/* ===========================================================
-   ECOSYSTEM GRID
-=========================================================== */
-.ecosystem-grid {
-  margin-top: 20px;
-  display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-.ecosystem-card {
-  background: #111;
-  border: 1px solid #2a2a2a;
-  border-radius: 14px;
-  padding: 20px;
-  transition: 0.3s ease;
-}
-
-.ecosystem-card:hover {
-  border-color: #a78bfa;
-  transform: translateY(-4px);
-}
-
-.ecosystem-card h3 {
-  margin-bottom: 8px;
-}
-
-/* ===========================================================
-   VALUES
-=========================================================== */
-.values-grid {
-  margin-top: 20px;
-  display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-.value-card {
-  background: #101010;
-  border: 1px solid #2a2a2a;
-  border-radius: 14px;
-  padding: 20px;
-  transition: 0.3s ease;
-}
-
-/* Added hover effect for consistency */
-.value-card:hover {
-  border-color: #a78bfa;
-  transform: translateY(-4px); 
-}
-
-/* ===========================================================
-   ROADMAP (Timeline visual enhancement)
-=========================================================== */
-.roadmap-list {
-  display: flex;
-  flex-direction: column;
-  gap: 30px; 
-  padding-left: 20px; 
-  border-left: 2px solid rgba(255, 255, 255, 0.1); /* The main vertical line */
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  margin-left: 20px;
 }
 
 .roadmap-item {
   position: relative;
-  padding-left: 20px;
+  padding: 0 0 40px 30px;
 }
 
-/* Circle or dot for each item on the timeline */
-.roadmap-item::before { 
-  content: "";
+.roadmap-marker {
   position: absolute;
-  left: -11px; 
-  top: 0;
-  width: 20px;
-  height: 20px;
-  background: #a78bfa; 
+  left: -9px;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  background: #0b0b0c;
+  border: 3px solid #b8a9ff;
   border-radius: 50%;
-  border: 4px solid #000000; /* Use black/darker background color */
-  box-shadow: 0 0 0 1px #a78bfa; /* Subtle ring */
-  z-index: 10;
+  box-shadow: 0 0 10px rgba(184, 169, 255, 0.4);
+  z-index: 2;
 }
 
-.roadmap-item span {
-  font-weight: 600;
-  font-size: 1.05rem;
-  display: block; 
+.roadmap-year {
+  font-family: monospace;
+  color: #b8a9ff;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 6px;
 }
 
-.roadmap-item p {
-  opacity: 0.85;
-  margin-top: 4px;
-}
-
-/* ===========================================================
-   CULTURE
-=========================================================== */
-.company-culture-list {
-  margin-top: 10px;
-  padding-left: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Increased gap */
-  font-size: 1.05rem;
-  opacity: 0.95; /* Increased contrast */
-}
-
-.company-culture-list li {
-    line-height: 1.6;
+.roadmap-desc {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* ===========================================================
-   FINAL CTA (Increased impact)
+   FINAL CTA
 =========================================================== */
 .company-final-section {
   display: flex;
   justify-content: center;
-}
-
-.company-final {
   text-align: center;
-  max-width: 900px;
 }
 
 .final-big {
-  font-size: clamp(2.6rem, 5vw, 4.5rem); /* Bigger heading */
-  line-height: 1.1;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 16px;
 }
 
 .final-text {
-  margin-top: 14px;
-  font-size: clamp(1.2rem, 2vw, 1.45rem); /* Larger text */
-  opacity: 0.85;
-  line-height: 1.6;
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .company-final-actions {
-  margin-top: 24px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+  gap: 16px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .white-btn {
-  padding: 14px 32px;
-  background: #ffffff;
+  background: #fff;
   color: #000;
-  border-radius: 10px;
+  padding: 14px 32px;
+  border-radius: 30px;
   border: none;
-  font-size: 1.05rem;
-  font-weight: 600; /* Added weight */
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: 0.3s;
 }
 
 .white-btn:hover {
-  background: #e8e8e8;
-  transform: translateY(-2px); /* Subtle lift on hover */
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
 .ghost-btn {
-  padding: 14px 32px;
   background: transparent;
-  color: #e8e8e8;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.35);
-  font-size: 1.05rem;
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: 0.3s;
 }
 
 .ghost-btn:hover {
-  background: rgba(255,255,255,0.06);
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* ===========================================================
-   BREAK LINE (Enhanced)
+   UTILITIES
 =========================================================== */
+.company-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.company-section-inner {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
 .break-line {
   width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.16);
-  opacity: 0.3;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
 }
 
 /* ===========================================================
-   RESPONSIVENESS
+   MEDIA QUERIES
 =========================================================== */
+@media (min-width: 900px) {
+  .company-ceo-layout {
+    grid-template-columns: 1fr 1.2fr;
+    grid-template-areas: "image text";
+  }
+
+  /* Invert Layout logic if needed */
+  .ceo-section-alt .company-ceo-layout {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-areas: "text image";
+  }
+
+  .company-ceo-image-wrapper { grid-area: image; }
+  .company-ceo-text { grid-area: text; }
+}
 
 @media (max-width: 768px) {
-  .company-wrapper {
-    padding: 40px 18px;
-    gap: 70px;
-  }
-
-  .company-ceo-layout {
-    grid-template-columns: 1fr;
-  }
+  .company-wrapper { padding: 40px 20px; gap: 60px; }
+  .company-hero-title { font-size: 2.5rem; }
+  .ecosystem-grid, .values-grid { grid-template-columns: 1fr; }
   
-  /* Adjust aspect ratio for mobile when image takes full width */
-  .company-ceo-image {
-    padding-bottom: 60%; 
-  }
-
-  .white-btn,
-  .ghost-btn {
-    width: 100%;
-  }
-}
-
-/* Desktop Styles for CEO Section Inversion */
-@media (min-width: 900px) {
-    .company-ceo-layout {
-        grid-template-areas: "image text";
-        grid-template-columns: minmax(280px, 350px) 1fr;
-    }
-
-    /* Invert layout for the specific section with the 'ceo-section-alt' class */
-    .ceo-section-alt .company-ceo-layout {
-        grid-template-areas: "text image";
-        grid-template-columns: 1fr minmax(280px, 350px);
-    }
-
-    .company-ceo-image {
-        grid-area: image;
-    }
-
-    .company-ceo-text {
-        grid-area: text;
-    }
-}
-
-@media (min-width: 1440px) {
-  .company-wrapper {
-    max-width: 1300px;
-  }
-}
-
-@media (min-width: 1920px) {
-  .company-wrapper {
-    max-width: 1600px;
-  }
+  /* Mobile Timeline Adjustments */
+  .roadmap-container { border-left: 2px solid rgba(255,255,255,0.1); }
+  .roadmap-item { padding-left: 20px; }
+  .roadmap-marker { left: -9px; }
 }

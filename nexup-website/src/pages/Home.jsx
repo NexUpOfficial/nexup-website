@@ -1,48 +1,48 @@
 // src/pages/Home.jsx
-import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import "../page-styles/Home.css";
 import Footer from "../components/Footer/Footer";
 
 export default function Home() {
+  const scrollRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Parallax effect for hero text
+  const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacityHero = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   /* =======================================  
-      SCROLL REVEAL SYSTEM  
-      (Uses heavy transition defined in Home.css)
+     SCROLL REVEAL OBSERVER
   ======================================= */
   useEffect(() => {
     const elements = document.querySelectorAll(".reveal");
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Add delay based on element index for staggered effect
-          const index = Array.from(elements).indexOf(entry.target);
-          entry.target.style.transitionDelay = `${index * 0.1}s`;
-
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
           }
         });
       },
-      { threshold: 0.15 } // Reduced threshold for earlier trigger
+      { threshold: 0.1 }
     );
 
     elements.forEach((el) => observer.observe(el));
-
     return () => observer.disconnect();
   }, []);
 
-
   return (
-    <div className="home-container">
+    <div className="home-container" ref={scrollRef}>
       
       {/* =====================================================
-           HERO SECTION WITH BACKGROUND VIDEO
+           1. CINEMATIC HERO SECTION
       ====================================================== */}
-      <div className="hero-fullscreen-wrapper">
-        
-        {/* 1. BACKGROUND VIDEO */}
+      <section className="hero-fullscreen-wrapper">
         <div className="video-background">
           <video
             src="https://res.cloudinary.com/dgzikn7nn/video/upload/Futuristic_City_AR_VR_Fly_Through_wxzn65.mp4"
@@ -52,148 +52,120 @@ export default function Home() {
             playsInline
             className="bg-video"
           />
-          {/* Dark overlay to make text readable */}
-          <div className="video-overlay"></div>
+          <div className="video-overlay" />
+          <div className="video-vignette" />
         </div>
 
-        {/* 2. HERO CONTENT (Text + Buttons) */}
-        <div className="hero-content-layer">
-          <motion.div
-            className="home-hero"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <motion.h1
-              className="home-title"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-            >
-              NexUP Platform
-            </motion.h1>
+        <motion.div 
+          className="hero-content-layer"
+          style={{ y: yHero, opacity: opacityHero }}
+        >
+          <div className="hero-badge">v2.0 // Spatial Era</div>
+          <h1 className="home-title">
+            Reality, <br />
+            <span className="gradient-text">Redefined.</span>
+          </h1>
 
-            <motion.p
-              className="home-subtitle"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-            >
-              The next generation of AR, VR & intelligent digital reality.
-            </motion.p>
+          <p className="home-subtitle">
+            The unified operating system for AR, VR, and intelligent environments. 
+            Build, explore, and live in the digital future.
+          </p>
 
-            <motion.div
-              className="home-buttons"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.4 }}
-            >
-              <Link to="/ecosystem" className="home-btn fill-btn">
-                Explore Ecosystem <span className="arrow">›</span>
-              </Link>
-
-              <Link to="/about" className="home-btn outline-btn">
-                About <span className="arrow">›</span>
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
+          <div className="home-buttons">
+            <Link to="/ecosystem" className="primary-btn">
+              Enter Ecosystem
+            </Link>
+            <Link to="/about/vision" className="secondary-btn">
+              Our Vision
+            </Link>
+          </div>
+        </motion.div>
+      </section>
 
       {/* =====================================================
-                      CONTENT SECTIONS (HEAVY REVEAL)
+           2. THE MANIFESTO (Big Type)
       ====================================================== */}
       <div className="content-flow">
         
-        {/* SECTION 1 — NEXUP MISSION */}
-        <section className="section mission reveal">
-          <h2 className="section-title">NexUP Mission</h2>
-          <p className="section-text">
-            We are building a seamlessly connected digital reality — a place where
-            information, intelligence and immersive environments merge into a
-            single unified experience. Our mission is to empower the world with
-            tools that make AR, VR and AI accessible, intuitive and life-changing.
+        <section className="section manifesto-section">
+          <h2 className="manifesto-text reveal">
+            We are building a world where <span className="highlight">intelligence</span> and <span className="highlight">immersion</span> merge.
+          </h2>
+          <p className="manifesto-sub reveal">
+            No longer just screens. NexUP enables a fluid interaction between physical 
+            and virtual environments—without friction, complexity, or boundaries.
           </p>
         </section>
 
-        {/* SECTION 2 — AR / VR VISION */}
-        <section className="section vision reveal">
-          <h2 className="section-title">AR / VR Vision</h2>
-          <p className="section-text">
-            NexUP envisions a future where digital layers blend into the real
-            world. From spatial computing to mixed-reality interfaces, our
-            platform enables fluid interaction between physical and virtual
-            environments — without friction, complexity or limitations.
-          </p>
-        </section>
+        {/* =====================================================
+             3. ECOSYSTEM BENTO GRID
+        ====================================================== */}
+        <section className="section bento-section">
+          <div className="section-header reveal">
+            <h3 className="small-label">The Platform</h3>
+            <h2>The NeX UP Ecosystem</h2>
+          </div>
 
-        {/* SECTION 3 — FUTURE OF DIGITAL REALITY */}
-        <section className="section future reveal">
-          <h2 className="section-title">Future of Digital Reality</h2>
-          <p className="section-text">
-            Digital reality is no longer just visuals — it is intelligent,
-            adaptive and context-aware. The future is personalized environments
-            powered by real-time data, neural-AI assistants and immersive 3D
-            spaces that evolve with you.
-          </p>
-        </section>
-
-        {/* SECTION 4 — NEXUP PLATFORMS (Note: Cards also use the reveal class) */}
-        <section className="section platforms">
-          <h2 className="section-title reveal">NexUP Platforms</h2>
-
-          <div className="platform-flex">
-            {/* ROW 1 */}
-            <div className="platform-row">
-              <div className="platform-card reveal">
+          <div className="bento-grid">
+            
+            {/* ITEM 1: NEXWORLD (Large) */}
+            <Link to="/ecosystem/nexworld" className="bento-card card-large reveal">
+              <div className="card-bg world-bg" />
+              <div className="card-content">
                 <h3>NexWorld</h3>
-                <p>
-                  Our immersive world engine powering 3D environments, spatial AR,
-                  virtual cities, simulation systems and interactive digital
-                  ecosystems.
-                </p>
+                <p>The immersive engine powering digital cities and shared 3D realities.</p>
+                <span className="card-arrow">Explore &rarr;</span>
               </div>
+            </Link>
 
-              <div className="platform-card reveal">
-                <h3>NexNode</h3>
-                <p>
-                  A decentralized intelligence network connecting data, devices,
-                  users and environments into one synchronized digital universe.
-                </p>
+            {/* ITEM 2: NEXNODES */}
+            <Link to="/ecosystem/nexnodes" className="bento-card card-tall reveal">
+              <div className="card-content">
+                <h3>NexNodes</h3>
+                <p>Decentralized intelligence network synchronizing the spatial web.</p>
               </div>
+              <div className="tech-lines" />
+            </Link>
 
-              <div className="platform-card reveal">
-                <h3>NexSearch Engine</h3>
-                <p>
-                  An intelligent reality search engine enabling world queries,
-                  spatial discovery, AR-based information layers and 3D contextual
-                  lookup.
-                </p>
+            {/* ITEM 3: NEXENGINE */}
+            <Link to="/ecosystem/nexengine" className="bento-card card-wide reveal">
+              <div className="card-content">
+                <h3>NexEngine</h3>
+                <p>Real-time physics and AI computation layer.</p>
               </div>
-            </div>
+            </Link>
 
-            {/* ROW 2 */}
-            <div className="platform-row">
-              <div className="platform-card reveal">
-                <h3>Housing Systems</h3>
-                <p>
-                  Advanced AR-powered housing, layout tools and smart-living
-                  systems for the next generation of real-estate and spatial
-                  design.
-                </p>
+            {/* ITEM 4: NEXHOUSING */}
+            <Link to="/ecosystem/nexhousing" className="bento-card reveal">
+              <div className="card-content">
+                <h3>NexHousing</h3>
+                <p>AR-powered living spaces.</p>
               </div>
+            </Link>
 
-              <div className="platform-card reveal">
-                <h3>World Engine Tools</h3>
-                <p>
-                  Creator tools enabling developers and designers to build, manage
-                  and deploy entire virtual or mixed-reality worlds.
-                </p>
+            {/* ITEM 5: SEARCH */}
+            <Link to="/ecosystem/search" className="bento-card reveal">
+              <div className="card-content">
+                <h3>Search</h3>
+                <p>Query the physical world.</p>
               </div>
-            </div>
+            </Link>
 
-            <Link to="/ecosystem" className="explore-btn reveal">
-              Explore Platforms <span className="arrow">›</span>
+          </div>
+        </section>
+
+        {/* =====================================================
+             4. FUTURE STATEMENT
+        ====================================================== */}
+        <section className="section future-section reveal">
+          <div className="future-box">
+            <h2>The Future is Adaptive.</h2>
+            <p>
+              Digital reality is no longer static. It learns, reacts, and evolves with you. 
+              Powered by real-time data and neural-AI assistants.
+            </p>
+            <Link to="/about/company" className="text-link">
+              Read our full roadmap &rarr;
             </Link>
           </div>
         </section>

@@ -1,9 +1,73 @@
 // src/pages/Support/Help.jsx
-
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { 
+  FiSearch, FiBook, FiCpu, FiUser, FiCreditCard, 
+  FiActivity, FiArrowRight, FiClock, FiFileText, FiHelpCircle 
+} from "react-icons/fi";
 import "../../page-styles/Support/Help.css";
 import Footer from "../../components/Footer/Footer";
+
+/* --- DATA --- */
+const POPULAR_SEARCHES = ["Reset Password", "NexNode API Key", "VR Headset Setup", "Billing"];
+
+const SYSTEM_STATUS = {
+  status: "Operational",
+  color: "#4ade80", // Green
+  message: "All NeX UP systems are running normally."
+};
+
+const CATEGORIES = [
+  { icon: <FiUser />, title: "Account & Security", desc: "Login, 2FA, Profile Settings" },
+  { icon: <FiCpu />, title: "NexNode & Technical", desc: "API, SDK, Network Status" },
+  { icon: <FiActivity />, title: "NexWorld Environment", desc: "World Building, Physics, Assets" },
+  { icon: <FiCreditCard />, title: "Billing & Plans", desc: "Invoices, Subscriptions, Credits" },
+];
+
+const RECENT_ARTICLES = [
+  { 
+    title: "Setting up your first NexWorld Environment", 
+    category: "Getting Started",
+    updated: "2 days ago", 
+    readTime: "5 min read" 
+  },
+  { 
+    title: "Troubleshooting Low Latency in NexNode", 
+    category: "Technical",
+    updated: "1 week ago", 
+    readTime: "8 min read" 
+  },
+  { 
+    title: "Understanding Spatial Audio Zones", 
+    category: "Design",
+    updated: "Oct 24, 2025", 
+    readTime: "4 min read" 
+  },
+  { 
+    title: "Managing Team Permissions", 
+    category: "Account",
+    updated: "Sep 12, 2025", 
+    readTime: "3 min read" 
+  },
+];
+
+const FAQS = [
+  { q: "Is NeX UP free to use?", a: "The core platform is free for individuals. Enterprise features require a subscription." },
+  { q: "How do I report a bug?", a: "Use the 'Report Issue' button in your dashboard or contact support below." },
+  { q: "Can I monetize my NexWorld?", a: "Yes, creators can sell assets and experiences via the NeX Marketplace." },
+];
+
+/* --- ANIMATIONS --- */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 export default function Help() {
   const navigate = useNavigate();
@@ -12,205 +76,162 @@ export default function Help() {
     <div className="help-page">
       <div className="help-wrapper">
 
-        {/* ================= HERO ================= */}
+        {/* ================= HERO SEARCH ================= */}
         <section className="help-hero-section">
-          <motion.div
-            className="help-hero"
-            initial={{ opacity: 0, y: 40 }}
+          <div className="help-glow" />
+          <motion.div 
+            className="help-hero-content"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+            transition={{ duration: 1 }}
           >
-            <h1 className="gradient-title help-hero-title">Help & Support</h1>
-            <p className="help-hero-sub">
-              Guidance, documentation, answers, and assistance for navigating the NeX UP ecosystem.
-            </p>
+            <h1 className="gradient-title help-title">How can we help?</h1>
+            
+            {/* Search Input */}
+            <div className="search-container glass-panel">
+              <FiSearch className="search-icon" />
+              <input 
+                type="text" 
+                placeholder="Search for articles, guides, or troubleshooting..." 
+                className="search-input"
+              />
+            </div>
+
+            {/* Popular Chips */}
+            <div className="popular-searches">
+              <span>Popular:</span>
+              {POPULAR_SEARCHES.map((term, i) => (
+                <button key={i} className="search-chip">{term}</button>
+              ))}
+            </div>
           </motion.div>
         </section>
 
+        {/* ================= SYSTEM STATUS BAR ================= */}
+        <div className="system-status-bar">
+          <div className="status-indicator">
+            <span className="status-dot" style={{ background: SYSTEM_STATUS.color }}></span>
+            <span className="status-text">{SYSTEM_STATUS.status}: {SYSTEM_STATUS.message}</span>
+          </div>
+          <span className="status-link">View Status Page →</span>
+        </div>
+
         <BreakLine />
 
-        {/* ================= QUICK SUPPORT CARDS ================= */}
-        <HelpSection title="Quick Support">
-          <div className="quick-grid">
-            <QuickCard title="Account & Login" text="Troubleshoot login, password, or profile issues." />
-            <QuickCard title="Using NexWorld" text="Setup guides, AR/VR compatibility, environment help." />
-            <QuickCard title="NexNode & NexEngine" text="Intelligence network support & developer info." />
-            <QuickCard title="Billing & Subscription" text="Payments, invoices, renewal, cancellations." />
-          </div>
+        {/* ================= BROWSE BY CATEGORY ================= */}
+        <HelpSection title="Browse Knowledge Base">
+          <motion.div 
+            className="category-grid"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {CATEGORIES.map((cat, idx) => (
+              <motion.div 
+                key={idx} 
+                className="category-card glass-panel"
+                variants={itemVariants}
+              >
+                <div className="cat-icon-wrapper">{cat.icon}</div>
+                <div className="cat-info">
+                  <h3>{cat.title}</h3>
+                  <p>{cat.desc}</p>
+                </div>
+                <FiArrowRight className="cat-arrow" />
+              </motion.div>
+            ))}
+          </motion.div>
         </HelpSection>
 
         <BreakLine />
 
-        {/* ================= SEARCH HELP ================= */}
-        <section className="help-search-section">
-          <motion.div
-            className="help-search-box"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+        {/* ================= RECENTLY UPDATED ARTICLES ================= */}
+        <HelpSection title="Recently Updated Articles">
+          <motion.div 
+            className="articles-list"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
           >
-            <h3>How can we help you today?</h3>
-            <input
-              type="text"
-              className="help-search-input"
-              placeholder="Search help articles..."
-            />
+            {RECENT_ARTICLES.map((article, idx) => (
+              <motion.div 
+                key={idx} 
+                className="article-row glass-panel-sm"
+                variants={itemVariants}
+              >
+                <div className="article-icon">
+                  <FiFileText />
+                </div>
+                <div className="article-main">
+                  <h4>{article.title}</h4>
+                  <div className="article-meta">
+                    <span className="meta-badge">{article.category}</span>
+                    <span className="meta-divider">•</span>
+                    <span>Updated {article.updated}</span>
+                  </div>
+                </div>
+                <div className="article-read-time">
+                  <FiClock /> {article.readTime}
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
-        </section>
+        </HelpSection>
 
         <BreakLine />
 
-        {/* ================= TOP ARTICLES ================= */}
-        <HelpSection title="Top Help Articles">
-          <div className="article-list">
-            {[
-              "Getting Started with NeX UP",
-              "Setting Up NexWorld Environments",
-              "Troubleshooting Login Problems",
-              "How NexNode Works",
-              "Device Requirements for AR/VR",
-              "Safety & Content Guidelines",
-            ].map((item, i) => (
-              <ArticleItem key={i} title={item} />
+        {/* ================= FAQ ACCORDION ================= */}
+        <HelpSection title="Frequently Asked Questions">
+          <div className="faq-container">
+            {FAQS.map((faq, idx) => (
+              <FAQItem key={idx} question={faq.q} answer={faq.a} />
             ))}
           </div>
         </HelpSection>
 
         <BreakLine />
 
-        {/* ================= FAQ ================= */}
-        <HelpSection title="Frequently Asked Questions">
-          <div className="faq-list">
-            <FAQItem q="What is NeX UP?" a="NeX UP is a next-generation platform for immersive digital reality and spatial intelligence." />
-            <FAQItem q="How does NexWorld work?" a="NexWorld enables users to explore adaptive 3D environments through AR/VR." />
-            <FAQItem q="Is NeX UP free?" a="Core features are free; premium features depend on subscription level." />
-            <FAQItem q="Where do I report issues?" a="Use the Contact or Report button below to submit an issue." />
-            <FAQItem q="Which devices are supported?" a="Modern AR/VR devices, smartphones, and spatial hardware are supported." />
-          </div>
-        </HelpSection>
-
-        <BreakLine />
-
-        {/* ================= SUPPORT CATEGORIES ================= */}
-        <HelpSection title="Support Categories">
-          <div className="category-grid">
-            <CategoryCard name="NexWorld" />
-            <CategoryCard name="NexNode" />
-            <CategoryCard name="NexEngine" />
-            <CategoryCard name="NexHousing" />
-            <CategoryCard name="NexSearch" />
-            <CategoryCard name="Account" />
-            <CategoryCard name="Developers" />
-            <CategoryCard name="Safety" />
-          </div>
-        </HelpSection>
-
-        <BreakLine />
-
-        {/* ================= TROUBLESHOOTING ================= */}
-        <HelpSection title="Troubleshooting">
-          <div className="troubleshoot-grid">
-            <TroubleCard
-              title="App Not Loading"
-              text="Fix crashes, blank screens, or performance issues."
-            />
-            <TroubleCard
-              title="AR/VR Tracking Issues"
-              text="Resolve environment detection or spatial mapping problems."
-            />
-            <TroubleCard
-              title="Sync / Network Errors"
-              text="Learn how to fix NexNode connectivity or data sync failures."
-            />
-          </div>
-        </HelpSection>
-
-        <BreakLine />
-
-        {/* ================= DOCUMENTATION ================= */}
-        <HelpSection title="Documentation & Guides">
-          <div className="docs-grid">
-            <DocCard title="Developer Docs" text="API, SDK, and system integration guides." />
-            <DocCard title="User Manual" text="Beginner tutorials and feature walkthroughs." />
-            <DocCard title="Platform Overview" text="Technical architecture and ecosystem design." />
-          </div>
-        </HelpSection>
-
-        <BreakLine />
-
-        {/* ================= SAFETY & TRUST ================= */}
-        <HelpSection title="Safety & Trust at NeX UP">
-          <p className="help-text">
-            NeX UP prioritizes responsible technology and transparent systems.  
-            Learn how we protect user data, ensure safe interactions, and build trust-first experiences.
-          </p>
-
-          <button
-            className="ghost-btn"
-            onClick={() => navigate("/safety/privacy")}
-          >
-            Learn About Safety →
-          </button>
-        </HelpSection>
-
-        <BreakLine />
-
         {/* ================= FINAL CTA ================= */}
         <section className="help-final-section">
-          <motion.div
-            className="help-final"
-            initial={{ opacity: 0, y: 60 }}
+          <motion.div 
+            className="help-final glass-panel"
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <h2 className="gradient-title final-big">Still need help?</h2>
-            <p className="final-text">
-              Our team is here to support you. Reach out and we’ll respond as soon as possible.
-            </p>
-
-            <div className="help-final-actions">
-              <button
-                className="white-btn"
-                onClick={() => navigate("/contact")}
-              >
-                Contact Support →
-              </button>
-
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/report")}
-              >
-                Report an Issue →
-              </button>
+            <div className="final-icon">
+              <FiHelpCircle />
+            </div>
+            <div className="final-content">
+              <h2>Still can't find what you're looking for?</h2>
+              <p>Our support team is available 24/7 to assist you with complex issues.</p>
+            </div>
+            <div className="final-actions">
+              <button className="white-btn" onClick={() => navigate("/contact")}>Contact Support</button>
+              <button className="ghost-btn">Join Community Discord</button>
             </div>
           </motion.div>
         </section>
-      </div>
 
+      </div>
       <Footer />
     </div>
   );
 }
 
-/* ===========================================================
-   COMPONENTS
-=========================================================== */
-
-function BreakLine() {
-  return <div className="break-line"></div>;
-}
+/* ================= SUB-COMPONENTS ================= */
 
 function HelpSection({ title, children }) {
   return (
     <section className="help-section">
-      <motion.div
+      <motion.div 
         className="help-section-inner"
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-50px" }}
       >
         <h2 className="gradient-title section-title">{title}</h2>
         {children}
@@ -219,90 +240,34 @@ function HelpSection({ title, children }) {
   );
 }
 
-function QuickCard({ title, text }) {
+function FAQItem({ question, answer }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <motion.div
-      className="quick-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+    <motion.div 
+      className={`faq-item ${isOpen ? "open" : ""}`}
+      onClick={() => setIsOpen(!isOpen)}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
     >
-      <h3>{title}</h3>
-      <p>{text}</p>
+      <div className="faq-header">
+        <h4>{question}</h4>
+        <span className="faq-toggle">{isOpen ? "−" : "+"}</span>
+      </div>
+      {isOpen && (
+        <motion.div 
+          className="faq-body"
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+        >
+          <p>{answer}</p>
+        </motion.div>
+      )}
     </motion.div>
   );
 }
 
-function ArticleItem({ title }) {
-  return (
-    <motion.div
-      className="article-item"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      viewport={{ once: true }}
-    >
-      <span>›</span> {title}
-    </motion.div>
-  );
-}
-
-function FAQItem({ q, a }) {
-  return (
-    <motion.div
-      className="faq-item"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-    >
-      <h4>{q}</h4>
-      <p>{a}</p>
-    </motion.div>
-  );
-}
-
-function CategoryCard({ name }) {
-  return (
-    <motion.div
-      className="category-card"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-    >
-      <h3>{name}</h3>
-    </motion.div>
-  );
-}
-
-function TroubleCard({ title, text }) {
-  return (
-    <motion.div
-      className="trouble-card"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function DocCard({ title, text }) {
-  return (
-    <motion.div
-      className="doc-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
+function BreakLine() {
+  return <div className="break-line" />;
 }

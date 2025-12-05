@@ -5,207 +5,185 @@ import { useNavigate } from "react-router-dom";
 import "../../page-styles/Ecosystem/NexNodes.css";
 import Footer from "../../components/Footer/Footer";
 
+/* --- ANIMATION VARIANTS --- */
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+/* --- MOCK DATA --- */
+const NETWORK_STATS = [
+  { label: "Global Nodes", value: "8,420" },
+  { label: "Avg Latency", value: "< 12ms" },
+  { label: "Uptime", value: "99.99%" },
+  { label: "Status", value: "Operational", status: "green" },
+];
+
 export default function NexNodes() {
   const navigate = useNavigate();
 
   return (
     <div className="nexnodes-page">
+      
+      {/* ================= HERO SECTION ================= */}
+      <section className="nexnodes-hero-section">
+        <div className="nexnodes-glow" />
+        
+        <motion.div
+          className="nexnodes-hero-content"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease: "easeOut" }}
+        >
+          <div className="hero-badge">Distributed Intelligence Layer</div>
+          <h1 className="nexnodes-hero-title">The Nervous System.</h1>
+          <p className="nexnodes-hero-sub">
+            NexNodes connect devices, environments, and services into a single 
+            synchronized reality. Real-time computation at the edge.
+          </p>
+        </motion.div>
+
+        {/* Network Status Strip */}
+        <motion.div 
+          className="network-status-bar"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+        >
+          {NETWORK_STATS.map((stat, index) => (
+            <div key={index} className="status-item">
+              <span className="status-label">{stat.label}</span>
+              <span className={`status-value ${stat.status ? 'status-live' : ''}`}>
+                {stat.value}
+              </span>
+            </div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* ================= MAIN CONTENT ================= */}
       <div className="nexnodes-wrapper">
-        {/* ================= HERO ================= */}
-        <section className="nexnodes-hero-section">
-          <motion.div
-            className="nexnodes-hero"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+        
+        {/* ================= DEFINITION ================= */}
+        <section className="nexnodes-section intro-section">
+          <motion.div 
+            className="intro-text-block"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
           >
-            <h1 className="gradient-title nexnodes-hero-title">
-              NexNodes
-            </h1>
-            <p className="nexnodes-hero-sub">
-              A distributed intelligence network powering real-time synchronization,
-              adaptive computation, and spatial awareness across the NeX UP ecosystem.
+            <h2 className="gradient-title section-title">Synchronization Engine</h2>
+            <p className="nexnodes-text large-text">
+              NexNodes are the invisible compute points that route intelligence. 
+              They ensure that when a user moves an object in an AR room in Tokyo, 
+              a user in New York sees it move instantly.
             </p>
           </motion.div>
         </section>
 
         <BreakLine />
 
-        {/* ================= WHAT ARE NEXNODES ================= */}
-        <NexNodesSection title="What are NexNodes?">
-          <p className="nexnodes-text">
-            NexNodes are the distributed intelligence layer of NeX UP — a network of
-            compute points that connect devices, environments, and services into one
-            synchronized system.
-          </p>
-          <p className="nexnodes-text">
-            They route intelligence, manage world states, and keep NexWorld, NexEngine,
-            NexHousing, and other systems aligned in real time — whether across a single
-            room or an entire virtual city.
-          </p>
+        {/* ================= CORE CAPABILITIES (Bento Grid) ================= */}
+        <NexNodesSection title="System Capabilities">
+          <motion.div 
+            className="bento-grid"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {/* Wide Card */}
+            <motion.div className="bento-card card-wide" variants={fadeInUp}>
+              <div className="card-header">
+                <span className="card-id">SYS_01</span>
+                <span className="card-tag">Core</span>
+              </div>
+              <h3>Real-time Synchronization</h3>
+              <p>State-locking technology that keeps world physics, user positions, and environment updates aligned across thousands of concurrent sessions.</p>
+            </motion.div>
+
+            {/* Tall Card */}
+            <motion.div className="bento-card card-tall" variants={fadeInUp}>
+              <div className="card-header">
+                <span className="card-id">SYS_02</span>
+              </div>
+              <h3>Decentralized Intelligence</h3>
+              <p>Distributes AI workloads between local devices (Edge) and cloud clusters to maximize performance and privacy.</p>
+            </motion.div>
+
+            {/* Standard Cards */}
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-header"><span className="card-id">SYS_03</span></div>
+              <h3>Edge Spatial Processing</h3>
+              <p>Lidar and camera inputs are processed locally for near-zero latency interaction.</p>
+            </motion.div>
+
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-header"><span className="card-id">SYS_04</span></div>
+              <h3>Secure Mesh Linking</h3>
+              <p>End-to-end encrypted tunnels connect headsets, phones, and displays.</p>
+            </motion.div>
+          </motion.div>
         </NexNodesSection>
 
         <BreakLine />
 
-        {/* ================= CORE CAPABILITIES ================= */}
-        <NexNodesSection title="Core Capabilities">
-          <div className="nexnodes-grid">
-            <CapabilityCard
-              title="Real-time Synchronization"
-              text="Keeps world states, user positions, and environment updates synchronized across devices."
+        {/* ================= ARCHITECTURE STACK ================= */}
+        <NexNodesSection title="Network Architecture">
+          <div className="architecture-stack">
+            <StackLayer 
+              level="L1" 
+              name="Signal & Input" 
+              desc="Ingests sensor data, gestures, and voice commands." 
             />
-            <CapabilityCard
-              title="Decentralized Intelligence"
-              text="Distributes computation across local and remote nodes for resilience and efficiency."
+            <StackLayer 
+              level="L2" 
+              name="Processing Core" 
+              desc="Runs physics engines, AI logic, and spatial reasoning." 
             />
-            <CapabilityCard
-              title="Edge-Level Spatial Processing"
-              text="Processes spatial signals closer to the user for faster, lower-latency responses."
+            <StackLayer 
+              level="L3" 
+              name="Sync Protocol" 
+              desc="Broadcasting state changes to the global NexWorld grid." 
             />
-            <CapabilityCard
-              title="Secure Multi-Device Linking"
-              text="Connects headsets, phones, displays, and systems into a cohesive, secure network."
-            />
-            <CapabilityCard
-              title="World State Broadcasting"
-              text="Shares updates about environments, interactions, and changes across NexWorld spaces."
-            />
-            <CapabilityCard
-              title="Adaptive Task Allocation"
-              text="Intelligently routes tasks to the best node based on load, location, and capability."
+            <StackLayer 
+              level="L4" 
+              name="Security Mesh" 
+              desc="Identity verification and data integrity enforcement." 
             />
           </div>
-        </NexNodesSection>
-
-        <BreakLine />
-
-        {/* ================= ARCHITECTURE LAYERS ================= */}
-        <NexNodesSection title="Network Architecture Layers">
-          <div className="layers-grid">
-            <LayerCard
-              title="Signal & Input Layer"
-              text="Captures events, sensor data, and spatial inputs from devices and environments."
-            />
-            <LayerCard
-              title="Processing Layer"
-              text="Runs computations for logic, predictions, and environment reasoning."
-            />
-            <LayerCard
-              title="World Sync Layer"
-              text="Keeps shared worlds aligned across users and experiences."
-            />
-            <LayerCard
-              title="Intelligence Distribution Layer"
-              text="Allocates AI, simulation, and decision workloads across NexNodes."
-            />
-            <LayerCard
-              title="Security Layer"
-              text="Protects communication, enforces access rules, and defends against misuse."
-            />
-          </div>
-        </NexNodesSection>
-
-        <BreakLine />
-
-        {/* ================= HOW IT POWERS NEX UP ================= */}
-        <NexNodesSection title="How NexNodes Power NeX UP">
-          <p className="nexnodes-text">
-            NexNodes act as the connective tissue between core platforms inside the
-            NeX UP ecosystem.
-          </p>
-
-          <ul className="nexnodes-list">
-            <li>Syncs NexWorld environments for multiple users and sessions.</li>
-            <li>Provides NexEngine with distributed compute for world logic and simulation.</li>
-            <li>Links NexHousing layouts with live devices and smart systems.</li>
-            <li>Connects future modules like search, analytics, and external data feeds.</li>
-          </ul>
         </NexNodesSection>
 
         <BreakLine />
 
         {/* ================= MODES OF OPERATION ================= */}
-        <NexNodesSection title="Modes of Operation">
-          <div className="modes-grid">
-            <ModeCard
-              title="Local Node"
-              text="Runs directly on the user’s device or local hub for ultra-low-latency tasks."
+        <NexNodesSection title="Node Configurations">
+          <div className="modes-list">
+            <ModeRow 
+              title="Local Node" 
+              type="Client-Side" 
+              desc="Runs on user hardware. Ultra-low latency. Privacy focused." 
             />
-            <ModeCard
-              title="Cloud Node"
-              text="Handles heavier computation, long-running tasks, or multi-region worlds."
+            <ModeRow 
+              title="Cloud Node" 
+              type="Server-Side" 
+              desc="Heavy computation for massive worlds and complex AI agents." 
             />
-            <ModeCard
-              title="Hybrid Node"
-              text="Splits responsibilities between local and cloud for balanced performance."
-            />
-            <ModeCard
-              title="Simulation Node"
-              text="Dedicated to running tests, experiments, or non-live environment simulations."
-            />
-          </div>
-        </NexNodesSection>
-
-        <BreakLine />
-
-        {/* ================= BENEFITS ================= */}
-        <NexNodesSection title="Why NexNodes Matter">
-          <ul className="nexnodes-list">
-            <li>Reduces latency by processing intelligence closer to the user.</li>
-            <li>Improves reliability through distributed, redundant nodes.</li>
-            <li>Scales from single-room setups to global spatial networks.</li>
-            <li>Enables multi-user, multi-device, multi-location experiences.</li>
-            <li>Supports complex simulations without overloading a single system.</li>
-          </ul>
-        </NexNodesSection>
-
-        <BreakLine />
-
-        {/* ================= USE CASES ================= */}
-        <NexNodesSection title="Use Cases for NexNodes">
-          <div className="usecase-grid">
-            <UseCaseCard
-              title="Smart Homes & Living Spaces"
-              text="Coordinate lighting, environment, and spatial automation across rooms and devices."
-            />
-            <UseCaseCard
-              title="AR City Networks"
-              text="Power city-scale AR overlays and live mixed-reality navigation."
-            />
-            <UseCaseCard
-              title="Digital Twins"
-              text="Mirror real structures and infrastructure into accurate virtual representations."
-            />
-            <UseCaseCard
-              title="Collaborative VR Spaces"
-              text="Keep multi-user environments synchronized with minimal delay."
-            />
-            <UseCaseCard
-              title="Sensor Fusion"
-              text="Combine data from cameras, depth sensors, and IoT devices into coherent world models."
-            />
-            <UseCaseCard
-              title="Simulation & Training"
-              text="Run large-scale training or simulation environments across distributed nodes."
+            <ModeRow 
+              title="Hybrid Node" 
+              type="Adaptive" 
+              desc="Dynamically offloads tasks based on bandwidth and battery life." 
             />
           </div>
-        </NexNodesSection>
-
-        <BreakLine />
-
-        {/* ================= FUTURE ================= */}
-        <NexNodesSection title="The Future of NexNodes">
-          <p className="nexnodes-text">
-            As NeX UP grows, NexNodes will evolve into an increasingly intelligent,
-            self-optimizing network.
-          </p>
-
-          <ul className="nexnodes-list">
-            <li>More autonomous routing and self-balancing workloads.</li>
-            <li>Deeper integration with neural and ambient interfaces.</li>
-            <li>Context-aware intelligence that understands whole environments, not just devices.</li>
-            <li>Support for new types of spatial, sensory, and cognitive computing.</li>
-          </ul>
         </NexNodesSection>
 
         <BreakLine />
@@ -220,31 +198,19 @@ export default function NexNodes() {
             viewport={{ once: true }}
           >
             <h2 className="gradient-title final-big">
-              Build intelligent, connected systems with NexNodes.
+              Deploy your intelligence.
             </h2>
             <p className="final-text">
               Design networks of devices, experiences, and worlds that move and
-              think together — powered by the NexNodes intelligence layer.
+              think together.
             </p>
 
             <div className="nexnodes-final-actions">
-              <button
-                className="white-btn"
-                onClick={() => navigate("/ecosystem")}
-              >
-                Back to Ecosystem →
+              <button className="white-btn" onClick={() => navigate("/ecosystem")}>
+                Back to Ecosystem
               </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/ecosystem/nexengine")}
-              >
-                Explore NexEngine →
-              </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/contact")}
-              >
-                Talk to NeX UP →
+              <button className="ghost-btn" onClick={() => navigate("/contact")}>
+                Developer Access
               </button>
             </div>
           </motion.div>
@@ -265,76 +231,38 @@ function BreakLine() {
 function NexNodesSection({ title, children }) {
   return (
     <section className="nexnodes-section">
-      <motion.div
-        className="nexnodes-section-inner"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
-      >
+      <div className="nexnodes-section-inner">
         <h2 className="gradient-title section-title">{title}</h2>
         {children}
-      </motion.div>
+      </div>
     </section>
   );
 }
 
-function CapabilityCard({ title, text }) {
+function StackLayer({ level, name, desc }) {
   return (
-    <motion.div
-      className="capability-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
+    <motion.div 
+      className="stack-layer"
+      whileHover={{ scale: 1.01, backgroundColor: "rgba(255,255,255,0.03)" }}
     >
-      <h3>{title}</h3>
-      <p>{text}</p>
+      <div className="stack-level">{level}</div>
+      <div className="stack-info">
+        <h3>{name}</h3>
+        <p>{desc}</p>
+      </div>
+      <div className="stack-line"></div>
     </motion.div>
   );
 }
 
-function LayerCard({ title, text }) {
+function ModeRow({ title, type, desc }) {
   return (
-    <motion.div
-      className="layer-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function ModeCard({ title, text }) {
-  return (
-    <motion.div
-      className="mode-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function UseCaseCard({ title, text }) {
-  return (
-    <motion.div
-      className="usecase-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
+    <div className="mode-row">
+      <div className="mode-header">
+        <h3>{title}</h3>
+        <span className="mode-badge">{type}</span>
+      </div>
+      <p>{desc}</p>
+    </div>
   );
 }

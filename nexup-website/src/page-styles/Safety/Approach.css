@@ -5,6 +5,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
+  min-height: 100vh;
 }
 
 .safety-approach-wrapper {
@@ -12,223 +14,396 @@
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 80px 24px;
   display: flex;
   flex-direction: column;
-  gap: 90px;
-  color: #e8e8e8;
+  gap: 120px;
+  color: #f0f0f0;
 }
 
 /* ===========================================================
    HERO
 =========================================================== */
 .safety-hero-section {
-  min-height: 60vh;
+  min-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.safety-hero {
-  max-width: 900px;
+  position: relative;
   text-align: center;
 }
 
+.safety-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
+  filter: blur(90px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.safety-hero {
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #b8a9ff;
+  margin-bottom: 24px;
+}
+
 .safety-hero-title {
-  font-size: clamp(2.3rem, 4.5vw, 3.7rem);
-  line-height: 1.2;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.15;
+  margin-bottom: 20px;
 }
 
 .safety-hero-sub {
-  margin-top: 16px;
   font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.85;
-}
-
-/* Gradient */
-.gradient-title {
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  -webkit-background-clip: text;
-  color: transparent;
-  font-weight: 700;
+  opacity: 0.8;
+  max-width: 650px;
+  margin: 0 auto;
 }
 
 /* ===========================================================
-   BREAK LINE
+   PHILOSOPHY (Split Layout)
 =========================================================== */
-.break-line {
-  height: 1px;
-  width: 100%;
-  background: rgba(255,255,255,0.16);
-}
-
-/* ===========================================================
-   SECTION WRAPPER
-=========================================================== */
-.safety-section {
-  display: flex;
-  justify-content: center;
-}
-
-.safety-section-inner {
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.section-title {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  padding-bottom: 10px;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  height: 2px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  opacity: 0.5;
-}
-
-/* ===========================================================
-   TEXT
-=========================================================== */
-.safety-text {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  opacity: 0.85;
-  line-height: 1.7;
-}
-
-/* ===========================================================
-   GRID CARDS
-=========================================================== */
-.safety-grid {
+.philosophy-grid {
   display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1.5fr 1fr;
+  gap: 50px;
+  align-items: center;
 }
 
-.safety-card {
-  background: #111;
-  border-radius: 14px;
-  border: 1px solid #2b2b2b;
-  padding: 22px;
-  transition: 0.3s ease;
+.safety-text-lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-.safety-card:hover {
-  border-color: #a78bfa;
-  transform: translateY(-4px);
+.philosophy-stat {
+  text-align: center;
+  padding: 40px;
+  border: 1px solid rgba(184, 169, 255, 0.2);
 }
 
-.safety-card h3 {
-  margin-bottom: 8px;
+.stat-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #fff, #b8a9ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
 }
 
 /* ===========================================================
-   LIST
+   FRAMEWORK GRID
 =========================================================== */
-.safety-list {
-  list-style: disc;
-  padding-left: 22px;
+.framework-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.framework-card {
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  opacity: 0.88;
+  align-items: flex-start;
+}
+
+.framework-icon {
+  font-size: 1.8rem;
+  color: #b8a9ff;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: rgba(184, 169, 255, 0.1);
+  border-radius: 12px;
+}
+
+.framework-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.framework-card p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+/* ===========================================================
+   DOMAIN PROTOCOLS
+=========================================================== */
+.protocols-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.protocol-row {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+  align-items: center;
+}
+
+.protocol-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.p-icon {
+  font-size: 1.8rem;
+  color: #b8a9ff;
+}
+
+.protocol-header h3 {
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+.protocol-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.protocol-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.protocol-list li svg {
+  color: #4ade80; /* Green check */
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+/* ===========================================================
+   RISK MITIGATION LOOP
+=========================================================== */
+.risk-loop-container {
+  position: relative;
+  margin-top: 40px;
+}
+
+/* Connecting Line */
+.risk-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(184,169,255,0.3), transparent);
+  z-index: 0;
+}
+
+.risk-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.risk-step {
+  text-align: center;
+  padding: 24px;
+  background: #0b0b0c; /* Solid bg to hide line behind */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  transition: transform 0.3s ease;
+}
+
+.risk-step:hover {
+  transform: translateY(-5px);
+  border-color: #b8a9ff;
+}
+
+.step-number {
+  font-family: monospace;
+  color: #b8a9ff;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  display: inline-block;
+  padding: 4px 8px;
+  background: rgba(184,169,255,0.1);
+  border-radius: 4px;
+}
+
+.risk-step h4 {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.risk-step p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.centered-intro {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.7);
 }
 
 /* ===========================================================
    FINAL CTA
 =========================================================== */
 .safety-final-section {
+  text-align: center;
   display: flex;
   justify-content: center;
 }
 
 .safety-final {
-  max-width: 900px;
-  text-align: center;
+  max-width: 700px;
+}
+
+.final-icon-wrapper {
+  display: inline-block;
+  font-size: 2.5rem;
+  color: #fbbf24;
+  margin-bottom: 20px;
 }
 
 .final-big {
-  font-size: clamp(2.3rem, 5vw, 3.9rem);
-  line-height: 1.15;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 16px;
 }
 
 .final-text {
-  margin-top: 14px;
-  opacity: 0.85;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  line-height: 1.6;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 30px;
 }
 
 .safety-final-actions {
-  margin-top: 24px;
   display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
   justify-content: center;
-}
-
-.white-btn {
-  padding: 14px 32px;
-  background: #fff;
-  color: #000;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.white-btn:hover {
-  background: #e2e2e2;
-}
-
-.ghost-btn {
-  padding: 14px 32px;
-  background: transparent;
-  border-radius: 10px;
-  color: #e8e8e8;
-  border: 1px solid rgba(255,255,255,0.3);
-  cursor: pointer;
-  transition: 0.25s ease;
-  font-size: 1.05rem;
-}
-
-.ghost-btn:hover {
-  background: rgba(255,255,255,0.06);
+  gap: 16px;
 }
 
 /* ===========================================================
-   RESPONSIVE
+   UTILITIES
 =========================================================== */
-@media (max-width: 768px) {
-  .safety-approach-wrapper {
-    padding: 40px 18px;
-    gap: 70px;
-  }
-
-  .white-btn,
-  .ghost-btn {
-    width: 100%;
-  }
+.gradient-title {
+  background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
-@media (min-width: 1440px) {
-  .safety-approach-wrapper {
-    max-width: 1300px;
-  }
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
 }
 
-@media (min-width: 1920px) {
-  .safety-approach-wrapper {
-    max-width: 1600px;
-  }
+.glass-panel-sm {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.white-btn {
+  background: #fff;
+  color: #000;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.white-btn:hover {
+  transform: scale(1.05);
+}
+
+.ghost-btn {
+  background: transparent;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.safety-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.safety-section-inner {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+
+.break-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+/* ===========================================================
+   MEDIA QUERIES
+=========================================================== */
+@media (max-width: 900px) {
+  .safety-approach-wrapper { padding: 60px 20px; gap: 80px; }
+  .philosophy-grid { grid-template-columns: 1fr; gap: 30px; }
+  .protocol-row { grid-template-columns: 1fr; gap: 20px; text-align: left; }
+  .protocol-header { justify-content: flex-start; }
+  
+  /* Stack Risk Steps vertically on mobile */
+  .risk-steps { grid-template-columns: 1fr; gap: 16px; }
+  .risk-line { display: none; }
 }

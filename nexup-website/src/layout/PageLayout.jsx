@@ -1,28 +1,24 @@
 // src/layout/PageLayout.jsx
 import React, { useState, useEffect, useRef } from "react";
+import { FiArrowUp } from "react-icons/fi";
+import { useLocation } from "react-router-dom";
 import "./PageLayout.css";
 
 export default function PageLayout({ isOpen, children }) {
-  
-  /* ============================
-     REMOVE useHeaderHeight Hook
-     Replace with fixed offset
-  ============================== */
-  const FIXED_HEADER_OFFSET = 90;
-
-  const pageRef = useRef(null);
   const [showTop, setShowTop] = useState(false);
+  const location = useLocation();
+  const pageRef = useRef(null);
 
-  const isMobile = window.innerWidth <= 768;
+  // Matches the new Header height + spacing
+  const HEADER_OFFSET = 80;
 
   /* ====================================================
-       Show scroll-to-top button
+     SCROLL TO TOP LOGIC
   ==================================================== */
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPos = window.scrollY;
-      const threshold = window.innerHeight * 1.1;
-      setShowTop(scrollPos > threshold);
+      // Show button after scrolling 500px
+      setShowTop(window.scrollY > 500);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -30,65 +26,53 @@ export default function PageLayout({ isOpen, children }) {
   }, []);
 
   /* ====================================================
-       Global cursor grabbing logic
+     ROUTE CHANGE: RESET SCROLL
   ==================================================== */
   useEffect(() => {
-    const down = () => (document.body.style.cursor = "grabbing");
-    const up = () => (document.body.style.cursor = "grab");
-
-    window.addEventListener("mousedown", down);
-    window.addEventListener("mouseup", up);
-
-    return () => {
-      window.removeEventListener("mousedown", down);
-      window.removeEventListener("mouseup", up);
-    };
-  }, []);
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   /* ====================================================
-       Disable body scroll on mobile when sidebar open
+     MOBILE SCROLL LOCK
   ==================================================== */
   useEffect(() => {
-    if (isMobile && isOpen) document.body.classList.add("no-scroll");
-    else document.body.classList.remove("no-scroll");
-  }, [isOpen, isMobile]);
+    // Prevent background scrolling on mobile when sidebar is open
+    if (window.innerWidth <= 768 && isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => { document.body.style.overflow = "auto"; };
+  }, [isOpen]);
 
-  /* ====================================================
-       Page slide animation (Option C = 140px)
-       Desktop only → Mobile should not slide
-  ==================================================== */
-  const frameClass =
-    !isMobile && isOpen ? "page-frame open" : "page-frame";
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
-      {/* GLOBAL BACKGROUND */}
-      <div className="global-gradient"></div>
+      {/* GLOBAL BACKGROUNDS */}
+      <div className="global-noise" />
+      <div className="global-vignette" />
 
-      {/* PAGE BLUR (Header stays clear) */}
-      <div className={`page-blur-layer ${isOpen ? "active" : ""}`}></div>
-
-      {/* MAIN PAGE CONTENT */}
-      <div
-        ref={pageRef}
-        className={frameClass}
-        style={{ marginTop: FIXED_HEADER_OFFSET }}
+      {/* MAIN CONTENT FRAME */}
+      <main 
+        className={`page-frame ${isOpen ? "sidebar-open" : ""}`}
+        style={{ marginTop: HEADER_OFFSET }}
       >
-        <div className="page-inner">{children}</div>
-      </div>
+        <div className="page-content">
+          {children}
+        </div>
+      </main>
 
-      {/* SCROLL TO TOP BUTTON */}
-      {showTop && (
-        <button
-          className="scroll-top-btn"
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            pageRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-        >
-          ▲
-        </button>
-      )}
+      {/* SCROLL TO TOP FAB */}
+      <button 
+        className={`scroll-fab ${showTop ? "visible" : ""}`}
+        onClick={scrollToTop}
+        aria-label="Scroll to top"
+      >
+        <FiArrowUp />
+      </button>
     </>
   );
 }

@@ -5,59 +5,57 @@ import "./Loader.css";
 export default function Loader() {
   const [isActive, setIsActive] = useState(false);
   const [progress, setProgress] = useState(0);
-  const rafRef = useRef(null);
+  const intervalRef = useRef(null);
 
   /* ============================================================
-     ⚡ Network-based speed detection
-     If network is slow → loader fills slower and smoother
-  ============================================================ */
-  const getNetworkSpeed = () => {
-    if (navigator.connection && navigator.connection.downlink) {
-      const speed = navigator.connection.downlink; // Mbps
-      return Math.max(0.4, Math.min(speed / 10, 1)); 
-    }
-    return 1; // fallback (normal speed)
-  };
-
-  /* ============================================================
-     ⚡ Start Loader
+     ⚡ TRICKLE LOGIC (Premium UX)
+     Instead of linear loading, we use a "decaying" increment.
+     It starts fast to give immediate feedback, then slows down
+     to indicate processing, never hitting 100% until ready.
   ============================================================ */
   const startLoader = () => {
+    // Clear any existing animations
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    
     setIsActive(true);
     setProgress(0);
 
-    const speed = getNetworkSpeed(); // dynamic speed
+    // Start slightly ahead for instant feedback
+    setTimeout(() => setProgress(10), 50);
 
-    const animate = () => {
-      setProgress((p) => {
-        const next = p + 0.015 * speed; // smoother fill
-        return next >= 0.98 ? 0.98 : next;
+    intervalRef.current = setInterval(() => {
+      setProgress((oldProgress) => {
+        // If we are almost done, stall the bar (wait for route to finish)
+        if (oldProgress >= 90) {
+          return oldProgress;
+        }
+        
+        // Random increment between 1% and 5%
+        const diff = Math.random() * 5 + 1;
+        return Math.min(oldProgress + diff, 90);
       });
-
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
+    }, 300);
   };
 
   /* ============================================================
-     ⚡ Finish Loader
+     ⚡ FINISH ANIMATION
   ============================================================ */
   const endLoader = () => {
-    cancelAnimationFrame(rafRef.current);
+    if (intervalRef.current) clearInterval(intervalRef.current);
 
-    // Final smooth finish
-    setProgress(1);
+    // Snap to 100%
+    setProgress(100);
 
+    // Wait for transition to finish, then hide
     setTimeout(() => {
       setIsActive(false);
-      setProgress(0);
-    }, 350);
+      // Reset after fade out
+      setTimeout(() => setProgress(0), 200);
+    }, 400);
   };
 
   /* ============================================================
-     🔥 LISTEN FOR ROUTE LOADING EVENTS
-     Triggered from App.jsx
+     🔥 EVENT LISTENERS
   ============================================================ */
   useEffect(() => {
     const onStart = () => startLoader();
@@ -69,15 +67,23 @@ export default function Loader() {
     return () => {
       window.removeEventListener("route-loading-start", onStart);
       window.removeEventListener("route-loading-end", onEnd);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
 
   return (
-    <div className={`top-loader ${isActive ? "show" : ""}`}>
+    <div className={`top-loader-container ${isActive ? "visible" : ""}`}>
       <div
         className="top-loader-bar"
-        style={{ transform: `scaleX(${progress})` }}
-      />
+        style={{ 
+          width: `${progress}%`,
+          // Disable transition when resetting to 0 to prevent "backwards" animation
+          transition: progress === 0 ? "none" : "width 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+        }}
+      >
+        {/* The glowing head of the bar */}
+        <div className="loader-glow-head" />
+      </div>
     </div>
   );
 }

@@ -1,209 +1,201 @@
 // src/pages/Ecosystem/NexHousing.jsx
 
+import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { 
+  FiLayout, FiBox, FiLayers, FiSun, 
+  FiMaximize, FiHome, FiGrid 
+} from "react-icons/fi";
 import "../../page-styles/Ecosystem/NexHousing.css";
 import Footer from "../../components/Footer/Footer";
+
+/* --- ANIMATION VARIANTS --- */
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
 
 export default function NexHousing() {
   const navigate = useNavigate();
 
   return (
     <div className="nexhousing-page">
+      
+      {/* ================= HERO SECTION (Blueprint Theme) ================= */}
+      <section className="nexhousing-hero-section">
+        <div className="blueprint-grid-bg" />
+        <div className="nexhousing-glow" />
+        
+        <motion.div
+          className="nexhousing-hero-content"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease: "easeOut" }}
+        >
+          <div className="hero-badge"><FiHome /> Spatial Architecture v1.0</div>
+          <h1 className="nexhousing-hero-title">
+            Your World. <br /> <span className="outline-text">Redesigned.</span>
+          </h1>
+          <p className="nexhousing-hero-sub">
+            The bridge between physical shelter and digital intelligence. 
+            Scan, simulate, and optimize your living space in real-time.
+          </p>
+        </motion.div>
+      </section>
+
       <div className="nexhousing-wrapper">
-        {/* ================= HERO ================= */}
-        <section className="nexhousing-hero-section">
-          <motion.div
-            className="nexhousing-hero"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+        
+        {/* ================= INTRO ================= */}
+        <section className="nexhousing-section intro-section">
+          <motion.div 
+            className="intro-text-block glass-panel"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
           >
-            <h1 className="gradient-title nexhousing-hero-title">
-              NexHousing
-            </h1>
-            <p className="nexhousing-hero-sub">
-              AR-powered housing, intelligent spatial layouts, and adaptive living
-              systems — designed directly inside your real environment.
+            <h2 className="gradient-title section-title">Spatial Living System</h2>
+            <p className="nexhousing-text large-text">
+              NexHousing is not just a design tool; it is an operating system for your home. 
+              It combines AR spatial mapping with NexEngine physics to create a digital twin 
+              of your environment—allowing you to test furniture, lighting, and automation 
+              before making physical changes.
             </p>
           </motion.div>
         </section>
 
         <BreakLine />
 
-        {/* ================= WHAT IS NEXHOUSING ================= */}
-        <NexHousingSection title="What is NexHousing?">
-          <p className="nexhousing-text">
-            NexHousing is NeX UP’s spatial housing system — a bridge between
-            architecture, AR design, and intelligent living. It lets you map
-            real rooms, simulate layouts, place virtual furniture, and visualize
-            future spaces before building anything physically.
-          </p>
-          <p className="nexhousing-text">
-            From families planning a new home to architects designing entire
-            buildings, NexHousing turns spaces into intelligent, interactive,
-            and adaptable environments.
-          </p>
+        {/* ================= CORE MODULES (Bento Grid) ================= */}
+        <NexHousingSection title="Structural Modules">
+          <motion.div 
+            className="bento-grid"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {/* Wide Card: Mapping */}
+            <motion.div className="bento-card card-wide" variants={fadeInUp}>
+              <div className="card-header">
+                <FiMaximize className="card-icon" />
+                <span className="card-label">01 // Scan</span>
+              </div>
+              <h3>LiDAR Room Mapping</h3>
+              <p>Instantly reconstruct your physical room into a 3D editable canvas using your device's sensors.</p>
+            </motion.div>
+
+            {/* Standard Cards */}
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-header"><FiBox className="card-icon" /></div>
+              <h3>Asset Projection</h3>
+              <p>Place 1:1 scale virtual furniture with collision detection.</p>
+            </motion.div>
+
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-header"><FiSun className="card-icon" /></div>
+              <h3>Light Simulation</h3>
+              <p>Ray-traced lighting previews based on time of day.</p>
+            </motion.div>
+
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-header"><FiLayout className="card-icon" /></div>
+              <h3>AI Layouts</h3>
+              <p>Generative suggestions for flow and ergonomics.</p>
+            </motion.div>
+          </motion.div>
         </NexHousingSection>
 
         <BreakLine />
 
-        {/* ================= CORE FEATURES ================= */}
-        <NexHousingSection title="Core Features">
-          <div className="nexhousing-grid">
-            <FeatureCard
-              title="AR Room Layout Mapping"
-              text="Scan and reconstruct rooms in real time, with spatially accurate 3D layouts."
+        {/* ================= WORKFLOW VISUALIZATION ================= */}
+        <NexHousingSection title="Design Workflow">
+          
+          <div className="workflow-steps">
+            <StepNode 
+              num="01" 
+              title="Capture" 
+              desc="Scan boundaries, windows, and existing furniture." 
             />
-            <FeatureCard
-              title="Smart Furniture Placement"
-              text="Test furniture and interior changes digitally — with collision-aware and space-aware suggestions."
+            <div className="step-connector" />
+            <StepNode 
+              num="02" 
+              title="Process" 
+              desc="NexEngine converts point clouds to mesh geometry." 
             />
-            <FeatureCard
-              title="Environment Simulation"
-              text="Simulate lighting, openness, and flow before any real-world changes."
+            <div className="step-connector" />
+            <StepNode 
+              num="03" 
+              title="Edit" 
+              desc="Modify the digital twin. Add/remove walls or decor." 
             />
-            <FeatureCard
-              title="Spatial AI Recommendations"
-              text="Get layout suggestions optimized for comfort, movement, and utility."
-            />
-            <FeatureCard
-              title="Real-time 3D Visualization"
-              text="Walk through your future spaces inside AR or VR, in life-like scale."
-            />
-            <FeatureCard
-              title="NexNode Smart Home Integration"
-              text="Connect NexHousing layouts with NexNode-based smart devices and automation."
+            <div className="step-connector" />
+            <StepNode 
+              num="04" 
+              title="Deploy" 
+              desc="Sync changes to smart devices via NexNode." 
             />
           </div>
         </NexHousingSection>
 
         <BreakLine />
 
-        {/* ================= HOW IT WORKS ================= */}
-        <NexHousingSection title="How NexHousing Works">
-          <div className="workflow-grid">
-            <StepCard
-              step="01"
-              title="Scan Your Space"
-              text="Use supported devices to capture room dimensions, surfaces, and geometry."
-            />
-            <StepCard
-              step="02"
-              title="Generate a Spatial Model"
-              text="NexHousing builds a digital twin of your room, apartment, or floor."
-            />
-            <StepCard
-              step="03"
-              title="Design & Experiment"
-              text="Place furniture, partitions, lighting, and decor virtually — no physical shifting required."
-            />
-            <StepCard
-              step="04"
-              title="View in AR / VR"
-              text="Walk through your future environment at true scale with immersive visualization."
-            />
-            <StepCard
-              step="05"
-              title="Save, Share, Deploy"
-              text="Export layouts to NexWorld, share with clients, or sync with NexNode smart systems."
-            />
+        {/* ================= SMART INTEGRATION ================= */}
+        <NexHousingSection title="Ambient Intelligence">
+          <div className="smart-split">
+            <div className="smart-content">
+              <p className="nexhousing-text">
+                Your home shouldn't just be smart; it should be aware. NexHousing connects 
+                spatial layouts with IoT systems.
+              </p>
+              <ul className="tech-list">
+                <li><FiLayers /> <span>Proximity-based lighting automation</span></li>
+                <li><FiGrid /> <span>Spatial audio zones linked to room geometry</span></li>
+                <li><FiBox /> <span>Asset tracking for physical inventory</span></li>
+              </ul>
+            </div>
+            <div className="smart-visual glass-panel">
+              
+
+[Image of smart home IoT network architecture]
+
+              <div className="visual-placeholder">
+                <span>IoT Mesh Visualization</span>
+              </div>
+            </div>
           </div>
-        </NexHousingSection>
-
-        <BreakLine />
-
-        {/* ================= SMART LIVING ================= */}
-        <NexHousingSection title="Smart Living Systems">
-          <p className="nexhousing-text">
-            NexHousing goes beyond static design — it enables intelligent,
-            adaptable living systems.
-          </p>
-
-          <ul className="nexhousing-list">
-            <li>Lighting layouts optimized for mood, clarity, and energy usage.</li>
-            <li>Spatial configurations that reduce clutter and friction.</li>
-            <li>Flow patterns that support work, rest, and collaboration.</li>
-            <li>System suggestions informed by real usage patterns over time.</li>
-          </ul>
         </NexHousingSection>
 
         <BreakLine />
 
         {/* ================= CREATOR MODE ================= */}
-        <NexHousingSection title="Creator Mode for Designers & Architects">
-          <div className="nexhousing-grid">
-            <FeatureCard
-              title="Virtual Staging"
-              text="Stage homes digitally for clients or listings, with fully immersive previews."
-            />
-            <FeatureCard
-              title="3D Floor Planning"
-              text="Design, adjust, and annotate floor plans in interactive 3D."
-            />
-            <FeatureCard
-              title="Custom Asset Libraries"
-              text="Use or import custom interior assets and brand-specific components."
-            />
-            <FeatureCard
-              title="Collaboration Sessions"
-              text="Review layouts together with clients or teams in shared AR/VR spaces."
-            />
-          </div>
-        </NexHousingSection>
-
-        <BreakLine />
-
-        {/* ================= ARCHITECTURE SIM ================= */}
-        <NexHousingSection title="Architecture Simulation Engine">
-          <p className="nexhousing-text">
-            NexHousing integrates with NexEngine to simulate architecture-level
-            properties of your spaces.
-          </p>
-
+        <NexHousingSection title="Architect Studio">
           <div className="architecture-grid">
-            <ArchitectureCard
-              title="Structure Modelling"
-              text="Model wall placements, partitions, and room shapes with architectural awareness."
+            <SimCard 
+              title="Structure" 
+              meta="Physics Layer"
+              desc="Model load-bearing walls and material constraints." 
             />
-            <ArchitectureCard
-              title="Material & Finish Concepts"
-              text="Experiment with textures, finishes, and color palettes."
+            <SimCard 
+              title="Textures" 
+              meta="Render Layer"
+              desc="Apply photorealistic finishes from the NexAsset library." 
             />
-            <ArchitectureCard
-              title="Space Usage & Flow"
-              text="Visualize how people move through the space over time."
+            <SimCard 
+              title="Circulation" 
+              meta="Data Layer"
+              desc="Heatmap analysis of foot traffic and usage flow." 
             />
           </div>
-        </NexHousingSection>
-
-        <BreakLine />
-
-        {/* ================= NEXWORLD CONNECT ================= */}
-        <NexHousingSection title="Connected to NexWorld">
-          <p className="nexhousing-text">
-            NexHousing designs can extend beyond the physical — into the virtual
-            cities, environments, and spaces of NexWorld.
-          </p>
-
-          <ul className="nexhousing-list">
-            <li>Export housing layouts as NexWorld properties.</li>
-            <li>Simulate entire neighborhoods or vertical housing ecosystems.</li>
-            <li>Use NexHousing spaces as part of larger digital reality projects.</li>
-          </ul>
-        </NexHousingSection>
-
-        <BreakLine />
-
-        {/* ================= BENEFITS ================= */}
-        <NexHousingSection title="Who NexHousing is For">
-          <ul className="nexhousing-list">
-            <li>Families planning renovations or new homes.</li>
-            <li>Interior designers looking for immersive staging tools.</li>
-            <li>Architects designing future-first living environments.</li>
-            <li>Developers building smart housing and real-estate experiences.</li>
-            <li>Creators experimenting with spatial living concepts inside NexWorld.</li>
-          </ul>
         </NexHousingSection>
 
         <BreakLine />
@@ -218,31 +210,19 @@ export default function NexHousing() {
             viewport={{ once: true }}
           >
             <h2 className="gradient-title final-big">
-              Design intelligent living spaces with NexHousing.
+              Live in the future.
             </h2>
             <p className="final-text">
-              Prototype, visualize, and refine housing spaces inside AR — before a single
-              wall moves in the real world.
+              Prototype, visualize, and refine your environment before a single 
+              physical object moves.
             </p>
 
             <div className="nexhousing-final-actions">
-              <button
-                className="white-btn"
-                onClick={() => navigate("/ecosystem")}
-              >
-                Back to Ecosystem →
+              <button className="white-btn" onClick={() => navigate("/ecosystem")}>
+                Back to Ecosystem
               </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/contact")}
-              >
-                Talk to NeX UP →
-              </button>
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/support/help")}
-              >
-                Help & Support →
+              <button className="ghost-btn" onClick={() => navigate("/contact")}>
+                Start Designing
               </button>
             </div>
           </motion.div>
@@ -254,7 +234,7 @@ export default function NexHousing() {
   );
 }
 
-/* ================= REUSABLE COMPONENTS ================= */
+/* ================= COMPONENTS ================= */
 
 function BreakLine() {
   return <div className="break-line" />;
@@ -263,62 +243,33 @@ function BreakLine() {
 function NexHousingSection({ title, children }) {
   return (
     <section className="nexhousing-section">
-      <motion.div
-        className="nexhousing-section-inner"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
-      >
+      <div className="nexhousing-section-inner">
         <h2 className="gradient-title section-title">{title}</h2>
         {children}
-      </motion.div>
+      </div>
     </section>
   );
 }
 
-function FeatureCard({ title, text }) {
+function StepNode({ num, title, desc }) {
   return (
-    <motion.div
-      className="feature-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
+    <div className="step-node glass-panel-sm">
+      <span className="step-num">{num}</span>
+      <h4>{title}</h4>
+      <p>{desc}</p>
+    </div>
   );
 }
 
-function StepCard({ step, title, text }) {
+function SimCard({ title, meta, desc }) {
   return (
-    <motion.div
-      className="step-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
+    <motion.div 
+      className="sim-card glass-panel"
+      whileHover={{ y: -5, borderColor: "#b8a9ff" }}
     >
-      <span className="step-badge">{step}</span>
+      <span className="sim-meta">{meta}</span>
       <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function ArchitectureCard({ title, text }) {
-  return (
-    <motion.div
-      className="architecture-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
+      <p>{desc}</p>
     </motion.div>
   );
 }

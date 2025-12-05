@@ -5,260 +5,441 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #000;
+  overflow-x: hidden;
 }
 
 .nexhousing-wrapper {
   flex: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 100px 24px;
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 120px;
   color: #e8e8e8;
+  position: relative;
+  z-index: 2;
 }
 
 /* ===========================================================
-   HERO
+   HERO SECTION (Blueprint Theme)
 =========================================================== */
 .nexhousing-hero-section {
-  min-height: 60vh;
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  min-height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
-.nexhousing-hero {
-  max-width: 900px;
+/* Blueprint Grid Background */
+.blueprint-grid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+}
+
+.nexhousing-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 60%);
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.nexhousing-hero-content {
+  z-index: 2;
   text-align: center;
+  max-width: 900px;
+  padding: 0 24px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #b8a9ff;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
 }
 
 .nexhousing-hero-title {
-  font-size: clamp(2.4rem, 4.8vw, 3.8rem);
-  line-height: 1.2;
+  color: #ffffff;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
 }
 
 .nexhousing-hero-sub {
-  margin-top: 16px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  max-width: 600px;
+  margin: 0 auto;
   opacity: 0.85;
-}
-
-/* Gradient title */
-.gradient-title {
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  -webkit-background-clip: text;
-  color: transparent;
-  font-weight: 700;
+  line-height: 1.6;
+  color: #d4d4d4;
 }
 
 /* ===========================================================
-   BREAK LINE
-=========================================================== */
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.16);
-}
-
-/* ===========================================================
-   SECTION
+   INTRO SECTION
 =========================================================== */
 .nexhousing-section {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .nexhousing-section-inner {
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.intro-text-block {
+  text-align: center;
+  padding: 60px 40px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .section-title {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  padding-bottom: 10px;
-  position: relative;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 40px;
+  display: inline-block;
 }
 
-.section-title::after {
-  content: "";
-  height: 2px;
-  width: 100%;
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  opacity: 0.5;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+.large-text {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  line-height: 1.6;
+  color: #e0e0e0;
 }
 
 /* ===========================================================
-   TEXT + LISTS
+   BENTO GRID (Modules)
 =========================================================== */
-.nexhousing-text {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  opacity: 0.85;
-  line-height: 1.7;
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
 }
 
-.nexhousing-list {
-  list-style: disc;
-  padding-left: 22px;
+.bento-card {
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px; /* Architect style: sharp corners */
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 1.02rem;
-  opacity: 0.9;
+  justify-content: flex-start;
+  min-height: 240px;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+}
+
+.bento-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(184, 169, 255, 0.4);
+  transform: translateY(-5px);
+}
+
+.card-wide {
+  grid-column: span 2;
+  background: linear-gradient(135deg, rgba(25,25,25,0.8), rgba(45,45,45,0.4));
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card-icon {
+  font-size: 1.5rem;
+  color: #b8a9ff;
+}
+
+.card-label {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #b8a9ff;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.bento-card h3 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.bento-card p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .card-wide { grid-column: span 1; }
 }
 
 /* ===========================================================
-   GRIDS
+   WORKFLOW STEPS
 =========================================================== */
-.nexhousing-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.workflow-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.feature-card,
-.step-card,
-.architecture-card {
-  background: #111;
-  border-radius: 14px;
-  border: 1px solid #2b2b2b;
-  padding: 22px;
+.step-node {
+  flex: 1;
+  min-width: 180px;
+  padding: 24px;
+  text-align: center;
+  border-top: 2px solid #b8a9ff;
+}
+
+.step-num {
+  font-family: monospace;
+  color: #b8a9ff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.step-node h4 {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.step-node p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.step-connector {
+  width: 40px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin-top: 40px;
+  display: none; /* Hidden on mobile, handled by flex gap */
+}
+
+@media (min-width: 900px) {
+  .step-connector { display: block; }
+}
+
+/* ===========================================================
+   SMART INTEGRATION SPLIT
+=========================================================== */
+.smart-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.tech-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tech-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+.tech-list li svg {
+  color: #b8a9ff;
+  font-size: 1.2rem;
+}
+
+.smart-visual {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgba(255,255,255,0.2);
+}
+
+.visual-placeholder {
+  color: rgba(255,255,255,0.4);
+  font-family: monospace;
+}
+
+@media (max-width: 768px) {
+  .smart-split { grid-template-columns: 1fr; }
+}
+
+/* ===========================================================
+   ARCHITECT STUDIO GRID
+=========================================================== */
+.architecture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.sim-card {
+  padding: 30px;
+  border-left: 2px solid rgba(255,255,255,0.1);
   transition: 0.3s ease;
 }
 
-.feature-card:hover,
-.step-card:hover,
-.architecture-card:hover {
-  border-color: #a78bfa;
-  transform: translateY(-4px);
+.sim-meta {
+  font-family: monospace;
+  color: #b8a9ff;
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
-.feature-card h3,
-.step-card h3,
-.architecture-card h3 {
+.sim-card h3 {
+  font-size: 1.4rem;
+  color: #fff;
   margin-bottom: 8px;
 }
 
-/* Workflow grid */
-.workflow-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-.step-badge {
-  display: inline-block;
-  margin-bottom: 8px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid #a78bfa;
-  font-size: 0.8rem;
-  opacity: 0.9;
-}
-
-/* Architecture grid */
-.architecture-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.sim-card p {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.95rem;
 }
 
 /* ===========================================================
    FINAL CTA
 =========================================================== */
 .nexhousing-final-section {
+  text-align: center;
   display: flex;
   justify-content: center;
 }
 
 .nexhousing-final {
-  max-width: 900px;
-  text-align: center;
+  max-width: 800px;
 }
 
 .final-big {
-  font-size: clamp(2.3rem, 5vw, 3.9rem);
-  line-height: 1.15;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  margin-bottom: 20px;
 }
 
 .final-text {
-  margin-top: 14px;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.85;
-  line-height: 1.6;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
 }
 
 .nexhousing-final-actions {
-  margin-top: 24px;
   display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
   justify-content: center;
-}
-
-/* Buttons */
-.white-btn {
-  padding: 14px 32px;
-  background: #ffffff;
-  color: #000;
-  border-radius: 10px;
-  border: none;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.white-btn:hover {
-  background: #e8e8e8;
-}
-
-.ghost-btn {
-  padding: 14px 32px;
-  background: transparent;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #e8e8e8;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.ghost-btn:hover {
-  background: rgba(255,255,255,0.06);
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 /* ===========================================================
-   RESPONSIVE
+   UTILITIES
 =========================================================== */
-@media (max-width: 768px) {
-  .nexhousing-wrapper {
-    padding: 40px 18px;
-    gap: 70px;
-  }
-
-  .white-btn,
-  .ghost-btn {
-    width: 100%;
-  }
+.gradient-title {
+  background: linear-gradient(90deg, #b8a9ff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
-@media (min-width: 1440px) {
-  .nexhousing-wrapper {
-    max-width: 1300px;
-  }
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
 }
 
-@media (min-width: 1920px) {
-  .nexhousing-wrapper {
-    max-width: 1600px;
-  }
+.glass-panel-sm {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.white-btn {
+  background: #fff;
+  color: #000;
+  padding: 16px 32px;
+  border-radius: 4px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.white-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+.ghost-btn {
+  background: transparent;
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+
+.break-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
 }

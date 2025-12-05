@@ -5,16 +5,28 @@ import { useNavigate } from "react-router-dom";
 import "../../page-styles/Ecosystem/NexWorld.css";
 import Footer from "../../components/Footer/Footer";
 
-export default function NexWorld({ isOpen }) {
+/* --- ANIMATION VARIANTS --- */
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+export default function NexWorld() {
   const navigate = useNavigate();
 
   return (
     <div className="nexworld-page">
       
-      {/* ================= HERO SECTION (Full Width) ================= */}
-      {/* Moved outside wrapper to touch edges */}
+      {/* ================= HERO SECTION (Cinematic Video) ================= */}
       <section className="nexworld-hero-section">
-        {/* Background Video */}
         <div className="nexworld-video-background">
           <video
             src="https://res.cloudinary.com/dgzikn7nn/video/upload/Futuristic_AR_VR_NexUP_Universe_Entry_uglbhe.mp4"
@@ -24,167 +36,146 @@ export default function NexWorld({ isOpen }) {
             playsInline
             className="hero-video-element"
           />
-          {/* Dark overlay to make text readable */}
           <div className="video-overlay" />
         </div>
 
-        {/* Hero Content Overlay */}
         <div className="nexworld-hero-content">
           <motion.div
             className="nexworld-hero-text-container"
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            {/* Removed 'gradient-title' class to make it white */}
             <h1 className="nexworld-hero-title">NexWorld</h1>
             <p className="nexworld-hero-sub">
-              A unified immersive universe where AR, VR, AI, and intelligent
-              environments converge into a single living world.
+              The engine of digital reality. A unified spatial universe where 
+              intelligence, physics, and imagination converge.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* ================= MAIN CONTENT WRAPPER ================= */}
+      {/* ================= MAIN CONTENT ================= */}
       <div className="nexworld-wrapper">
         
-        {/* ================= WHAT IS NEXWORLD ================= */}
-        <NexWorldSection title="What is NexWorld?">
-          <p className="nexworld-text">
-            NexWorld is the world engine of NeX UP — a layered digital reality
-            where cities, rooms, objects, and intelligent agents coexist across
-            AR, VR, and spatial interfaces.
-          </p>
-          <p className="nexworld-text">
-            It connects NexEngine, NexNodes, NexHousing, and future NeX UP
-            systems into one cohesive universe where environments can be created,
-            evolved, and experienced from any device.
-          </p>
+        {/* ================= INTRO ================= */}
+        <section className="nexworld-section intro-section">
+          <motion.div 
+            className="intro-text-block"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <h2 className="gradient-title section-title">The World Engine</h2>
+            <p className="nexworld-text large-text">
+              NexWorld is not just a platform; it is a living digital layer. 
+              It connects cities, rooms, and intelligent agents into one cohesive 
+              universe accessible via AR, VR, and standard displays.
+            </p>
+          </motion.div>
+        </section>
+
+        <BreakLine />
+
+        {/* ================= CORE SYSTEMS (Bento Grid) ================= */}
+        <NexWorldSection title="Core Architecture">
+          <motion.div 
+            className="bento-grid"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {/* Large Card */}
+            <motion.div className="bento-card large-card" variants={fadeInUp}>
+              <div className="card-label">01 // Engine</div>
+              <h3>World Generation Engine</h3>
+              <p>Procedurally instantiates 3D worlds and mixed-reality spaces in real-time, adapting to device capabilities.</p>
+            </motion.div>
+
+            {/* Medium Cards */}
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-label">02 // Render</div>
+              <h3>Spatial Pipeline</h3>
+              <p>Optimizes visuals, lighting, and physics for low-latency AR/VR pass-through.</p>
+            </motion.div>
+
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-label">03 // Brain</div>
+              <h3>AI Behavior</h3>
+              <p>Drives environment logic, NPCs, and dynamic responses to user presence.</p>
+            </motion.div>
+
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-label">04 // Sync</div>
+              <h3>Multi-User Reality</h3>
+              <p>Keeps thousands of users in sync within the same persistent coordinate system.</p>
+            </motion.div>
+
+            <motion.div className="bento-card" variants={fadeInUp}>
+              <div className="card-label">05 // Physics</div>
+              <h3>Dynamic Objects</h3>
+              <p>Manages interactive states, mass, and collision across shared sessions.</p>
+            </motion.div>
+          </motion.div>
         </NexWorldSection>
 
         <BreakLine />
 
-        {/* ================= CORE SYSTEMS ================= */}
-        <NexWorldSection title="Core Systems of NexWorld">
-          <div className="nexworld-grid">
-            <CoreCard
-              title="World Generation Engine"
-              text="Defines, instantiates, and updates 3D worlds and mixed-reality spaces in real time."
+        {/* ================= WORLD TYPES (Minimalist List) ================= */}
+        <NexWorldSection title="Environment Types">
+          <div className="world-types-list">
+            <WorldTypeRow 
+              title="Mixed Reality Layers" 
+              desc="Digital structures anchored to physical rooms and venues." 
             />
-            <CoreCard
-              title="Spatial Rendering Pipeline"
-              text="Optimizes visuals, lighting, and composition across AR headsets, VR devices, and displays."
+            <WorldTypeRow 
+              title="Virtual Cities" 
+              desc="Large-scale, persistent environments for exploration and social presence." 
             />
-            <CoreCard
-              title="AI World Behavior System"
-              text="Drives environment logic, agents, and dynamic responses to user behavior."
+            <WorldTypeRow 
+              title="Immersive Pods" 
+              desc="High-fidelity, isolated spaces for focused meetings or deep work." 
             />
-            <CoreCard
-              title="Multi-User Shared Reality"
-              text="Keeps multiple users in sync inside the same world, no matter where they are."
-            />
-            <CoreCard
-              title="Dynamic Object System"
-              text="Manages interactive objects, states, and transformations across sessions."
-            />
-            <CoreCard
-              title="Real-World Integration Layer"
-              text="Blends physical context and spatial mapping into every NexWorld environment."
+            <WorldTypeRow 
+              title="Simulation Labs" 
+              desc="Sandboxes with custom physics for prototyping and research." 
             />
           </div>
         </NexWorldSection>
 
         <BreakLine />
 
-        {/* ================= WORLD TYPES ================= */}
-        <NexWorldSection title="Types of Worlds You Can Build">
-          <div className="worldtype-grid">
-            <WorldTypeCard
-              title="Mixed Reality Spaces"
-              text="Layer digital structures inside real rooms, venues, and public spaces."
-            />
-            <WorldTypeCard
-              title="Full Virtual Worlds"
-              text="Fully simulated environments independent from physical reality."
-            />
-            <WorldTypeCard
-              title="Digital Cities"
-              text="Large-scale environments for exploration, simulation, and social presence."
-            />
-            <WorldTypeCard
-              title="Immersive Rooms"
-              text="Focused, high-resolution spaces for meetings, labs, or creative work."
-            />
-            <WorldTypeCard
-              title="Prototype Labs"
-              text="Experimental sandboxes for testing new mechanics and concepts."
-            />
-            <WorldTypeCard
-              title="Simulated Ecosystems"
-              text="Living environments that evolve over time with rules and behaviors."
-            />
+        {/* ================= PIPELINE (Numeric Steps) ================= */}
+        <NexWorldSection title="Creation Pipeline">
+          <div className="pipeline-container">
+            <PipelineStep num="01" title="Define" text="Set scope, scale, and rules." />
+            <PipelineStep num="02" title="Shape" text="Sculpt terrain and architecture." />
+            <PipelineStep num="03" title="Logic" text="Inject AI behaviors and scripts." />
+            <PipelineStep num="04" title="Deploy" text="Publish to the live NexWorld grid." />
           </div>
         </NexWorldSection>
 
         <BreakLine />
 
-        {/* ================= CONNECTIONS ================= */}
-        <NexWorldSection title="How NexWorld Connects the Ecosystem">
-          <p className="nexworld-text">
-            NexWorld is not an isolated product — it is the canvas where all
-            NeX UP systems meet.
-          </p>
-
-          <ul className="nexworld-list">
-            <li>NexEngine powers the logic, rendering, and interaction layers.</li>
-            <li>NexNodes synchronize world state across devices and locations.</li>
-            <li>NexHousing injects intelligent housing and spatial living spaces.</li>
-            <li>Future components like search, analytics, and tools plug directly into NexWorld.</li>
-          </ul>
-        </NexWorldSection>
-
-        <BreakLine />
-
-        {/* ================= PIPELINE ================= */}
-        <NexWorldSection title="World Building Pipeline">
-          <div className="pipeline-grid">
-            <StepCard step="01" title="Create a World" text="Define the scope, scale, and purpose of your environment." />
-            <StepCard step="02" title="Shape Spaces & Objects" text="Design structures, terrain, rooms, and interactive elements." />
-            <StepCard step="03" title="Add Logic & Intelligence" text="Connect NexEngine behaviors, AI systems, and NexNodes intelligence." />
-            <StepCard step="04" title="Test in AR / VR" text="Experience the world from inside mixed or fully virtual reality." />
-            <StepCard step="05" title="Publish to NexWorld" text="Share with users, teams, or communities inside the NeX UP ecosystem." />
-          </div>
-        </NexWorldSection>
-
-        <BreakLine />
-
-        {/* ================= AI ================= */}
-        <NexWorldSection title="AI-Driven World Behavior">
-          <p className="nexworld-text">
-            NexWorld environments are not static — they can react, adapt, and
-            respond over time.
-          </p>
-
-          <ul className="nexworld-list">
-            <li>Environments that respond to presence, time, and interaction.</li>
-            <li>Agent-based systems for characters, guides, or utilities.</li>
-            <li>Adaptive scenes that change based on context or goals.</li>
-            <li>Simulation loops for training, research, or experimentation.</li>
-          </ul>
-        </NexWorldSection>
-
-        <BreakLine />
-
-        {/* ================= DIGITAL SPACES ================= */}
-        <NexWorldSection title="Digital Spaces & Experiences">
-          <div className="spaces-grid">
-            <SpaceCard title="Virtual Workspaces" text="Persistent rooms for collaboration, engineering, or design." />
-            <SpaceCard title="Events & Gatherings" text="Immersive venues for launches, meetups, and performances." />
-            <SpaceCard title="Learning Environments" text="Interactive classrooms and training simulations." />
-            <SpaceCard title="Concept Cities" text="Explorable prototypes of future neighborhoods and infrastructure." />
-          </div>
-        </NexWorldSection>
+        {/* ================= ECOSYSTEM CONNECTION ================= */}
+        <section className="nexworld-section">
+          <motion.div 
+            className="connection-box glass-panel"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="gradient-title">The Unified Canvas</h2>
+            <p className="nexworld-text centered-text">
+              NexWorld is where the ecosystem comes alive. NexEngine powers the visuals, 
+              NexNodes handle the data, and NexHousing provides the shelter. 
+              It is the convergence point for all NeX UP technologies.
+            </p>
+          </motion.div>
+        </section>
 
         <BreakLine />
 
@@ -198,7 +189,7 @@ export default function NexWorld({ isOpen }) {
             viewport={{ once: true }}
           >
             <h2 className="gradient-title final-big">
-              Build your world inside NexWorld.
+              Start building your reality.
             </h2>
             <p className="final-text">
               From a single room to an entire digital city, NexWorld gives you
@@ -206,14 +197,11 @@ export default function NexWorld({ isOpen }) {
             </p>
 
             <div className="nexworld-final-actions">
-              <button className="white-btn" onClick={() => navigate("/ecosystem")}>
-                Back to Ecosystem →
+              <button className="white-btn" onClick={() => navigate("/contact")}>
+                Request Access
               </button>
-              <button className="ghost-btn" onClick={() => navigate("/ecosystem/nexengine")}>
-                Learn about NexEngine →
-              </button>
-              <button className="ghost-btn" onClick={() => navigate("/contact")}>
-                Talk to NeX UP →
+              <button className="ghost-btn" onClick={() => navigate("/ecosystem")}>
+                View Ecosystem
               </button>
             </div>
           </motion.div>
@@ -234,77 +222,34 @@ function BreakLine() {
 function NexWorldSection({ title, children }) {
   return (
     <section className="nexworld-section">
-      <motion.div
-        className="nexworld-section-inner"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
-      >
+      <div className="nexworld-section-inner">
         <h2 className="gradient-title section-title">{title}</h2>
         {children}
-      </motion.div>
+      </div>
     </section>
   );
 }
 
-function CoreCard({ title, text }) {
+function WorldTypeRow({ title, desc }) {
   return (
-    <motion.div
-      className="core-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
+    <motion.div 
+      className="world-type-row"
+      whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.03)" }}
     >
       <h3>{title}</h3>
-      <p>{text}</p>
+      <p>{desc}</p>
     </motion.div>
   );
 }
 
-function WorldTypeCard({ title, text }) {
+function PipelineStep({ num, title, text }) {
   return (
-    <motion.div
-      className="worldtype-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function StepCard({ step, title, text }) {
-  return (
-    <motion.div
-      className="step-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <span className="step-badge">{step}</span>
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function SpaceCard({ title, text }) {
-  return (
-    <motion.div
-      className="space-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
+    <div className="pipeline-step">
+      <div className="step-number">{num}</div>
+      <div className="step-content">
+        <h4>{title}</h4>
+        <p>{text}</p>
+      </div>
+    </div>
   );
 }

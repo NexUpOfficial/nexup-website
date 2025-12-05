@@ -1,71 +1,69 @@
 /* ============================================
-   NexUP Neon Gradient Loader (Top Bar)
-   ============================================ */
-
-.top-loader {
+   LOADER CONTAINER
+============================================ */
+.top-loader-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 4px;
-
-  background: transparent;
-
-  overflow: hidden;
-  z-index: 99999999999;
-
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  height: 3px; /* Ultra-thin premium look */
+  z-index: 999999;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.top-loader.show {
+.top-loader-container.visible {
   opacity: 1;
 }
 
-/* ================================
-   Neon Bar (premium NexUP look)
-================================ */
+/* ============================================
+   THE BAR
+============================================ */
 .top-loader-bar {
   height: 100%;
-  width: 100%;
-
-  transform-origin: left;
-  transform: scaleX(0);
-background: linear-gradient(
-  90deg,
-  #2a1948,
-  #4c1d95,
-  #7e22ce,
-  #a855f7,
-  #c4b5fd
-);
-
-
-
-  background-size: 200% 100%;
-  animation: neonFlow 2.2s linear infinite;
-
-  border-radius: 0 5px 5px 0;
-  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.7));
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    #a78bfa 50%, 
+    #ffffff 100%
+  );
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes neonFlow {
-  0% {
-    background-position: 0% 0%;
-  }
-  100% {
-    background-position: -200% 0%;
-  }
-}
-
-/* Optional: Ultra-smooth glow */
-.top-loader-bar::after {
-  content: "";
+/* ============================================
+   THE "PHOTON" HEAD (Leading Edge)
+============================================ */
+.loader-glow-head {
+  display: block;
   position: absolute;
-  inset: 0;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  
+  /* The bright leading edge glow */
+  box-shadow: 
+    0 0 10px #a78bfa, 
+    0 0 5px #ffffff;
+    
+  border-radius: 100%;
+  opacity: 1;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Optional: Add a subtle ambient glow under the bar 
+   to make it look like it's casting light on the UI 
+*/
+.top-loader-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
   background: inherit;
-  filter: blur(14px);
-  opacity: 0.55;
-  pointer-events: none;
+  filter: blur(5px);
+  opacity: 0.4;
+  z-index: -1;
 }

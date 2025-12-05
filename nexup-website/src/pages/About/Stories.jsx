@@ -1,32 +1,106 @@
 // src/pages/About/Stories.jsx
-
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "../../page-styles/About/Stories.css";
 import Footer from "../../components/Footer/Footer";
 
+/* --- DATA CONSTANTS --- */
+const CATEGORIES = ["All", "Engineering", "Design", "Research", "Culture", "NexWorld"];
+
+const FEATURED_STORY = {
+  tag: "Design",
+  title: "Designing the Future of Spatial Interfaces",
+  desc: "How the NeX UP design team is shaping interaction patterns that feel natural inside AR, VR, and adaptive intelligent environments.",
+  readTime: "8 min read",
+  date: "Oct 12, 2025",
+};
+
+const STORIES_DATA = [
+  {
+    id: 1,
+    tag: "Engineering",
+    title: "How NexNode Synchronizes Spatial Intelligence",
+    desc: "Exploring the architecture behind real-time, world-scale intelligent systems.",
+    readTime: "6 min read",
+    size: "wide", // Takes up 2 columns
+  },
+  {
+    id: 2,
+    tag: "NexWorld",
+    title: "The Evolution of Digital Environments",
+    desc: "From simulation-based prototypes to fully adaptive spatial worlds.",
+    readTime: "5 min read",
+    size: "standard",
+  },
+  {
+    id: 3,
+    tag: "Research",
+    title: "Understanding Human Spatial Cognition",
+    desc: "How neuroscience guides the future of AR/VR experience design.",
+    readTime: "10 min read",
+    size: "standard",
+  },
+  {
+    id: 4,
+    tag: "Culture",
+    title: "Life at NeX UP: A Builder’s Diary",
+    desc: "A behind-the-scenes look at how our builders prototype the future.",
+    readTime: "4 min read",
+    size: "standard",
+  },
+  {
+    id: 5,
+    tag: "Announcements",
+    title: "NexWorld Alpha: What to Expect",
+    desc: "Our biggest update yet for immersive spatial environments.",
+    readTime: "3 min read",
+    size: "wide",
+  },
+];
+
+/* --- VARIANTS --- */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 export default function Stories() {
   const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  // Filter Logic (Simple implementation)
+  const filteredStories = activeCategory === "All" 
+    ? STORIES_DATA 
+    : STORIES_DATA.filter(story => story.tag === activeCategory);
 
   return (
     <div className="stories-page">
       <div className="stories-wrapper">
-
+        
         {/* ================= HERO ================= */}
         <section className="stories-hero-section">
+          <div className="stories-glow" />
           <motion.div
-            className="stories-hero"
+            className="stories-hero-content"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1 }}
+            transition={{ duration: 1.1, ease: "easeOut" }}
           >
+            <span className="hero-badge">The NeX UP Journal</span>
             <h1 className="gradient-title stories-hero-title">
-              Stories from NeX UP
+              Insights from the Edge of Reality.
             </h1>
-
             <p className="stories-hero-sub">
-              Insights, breakthroughs, designs, and ideas shaping the future of
-              intelligent digital reality.
+              Breakthroughs, designs, and ideas shaping the intelligent digital universe.
             </p>
           </motion.div>
         </section>
@@ -36,189 +110,95 @@ export default function Stories() {
         {/* ================= FEATURED STORY ================= */}
         <section className="featured-section">
           <motion.div
-            className="featured-story-card"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
+            className="featured-card glass-panel"
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="featured-img placeholder-img">Image</div>
+            <div className="featured-image-container">
+               <div className="featured-img placeholder-img">Featured Image</div>
+            </div>
 
             <div className="featured-content">
-              <span className="story-tag">Design</span>
+              <div className="meta-row">
+                <span className="story-tag tag-highlight">{FEATURED_STORY.tag}</span>
+                <span className="story-date">{FEATURED_STORY.date} • {FEATURED_STORY.readTime}</span>
+              </div>
 
-              <h2 className="featured-title">
-                Designing the Future of Spatial Interfaces
-              </h2>
+              <h2 className="featured-title">{FEATURED_STORY.title}</h2>
+              <p className="featured-text">{FEATURED_STORY.desc}</p>
 
-              <p className="featured-text">
-                How the NeX UP design team is shaping interaction patterns that feel
-                natural inside AR, VR, and adaptive intelligent environments.
-              </p>
-
-              <button className="read-btn">Read Story →</button>
+              <button className="read-more-btn">Read Full Story →</button>
             </div>
           </motion.div>
         </section>
 
         <BreakLine />
 
-        {/* ================= CATEGORY NAVIGATION ================= */}
+        {/* ================= CATEGORY FILTER ================= */}
         <section className="category-section">
-          <div className="category-container">
-            {["All", "Engineering", "Design", "Research", "Culture", "NexWorld", "Announcements"].map(cat => (
-              <button key={cat} className="category-btn">{cat}</button>
+          <div className="category-scroll">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                className={`category-pill ${activeCategory === cat ? "active" : ""}`}
+                onClick={() => setActiveCategory(cat)}
+              >
+                {cat}
+              </button>
             ))}
           </div>
         </section>
 
-        <BreakLine />
-
-        {/* ================= LATEST STORIES ================= */}
-        <StoriesSection title="Latest Stories">
-          <div className="stories-grid">
-            <StoryCard
-              tag="Engineering"
-              title="How NexNode Synchronizes Spatial Intelligence"
-              desc="Exploring the architecture behind real-time, world-scale intelligent systems."
-            />
-            <StoryCard
-              tag="NexWorld"
-              title="The Evolution of NexWorld Environments"
-              desc="From simulation-based prototypes to fully adaptive spatial worlds."
-            />
-            <StoryCard
-              tag="Design"
-              title="Inside NeX UP Motion Design"
-              desc="Crafting a motion language for immersive future interfaces."
-            />
-            <StoryCard
-              tag="Research"
-              title="Understanding Human Spatial Cognition"
-              desc="How neuroscience guides the future of AR/VR experience design."
-            />
-            <StoryCard
-              tag="Culture"
-              title="Life at NeX UP"
-              desc="A behind-the-scenes look at how our builders prototype the future."
-            />
-            <StoryCard
-              tag="Announcements"
-              title="Upcoming Platform Release"
-              desc="A look at what’s coming next for NexWorld and NexNode."
-            />
-          </div>
-        </StoriesSection>
+        {/* ================= STORIES GRID (BENTO STYLE) ================= */}
+        <section className="stories-list-section">
+          <motion.div 
+            className="bento-grid"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            key={activeCategory} // Re-animate on filter change
+          >
+            {filteredStories.map((story) => (
+              <motion.div 
+                key={story.id} 
+                className={`story-card glass-panel card-${story.size}`}
+                variants={cardVariants}
+              >
+                <div className="card-image-wrapper">
+                  <div className="card-img placeholder-img">Image</div>
+                </div>
+                <div className="card-body">
+                  <div className="card-meta">
+                    <span className="story-tag">{story.tag}</span>
+                    <span className="read-time">{story.readTime}</span>
+                  </div>
+                  <h3>{story.title}</h3>
+                  <p>{story.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
 
         <BreakLine />
 
-        {/* ================= DEEP DIVE SERIES ================= */}
-        <StoriesSection title="Deep Dive Series">
-          <div className="deepdive-grid">
-            <DeepDiveCard
-              title="Engineering Deep Dives"
-              text="Infrastructure, intelligence models, and architectural decisions shaping NeX UP."
-            />
-            <DeepDiveCard
-              title="Design Explorations"
-              text="Experiments, prototypes, and interaction models built by our design team."
-            />
-            <DeepDiveCard
-              title="Research Insights"
-              text="Studies in cognition, behavior, and advanced spatial frameworks."
-            />
-          </div>
-        </StoriesSection>
-
-        <BreakLine />
-
-        {/* ================= TEAM STORIES ================= */}
-        <StoriesSection title="Inside NeX UP">
-          <div className="teamstories-grid">
-            <TeamStoryCard
-              title="A Day in the Life of a Spatial Engineer"
-              text="What it feels like to build immersive worlds from the ground up."
-            />
-            <TeamStoryCard
-              title="Sketch to Reality — Design Workflows"
-              text="How designers turn ideas into living digital spaces."
-            />
-            <TeamStoryCard
-              title="Research to Product"
-              text="How early experiments evolve into real features across the NeX UP ecosystem."
-            />
-          </div>
-        </StoriesSection>
-
-        <BreakLine />
-
-        {/* ================= TIMELINE ================= */}
-        <StoriesSection title="How NeX UP Was Built — Key Moments">
-          <div className="timeline-list">
-            <TimelineItem
-              year="2025"
-              text="The founding vision: spatial intelligence + immersive systems."
-            />
-            <TimelineItem
-              year="2026"
-              text="NexNode and early NexWorld prototypes take form."
-            />
-            <TimelineItem
-              year="2027"
-              text="Launch of immersive experiences and early creator tools."
-            />
-            <TimelineItem
-              year="2030"
-              text="Fully realized NeX UP ecosystem launches globally."
-            />
-          </div>
-        </StoriesSection>
-
-        <BreakLine />
-
-        {/* ================= ANNOUNCEMENTS ================= */}
-        <StoriesSection title="Announcements">
-          <div className="announcement-grid">
-            <AnnouncementCard
-              title="New Partnership Coming Soon"
-              text="A collaboration that expands the NeX UP ecosystem."
-            />
-            <AnnouncementCard
-              title="NexWorld Alpha Update"
-              text="Our biggest update yet for immersive spatial environments."
-            />
-            <AnnouncementCard
-              title="NexNode Developer Preview"
-              text="Opening the gateway for real-time intelligent world systems."
-            />
-          </div>
-        </StoriesSection>
-
-        <BreakLine />
-
-        {/* ================= NEWSLETTER CTA ================= */}
+        {/* ================= NEWSLETTER ================= */}
         <section className="newsletter-section">
           <motion.div
-            className="newsletter-box"
-            initial={{ opacity: 0, y: 60 }}
+            className="newsletter-box glass-panel"
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="gradient-title newsletter-title">
-              Stay Updated.
-            </h2>
-
-            <p className="newsletter-text">
-              Get the latest stories, updates, and research insights from NeX UP.
-            </p>
-
-            <div className="newsletter-inputs">
-              <input
-                type="email"
-                className="newsletter-input"
-                placeholder="Enter your email"
-              />
+            <div className="newsletter-content">
+              <h2 className="gradient-title">Stay in the loop.</h2>
+              <p>Get the latest engineering deep dives and design insights delivered to your inbox.</p>
+            </div>
+            <div className="newsletter-form">
+              <input type="email" placeholder="Enter your email" />
               <button className="white-btn">Subscribe</button>
             </div>
           </motion.div>
@@ -230,31 +210,22 @@ export default function Stories() {
         <section className="stories-final-section">
           <motion.div
             className="stories-final"
-            initial={{ opacity: 0, y: 60 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
             <h2 className="gradient-title final-big">
-              Want to build the future with us?
+              Build the future with us.
             </h2>
-
             <p className="final-text">
-              Join NeX UP and help define the next era of immersive and intelligent technology.
+              Join NeX UP and help define the next era of immersive technology.
             </p>
-
             <div className="stories-final-actions">
-                <button
-  className="white-btn"
-  onClick={() => navigate("/about/career")}   // use full path
->
-  Explore Careers →
-</button>
-
-              <button
-                className="ghost-btn"
-                onClick={() => navigate("/contact")}
-              >
+              <button className="white-btn" onClick={() => navigate("/about/career")}>
+                Explore Careers →
+              </button>
+              <button className="ghost-btn" onClick={() => navigate("/contact")}>
                 Contact Us →
               </button>
             </div>
@@ -262,109 +233,11 @@ export default function Stories() {
         </section>
       </div>
 
-      {/* FOOTER PERFECTLY ALIGNED */}
       <Footer />
     </div>
   );
 }
 
-/* ================= COMPONENTS ================= */
-
 function BreakLine() {
   return <div className="break-line" />;
-}
-
-function StoriesSection({ title, children }) {
-  return (
-    <section className="stories-section">
-      <motion.div
-        className="stories-section-inner"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="gradient-title section-title">{title}</h2>
-        {children}
-      </motion.div>
-    </section>
-  );
-}
-
-function StoryCard({ tag, title, desc }) {
-  return (
-    <motion.div
-      className="story-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <div className="story-img placeholder-img">Image</div>
-      <span className="story-tag">{tag}</span>
-      <h3>{title}</h3>
-      <p>{desc}</p>
-      <button className="read-btn">Read →</button>
-    </motion.div>
-  );
-}
-
-function DeepDiveCard({ title, text }) {
-  return (
-    <motion.div
-      className="deepdive-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function TeamStoryCard({ title, text }) {
-  return (
-    <motion.div
-      className="teamstory-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function TimelineItem({ year, text }) {
-  return (
-    <motion.div
-      className="timeline-item"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-    >
-      <span className="timeline-year">{year}</span>
-      <p>{text}</p>
-    </motion.div>
-  );
-}
-
-function AnnouncementCard({ title, text }) {
-  return (
-    <motion.div
-      className="announcement-card"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      viewport={{ once: true }}
-    >
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </motion.div>
-  );
 }
