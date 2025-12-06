@@ -1,6 +1,6 @@
 // src/pages/sections/Roadmap.jsx
 import React, { useRef } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
 import "../../page-styles/sections/Roadmap.css";
 
 const Roadmap = () => {
@@ -106,6 +106,7 @@ const Roadmap = () => {
 
   return (
     <div className="roadmap-page" ref={containerRef}>
+      <RoadmapBackground />
       
       <div className="roadmap-header">
         <motion.div 
@@ -142,23 +143,100 @@ const Roadmap = () => {
   );
 };
 
+// --- Sub-Components ---
+
+const RoadmapBackground = () => (
+  <div className="roadmap-bg-wrapper">
+    <motion.div 
+      className="roadmap-blob"
+      animate={{
+        x: [0, 100, -100, 0],
+        y: [0, -50, 50, 0],
+        scale: [1, 1.2, 0.8, 1],
+        opacity: [0.3, 0.5, 0.3]
+      }}
+      transition={{
+        duration: 15,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+  </div>
+);
+
 const TimelineItem = ({ data, index }) => {
   const isEven = index % 2 === 0;
 
+  // Animation Strategy: "Slide from Core"
+  // If Even (Left): Start from X=50 (Right), Move to 0
+  // If Odd (Right): Start from X=-50 (Left), Move to 0
+  const initialX = isEven ? 50 : -50;
+
   return (
-    <motion.div 
-      className={`timeline-row ${isEven ? "left" : "right"}`}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-    >
-      <div className="timeline-node">
+    <div className={`timeline-row ${isEven ? "left" : "right"}`}>
+      {/* Node Dot */}
+      <motion.div 
+        className="timeline-node"
+        initial={{ scale: 0, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ delay: 0.2, type: "spring" }}
+      >
         <div className="node-circle" style={{ borderColor: data.color }}></div>
         <div className="node-pulse" style={{ background: data.color }}></div>
-      </div>
+      </motion.div>
 
-      <div className="timeline-card glass-panel">
+      {/* The 3D Card */}
+      <motion.div
+        className="timeline-content-wrapper"
+        initial={{ opacity: 0, x: initialX }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <TiltCard data={data} />
+      </motion.div>
+    </div>
+  );
+};
+
+// 3D Tilt Logic handled here
+const TiltCard = ({ data }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Less rotation for a subtle "micro" feel
+  const rotateX = useTransform(y, [-100, 100], [5, -5]);
+  const rotateY = useTransform(x, [-100, 100], [-5, 5]);
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    
+    const xPct = (mouseX / width - 0.5) * 200;
+    const yPct = (mouseY / height - 0.5) * 200;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div 
+      className="timeline-card glass-panel"
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="glass-sheen"></div>
+      <div className="card-content-inner">
         <div className="card-header">
           <span className="phase-id" style={{ color: data.color }}>PHASE {data.id}</span>
           <h3 className="phase-title">{data.title}</h3>

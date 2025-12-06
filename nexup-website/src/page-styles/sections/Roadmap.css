@@ -3,8 +3,8 @@
 :root {
   --neon-purple: #b8a9ff;
   --bg-black: #050505;
-  --glass-bg: rgba(20, 20, 20, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(20, 20, 20, 0.4); /* More transparent for sheen visibility */
+  --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 .roadmap-page {
@@ -12,13 +12,40 @@
   min-height: 100vh;
   color: #fff;
   padding: 100px 24px;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Critical for 3D tilt */
+  position: relative;
+}
+
+/* --- BACKGROUND BLOB --- */
+.roadmap-bg-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.roadmap-blob {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(74, 58, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(60px);
 }
 
 /* --- HEADER --- */
 .roadmap-header {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  margin-bottom: 100px;
+  margin-bottom: 120px; /* Increased spacing */
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -26,26 +53,28 @@
 
 .header-badge {
   display: inline-block;
-  padding: 5px 15px;
+  padding: 6px 18px;
   border-radius: 20px;
-  background: rgba(184, 169, 255, 0.1);
-  border: 1px solid rgba(184, 169, 255, 0.3);
+  background: rgba(184, 169, 255, 0.05);
+  border: 1px solid rgba(184, 169, 255, 0.2);
   color: var(--neon-purple);
   font-family: monospace;
-  font-size: 0.9rem;
-  margin-bottom: 20px;
+  font-size: 0.85rem;
+  margin-bottom: 24px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  backdrop-filter: blur(5px);
 }
 
 .roadmap-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-weight: 800;
   margin-bottom: 10px;
+  line-height: 1.1;
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #fff, var(--neon-purple));
+  background: linear-gradient(90deg, #fff 0%, var(--neon-purple) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -57,6 +86,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 0;
+  z-index: 2;
 }
 
 /* Central Lines */
@@ -66,7 +96,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   transform: translateX(-50%);
   z-index: 0;
 }
@@ -80,23 +110,37 @@
   transform: translateX(-50%);
   z-index: 1;
   transform-origin: top;
+  overflow: hidden; /* For glow animation */
 }
 
+/* Updated Pulsing Glow */
 .central-line-glow {
   width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, #4a3aff, #b8a9ff, #ff4aae);
-  box-shadow: 0 0 15px rgba(184, 169, 255, 0.5);
+  height: 200%; /* Larger for scrolling effect */
+  background: linear-gradient(180deg, 
+    #4a3aff, 
+    #b8a9ff, 
+    #ff4aae, 
+    #4a3aff
+  );
+  background-size: 100% 50%;
+  box-shadow: 0 0 20px rgba(184, 169, 255, 0.6);
   border-radius: 2px;
+  animation: streamGlow 4s linear infinite;
 }
 
-/* --- TIMELINE ROWS (ZIG ZAG) --- */
+@keyframes streamGlow {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0%); }
+}
+
+/* --- TIMELINE ROWS --- */
 .timeline-items {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 80px; /* Space between rows */
+  gap: 100px; /* Increased gap for better rhythm */
 }
 
 .timeline-row {
@@ -106,72 +150,112 @@
   width: 50%;
 }
 
-/* LEFT SIDE ITEMS */
+.timeline-content-wrapper {
+  width: 100%;
+  perspective: 1000px; /* Essential for 3D tilt */
+}
+
+/* Left/Right Alignment Logic */
 .timeline-row.left {
   align-self: flex-start;
-  padding-right: 50px;
-  justify-content: flex-end; /* Keeps card near center */
-  text-align: left; /* FIX: Force text left alignment */
+  padding-right: 60px;
+  justify-content: flex-end;
+  text-align: left;
 }
 
-/* RIGHT SIDE ITEMS */
 .timeline-row.right {
   align-self: flex-end;
-  padding-left: 50px;
+  padding-left: 60px;
   justify-content: flex-start;
-  text-align: left; /* Ensure right side is also left aligned */
+  text-align: left;
 }
 
-/* --- THE CARD STYLE --- */
+/* --- THE 3D CARD STYLE --- */
 .timeline-card {
+  position: relative;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
-  padding: 30px;
-  border-radius: 20px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 36px; /* Increased padding */
+  border-radius: 24px;
   width: 100%;
-  max-width: 500px;
-  transition: transform 0.3s, border-color 0.3s;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  text-align: left !important; /* Forces left align everywhere */
+  max-width: 520px;
+  transition: border-color 0.3s;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  overflow: hidden; /* Contains the sheen */
 }
 
 .timeline-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(184, 169, 255, 0.4);
+  border-color: rgba(184, 169, 255, 0.3);
+  box-shadow: 0 20px 50px rgba(74, 58, 255, 0.15);
+}
+
+/* VisionOS Glass Sheen */
+.glass-sheen {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.08), 
+    transparent
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+  animation: glassShine 8s infinite ease-in-out;
+  z-index: 1;
+}
+
+@keyframes glassShine {
+  0%, 40% { left: -100%; }
+  60% { left: 200%; }
+  100% { left: 200%; }
+}
+
+/* Card Internals */
+.card-content-inner {
+  position: relative;
+  z-index: 2;
+  transform: translateZ(20px); /* Lifts text off card in 3D space */
 }
 
 .card-header {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin-bottom: 10px;
-  align-items: flex-start; /* Aligns title/badge to left */
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: flex-start;
 }
 
 .phase-id {
   font-family: monospace;
   font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 0.9rem;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+  opacity: 0.9;
 }
 
 .phase-title {
-  font-size: 1.8rem;
+  font-size: 1.85rem;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.1;
+  font-weight: 700;
 }
 
 .phase-subtitle {
-  font-size: 1.1rem;
-  color: #ccc;
+  font-size: 1.05rem;
+  color: #a0a0a0;
   font-weight: 400;
-  margin: 0 0 15px 0;
+  margin: 0 0 20px 0;
   font-family: monospace;
 }
 
 .phase-desc {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
   font-size: 1rem;
   margin: 0;
@@ -180,23 +264,24 @@
 /* --- NODES (DOTS) --- */
 .timeline-node {
   position: absolute;
-  top: 30px;
-  width: 20px;
-  height: 20px;
+  top: 40px;
+  width: 24px;
+  height: 24px;
   z-index: 3;
 }
 
-.timeline-row.left .timeline-node { right: -10px; }
-.timeline-row.right .timeline-node { left: -10px; }
+.timeline-row.left .timeline-node { right: -12px; }
+.timeline-row.right .timeline-node { left: -12px; }
 
 .node-circle {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #000;
-  border: 3px solid #fff;
+  border: 4px solid #fff;
   position: relative;
   z-index: 2;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .node-pulse {
@@ -204,48 +289,59 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   opacity: 0.4;
-  filter: blur(5px);
+  filter: blur(8px);
   animation: pulseNode 3s infinite;
   z-index: 1;
 }
 
 @keyframes pulseNode {
   0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.2; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
   100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.2; }
 }
 
-/* --- RESPONSIVE DESIGN (Mobile) --- */
+/* --- RESPONSIVE DESIGN --- */
 @media (max-width: 900px) {
   .roadmap-timeline-wrapper {
-    padding-left: 30px;
+    padding-left: 20px;
+    padding-right: 10px;
   }
 
+  .timeline-items {
+    gap: 120px; /* Larger gap on mobile to prevent stacking overlap look */
+  }
+
+  /* Move line to left */
   .central-line-static, .central-line-container {
-    left: 30px; 
+    left: 20px; 
   }
 
   .timeline-row {
     width: 100%;
-    margin-bottom: 20px;
   }
 
-  /* Reset alignment for mobile */
+  /* Reset alignments for mobile */
   .timeline-row.left, 
   .timeline-row.right {
     align-self: flex-start;
-    padding-left: 50px;
+    padding-left: 50px; /* Space for the line on left */
     padding-right: 0;
     justify-content: flex-start;
   }
 
+  /* Adjust nodes */
   .timeline-row.left .timeline-node,
   .timeline-row.right .timeline-node {
-    left: 20px;
+    left: 8px; /* Aligns with line at 20px */
     right: auto;
+  }
+
+  /* Reduce card padding slightly on small screens */
+  .timeline-card {
+    padding: 28px;
   }
 }

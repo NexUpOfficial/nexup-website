@@ -104,6 +104,8 @@ export default function Footer() {
             <Link to="/sections/terms">Terms</Link>
             <Link to="/safety/privacy">Privacy</Link>
             <Link to="/safety/cookies">Cookies</Link>
+            <Link to="/safety/security">Security</Link>
+            <Link to="/login">Login</Link>
           </div>
 
           <div className="nx-system-status">
