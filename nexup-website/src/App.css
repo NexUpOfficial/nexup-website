@@ -212,3 +212,8 @@ img {
   transition: transform 120ms ease;
   transform-origin: center;
 }
+
+.bounce-scroll {
+  position: relative;
+}
+

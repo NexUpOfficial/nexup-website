@@ -46,7 +46,7 @@ export default function NexEngine() {
             muted 
             playsInline
           >
-            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765032493/Nexengine_lhm4mf.mp4" type="video/mp4" />
           </video>
           <div className="hero-overlay" />
         </div>

@@ -312,7 +312,7 @@ export default function Home() {
                     <video 
                       className="card-bg-video" 
                       autoPlay loop muted playsInline 
-                      src="https://cdn.pixabay.com/video/2019/04/20/22908-331622395_large.mp4" 
+                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765032493/Nexengine_lhm4mf.mp4" 
                     />
                     <div className="card-video-overlay" />
                   </div>
@@ -339,12 +339,12 @@ export default function Home() {
 
             {/* ITEM 5: SEARCH */}
             <motion.div variants={itemVariants}>
-              <SpotlightCard to="/ecosystem/search">
+              <SpotlightCard to="/ecosystem/nexsearch">
                   <div className="card-bg-video-wrapper">
                     <video 
                       className="card-bg-video" 
                       autoPlay loop muted playsInline 
-                      src="https://cdn.pixabay.com/video/2016/09/21/5302-183786157_large.mp4" 
+                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765029785/NexSearch_AI_Cinematic_Showcase_fl7dwk.mp4" 
                     />
                     <div className="card-video-overlay" />
                   </div>

@@ -171,7 +171,7 @@ export default function Company() {
               style={{ willChange: 'transform, opacity' }}
             >
               <div className="company-ceo-image placeholder-img">
-                <span className="placeholder-text">Jothish Gandham, CEO</span>
+                <span className="placeholder-text"></span>
                 <div className="ceo-ambient-glow" />
               </div>
             </motion.div>
