@@ -20,5 +20,3 @@ The website is built to give users a glimpse of the futuristic digital universe 
 
 ---
 
-## 📁 Project Structure (High-Level)
-
