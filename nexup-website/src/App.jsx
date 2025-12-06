@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import RefreshPage from "./hooks/refresh/RefreshPage";
@@ -44,7 +44,6 @@ import Trust from "./pages/Safety/Trust";
 import Transparency from "./pages/Safety/Transparency";
 import Cookies from "./pages/Safety/Cookies";
 
-
 /* Other */
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
@@ -59,12 +58,12 @@ import Terms from "./pages/sections/Terms";
 
 
 /* ====================================================
-   Animated Route Wrapper
+   Animated Page Routes
 ==================================================== */
 function AnimatedRoutesWrapper() {
   const location = useLocation();
 
-  /* Movement + Scroll Effects */
+  /* Scroll + Cursor Motion Effects */
   useEffect(() => {
     let timeout;
 
@@ -93,7 +92,7 @@ function AnimatedRoutesWrapper() {
     };
   }, []);
 
-  /* Neon Loading on Route Change */
+  /* Neon Loader Animation */
   useEffect(() => {
     window.dispatchEvent(new Event("route-loading-start"));
     const timeout = setTimeout(() => {
@@ -106,9 +105,9 @@ function AnimatedRoutesWrapper() {
     };
   }, [location.pathname]);
 
-  /* Magnetic Hover */
+  /* Magnetic Hover Effect */
   useEffect(() => {
-    const magneticStrength = 38;
+    const strength = 38;
     const elements = document.querySelectorAll(
       "button, a, .login-btn, .search-btn, .sidebar-icon-btn, .home-btn, .explore-btn, .mix-btn"
     );
@@ -121,7 +120,7 @@ function AnimatedRoutesWrapper() {
         const x = e.clientX - (rect.left + rect.width / 2);
         const y = e.clientY - (rect.top + rect.height / 2);
 
-        el.style.transform = `translate(${x / magneticStrength}px, ${y / magneticStrength}px) scale(1.05)`;
+        el.style.transform = `translate(${x / strength}px, ${y / strength}px) scale(1.05)`;
       };
 
       const mouseLeave = () => {
@@ -146,6 +145,7 @@ function AnimatedRoutesWrapper() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+
         {/* Home */}
         <Route path="/" element={<Home />} />
 
@@ -185,7 +185,7 @@ function AnimatedRoutesWrapper() {
           <Route path="cookies" element={<Cookies />} />
         </Route>
 
-        {/* Other Routes */}
+        {/* Other */}
         <Route path="/dns" element={<DNS />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
@@ -200,19 +200,22 @@ function AnimatedRoutesWrapper() {
   );
 }
 
+
 /* ====================================================
-   App Root + Bounce Effect
+   App Root + Sidebar + Header Layout
 ==================================================== */
 export default function App() {
+  const location = useLocation();
+
   const [isOpen, setIsOpen] = useState(() =>
     localStorage.getItem("sidebar_open") === "true"
   );
 
   const toggleSidebar = () => {
     setIsOpen((prev) => {
-      const newVal = !prev;
-      localStorage.setItem("sidebar_open", newVal);
-      return newVal;
+      const val = !prev;
+      localStorage.setItem("sidebar_open", val);
+      return val;
     });
   };
 
@@ -221,51 +224,12 @@ export default function App() {
     localStorage.setItem("sidebar_open", "false");
   };
 
-  /* Bounce Scroll Effect */
-  useEffect(() => {
-    const container = document.querySelector(".bounce-scroll");
-    let bounceOffset = 0;
-    let bouncing = false;
-    let raf;
-
-    const animateBounce = () => {
-      bounceOffset *= 0.75;
-      container.style.transform = `translateY(${bounceOffset}px)`;
-
-      if (Math.abs(bounceOffset) > 0.5) {
-        raf = requestAnimationFrame(animateBounce);
-      } else {
-        container.style.transform = "translateY(0px)";
-        bouncing = false;
-      }
-    };
-
-    const onScroll = () => {
-      const atTop = container.scrollTop === 0;
-      const atBottom =
-        container.scrollTop + container.clientHeight >= container.scrollHeight;
-
-      if ((atTop || atBottom) && !bouncing) {
-        bouncing = true;
-        bounceOffset = atTop ? 35 : -35;
-        cancelAnimationFrame(raf);
-        animateBounce();
-      }
-    };
-
-    container.addEventListener("scroll", onScroll);
-
-    return () => {
-      container.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
-    <BrowserRouter>
+    <>
       <Loader />
       <ScrollToTop />
 
+      {/* Website Only Layout */}
       <Sidebar isOpen={isOpen} onClose={closeSidebar} />
       <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
@@ -276,10 +240,9 @@ export default function App() {
             onCloseSidebar={closeSidebar}
             isSidebarOpen={isOpen}
           />
-
           <AnimatedRoutesWrapper />
         </PageLayout>
       </div>
-    </BrowserRouter>
+    </>
   );
 }

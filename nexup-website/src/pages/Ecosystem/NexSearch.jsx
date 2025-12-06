@@ -46,7 +46,7 @@ export default function NexSearch() {
             muted 
             playsInline
           >
-            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765029785/NexSearch_AI_Cinematic_Showcase_fl7dwk.mp4" type="video/mp4" />
           </video>
           {/* ⭐ 1. Live Scanning Grid Overlay */}
           <div className="hero-scan-grid" />
