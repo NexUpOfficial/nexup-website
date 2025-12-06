@@ -205,7 +205,6 @@ function AnimatedRoutesWrapper() {
    App Root + Sidebar + Header Layout
 ==================================================== */
 export default function App() {
-  const location = useLocation();
 
   const [isOpen, setIsOpen] = useState(() =>
     localStorage.getItem("sidebar_open") === "true"
