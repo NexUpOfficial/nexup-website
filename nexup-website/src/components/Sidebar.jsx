@@ -20,8 +20,8 @@ function Sidebar({ isOpen, onClose }) {
   const FIXED_HEADER_OFFSET = 90;
 
   /* ------------------------
-       MOBILE SWIPE CLOSE (Improved)
-     ------------------------- */
+      MOBILE SWIPE CLOSE (Improved)
+    ------------------------- */
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
 
@@ -57,8 +57,8 @@ function Sidebar({ isOpen, onClose }) {
   }, [isOpen, touchStartX, touchStartY, onClose]);
 
   /* ------------------------
-       AUTO OPEN & PERSISTENCE
-     ------------------------- */
+      AUTO OPEN & PERSISTENCE
+    ------------------------- */
   useEffect(() => {
     // UX: Save open section to local storage
     if (openSection) {
@@ -79,20 +79,20 @@ function Sidebar({ isOpen, onClose }) {
     else if (path.startsWith("/safety") || path === "/dns" || path === "/login") targetSection = "account";
 
     if (targetSection && openSection !== targetSection) {
-       setOpenSection(targetSection);
+        setOpenSection(targetSection);
     }
   }, [location.pathname]);
 
   /* ------------------------
-       AUTO CLOSE ON MOBILE
-     ------------------------- */
+      AUTO CLOSE ON MOBILE
+    ------------------------- */
   useEffect(() => {
     if (window.innerWidth <= 768 && isOpen) onClose?.();
   }, [location.pathname]);
 
   /* ------------------------
-       TOGGLE HANDLER (Keyboard + Click)
-     ------------------------- */
+      TOGGLE HANDLER (Keyboard + Click)
+    ------------------------- */
   const toggle = (key) => {
     setOpenSection((prev) => (prev === key ? null : key));
   };
@@ -105,8 +105,8 @@ function Sidebar({ isOpen, onClose }) {
   };
 
   /* ------------------------
-            DATA
-     ------------------------- */
+          DATA
+    ------------------------- */
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld" },
     { label: "NexNodes", to: "/ecosystem/nexnodes" },
@@ -139,8 +139,8 @@ function Sidebar({ isOpen, onClose }) {
   ];
 
   /* ------------------------
-        SCROLL SHADOWS
-     ------------------------- */
+      SCROLL SHADOWS
+    ------------------------- */
   useEffect(() => {
     const container = document.querySelector(".sidebar-inner");
     if (!container) return;
@@ -159,8 +159,8 @@ function Sidebar({ isOpen, onClose }) {
   }, []);
 
   /* ------------------------
-       DRAG & DROP UX
-     ------------------------- */
+      DRAG & DROP UX
+    ------------------------- */
   const onDragStart = (e, id) => {
     setIsDragging(id);
     e.dataTransfer.setData("id", id);
@@ -197,22 +197,18 @@ function Sidebar({ isOpen, onClose }) {
   const allowDrop = (e) => e.preventDefault();
 
   /* ------------------------
-        RENDER SECTIONS
-     ------------------------- */
+      RENDER SECTIONS
+    ------------------------- */
   const sidebarSections = {
     main: (
-      <>
-        <div className="sidebar-section-label">MAIN</div>
-        <NavLink to="/" end className={({ isActive }) => "sidebar-item sidebar-link" + (isActive ? " active" : "")}>
-          <span className="left-indicator" />
-          Home
-        </NavLink>
-      </>
+      <NavLink to="/" end className={({ isActive }) => "sidebar-item sidebar-link" + (isActive ? " active" : "")}>
+        <span className="left-indicator" />
+        Home
+      </NavLink>
     ),
 
     ecosystem: (
       <>
-        <div className="sidebar-section-label">ECOSYSTEM</div>
         <div
           role="button"
           tabIndex={0}
@@ -238,7 +234,6 @@ function Sidebar({ isOpen, onClose }) {
 
     about: (
       <>
-        <div className="sidebar-section-label">ABOUT</div>
         <div
           role="button"
           tabIndex={0}
@@ -264,7 +259,6 @@ function Sidebar({ isOpen, onClose }) {
 
     support: (
       <>
-        <div className="sidebar-section-label">SUPPORT</div>
         {supportItems.map((item) => (
           <NavLink key={item.to} to={item.to} className={({ isActive }) => "sidebar-item sidebar-link" + (isActive ? " active" : "")}>
             <span className="left-indicator" />
@@ -276,7 +270,6 @@ function Sidebar({ isOpen, onClose }) {
 
     account: (
       <>
-        <div className="sidebar-section-label">ACCOUNT & SAFETY</div>
         <div
           role="button"
           tabIndex={0}
@@ -301,6 +294,102 @@ function Sidebar({ isOpen, onClose }) {
     )
   };
 
+  /* ------------------------
+      RENDER LOGIC (with Labels)
+    ------------------------- */
+    const renderSection = (id) => {
+        switch (id) {
+            case 'main':
+                return (
+                    <div
+                        key={id}
+                        id={`section-${id}`}
+                        className={`sidebar-section ${isDragging === id ? 'dragging' : ''}`}
+                        draggable="true"
+                        onDragStart={(e) => onDragStart(e, id)}
+                        onDragEnd={(e) => onDragEnd(e, id)}
+                        onDragOver={allowDrop}
+                        onDrop={(e) => onDrop(e, id)}
+                        title="Drag to reorder"
+                    >
+                        <div className="sidebar-section-label">MAIN</div>
+                        {sidebarSections[id]}
+                    </div>
+                );
+            case 'ecosystem':
+                return (
+                    <div
+                        key={id}
+                        id={`section-${id}`}
+                        className={`sidebar-section ${isDragging === id ? 'dragging' : ''}`}
+                        draggable="true"
+                        onDragStart={(e) => onDragStart(e, id)}
+                        onDragEnd={(e) => onDragEnd(e, id)}
+                        onDragOver={allowDrop}
+                        onDrop={(e) => onDrop(e, id)}
+                        title="Drag to reorder"
+                    >
+                        <div className="sidebar-section-label">ECOSYSTEM</div>
+                        {sidebarSections[id]}
+                    </div>
+                );
+            case 'about':
+                return (
+                    <div
+                        key={id}
+                        id={`section-${id}`}
+                        className={`sidebar-section ${isDragging === id ? 'dragging' : ''}`}
+                        draggable="true"
+                        onDragStart={(e) => onDragStart(e, id)}
+                        onDragEnd={(e) => onDragEnd(e, id)}
+                        onDragOver={allowDrop}
+                        onDrop={(e) => onDrop(e, id)}
+                        title="Drag to reorder"
+                    >
+                        <div className="sidebar-section-label">ABOUT</div>
+                        {sidebarSections[id]}
+                    </div>
+                );
+            case 'support':
+                return (
+                    <div
+                        key={id}
+                        id={`section-${id}`}
+                        className={`sidebar-section ${isDragging === id ? 'dragging' : ''}`}
+                        draggable="true"
+                        onDragStart={(e) => onDragStart(e, id)}
+                        onDragEnd={(e) => onDragEnd(e, id)}
+                        onDragOver={allowDrop}
+                        onDrop={(e) => onDrop(e, id)}
+                        title="Drag to reorder"
+                    >
+                        <div className="sidebar-section-label">SUPPORT</div>
+                        {sidebarSections[id]}
+                    </div>
+                );
+            case 'account':
+                return (
+                    <div
+                        key={id}
+                        id={`section-${id}`}
+                        className={`sidebar-section ${isDragging === id ? 'dragging' : ''}`}
+                        draggable="true"
+                        onDragStart={(e) => onDragStart(e, id)}
+                        onDragEnd={(e) => onDragEnd(e, id)}
+                        onDragOver={allowDrop}
+                        onDrop={(e) => onDrop(e, id)}
+                        title="Drag to reorder"
+                    >
+                        <div className="sidebar-section-label">ACCOUNT & SAFETY</div>
+                        {sidebarSections[id]}
+                    </div>
+                );
+            default:
+                return null;
+        }
+    }
+
+
   return (
     <aside
       className={`sidebar ${isOpen ? "open" : ""}`}
@@ -315,21 +404,7 @@ function Sidebar({ isOpen, onClose }) {
       </div>
 
       <div className="sidebar-inner">
-        {sectionOrder.map((id) => (
-          <div
-            key={id}
-            id={`section-${id}`}
-            className={`sidebar-section ${isDragging === id ? 'dragging' : ''}`}
-            draggable="true"
-            onDragStart={(e) => onDragStart(e, id)}
-            onDragEnd={(e) => onDragEnd(e, id)}
-            onDragOver={allowDrop}
-            onDrop={(e) => onDrop(e, id)}
-            title="Drag to reorder"
-          >
-            {sidebarSections[id]}
-          </div>
-        ))}
+        {sectionOrder.map((id) => renderSection(id))}
       </div>
     </aside>
   );

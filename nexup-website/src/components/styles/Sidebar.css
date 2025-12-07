@@ -1,5 +1,5 @@
 /* =========================================================
-   SIDEBAR — GLOBAL VARIABLES
+    SIDEBAR — GLOBAL VARIABLES
 ========================================================= */
 :root {
   --text-dim: rgba(255, 255, 255, 0.45);
@@ -11,16 +11,19 @@
 
   --divider-color: rgba(255, 255, 255, 0.10);
   --shadow-dark: rgba(0, 0, 0, 0.55);
+  
+  /* NEW: Subtle text gradient for hover */
+  --hover-text-gradient: linear-gradient(90deg, #ffffff, #dcdcdc);
 }
 
 /* =========================================================
-   NeXUP PREMIUM SIDEBAR
+    NeXUP PREMIUM SIDEBAR (Width & Animation Fixes)
 ========================================================= */
 .sidebar {
   position: fixed;
   top: 100px;
-  left: 0;
-  max-width: 230px;
+  /* FIX: Increased width for better breathing room */
+  max-width: 245px; /* was 230px */
   height: auto;
 
   background: black;
@@ -36,12 +39,13 @@
   pointer-events: none;
 
   transition:
-    transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    /* FIX: Smoother exit animation (transform is now 350ms ease-out) */
+    transform 350ms ease-out, /* was 800ms cubic-bezier */
     opacity 500ms ease,
     filter 600ms ease;
 
   z-index: 3000;
-  outline: none; /* Remove default outline, handled inside */
+  outline: none;
 }
 
 .sidebar.open {
@@ -49,6 +53,11 @@
   opacity: 1 !important;
   filter: none !important;
   pointer-events: auto !important;
+  /* Re-added original smoother entry curve */
+  transition:
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease,
+    filter 600ms ease;
 }
 
 .sidebar-inner,
@@ -58,14 +67,13 @@
 }
 
 /* =========================================================
-   INNER SCROLL + SHADOWS
+    INNER SCROLL + SHADOWS
 ========================================================= */
 .sidebar-inner {
   height: 100%;
   overflow-y: auto;
   padding: 15px 0 40px;
   scrollbar-width: none;
-  /* UX: Smooth scroll for inner content */
   scroll-behavior: smooth;
 }
 
@@ -99,11 +107,11 @@
 .sidebar-inner.shadow-bottom::after { opacity: 1; }
 
 /* =========================================================
-   SECTIONS & DRAG UX
+    SECTIONS & DRAG UX
 ========================================================= */
 .sidebar-section {
-  margin-bottom: 8px;
-  /* UX: Indicate draggability */
+  /* FIX: Increased vertical spacing between sections (8px -> 16px) */
+  margin-bottom: 16px;
   cursor: grab; 
   border-radius: 8px;
   transition: background 0.2s ease, opacity 0.2s ease;
@@ -113,7 +121,6 @@
   cursor: grabbing;
 }
 
-/* UX: Dragging visual state */
 .sidebar-section.dragging {
   opacity: 0.4;
   background: rgba(255, 255, 255, 0.05);
@@ -121,42 +128,49 @@
 }
 
 .sidebar-section-label {
+  /* FIX: Styled Category Label (12px, subtle) */
   font-family: "Inter", sans-serif;
-  font-size: 10px;
+  font-size: 12px; /* was 10px */
   font-weight: 500;
   color: var(--text-dim);
-  padding: 0 18px 6px;
+  padding: 0 18px 8px; /* was 6px padding-bottom */
   text-transform: uppercase;
   letter-spacing: 1px;
-  pointer-events: none; /* UX: Don't let users drag the text specifically */
+  pointer-events: none;
+  /* Ensures label does not take up extra space in the drag-and-drop area */
+  margin-top: 0; 
+  margin-bottom: 4px;
 }
 
 /* =========================================================
-   ITEMS & ACCESSIBILITY
+    ITEMS & ACCESSIBILITY (Spacing & Hover Fixes)
 ========================================================= */
 .sidebar-item,
 .sidebar-link,
 .sidebar-parent {
   display: flex;
   align-items: center;
-  gap: 10px;
+  /* FIX: Increased horizontal gap */
+  gap: 1.2rem; /* was 10px */
 
   width: 100%;
-  padding: 8px 18px;
+  /* FIX: Adjusted vertical padding for breathing room */
+  padding: 10px 18px; /* was 8px */
 
   font-family: "Inter", sans-serif;
   font-size: 0.82rem;
   font-weight: 400;
-  color: var(--text-normal);
+  /* Use color for non-hover state */
+  color: var(--text-normal); 
 
   white-space: nowrap;
   cursor: pointer;
   text-decoration: none;
 
   border-radius: 8px;
-  transition: background 150ms ease, color 150ms ease;
+  /* Added box-shadow to transition for hover glow */
+  transition: background 150ms ease, color 150ms ease, transform 150ms ease, box-shadow 150ms ease; 
   
-  /* UX: Remove button default styles */
   background: transparent;
   border: none;
   text-align: left;
@@ -168,19 +182,31 @@
 .sidebar-parent:focus-visible {
   outline: none;
   background: var(--hover-bg);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 0 6px rgba(100, 100, 255, 0.4), /* Soft Blue Glow */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transform: scale(1.01);
 }
 
 .sidebar-item:hover,
 .sidebar-link:hover,
 .sidebar-parent:hover {
   background: var(--hover-bg);
-  color: var(--text-strong);
+  /* FIX: Subtle scale and soft glow on hover */
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); /* Soft, white outer glow */
+  
+  /* FIX: Subtle Text Gradient on hover */
+  color: transparent;
+  background-image: var(--hover-text-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 
 .sidebar-link.active {
   background: var(--active-bg);
   color: var(--text-strong);
+  transform: scale(1.0); /* Reset scale for active state if hovered */
 }
 
 .left-indicator {
@@ -199,7 +225,7 @@
 }
 
 /* =========================================================
-   PARENT TOGGLE & SUBMENU
+    PARENT TOGGLE & SUBMENU
 ========================================================= */
 .sidebar-parent {
   position: relative;
@@ -241,6 +267,11 @@
   opacity: 0;
   transform: translateY(-8px);
   padding-left: 26px;
+  
+  /* FIX: Increased padding-top for submenu items */
+  padding-top: 5px; 
+  padding-bottom: 5px;
+
   transition:
     max-height 420ms cubic-bezier(0.25, 0.1, 0.25, 1),
     opacity 350ms ease,
@@ -253,8 +284,14 @@
   transform: translateY(0);
 }
 
+/* FIX: Ensure subitems inherit padding for proper alignment */
+.sidebar-subitem {
+  padding-left: 0 !important;
+  padding-right: 18px !important;
+}
+
 /* =========================================================
-   HOVER ANIMATIONS (Link Fill)
+    HOVER ANIMATIONS (Link Fill)
 ========================================================= */
 .sidebar-link::before,
 .sidebar-subitem::before {
@@ -294,15 +331,16 @@
 }
 
 /* =========================================================
-   RESPONSIVE
+    RESPONSIVE
 ========================================================= */
 @media (min-width: 1600px) {
-  .sidebar { width: 260px; }
+  /* Retained but adjusted for new base width */
+  .sidebar { max-width: 280px; } /* was 260px */
 }
 
 @media (max-width: 480px) {
   .sidebar {
-    width: 85% !important; /* UX: Better width for mobile touch */
+    width: 85% !important;
     max-width: 320px;
     background-color: rgb(0, 0, 0);
   }
