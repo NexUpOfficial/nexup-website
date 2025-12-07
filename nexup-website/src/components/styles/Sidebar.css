@@ -3,44 +3,42 @@
 ========================================================= */
 :root {
   --text-dim: rgba(255, 255, 255, 0.45);
-  --text-normal: rgba(255, 255, 255, 1);
+  --text-normal: rgba(255, 255, 255, 0.9);
   --text-strong: #ffffff;
 
-  --hover-bg: rgba(255, 255, 255, 0.04);
-  --active-bg: rgba(255, 255, 255, 0.10);
-
+  /* HOVER: Very light, barely visible 6% opacity */
+  --hover-bg: rgba(255, 255, 255, 0.06);
+  
+  /* ACTIVE: Premium "Ghost" Black (Deep Matte) */
+  --active-bg: rgba(255, 255, 255, 0.035); 
+  
   --divider-color: rgba(255, 255, 255, 0.10);
   --shadow-dark: rgba(0, 0, 0, 0.55);
-  
-  /* NEW: Subtle text gradient for hover */
-  --hover-text-gradient: linear-gradient(90deg, #ffffff, #dcdcdc);
 }
 
 /* =========================================================
-    NeXUP PREMIUM SIDEBAR (Width & Animation Fixes)
+    NeXUP PREMIUM SIDEBAR
 ========================================================= */
 .sidebar {
   position: fixed;
   top: 100px;
-  /* FIX: Increased width for better breathing room */
-  max-width: 245px; /* was 230px */
+  max-width: 260px;
   height: auto;
-
   background: black;
-
+  
+  /* Deep atmospheric shadow */
   box-shadow:
-    0 6px 30px rgba(0,0,0,0.45),
-    0 0 12px rgba(255,255,255,0.04) inset;
+    0 6px 30px rgba(0,0,0,0.55),
+    0 0 15px rgba(255,255,255,0.03) inset;
 
-  /* CLOSED STATE ONLY */
+  /* CLOSED STATE */
   transform: translateX(-110%);
   opacity: 0;
   filter: none;
   pointer-events: none;
 
   transition:
-    /* FIX: Smoother exit animation (transform is now 350ms ease-out) */
-    transform 350ms ease-out, /* was 800ms cubic-bezier */
+    transform 350ms ease-out,
     opacity 500ms ease,
     filter 600ms ease;
 
@@ -53,7 +51,6 @@
   opacity: 1 !important;
   filter: none !important;
   pointer-events: auto !important;
-  /* Re-added original smoother entry curve */
   transition:
     transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 500ms ease,
@@ -72,7 +69,7 @@
 .sidebar-inner {
   height: 100%;
   overflow-y: auto;
-  padding: 15px 0 40px;
+  padding: 15px 0 60px;
   scrollbar-width: none;
   scroll-behavior: smooth;
 }
@@ -81,13 +78,14 @@
   display: none;
 }
 
+/* Top/Bottom Fade Shadows for Scroll */
 .sidebar-inner::before,
 .sidebar-inner::after {
   content: "";
   position: sticky;
   left: 0;
   width: 100%;
-  height: 22px;
+  height: 25px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 200ms ease;
@@ -110,11 +108,11 @@
     SECTIONS & DRAG UX
 ========================================================= */
 .sidebar-section {
-  /* FIX: Increased vertical spacing between sections (8px -> 16px) */
-  margin-bottom: 16px;
-  cursor: grab; 
-  border-radius: 8px;
-  transition: background 0.2s ease, opacity 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; 
+  cursor: grab;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar-section:active {
@@ -124,224 +122,158 @@
 .sidebar-section.dragging {
   opacity: 0.4;
   background: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+  border-radius: 8px;
 }
 
 .sidebar-section-label {
-  /* FIX: Styled Category Label (12px, subtle) */
   font-family: "Inter", sans-serif;
-  font-size: 12px; /* was 10px */
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--text-dim);
-  padding: 0 18px 8px; /* was 6px padding-bottom */
+  padding: 0 1.2rem 8px; 
   text-transform: uppercase;
   letter-spacing: 1px;
   pointer-events: none;
-  /* Ensures label does not take up extra space in the drag-and-drop area */
-  margin-top: 0; 
-  margin-bottom: 4px;
 }
 
 /* =========================================================
-    ITEMS & ACCESSIBILITY (Spacing & Hover Fixes)
+    ITEMS & LINKS (Size & Base Styling)
 ========================================================= */
 .sidebar-item,
 .sidebar-link,
 .sidebar-parent {
   display: flex;
   align-items: center;
-  /* FIX: Increased horizontal gap */
-  gap: 1.2rem; /* was 10px */
+  justify-content: flex-start;
 
-  width: 100%;
-  /* FIX: Adjusted vertical padding for breathing room */
-  padding: 10px 18px; /* was 8px */
+  /* 1. Compact vertical padding for sleek look */
+  padding: 8px 1.2rem; 
+  
+  /* Tighter item spacing */
+  margin-bottom: 2px; 
 
   font-family: "Inter", sans-serif;
-  font-size: 0.82rem;
-  font-weight: 400;
-  /* Use color for non-hover state */
-  color: var(--text-normal); 
-
+  font-size: 0.88rem; 
+  font-weight: 500;
+  
+  color: var(--text-normal);
   white-space: nowrap;
   cursor: pointer;
   text-decoration: none;
-
-  border-radius: 8px;
-  /* Added box-shadow to transition for hover glow */
-  transition: background 150ms ease, color 150ms ease, transform 150ms ease, box-shadow 150ms ease; 
-  
   background: transparent;
+  
+  /* Reset borders */
   border: none;
-  text-align: left;
+  border-left: 2px solid transparent; 
+
+  transition: all 0.25s ease;
 }
 
-/* UX: Keyboard Focus State (Premium Glow) */
+/* =========================================================
+    HOVER STATE
+========================================================= */
+.sidebar-item:hover,
+.sidebar-link:hover,
+.sidebar-parent:hover {
+  background-color: var(--hover-bg);
+  color: var(--text-strong);
+  
+  /* Small animation to slide text right */
+  padding-left: 1.35rem; 
+}
+
+/* =========================================================
+    ACTIVE STATE (Premium Black & Subtle)
+========================================================= */
+.sidebar-link.active,
+.sidebar-parent.open {
+  /* "Not too much hidden, not too much visible" */
+  background-color: var(--active-bg);
+  color: #ffffff;
+  
+  /* Removed main border for cleaner look */
+  border-left-color: transparent; 
+}
+
+/* UX: Focus State for Accessibility */
 .sidebar-item:focus-visible,
 .sidebar-link:focus-visible,
 .sidebar-parent:focus-visible {
   outline: none;
   background: var(--hover-bg);
-  box-shadow: 
-    0 0 6px rgba(100, 100, 255, 0.4), /* Soft Blue Glow */
-    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
-  transform: scale(1.01);
-}
-
-.sidebar-item:hover,
-.sidebar-link:hover,
-.sidebar-parent:hover {
-  background: var(--hover-bg);
-  /* FIX: Subtle scale and soft glow on hover */
-  transform: scale(1.02);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); /* Soft, white outer glow */
-  
-  /* FIX: Subtle Text Gradient on hover */
-  color: transparent;
-  background-image: var(--hover-text-gradient);
-  background-clip: text;
-  -webkit-background-clip: text;
-}
-
-.sidebar-link.active {
-  background: var(--active-bg);
-  color: var(--text-strong);
-  transform: scale(1.0); /* Reset scale for active state if hovered */
-}
-
-.left-indicator {
-  width: 0.45px;
-  height: 0;
-  background: rgb(152, 152, 152);
-  opacity: 0;
-  border-radius: 2px;
-  transition: height 200ms ease, opacity 150ms ease;
-}
-
-.sidebar-link.active .left-indicator,
-.sidebar-parent.open .left-indicator {
-  height: 18px;
-  opacity: 1;
+  border-left-color: rgba(255,255,255,0.5);
 }
 
 /* =========================================================
-    PARENT TOGGLE & SUBMENU
+    PARENT TOGGLE ARROW
 ========================================================= */
-.sidebar-parent {
-  position: relative;
-  overflow: hidden;
-}
-
-.sidebar-parent::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 0%;
-  height: 100%;
-  background: rgba(255,255,255,0.04);
-  transition: width 240ms ease;
-  z-index: -1;
-}
-
-.sidebar-parent:hover::before {
-  width: 100%;
-}
-
 .sidebar-parent .arrow {
   margin-left: auto;
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.55);
-  transition: transform 200ms ease, opacity 150ms ease;
+  color: rgba(255,255,255,0.4);
+  transition: transform 0.3s ease;
 }
 
-.sidebar-parent:hover .arrow { opacity: 1; }
+.sidebar-parent:hover .arrow { opacity: 1; color: white; }
+
 .sidebar-parent.open .arrow {
   transform: rotate(180deg);
   opacity: 1;
 }
 
+/* =========================================================
+    SUBMENU
+========================================================= */
 .sidebar-submenu {
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transform: translateY(-8px);
-  padding-left: 26px;
-  
-  /* FIX: Increased padding-top for submenu items */
-  padding-top: 5px; 
-  padding-bottom: 5px;
-
+  transform: translateY(-5px);
   transition:
-    max-height 420ms cubic-bezier(0.25, 0.1, 0.25, 1),
-    opacity 350ms ease,
-    transform 400ms ease;
+    max-height 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .sidebar-submenu.expand {
-  max-height: 600px;
+  max-height: 500px;
   opacity: 1;
   transform: translateY(0);
 }
 
-/* FIX: Ensure subitems inherit padding for proper alignment */
-.sidebar-subitem {
-  padding-left: 0 !important;
-  padding-right: 18px !important;
-}
-
 /* =========================================================
-    HOVER ANIMATIONS (Link Fill)
+    SUBMENU ITEMS
 ========================================================= */
-.sidebar-link::before,
-.sidebar-subitem::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 0%;
-  height: 100%;
-  background: rgba(255,255,255,0.06);
-  border-radius: 6px;
-  transition: width 230ms ease;
-  z-index: -1;
+.sidebar-subitem {
+  /* Indentation */
+  padding-left: 2.2rem !important; 
+  font-size: 0.82rem;
+  opacity: 0.8;
+  border-left: 2px solid transparent; 
 }
 
-.sidebar-link:hover::before,
-.sidebar-subitem:hover::before {
-  width: 100%;
-}
-
-.sidebar-link::after,
-.sidebar-subitem::after {
-  content: "›";
-  position: absolute;
-  right: 14px;
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity 150ms ease, transform 180ms ease;
-  font-size: 0.65rem;
-  color: rgba(255,255,255,0.55);
-}
-
-.sidebar-link:hover::after,
-.sidebar-subitem:hover::after {
+.sidebar-subitem:hover {
+  padding-left: 2.3rem !important;
   opacity: 1;
-  transform: translateX(4px);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* SUBMENU ACTIVE STATE (Specific Left Indicator) */
+.sidebar-subitem.active {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  opacity: 1;
+  
+  /* The left indicator highlight */
+  border-left-color: rgba(255, 255, 255, 0.6); 
 }
 
 /* =========================================================
     RESPONSIVE
 ========================================================= */
-@media (min-width: 1600px) {
-  /* Retained but adjusted for new base width */
-  .sidebar { max-width: 280px; } /* was 260px */
-}
-
 @media (max-width: 480px) {
   .sidebar {
     width: 85% !important;
     max-width: 320px;
-    background-color: rgb(0, 0, 0);
   }
 }
