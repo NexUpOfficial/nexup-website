@@ -1,72 +1,66 @@
-// src/pages/Login.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FiMail, FiLock, FiArrowRight, FiCheckCircle, FiUser, FiCpu } from "react-icons/fi";
+import { 
+  FiMail, FiLock, FiArrowRight, FiCheckCircle, 
+  FiCpu, FiEye, FiEyeOff, FiLoader, FiAlertCircle, FiX 
+} from "react-icons/fi";
 import { FaGoogle, FaGithub, FaApple } from "react-icons/fa";
 import "../page-styles/Login.css";
 
-/* --- ANIMATION VARIANTS --- */
+/* --- ANIMATIONS (Kept same) --- */
 const greetingVariants = {
   hidden: { opacity: 0, scale: 0.9 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
   exit: { opacity: 0, scale: 1.1, filter: "blur(10px)", transition: { duration: 0.5 } }
 };
-
 const contentVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
 };
-
-// Input Stagger Animation
 const inputVariants = {
   hidden: { opacity: 0, y: 15 },
   visible: (i) => ({ 
-    opacity: 1, 
-    y: 0, 
-    transition: { delay: i * 0.1 + 0.2, duration: 0.4 } 
+    opacity: 1, y: 0, transition: { delay: i * 0.1 + 0.2, duration: 0.4 } 
   }),
   exit: { opacity: 0, x: -10, transition: { duration: 0.2 } }
 };
+const featureListVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } }
+};
+const featureItemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+};
 
-/* --- COMPONENTS --- */
-
+/* --- COMPONENTS (ParticleField & GlowButton kept same) --- */
 const ParticleField = () => {
-  const particles = Array.from({ length: 20 });
+  const particles = useMemo(() => Array.from({ length: 20 }).map(() => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    duration: Math.random() * 5 + 10,
+    delay: Math.random() * 5,
+    size: Math.random() * 3 + 1
+  })), []);
+
   return (
     <div className="particle-container">
-      {particles.map((_, i) => (
+      {particles.map((p, i) => (
         <motion.div
           key={i}
           className="particle"
-          initial={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-            opacity: 0,
-          }}
-          animate={{
-            // ⭐ 3. Horizontal Drift
-            x: [null, Math.random() * 40 - 20],
-            y: [null, Math.random() * -100],
-            opacity: [0, 0.4, 0],
-          }}
-          transition={{
-            duration: Math.random() * 5 + 5,
-            repeat: Infinity,
-            ease: "linear",
-            delay: Math.random() * 5,
-          }}
-          style={{
-            width: Math.random() * 3 + 1 + "px",
-            height: Math.random() * 3 + 1 + "px",
-          }}
+          initial={{ x: p.x, y: p.y, opacity: 0 }}
+          animate={{ x: [null, Math.random() * 40 - 20], y: [null, Math.random() * -100], opacity: [0, 0.3, 0] }}
+          transition={{ duration: p.duration, repeat: Infinity, ease: "linear", delay: p.delay }}
+          style={{ width: p.size, height: p.size }}
         />
       ))}
     </div>
   );
 };
 
-const GlowButton = ({ children, className, onClick }) => {
+const GlowButton = ({ children, className, onClick, disabled }) => {
   const btnRef = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -84,10 +78,10 @@ const GlowButton = ({ children, className, onClick }) => {
       className={`glow-trail-btn ${className}`}
       onMouseMove={handleMouseMove}
       onClick={onClick}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      disabled={disabled}
+      whileHover={!disabled ? { scale: 1.02 } : {}}
+      whileTap={!disabled ? { scale: 0.98 } : {}}
     >
-      {/* ⭐ 10. Scaled Glow Effect */}
       <motion.div className="glow-effect" style={{ x, y }} />
       <span className="btn-content">{children}</span>
     </motion.button>
@@ -100,85 +94,102 @@ export default function Login() {
   const [showGreeting, setShowGreeting] = useState(true);
   const [greetingStep, setGreetingStep] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
-  const [emailValid, setEmailValid] = useState(false); // ⭐ 12. Success Glow State
+  const [emailValid, setEmailValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // 3D Tilt Logic
   const cardRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
-  // ⭐ 4. Increased Rotation for Depth
-  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [10, -10]), { stiffness: 150, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-10, 10]), { stiffness: 150, damping: 20 });
+  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [8, -8]), { stiffness: 100, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-8, 8]), { stiffness: 100, damping: 20 });
 
   const handleCardMouseMove = (e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    mouseX.set(x);
-    mouseY.set(y);
+    mouseX.set(e.clientX - rect.left - rect.width / 2);
+    mouseY.set(e.clientY - rect.top - rect.height / 2);
+  };
+  const handleCardMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
+
+  // Email Validation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      setEmailValid(isValid && email.length > 0);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [email]);
+
+  // Auth Handler
+  const handleAuth = async (e) => {
+    if(e) e.preventDefault();
+    setError("");
+    if (!email || !password) { setError("Credentials required."); return; }
+    if (!emailValid) { setError("Invalid email format."); return; }
+    if (password.length < 6) { setError("Password too short."); return; }
+    setIsLoading(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      navigate("/"); 
+    } catch (err) { setError("Authentication failed."); } finally { setIsLoading(false); }
   };
 
-  const handleCardMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
-  const handleEmailChange = (e) => {
-    // Simple regex for email validation visual cue
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value);
-    setEmailValid(isValid);
-  };
-
-  // AI Greeting Sequence + Escape Key
+  // Greeting Sequence
   useEffect(() => {
     const skip = (e) => { if (e.key === "Escape") setShowGreeting(false); };
     window.addEventListener("keydown", skip);
-
-    const timer1 = setTimeout(() => setGreetingStep(1), 2000); // "Initializing"
-    const timer2 = setTimeout(() => setGreetingStep(2), 4000); // "Synchronizing"
-    const timer3 = setTimeout(() => setShowGreeting(false), 6000); // Exit
-
+    const timer1 = setTimeout(() => setGreetingStep(1), 1500);
+    const timer2 = setTimeout(() => setGreetingStep(2), 3000);
+    const timer3 = setTimeout(() => setShowGreeting(false), 4500);
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3);
       window.removeEventListener("keydown", skip);
     };
   }, []);
 
-  // Greeting Render
   if (showGreeting) {
     return (
       <div className="ai-greeting-screen">
         <AnimatePresence mode="wait">
           {greetingStep === 0 && (
-            <motion.div key="step1" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text-container">
-              {/* ⭐ 2. Typing Animation */}
+            <motion.div key="s1" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text-container">
               <h2 className="ai-text typing-effect">Welcome back, Explorer.</h2>
             </motion.div>
           )}
           {greetingStep === 1 && (
-            <motion.h2 key="step2" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text">
+            <motion.h2 key="s2" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text">
               Initializing Secure Gateway...
             </motion.h2>
           )}
           {greetingStep === 2 && (
-            <motion.h2 key="step3" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text">
+            <motion.h2 key="s3" variants={greetingVariants} initial="hidden" animate="visible" exit="exit" className="ai-text">
               Synchronizing Reality Layers...
             </motion.h2>
           )}
         </AnimatePresence>
         
         <div className="loader-line" />
-        <p className="skip-hint">Press ESC to skip</p>
+        
+        {/* ⭐ NEW: Mobile/Desktop Skip Button */}
+        <motion.button 
+          className="skip-btn"
+          onClick={() => setShowGreeting(false)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          Skip Intro <span className="desktop-hint">(ESC)</span>
+        </motion.button>
       </div>
     );
   }
 
   return (
-    // ⭐ 13. Blur Interaction on Background Grid
     <div className={`login-page ${isTyping ? "typing-mode" : ""}`}>
       <div className="cyber-grid" />
       <ParticleField />
@@ -191,10 +202,9 @@ export default function Login() {
         initial="hidden"
         animate="visible"
       >
-        
-        {/* ================= LEFT SIDE ================= */}
         <div className="login-text-side">
           <motion.div 
+            className="glass-text-panel"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -210,16 +220,14 @@ export default function Login() {
               Your single identity for the spatial web. Access NexWorld, manage NexNodes, 
               and sync your digital reality across all devices.
             </p>
-
-            <div className="login-features">
+            <motion.div className="login-features" variants={featureListVariants} initial="hidden" animate="visible">
               <FeatureItem text="End-to-End Encryption" />
               <FeatureItem text="Biometric Ready" />
               <FeatureItem text="Distributed Ledger Sync" />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 
-        {/* ================= RIGHT SIDE ================= */}
         <div className="login-card-side">
           <motion.div 
             ref={cardRef}
@@ -229,25 +237,22 @@ export default function Login() {
             onMouseLeave={handleCardMouseLeave}
           >
             <div className="neon-border-box">
-              {/* ⭐ 5. Neon Rim on Card during Typing */}
               <div className={`auth-card glass-panel ${isTyping ? "card-active-glow" : ""}`}>
-                
                 <div className="holo-sheen" />
-
-                {/* ⭐ 6. Pulse Ping Avatar */}
+                <div className="card-brand-logo">NEXUP</div>
                 <div className={`avatar-scanner ${isTyping ? "scanning" : ""}`}>
                   <div className="scan-line"></div>
                   <FiCpu className="avatar-icon" />
                 </div>
 
                 <div className="auth-tabs">
-                  <button className={`tab-btn ${isLogin ? "active" : ""}`} onClick={() => setIsLogin(true)}>Log In</button>
-                  <button className={`tab-btn ${!isLogin ? "active" : ""}`} onClick={() => setIsLogin(false)}>Sign Up</button>
+                  <button className={`tab-btn ${isLogin ? "active" : ""}`} onClick={() => { setIsLogin(true); setError(""); }}>Log In</button>
+                  <button className={`tab-btn ${!isLogin ? "active" : ""}`} onClick={() => { setIsLogin(false); setError(""); }}>Sign Up</button>
                 </div>
 
                 <div className="auth-header">
                   <h2>{isLogin ? "Identity Verification" : "Create Identity"}</h2>
-                  <p>{isLogin ? "Authenticate to access the ecosystem." : "Mint your new digital existence."}</p>
+                  <p>{isLogin ? "Authenticate to access the ecosystem." : "Create your NexWorld Identity."}</p>
                 </div>
 
                 <div className="social-login-grid">
@@ -256,11 +261,15 @@ export default function Login() {
                   <button className="social-btn"><FaApple /></button>
                 </div>
 
-                <div className="auth-divider">
-                  <span>Or use email protocol</span>
-                </div>
+                <div className="auth-divider"><span>Or use email protocol</span></div>
 
-                <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
+                {error && (
+                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="error-banner">
+                        <FiAlertCircle /> {error}
+                    </motion.div>
+                )}
+
+                <form className="auth-form" onSubmit={handleAuth}>
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={isLogin ? "login" : "signup"}
@@ -269,60 +278,18 @@ export default function Login() {
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.25 }}
                     >
-                      {!isLogin && (
-                        <motion.div 
-                          className="input-group"
-                          custom={0}
-                          variants={inputVariants}
-                          initial="hidden"
-                          animate="visible"
-                        >
-                          <FiUser className="input-icon" /> 
-                          <input 
-                            type="text" 
-                            placeholder="Full Name" 
-                            onFocus={() => setIsTyping(true)}
-                            onBlur={() => setIsTyping(false)}
-                          />
-                          <div className="input-border-glow" />
-                        </motion.div>
-                      )}
-                      
-                      {/* ⭐ 12. Input Success Glow */}
-                      <motion.div 
-                        className={`input-group ${emailValid ? "success" : ""}`}
-                        custom={1}
-                        variants={inputVariants}
-                        initial="hidden"
-                        animate="visible"
-                      >
+                      <motion.div className={`input-group ${emailValid ? "success" : ""}`} custom={1} variants={inputVariants} initial="hidden" animate="visible">
                         <FiMail className="input-icon" />
-                        <input 
-                          type="email" 
-                          placeholder="name@example.com" 
-                          required 
-                          onFocus={() => setIsTyping(true)}
-                          onBlur={() => setIsTyping(false)}
-                          onChange={handleEmailChange}
-                        />
+                        <input type="email" placeholder="name@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} onFocus={() => setIsTyping(true)} onBlur={() => setIsTyping(false)} />
                         <div className="input-border-glow" />
                       </motion.div>
 
-                      <motion.div 
-                        className="input-group"
-                        custom={2}
-                        variants={inputVariants}
-                        initial="hidden"
-                        animate="visible"
-                      >
+                      <motion.div className="input-group" custom={2} variants={inputVariants} initial="hidden" animate="visible">
                         <FiLock className="input-icon" />
-                        <input 
-                          type="password" 
-                          placeholder={isLogin ? "Password" : "Password (min. 8 characters)"} 
-                          required 
-                          onFocus={() => setIsTyping(true)}
-                          onBlur={() => setIsTyping(false)}
-                        />
+                        <input type={showPassword ? "text" : "password"} placeholder={isLogin ? "Password" : "Password (min. 6 characters)"} required value={password} onChange={(e) => setPassword(e.target.value)} onFocus={() => setIsTyping(true)} onBlur={() => setIsTyping(false)} />
+                        <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <FiEyeOff /> : <FiEye />}
+                        </button>
                         <div className="input-border-glow" />
                       </motion.div>
                     </motion.div>
@@ -330,28 +297,26 @@ export default function Login() {
 
                   {isLogin && (
                     <div className="form-actions">
+                      {/* ⭐ UPDATED: Custom Neon Checkbox Structure */}
                       <label className="checkbox-container">
                         <input type="checkbox" />
-                        <span className="checkmark"></span>
-                        Keep session active
+                        <span className="custom-checkmark"></span>
+                        <span className="checkbox-text">Keep session active</span>
                       </label>
                       <span className="forgot-link">Recover Key?</span>
                     </div>
                   )}
 
-                  <GlowButton className="submit-btn" onClick={() => navigate("/")}>
-                    {isLogin ? "Authenticate" : "Initialize Account"} <FiArrowRight />
+                  <GlowButton className="submit-btn" type="submit" disabled={isLoading}>
+                    {isLoading ? <><FiLoader className="spinner" /> Authenticating...</> : <>{isLogin ? "Authenticate" : "Initialize Account"} <FiArrowRight /></>}
                   </GlowButton>
                 </form>
 
-                <p className="auth-footer">
-                  Protected by <span className="link">NexGuard</span> Encryption.
-                </p>
+                <p className="auth-footer">Protected by <span className="link">NexGuard</span> Encryption.</p>
               </div>
             </div>
           </motion.div>
         </div>
-
       </motion.div>
     </div>
   );
@@ -359,9 +324,8 @@ export default function Login() {
 
 function FeatureItem({ text }) {
   return (
-    <div className="feature-item">
-      <FiCheckCircle className="check-icon" />
-      <span>{text}</span>
-    </div>
+    <motion.div className="feature-item" variants={featureItemVariants}>
+      <FiCheckCircle className="check-icon" /> <span>{text}</span>
+    </motion.div>
   );
 }
