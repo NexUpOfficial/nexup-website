@@ -1,62 +1,48 @@
-/*
- * CLEAN + FIXED RESPONSIVE HEADER (NexUP)
- * UX Updated: A11y focus rings, touch targets, optimized transitions
- */
-
 :root {
   --motion: 240ms cubic-bezier(0.22, 1, 0.36, 1);
-  --white-12: rgba(255,255,255,0.12);
-  --white-18: rgba(255,255,255,0.18);
-  --white-20: rgba(255,255,255,0.20);
-  --white-25: rgba(255,255,255,0.25);
-  --glass-bg: rgba(0,0,0,0.86);
-  --glass-blur: blur(14px);
+  --header-height: 64px; /* FIX #1: Reduced height */
 }
 
 /* =======================================
    HEADER BASE
 ======================================= */
-
 .header {
   width: 100%;
-  height: 65px;
-  padding: 16px 30px;
+  height: var(--header-height);
+  padding: 0 20px; /* FIX #2: Reduced side padding (was 30px) */
   position: fixed;
   top: 0;
   left: 0;
 
   display: flex;
-  align-items: flex-end;
+  align-items: center; /* Vertically center everything */
   justify-content: space-between;
 
-  /* Performance optimization: will-change */
-  will-change: transform, opacity;
-
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.25),
-    0 0 30px rgba(108, 92, 255, 0.25),
-    0 0 50px rgba(72, 219, 251, 0.15),
-    inset calc((var(--glow-x, 50%) - 50%) * 0.3px)
-          calc((var(--glow-y, 0%) - 50%) * 0.3px)
-          18px rgba(255, 255, 255, 0.12);
-  
+  will-change: transform, opacity, background;
   z-index: 2000;
   transition:
-    transform 880ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 680ms ease,
-    filter 760ms ease,
-    backdrop-filter 680ms ease;
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 300ms ease,
+    box-shadow 300ms ease;
+}
+
+/* FIX #6: SCROLLED STATE SHADOW */
+.header.scrolled {
+  background: rgba(5, 5, 8, 0.65); /* Darker backdrop when scrolled */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4), 
+    0 1px 0px rgba(255, 255, 255, 0.05); /* Subtle bottom border */
 }
 
 /* SCROLL HIDE */
 .header.hide {
-  transform: translateY(-120%);
-  opacity: 0;
-  backdrop-filter: blur(0px);
-  pointer-events: none; /* UX: Prevent clicks when hidden */
+  transform: translateY(-110%);
+  pointer-events: none;
 }
 
-/* GRADIENT */
+/* GRADIENT (Subtle always-on gradient) */
 .header-gradient {
   position: absolute;
   inset: 0;
@@ -64,13 +50,10 @@
   z-index: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.36) 0%,
-    rgba(0, 0, 0, 0.25) 35%,
-    rgba(0, 0, 0, 0.3) 65%,
-    rgba(0, 0, 0, 0.22) 100%
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0) 100%
   );
-  filter: blur(60px);
-  opacity: 0.65;
+  opacity: 0.8;
 }
 
 .header-left,
@@ -81,359 +64,251 @@
   align-items: center;
 }
 
-/* =======================================
-   TITLE
-======================================= */
+.header-left {
+  gap: 16px; /* FIX #7: Tighter spacing between Title and Icon */
+}
 
+/* =======================================
+   TITLE (ACTIVE STATE INDICATOR)
+======================================= */
 .header-title {
   font-family: "Inter", sans-serif;
-  font-size: 1.92rem;
-  font-weight: 500;
+  font-size: 1.5rem; /* Slightly smaller for 64px height */
+  font-weight: 600;
   color: #fff;
   white-space: nowrap;
   user-select: none;
-  z-index: 3000 !important;
-  letter-spacing: -0.17px;
-  cursor: pointer; /* UX: Show clickable */
-  transition: opacity 0.2s ease;
+  cursor: pointer;
+  letter-spacing: -0.02em;
+  position: relative;
+  
+  /* FIX #8: Contrast Improvement */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+}
+
+/* FIX #5: Active State Visual */
+.header-title.active-page-indicator::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background: #a78bfa; /* Neon accent */
+  border-radius: 2px;
+  box-shadow: 0 0 8px #a78bfa;
+  opacity: 0.8;
 }
 
 .header-title:hover {
-  opacity: 0.8; /* UX: Feedback */
+  opacity: 0.9;
 }
-
-/* Accessibility Focus Ring for Title */
-.header-title:focus-visible {
-  outline: 2px solid #a78bfa;
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-
-.big-title { font-size: 1.55rem !important; }
-.small-title { font-size: 1.25rem !important; }
 
 /* =======================================
-   SIDEBAR ICON — UPGRADED EFFECTS
+   SIDEBAR ICON
 ======================================= */
-
 .sidebar-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  /* UX: Increase touch area silently */
-  padding: 5px; 
-  margin: -5px; 
+  
+  /* FIX #4: Mobile Touch Target Base */
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
 }
 
-/* BUTTON */
+.sidebar-icon-wrapper:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .sidebar-icon-btn {
   width: 24px;
-  height: 18px;
-  -webkit-tap-highlight-color: transparent;
-  pointer-events: auto;
+  height: 24px;
   background: none;
   border: none;
-  cursor: pointer; /* Changed from grab to pointer for consistency */
-  filter: brightness(0.55);
-  transition:
-    filter 200ms ease,
-    transform 240ms cubic-bezier(0.22,1,0.36,1),
-    box-shadow 300ms ease;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Accessibility Focus */
-.sidebar-icon-btn:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 4px;
-  filter: brightness(1);
-}
-
-/* HOVER EFFECT */
-.sidebar-icon-btn:hover {
-  filter: brightness(1);
-  transform: scale(1.10);
-  box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.45),
-    0 0 10px rgba(120,160,255,0.22);
-}
-
-/* ACTIVE / PRESS */
-.sidebar-icon-btn:active {
-  transform: scale(0.84) translateY(1px);
-  box-shadow:
-    inset 0 2px 6px rgba(0, 0, 0, 0.55),
-    inset 0 -2px 3px rgba(255,255,255,0.12),
-    0 4px 10px rgba(0,0,0,0.55);
-}
-
-/* ==============================
-   ICON TRANSITIONS
-================================ */
-
+/* ICON ANIMATION */
 .icon-wrapper {
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
   position: relative;
   transition: transform var(--motion);
 }
 
 .icon-wrapper.open {
-  transform: rotate(14deg);
+  transform: rotate(90deg);
 }
 
 .icon {
   position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   transition: opacity var(--motion), transform var(--motion);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); /* Contrast */
 }
 
-.bottom-icon { opacity: 1; }
-.top-icon { opacity: 0; transform: translateY(6px); }
+.bottom-icon { opacity: 1; transform: scale(1); }
+.top-icon { opacity: 0; transform: scale(0.5); }
 
-.icon-wrapper.open .bottom-icon {
-  opacity: 0;
-  transform: translateY(-6px);
-}
+.icon-wrapper.open .bottom-icon { opacity: 0; transform: scale(0.5); }
+.icon-wrapper.open .top-icon { opacity: 1; transform: scale(1); }
 
-.icon-wrapper.open .top-icon {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =====================================================
+/* =======================================
    TOOLTIP
-===================================================== */
-
+======================================= */
 .diamond-tooltip {
   position: absolute;
-  top: 45px; /* UX: Slight adjustment for spacing */
+  top: 48px;
   left: 50%;
-  padding: 7px 16px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: white;
-  background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 10px;
-  white-space: nowrap;
   transform: translateX(-50%);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  background: rgba(20, 20, 25, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  white-space: nowrap;
   opacity: 0;
-  animation: tooltipFadeUp 0.28s ease forwards;
-  z-index: 1000;
-  pointer-events: none; /* UX: Prevent tooltip from blocking clicks */
-  box-shadow:
-    inset 0 1px 3px rgba(255, 255, 255, 0.25),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.28),
-    0 8px 18px rgba(0, 0, 0, 0.55), 
-    0 2px 6px rgba(0, 0, 0, 0.40),
-    0 0 10px rgba(120, 160, 255, 0.20);
+  animation: tooltipFade 0.2s ease forwards;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-@keyframes tooltipFadeUp {
-  0% { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.92); }
-  100% { opacity: 1; transform: translateX(-50%) translateY(0px) scale(1); }
+@keyframes tooltipFade {
+  to { opacity: 1; transform: translateX(-50%) translateY(4px); }
 }
 
-/* ======================================================
-   RIGHT SIDE BUTTONS
-====================================================== */
-
+/* =======================================
+   RIGHT SIDE
+======================================= */
 .header-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 20px;
+  gap: 12px; /* FIX #7: Tighter spacing */
+  padding-right: 4px; /* FIX #3: Balance right side */
 }
 
-/* Search Button */
+/* SEARCH BUTTON */
 .search-btn {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(32,40,55,0.45), rgba(18,22,30,0.55));
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   transition: 0.2s ease;
-  position: relative;
-  z-index: 20;
   color: white;
-  border: none;
   cursor: pointer;
 }
 
-.search-btn:focus-visible {
-  outline: 2px solid #a78bfa;
-  outline-offset: 2px;
+.search-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .search-btn svg {
   width: 18px;
   height: 18px;
+  stroke: white;
   stroke-width: 2;
-  stroke: rgb(255, 247, 247) !important;
-  opacity: 1 !important;
-  overflow: visible;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
 }
 
-/* Login Button */
+/* LOGIN BUTTON */
 .login-btn {
-  padding: 6px 16px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(84, 84, 84, 0.45), rgba(30, 0, 51, 0.55));
-  border: 0.1px solid rgba(255, 255, 255, 0.40);
-  backdrop-filter: blur(10px);
+  padding: 8px 20px;
+  border-radius: 20px; /* Pill shape */
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
-  font-size: 0.80rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  z-index: 999;
   cursor: pointer;
   transition: 0.2s ease;
+  backdrop-filter: blur(4px);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .login-btn:hover {
-  border-color: rgba(255,255,255,0.22);
-  transform: scale(1.04);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
 }
 
-.login-btn:active {
-  transform: scale(0.94);
-}
-
-.login-btn:focus-visible {
-  outline: 2px solid #a78bfa;
-  outline-offset: 2px;
-}
-
-/* ============================================
-   BACK ARROW BUTTON
-=============================================== */
-
+/* =======================================
+   BACK ARROW
+======================================= */
 .back-arrow-btn {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 12px;
-  margin-right: 18px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
   cursor: pointer;
-  transform: translateZ(0);
-  transition:
-    background 220ms ease,
-    border-color 220ms ease,
-    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Shine effect retained but optimized */
-.back-arrow-btn::before {
-  content: "";
-  position: absolute;
-  inset: -40% 0 -40% 0;
-  background: linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 35%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0.08) 65%, rgba(255,255,255,0) 100%);
-  opacity: 0;
-  transform: translateX(-140%) rotate(12deg);
-  pointer-events: none;
-  transition: opacity 0.2s ease-out, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 0.2s ease;
 }
 
 .back-arrow-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.32);
-  box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.25), inset 0 -2px 4px rgba(0, 0, 0, 0.35), 0 10px 26px rgba(0, 0, 0, 0.65);
-}
-
-.back-arrow-btn:active {
-  transform: scale(0.88) translateY(1px) rotateX(6deg);
-  filter: brightness(0.90);
-}
-
-.back-arrow-btn:active::before {
-  opacity: 1;
-  transform: translateX(160%) rotate(12deg);
-  transition-duration: 0.65s;
-}
-
-.back-arrow-btn:focus-visible {
-  outline: 2px solid #a78bfa;
-  outline-offset: 2px;
+  background: rgba(255,255,255,0.1);
 }
 
 .back-arrow-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   stroke: white;
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform 200ms ease, opacity 150ms ease;
-}
-
-.back-arrow-btn:hover svg {
-  transform: translateX(-2px);
+  stroke-width: 2;
+  fill: none;
 }
 
 /* =======================================
    MOBILE RESPONSIVE (<768px)
 ======================================= */
-
 @media (max-width: 768px) {
   .header {
-    height: 72px;
-    padding: 14px 16px;
+    height: 60px; /* Even tighter on mobile */
+    padding: 0 16px;
+  }
+
+  /* FIX #4: Interaction Clarity & Touch Targets */
+  .sidebar-icon-wrapper {
+    width: 48px; /* Minimum touch target size */
+    height: 48px;
+    margin-left: -8px; /* Align visually despite larger hit area */
+  }
+  
+  .sidebar-icon-btn {
+    width: 100%;
+    height: 100%;
   }
 
   .header-title {
-    font-size: 1.55rem;
-  }
-
-  /* UX: Increase touch targets spacing */
-  .header-right {
-    gap: 15px; 
-  }
-
-  .sidebar-icon-wrapper {
-    order: 3;
-    padding: 10px; /* UX: Larger touch target */
-    margin: -10px;
-  }
-
-  .sidebar-icon-btn {
-    transform: scale(0.92);
+    font-size: 1.25rem;
   }
 
   .search-btn {
-    order: 2;
-    width: 34px; /* UX: Larger touch target */
-    height: 34px;
+    width: 44px; /* Minimum touch target size */
+    height: 44px;
+    background: transparent;
+    border: none;
   }
 
   .login-btn {
-    display: none !important;
+    display: none;
   }
-
-  .diamond-tooltip {
-    font-size: 11px;
-    padding: 6px 12px;
+  
+  .header-right {
+    gap: 0;
   }
-}
-
-/* =======================================
-   LARGE SCREENS
-======================================= */
-
-@media (min-width: 1600px) {
-  .header { height: 90px; padding: 22px 40px; }
-  .header-title { font-size: 2.4rem; }
-  .search-btn { width: 40px; height: 40px; }
 }
