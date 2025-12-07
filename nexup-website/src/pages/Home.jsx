@@ -173,6 +173,7 @@ export default function Home() {
           animate="visible"
         >
           <div className="video-background">
+            {/* UPDATED: Added fetchpriority for faster loading */}
             <video
               poster="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
               src="https://res.cloudinary.com/dgzikn7nn/video/upload/Futuristic_City_AR_VR_Fly_Through_wxzn65.mp4"
@@ -181,6 +182,7 @@ export default function Home() {
               muted
               playsInline
               preload="auto"
+              fetchPriority="high" 
               className="bg-video"
               aria-hidden="true"
             />
@@ -265,7 +267,6 @@ export default function Home() {
               and virtual environments, powered by a decentralized neural backbone.
             </motion.p>
 
-            {/* --- ADDED BUTTON HERE --- */}
             <motion.div variants={itemVariants} className="manifesto-actions">
               <Link to="/about" className="glass-link">
                 Read the Manifesto &rarr;
@@ -371,8 +372,8 @@ export default function Home() {
                     <video 
                       className="card-bg-video" 
                       autoPlay loop muted playsInline preload="none"
-                      poster="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"
-                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765032493/Nexengine_lhm4mf.mp4" 
+                      poster="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000&auto=format&fit=crop"
+                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765124047/NexEngine_Activation_Powering_NexWorld_afukbv.mp4" 
                     />
                     <div className="card-video-overlay" />
                   </div>

@@ -46,7 +46,7 @@ export default function NexEngine() {
             muted 
             playsInline
           >
-            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765032493/Nexengine_lhm4mf.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765123906/NexEngine_Powering_the_NexWorld_bnc8hm.mp4" type="video/mp4" />
           </video>
           <div className="hero-overlay" />
         </div>

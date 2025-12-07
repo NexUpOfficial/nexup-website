@@ -1,63 +1,62 @@
-// src/components/Footer/Footer.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion"; // ⭐ 8. Scroll Reveal
+import { motion } from "framer-motion";
 import {
   FaYoutube,
   FaGithub,
   FaInstagram,
   FaTwitter,
-  FaLinkedinIn,
-  FaArrowRight
+  FaLinkedinIn
 } from "react-icons/fa6";
 import "./Footer.css";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <motion.footer 
       className="nx-footer"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
     >
+      {/* Background Ambience */}
+      <div className="footer-noise" />
+      <div className="footer-glow" />
+
       <div className="nx-footer-container">
         
-        {/* ================= TOP SECTION (Brand + Newsletter) ================= */}
-        <div className="nx-footer-top">
-          <div className="nx-brand-block">
-            <h2 className="nx-logo">NeX UP</h2>
-            <p className="nx-mission">
-              The operating system for digital reality. <br />
-              Building the bridge between intelligence and immersion.
-            </p>
-          </div>
-
-          <div className="nx-newsletter">
-            <label>Stay updated with the ecosystem</label>
-            <div className="nx-input-wrapper">
-              <input type="email" placeholder="Enter your email" />
-              <button aria-label="Subscribe">
-                <FaArrowRight />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="nx-separator" />
-
-        {/* ================= MIDDLE SECTION (Links Grid) ================= */}
+        {/* ================= 5-COLUMN GRID (Brand + 4 Link Cols) ================= */}
         <div className="nx-footer-grid">
           
+          {/* COLUMN 1: Brand Identity (Spans 2 cols on mobile if needed, or full width) */}
+          <div className="nx-col brand-col">
+            <Link to="/" className="nx-logo">NeX UP</Link>
+            <p className="nx-desc">
+              The operating system for digital reality. <br />
+              Bridging intelligence and immersion.
+            </p>
+            {/* Socials moved here for cleaner mobile layout, or keep in connect */}
+            <div className="social-row">
+              <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter"><FaTwitter /></a>
+              <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><FaGithub /></a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a>
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"><FaYoutube /></a>
+            </div>
+          </div>
+
+          {/* COLUMN 2: Platform */}
           <div className="nx-col">
             <h4>Platform</h4>
             <Link to="/ecosystem/nexworld">NexWorld</Link>
-            <Link to="/ecosystem/nexengine">NexEngine</Link>
             <Link to="/ecosystem/nexnodes">NexNodes</Link>
+            <Link to="/ecosystem/nexengine">NexEngine</Link>
             <Link to="/ecosystem/nexhousing">NexHousing</Link>
             <Link to="/ecosystem/nexsearch">Search Engine</Link>
           </div>
 
+          {/* COLUMN 3: Company */}
           <div className="nx-col">
             <h4>Company</h4>
             <Link to="/about/company">About Us</Link>
@@ -67,37 +66,31 @@ export default function Footer() {
             <Link to="/about/news">Newsroom</Link>
           </div>
 
+          {/* COLUMN 4: Resources (Restored Full List) */}
           <div className="nx-col">
             <h4>Resources</h4>
             <Link to="/support/help">Help Center</Link>
             <Link to="/support/guidelines">Guidelines</Link>
-            <Link to="/safety/approach">Safety</Link>
-            <Link to="/safety/privacy">Privacy</Link>
+            <Link to="/safety/approach">Safety Approach</Link>
+            <Link to="/safety/privacy">Privacy & Data</Link>
             <Link to="/safety/transparency">Transparency</Link>
           </div>
 
+          {/* COLUMN 5: Connect (Restored Full List) */}
           <div className="nx-col">
             <h4>Connect</h4>
             <Link to="/contact">Contact Support</Link>
             <Link to="/login">Developer Login</Link>
             <Link to="/dns">DNS Status</Link>
-            <div className="social-row">
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="x"><FaTwitter /></a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="github"><FaGithub /></a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="linkedin"><FaLinkedinIn /></a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="youtube"><FaYoutube /></a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="instagram"><FaInstagram /></a>
-            </div>
+            <a href="mailto:hello@nexup.com" className="contact-link">hello@nexup.com</a>
           </div>
 
         </div>
 
-        <div className="nx-separator" />
-
-        {/* ================= BOTTOM SECTION (Legal + Status) ================= */}
+        {/* ================= BOTTOM BAR ================= */}
         <div className="nx-footer-bottom">
           <div className="nx-copyright">
-            © {new Date().getFullYear()} NeX UP Inc. All rights reserved.
+            © {currentYear} NeX UP Inc. All rights reserved.
           </div>
           
           <div className="nx-legal-links">
@@ -105,12 +98,11 @@ export default function Footer() {
             <Link to="/safety/privacy">Privacy</Link>
             <Link to="/safety/cookies">Cookies</Link>
             <Link to="/safety/security">Security</Link>
-            <Link to="/login">Login</Link>
           </div>
 
           <div className="nx-system-status">
             <span className="status-dot"></span>
-            <span>All Systems Operational</span>
+            <span>Systems Operational</span>
           </div>
         </div>
 

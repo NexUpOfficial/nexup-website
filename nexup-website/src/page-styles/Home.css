@@ -112,7 +112,9 @@ body {
   font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   color: rgba(255,255,255,0.95);
   max-width: 540px; margin: 0 auto 24px auto;
-  line-height: 1.6; font-weight: 400;
+  /* UPDATED: Increased line-height for readability */
+  line-height: 1.8; 
+  font-weight: 400;
 }
 
 .hero-benefits {
@@ -152,7 +154,7 @@ a:focus-visible, button:focus-visible {
 }
 .secondary-btn:hover { color: #fff; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3); }
 
-.scroll-indicator { position: absolute; bottom: 56px; left: 56%; transform: translateX(-50%); }
+.scroll-indicator { position: absolute; bottom: 60px; left: 56%; transform: translateX(-50%); }
 .mouse-icon {
   width: 24px; height: 36px; border: 2px solid rgba(255,255,255,0.3);
   border-radius: 12px; display: flex; justify-content: center; padding-top: 6px;
@@ -192,7 +194,9 @@ a:focus-visible, button:focus-visible {
 .manifesto-section { padding-top: 80px; }
 .manifesto-text {
   font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.2; font-weight: 400;
-  color: rgba(255,255,255,0.4); max-width: 900px;
+  /* UPDATED: Increased contrast from 0.4 to 0.55 */
+  color: rgba(255,255,255,0.55); 
+  max-width: 900px;
 }
 .manifesto-text span { color: #fff; }
 .animated-underline { position: relative; display: inline-block; }
@@ -208,14 +212,13 @@ a:focus-visible, button:focus-visible {
   padding-left: 24px;
 }
 
-/* --- BUTTON ADDITION --- */
 .glass-link {
   color: var(--neon-purple);
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
   transition: opacity 0.3s;
-  display: inline-block; /* Essential for margin to apply */
+  display: inline-block;
   margin-top: 32px;
 }
 .glass-link:hover { opacity: 0.8; }
@@ -340,6 +343,9 @@ a:focus-visible, button:focus-visible {
 
 @media (max-width: 768px) {
   .hero-fullscreen-wrapper { height: 80vh; }
+  /* UPDATED: Added 30px horizontal padding for spacing */
+  .hero-content-layer { padding: 0 30px; } 
+
   .home-buttons { flex-direction: column; width: 100%; gap: 16px; }
   .primary-btn, .secondary-btn { width: 100%; justify-content: center; }
   .hero-badge { margin-bottom: 16px; order: -1; }

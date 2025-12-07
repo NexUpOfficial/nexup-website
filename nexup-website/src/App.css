@@ -10,17 +10,86 @@
 /* ============================================================
    BASE HTML + BODY
 ============================================================ */
-html {
-  scroll-behavior: smooth;
+html,
+body,
+#root {
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scroll-behavior: smooth !important;
   -webkit-font-smoothing: antialiased;
-}
-
-body {
-  font-family: "Inter", sans-serif;
   background: #000;
   color: #fff;
-  overflow-x: hidden !important;
-  line-height: 1.6;
+  font-family: "Inter", sans-serif;
+}
+
+/* ============================================================
+   FORCE OVERRIDE — REMOVE ALL INNER SCROLL CONTAINERS
+============================================================ */
+.bounce-scroll,
+.page-scroll,
+.inner-scroll,
+.section-scroll,
+.content-scroll {
+  overflow: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Prevent horizontal scrolling everywhere */
+html,
+body,
+#root {
+  max-width: 100% !important;
+}
+
+/* ============================================================
+   LINK BASE
+============================================================ */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+/* ============================================================
+   BUTTON RESET
+============================================================ */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ============================================================
+   NO SCROLLBARS
+============================================================ */
+*::-webkit-scrollbar {
+  display: none !important;
+}
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* ============================================================
+   SMOOTH INTERACTION
+============================================================ */
+* {
+  transition: transform 120ms ease;
+  transform-origin: center;
 }
 
 /* ============================================================
@@ -53,167 +122,5 @@ body {
     background: rgba(203, 192, 255, 0.20);
     transform: translate(-3px, 2px);
   }
+
 }
-
-/* ============================================================
-   UNIVERSAL NO SCROLLBAR — ALL BROWSERS
-============================================================ */
-
-/* Chrome / Safari / Edge */
-*::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-}
-
-/* Firefox */
-* {
-  scrollbar-width: none !important;
-}
-
-/* Legacy Edge / IE */
-* {
-  -ms-overflow-style: none !important;
-}
-
-/* Prevent horizontal scroll everywhere */
-html,
-body,
-#root {
-  overflow-x: hidden !important;
-  max-width: 100% !important;
-}
-
-/* Remove scroll from inner pages */
-.nexworld-page,
-.nexnodes-page,
-.nexsearch-page,
-.nexhousing-page,
-.nexengine-page {
-  overflow-x: hidden;
-  overflow-y: hidden !important;
-}
-
-/* No scrollbars for video wrappers */
-.hero-video-container,
-.hero-video,
-.hero-overlay {
-  overflow: hidden !important;
-}
-
-/* ============================================================
-   LINKS
-============================================================ */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:hover {
-  opacity: 0.85;
-}
-
-/* ============================================================
-   BUTTON + INPUT BASE
-============================================================ */
-button {
-  background: none;
-  border: none;
-  cursor: pointer !important;
-  font-family: inherit;
-}
-
-input,
-textarea {
-  font-family: inherit;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border: none;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-/* ============================================================
-   REMOVE Grab & Grabbing Cursor Entire Website
-============================================================ */
-button,
-a,
-.home-btn,
-.login-btn,
-.search-btn,
-.sidebar-icon-btn,
-.explore-btn,
-.mix-btn {
-  cursor: pointer !important;
-}
-
-button:active,
-a:active,
-.home-btn:active,
-.login-btn:active,
-.search-btn:active,
-.sidebar-icon-btn:active,
-.explore-btn:active,
-.mix-btn:active {
-  cursor: pointer !important;
-}
-
-/* Remove tap highlight on mobile */
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* ============================================================
-   IMAGE OPTIMIZATION
-============================================================ */
-img {
-  max-width: 100%;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* ============================================================
-   SMOKE BACKGROUND WRAPPER
-============================================================ */
-.smoke-wrapper {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.85;
-}
-
-/* ============================================================
-   FADE-IN
-============================================================ */
-.fade-in {
-  animation: fadeIn 0.4s ease forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ============================================================
-   SMOOTH INTERACTION
-============================================================ */
-* {
-  transition: transform 120ms ease;
-  transform-origin: center;
-}
-
-.bounce-scroll {
-  position: relative;
-}
-

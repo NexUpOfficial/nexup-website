@@ -9,7 +9,6 @@
   -webkit-backdrop-filter: blur(10px);
   opacity: 0;
   pointer-events: none;
-  /* Removed 'visible' class transition, controlled by opacity prop */
   transition: opacity 0.25s ease; 
   z-index: 9000;
 }
@@ -21,13 +20,12 @@
   position: fixed;
   top: 18px;
   left: 50%;
-  /* 1️⃣ Add Elastic / Spring-back animation (was 0.25s) */
   transition:
     transform 0.35s cubic-bezier(0.17, 0.67, 0.3, 1.4),
     opacity 0.2s ease,
     background 0.25s ease;
-  
-  transform: translateX(-50%) translateY(0); /* Reset for hook manipulation */
+   
+  transform: translateX(-50%) translateY(0);
   z-index: 9500;
 
   display: flex;
@@ -39,24 +37,23 @@
   border-radius: 999px;
 
   background: rgba(15, 23, 42, 0.86);
-  /* 8️⃣ Match NeX UP theme colors */
   border: 1px solid rgba(184, 169, 255, 0.5); 
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-  opacity: 0;
+  opacity: 0; /* Hidden by default until JS logic shows it */
 }
 
-/* Only show when pulling or refreshing (via CSS neighbour selector trick) */
+/* Only show when visible class present via JS */
 .refresh-blur-overlay.visible ~ .refresh-arrow-shell {
   opacity: 1;
 }
 
-/* Extra visual when refreshing */
 .refresh-arrow-shell.refreshing {
-  background: rgba(184, 169, 255, 0.95); /* Neon purple glow */
+  background: rgba(184, 169, 255, 0.95);
   box-shadow: 0 0 20px rgba(184, 169, 255, 0.6);
+  opacity: 1 !important;
 }
 
 /* ================================
@@ -65,13 +62,12 @@
 .refresh-arrow-svg {
   width: 24px;
   height: 24px;
-  /* Rotation controlled by pull Y state (0 -> 200 deg) */
   transition: transform 0.25s cubic-bezier(0.17, 0.67, 0.3, 1.4); 
 }
 
 .refresh-arrow-circle {
   fill: none;
-  stroke: rgba(184, 169, 255, 0.4); /* NeX UP Purple Track */
+  stroke: rgba(184, 169, 255, 0.4);
   stroke-width: 1.5;
 }
 
@@ -86,7 +82,7 @@
 }
 
 /* ================================
-   Circular Loader (NeX UP style)
+   Circular Loader
 ================================ */
 .refresh-loader-svg {
   width: 24px;
@@ -96,7 +92,7 @@
 
 .refresh-loader-track {
   fill: none;
-  stroke: rgba(184, 169, 255, 0.35); /* NeX UP Purple Track */
+  stroke: rgba(184, 169, 255, 0.35);
   stroke-width: 3;
 }
 
@@ -107,11 +103,9 @@
   stroke-linecap: round;
   stroke-dasharray: 40 88;
   stroke-dashoffset: 0;
-  /* 3️⃣ Loader animation improvement: Add easing to rotation keyframe */
   animation: refresh-spin 1.2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite; 
 }
 
-/* New keyframe for smoother rotation */
 @keyframes refresh-spin {
   0% { transform: rotate(0deg); stroke-dashoffset: 40; }
   50% { transform: rotate(180deg); stroke-dashoffset: 128; }
@@ -119,7 +113,7 @@
 }
 
 /* ================================
-   ⭐ B. Sparkle Particle Dust Effect
+   Sparkle Effect
 ================================ */
 .refresh-sparkle-dust {
   position: absolute;
@@ -128,7 +122,6 @@
   top: 0;
   left: 0;
   border-radius: 50%;
-  /* Tiny particles floating out */
   box-shadow: 
     0 0 8px 3px rgba(255, 255, 255, 0.4),
     20px -20px 0 0 rgba(184, 169, 255, 0.2),
@@ -138,7 +131,6 @@
   pointer-events: none;
 }
 
-/* Trigger only when shell enters refreshing mode */
 .refresh-arrow-shell.refreshing .refresh-sparkle-dust {
   opacity: 1;
   animation: sparkle-burst 0.8s ease-out;
@@ -149,9 +141,8 @@
   100% { transform: scale(2); opacity: 0; }
 }
 
-
 /* ================================
-   Mobile only hint - Hide on Desktop
+   Hide completely on Desktop
 ================================ */
 @media (min-width: 901px) {
   .refresh-blur-overlay,
