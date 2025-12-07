@@ -154,7 +154,7 @@ a:focus-visible, button:focus-visible {
 }
 .secondary-btn:hover { color: #fff; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3); }
 
-.scroll-indicator { position: absolute; bottom: 56px; left: 56%; transform: translateX(-50%); }
+.scroll-indicator { position: absolute; bottom: 60px; left: 56%; transform: translateX(-50%); }
 .mouse-icon {
   width: 24px; height: 36px; border: 2px solid rgba(255,255,255,0.3);
   border-radius: 12px; display: flex; justify-content: center; padding-top: 6px;

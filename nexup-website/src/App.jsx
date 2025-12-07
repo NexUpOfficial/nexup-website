@@ -3,17 +3,16 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-import RefreshPage from "./hooks/refresh/RefreshPage";
 import Loader from "./components/TopLoader/Loader";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import PageLayout from "./layout/PageLayout";
+import ScrollToTop from "./components/ScrollToTop";
+import RefreshPage from "./hooks/refresh/RefreshPage";
 
 import "./App.css";
 
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import ScrollToTop from "./components/ScrollToTop";
-import PageLayout from "./layout/PageLayout";
-
-/* Home */
+/* Pages */
 import Home from "./pages/Home";
 
 /* Ecosystem */
@@ -57,90 +56,38 @@ import Roadmap from "./pages/sections/Roadmap";
 import Terms from "./pages/sections/Terms";
 
 
-/* ====================================================
-   Animated Page Routes
-==================================================== */
-function AnimatedRoutesWrapper() {
-  const location = useLocation();
-
-  /* Scroll + Cursor Motion Effects */
+/* ============================================================
+   Global Scroll Override — Fixes all pages
+============================================================ */
+function useGlobalScrollOverride() {
   useEffect(() => {
-    let timeout;
-
-    const handleScroll = () => {
-      document.body.classList.add("scrolling");
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        document.body.classList.remove("scrolling");
-      }, 500);
-    };
-
-    const handleMouseMove = (e) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-
-      document.documentElement.style.setProperty("--px", `${x}%`);
-      document.documentElement.style.setProperty("--py", `${y}%`);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
-  /* Neon Loader Animation */
-  useEffect(() => {
-    window.dispatchEvent(new Event("route-loading-start"));
-    const timeout = setTimeout(() => {
-      window.dispatchEvent(new Event("route-loading-end"));
-    }, 800);
-
-    return () => {
-      clearTimeout(timeout);
-      window.dispatchEvent(new Event("route-loading-end"));
-    };
-  }, [location.pathname]);
-
-  /* Magnetic Hover Effect */
-  useEffect(() => {
-    const strength = 38;
-    const elements = document.querySelectorAll(
-      "button, a, .login-btn, .search-btn, .sidebar-icon-btn, .home-btn, .explore-btn, .mix-btn"
-    );
-
-    elements.forEach((el) => {
-      el.style.transition = "transform 0.18s ease";
-
-      const mouseMove = (e) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - (rect.left + rect.width / 2);
-        const y = e.clientY - (rect.top + rect.height / 2);
-
-        el.style.transform = `translate(${x / strength}px, ${y / strength}px) scale(1.05)`;
-      };
-
-      const mouseLeave = () => {
-        el.style.transform = "translate(0px,0px) scale(1)";
-      };
-
-      el.addEventListener("mousemove", mouseMove);
-      el.addEventListener("mouseleave", mouseLeave);
-
-      el._mm = mouseMove;
-      el._ml = mouseLeave;
-    });
-
-    return () => {
-      elements.forEach((el) => {
-        el.removeEventListener("mousemove", el._mm);
-        el.removeEventListener("mouseleave", el._ml);
+    const fix = () => {
+      document.querySelectorAll(
+        ".bounce-scroll, .page-scroll, .inner-scroll, .section-scroll, .content-scroll"
+      ).forEach(el => {
+        el.style.overflow = "visible";
+        el.style.height = "auto";
+        el.scrollTop = 0;
       });
     };
+
+    fix();
+    const t = setTimeout(fix, 50);
+    const t2 = setTimeout(fix, 250);
+
+    return () => {
+      clearTimeout(t);
+      clearTimeout(t2);
+    };
   }, []);
+}
+
+
+/* ============================================================
+   Animated Routes Wrapper
+============================================================ */
+function AnimatedRoutesWrapper() {
+  const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
@@ -194,28 +141,27 @@ function AnimatedRoutesWrapper() {
         {/* Sections */}
         <Route path="/sections/roadmap" element={<Roadmap />} />
         <Route path="/sections/terms" element={<Terms />} />
-
       </Routes>
     </AnimatePresence>
   );
 }
 
 
-/* ====================================================
-   App Root + Sidebar + Header Layout
-==================================================== */
+/* ============================================================
+   App Root Component
+============================================================ */
 export default function App() {
-  const location = useLocation();
-
-  const [isOpen, setIsOpen] = useState(() =>
-    localStorage.getItem("sidebar_open") === "true"
+  const [isOpen, setIsOpen] = useState(
+    () => localStorage.getItem("sidebar_open") === "true"
   );
 
+  useGlobalScrollOverride();
+
   const toggleSidebar = () => {
-    setIsOpen((prev) => {
-      const val = !prev;
-      localStorage.setItem("sidebar_open", val);
-      return val;
+    setIsOpen(prev => {
+      const next = !prev;
+      localStorage.setItem("sidebar_open", next);
+      return next;
     });
   };
 
@@ -227,22 +173,22 @@ export default function App() {
   return (
     <>
       <Loader />
+
+      {/* Reset scroll on route */}
       <ScrollToTop />
 
-      {/* Website Only Layout */}
       <Sidebar isOpen={isOpen} onClose={closeSidebar} />
       <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
-      <div className="bounce-scroll">
-        <PageLayout isOpen={isOpen}>
-          <RefreshPage
-            onOpenSidebar={toggleSidebar}
-            onCloseSidebar={closeSidebar}
-            isSidebarOpen={isOpen}
-          />
-          <AnimatedRoutesWrapper />
-        </PageLayout>
-      </div>
+      <PageLayout isOpen={isOpen}>
+        <RefreshPage
+          isSidebarOpen={isOpen}
+          onOpenSidebar={toggleSidebar}
+          onCloseSidebar={closeSidebar}
+        />
+
+        <AnimatedRoutesWrapper />
+      </PageLayout>
     </>
   );
 }

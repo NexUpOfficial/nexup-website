@@ -372,8 +372,8 @@ export default function Home() {
                     <video 
                       className="card-bg-video" 
                       autoPlay loop muted playsInline preload="none"
-                      poster="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop"
-                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765032493/Nexengine_lhm4mf.mp4" 
+                      poster="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000&auto=format&fit=crop"
+                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765124047/NexEngine_Activation_Powering_NexWorld_afukbv.mp4" 
                     />
                     <div className="card-video-overlay" />
                   </div>
