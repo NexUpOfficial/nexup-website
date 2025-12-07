@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nexup-website-vcor.vercel.app/sitemap.xml

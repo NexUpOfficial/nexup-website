@@ -1,333 +1,177 @@
-/* src/components/Footer/Footer.css */
-
 /* =========================================================
    GLOBAL VARIABLES
 ========================================================= */
 :root {
   --footer-bg: #050505;
-  --footer-border: rgba(255, 255, 255, 0.1);
-  --footer-text: #888;
-  --footer-text-hover: #fff;
-  --footer-accent: #b8a9ff;
+  --footer-text: rgba(255, 255, 255, 0.65);
+  --footer-heading: #b8a9ff;
+  --footer-hover: #ffffff;
 }
 
 /* =========================================================
    FOOTER CONTAINER
 ========================================================= */
 .nx-footer {
+  position: relative;
   width: 100%;
-  /* ⭐ 2. Subtle Gradient Background */
-  background: linear-gradient(180deg, #050505 0%, #020202 100%);
-  border-top: 1px solid var(--footer-border);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--footer-text);
+  background-color: var(--footer-bg);
   padding: 80px 24px 40px;
   margin-top: auto;
-  position: relative; /* Context for top glow */
-  /* ⭐ 7. Frosted Edge Blur */
-  backdrop-filter: blur(6px);
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* ⭐ 1. Neon Glow Line at Top */
+/* Top Neon Glow Line */
 .nx-footer::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #b8a9ff, transparent);
-  opacity: 0.5;
-  box-shadow: 0 0 10px rgba(184, 169, 255, 0.3);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--footer-heading), transparent);
+  opacity: 0.3;
+  box-shadow: 0 0 15px var(--footer-heading);
+}
+
+.footer-noise {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.4; pointer-events: none; z-index: 0;
+}
+
+.footer-glow {
+  position: absolute; bottom: -200px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
 }
 
 .nx-footer-container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  width: 100%;
-}
-
-/* =========================================================
-   TOP SECTION (Brand + Newsletter)
-========================================================= */
-.nx-footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin-bottom: 60px;
-}
-
-.nx-brand-block {
-  max-width: 400px;
-}
-
-.nx-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 16px;
-  letter-spacing: -0.02em;
-}
-
-.nx-mission {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--footer-text);
-}
-
-/* Newsletter */
-.nx-newsletter {
-  max-width: 350px;
-  width: 100%;
-}
-
-.nx-newsletter label {
-  display: block;
-  font-size: 0.9rem;
-  color: #fff;
-  margin-bottom: 12px;
-  font-weight: 500;
-}
-
-.nx-input-wrapper {
-  display: flex;
   position: relative;
-}
-
-.nx-input-wrapper input {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--footer-border);
-  padding: 12px 16px;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 0.95rem;
-  transition: 0.3s ease;
-  outline: none;
-}
-
-/* ⭐ 4. Input Glow on Focus */
-.nx-input-wrapper input:focus {
-  border-color: var(--footer-accent);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 15px rgba(184, 169, 255, 0.2);
-}
-
-.nx-input-wrapper button {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  padding: 8px;
-  font-size: 1rem;
-  opacity: 0.7;
-  transition: 0.2s;
-}
-
-.nx-input-wrapper button:hover {
-  opacity: 1;
-  color: var(--footer-accent);
+  z-index: 1;
 }
 
 /* =========================================================
-   DIVIDER
-========================================================= */
-.nx-separator {
-  width: 100%;
-  height: 1px;
-  background: var(--footer-border);
-  margin: 0;
-}
-
-/* =========================================================
-   MIDDLE GRID (Links)
+   GRID LAYOUT (Desktop Default: 5 Cols)
 ========================================================= */
 .nx-footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* Brand (1.5fr) + 4 Link Columns (1fr each) */
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
   gap: 40px;
-  padding: 60px 0;
+  margin-bottom: 80px;
 }
 
 .nx-col {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
+/* Brand Column */
+.brand-col .nx-logo {
+  font-size: 1.5rem; font-weight: 700; color: #fff;
+  text-decoration: none; letter-spacing: -0.02em; margin-bottom: 8px; display: inline-block;
+}
+.brand-col .nx-desc {
+  font-size: 0.9rem; line-height: 1.6; color: var(--footer-text); max-width: 280px;
+}
+
+/* Headings */
 .nx-col h4 {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #555;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--footer-heading); margin-bottom: 8px; font-weight: 600;
 }
 
-/* ⭐ 3. Hover Underline Animation */
+/* Links */
 .nx-col a {
-  text-decoration: none;
-  color: var(--footer-text);
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content; /* Ensure underline matches text width */
-  position: relative; /* Context for pseudo-element */
+  text-decoration: none; color: var(--footer-text); font-size: 0.9rem;
+  transition: all 0.3s ease; width: fit-content; position: relative;
 }
 
 .nx-col a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0%;
-  height: 1px;
-  background: var(--footer-accent);
-  transition: width 0.3s ease;
+  content: ""; position: absolute; left: 0; bottom: -2px; width: 0%; height: 1px;
+  background: var(--footer-heading); box-shadow: 0 0 8px var(--footer-heading); transition: width 0.3s ease;
 }
+.nx-col a:hover { color: var(--footer-hover); text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+.nx-col a:hover::after { width: 100%; }
 
-.nx-col a:hover {
-  color: var(--footer-text-hover);
-  transform: translateX(2px);
-}
-
-.nx-col a:hover::after {
-  width: 100%;
-}
-
-/* Hiring Badge */
 .hiring-badge {
-  font-size: 0.7rem;
-  background: rgba(184, 169, 255, 0.1);
-  color: var(--footer-accent);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 500;
+  font-size: 0.65rem; background: rgba(184, 169, 255, 0.15); color: #fff;
+  padding: 2px 6px; border-radius: 4px; margin-left: 6px; border: 1px solid rgba(184, 169, 255, 0.3);
 }
 
-/* Social Icons (Mini Row) */
-.social-row {
-  display: flex;
-  gap: 16px;
-  margin-top: 12px;
-}
+/* Socials & Contact */
+.social-row { display: flex; gap: 16px; margin-top: 16px; }
+.social-row a { font-size: 1.1rem; color: var(--footer-text); transition: transform 0.2s, color 0.2s; }
+.social-row a:hover { color: #fff; transform: translateY(-2px); }
 
-.social-row a {
-  font-size: 1.2rem;
-  color: #666;
-  transition: 0.3s;
-}
-
-/* ⭐ 5. Social Glow on Hover */
-.social-row a:hover {
-  text-shadow: 0 0 10px currentColor; /* Uses the specific color below */
-}
-
-/* Brand Colors on Hover */
-.social-row a.x:hover { color: #fff; }
-.social-row a.github:hover { color: #fff; }
-.social-row a.linkedin:hover { color: #0a66c2; }
-.social-row a.youtube:hover { color: #ff0000; }
-.social-row a.instagram:hover { color: #e1306c; }
+.contact-link { font-family: monospace; letter-spacing: 0.5px; opacity: 0.8; }
 
 /* =========================================================
    BOTTOM BAR
 ========================================================= */
 .nx-footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-  font-size: 0.85rem;
 }
 
-.nx-legal-links {
-  display: flex;
-  gap: 24px;
-}
+.nx-copyright { font-size: 0.85rem; color: rgba(255, 255, 255, 0.4); }
 
-.nx-legal-links a {
-  text-decoration: none;
-  color: var(--footer-text);
-  transition: color 0.2s;
-}
+.nx-legal-links { display: flex; gap: 24px; }
+.nx-legal-links a { text-decoration: none; color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; transition: color 0.2s; }
+.nx-legal-links a:hover { color: #fff; }
 
-.nx-legal-links a:hover {
-  color: #fff;
-}
-
-/* ⭐ 6. System Status Pulse/Breathe */
 .nx-system-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #4ade80; /* Success Green */
-  font-family: monospace;
-  font-size: 0.8rem;
-  background: rgba(74, 222, 128, 0.1);
-  padding: 6px 12px;
-  border-radius: 20px;
-  /* Breathing animation */
-  animation: breathe 4s ease-in-out infinite;
+  display: flex; align-items: center; gap: 8px;
+  color: #4ade80; font-family: monospace; font-size: 0.75rem;
+  background: rgba(74, 222, 128, 0.1); padding: 4px 10px; border-radius: 20px;
 }
-
-@keyframes breathe {
-  0% { box-shadow: 0 0 5px rgba(74,222,128,0.2); }
-  50% { box-shadow: 0 0 15px rgba(74,222,128,0.4); }
-  100% { box-shadow: 0 0 5px rgba(74,222,128,0.2); }
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  background: #4ade80;
-  border-radius: 50%;
-  box-shadow: 0 0 6px #4ade80;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
+.status-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
 /* =========================================================
-   RESPONSIVE
+   RESPONSIVE (The Fix)
 ========================================================= */
-@media (max-width: 900px) {
+
+/* Tablet: Wrap to 3 columns usually */
+@media (max-width: 1024px) {
   .nx-footer-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .brand-col {
+    grid-column: span 3; /* Brand takes full width on tablet */
+    margin-bottom: 20px;
   }
 }
 
+/* Mobile: 2 Columns Side-by-Side */
 @media (max-width: 600px) {
   .nx-footer {
     padding: 60px 20px 30px;
   }
 
-  .nx-footer-top {
-    flex-direction: column;
-    gap: 30px;
-  }
-
-  .nx-newsletter {
-    max-width: 100%;
-  }
-
   .nx-footer-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    /* ⭐ FORCE 2 COLUMNS */
+    grid-template-columns: 1fr 1fr; 
+    gap: 40px 20px; /* Vertical Gap 40px, Horizontal Gap 20px */
+  }
+
+  /* Brand Column takes full width at the top */
+  .brand-col {
+    grid-column: span 2; 
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 30px;
   }
 
   .nx-footer-bottom {
@@ -336,7 +180,8 @@
     gap: 16px;
   }
   
-  .nx-system-status {
-    margin-top: 10px;
+  .nx-legal-links {
+    flex-wrap: wrap;
+    gap: 16px;
   }
 }
