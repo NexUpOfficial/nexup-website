@@ -1,39 +1,62 @@
-/* src/page-styles/Home.css */
-
 /* ============================================
    GLOBAL & ROOT VARIABLES
 ============================================ */
 :root {
+  /* Premium Palette */
   --neon-purple: #b8a9ff;
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-bg: rgba(20, 20, 20, 0.6);
-  --bg-black: #050505;
+  --deep-purple: #1e1b4b;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(10, 10, 12, 0.7);
+  --bg-black: #030304; /* Slightly off-black for depth */
+  --text-primary: #ededed;
+  --text-secondary: #a1a1aa;
+  
+  /* Font Stack (System + Premium Sans fallback) */
+  --font-main: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-black);
+  -webkit-font-smoothing: antialiased;
 }
 
 .home-container {
   width: 100%;
   background: var(--bg-black);
-  color: #fff;
+  color: var(--text-primary);
   overflow-x: hidden;
   min-height: 100vh;
-  position: relative; /* Context for grain overlay */
+  position: relative;
 }
 
-/* ⭐ 7. Light Grain Texture Overlay */
+/* Light Grain Texture Overlay */
 .home-container::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  /* CSS-only SVG Noise Pattern for reliability */
-  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.5"/%3E%3C/svg%3E');
-  opacity: 0.04;
+  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.5"/%3E%3C/svg%3E');
+  opacity: 0.03; /* Reduced noise for cleaner look */
   mix-blend-mode: overlay;
-  z-index: 100;
+  z-index: 999;
+}
+
+/* Watermark */
+.brand-watermark {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-family: monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.15);
+  z-index: 50;
+  pointer-events: none;
+  letter-spacing: 2px;
 }
 
 /* ============================================
-   1. HERO SECTION (Immersive)
+   1. HERO SECTION (Refined)
 ============================================ */
 .hero-fullscreen-wrapper {
   position: relative;
@@ -48,37 +71,39 @@
 .video-background-wrapper {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
   z-index: 0;
-  transform-origin: center;
-  will-change: transform, opacity, filter;
-}
-
-.video-background {
-  width: 100%;
-  height: 100%;
-  position: relative;
 }
 
 .bg-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.8;
+  opacity: 0.85; /* Slightly clearer */
 }
 
+/* Lighter Overlay */
 .video-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(3, 3, 4, 0.35); 
+}
+
+/* Spatial Grid Background (Micro-lines) */
+.spatial-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  pointer-events: none;
 }
 
 .video-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 30%, #050505 100%);
-  z-index: 1;
+  background: radial-gradient(circle at center, transparent 40%, var(--bg-black) 100%);
 }
 
 .hero-content-layer {
@@ -89,93 +114,97 @@
   padding: 0 24px;
 }
 
+/* Smaller, premium badge */
 .hero-badge {
   display: inline-block;
-  padding: 6px 16px;
-  border-radius: 50px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  font-family: monospace;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
   color: var(--neon-purple);
-  margin-bottom: 24px;
-  text-transform: uppercase;
-  box-shadow: 0 0 20px rgba(184, 169, 255, 0.15);
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
 .home-title {
-  font-size: clamp(3.5rem, 8vw, 7rem);
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 0.95;
+  font-weight: 700;
+  letter-spacing: -0.04em;
   margin-bottom: 24px;
 }
 
-.gradient-text {
-  background: linear-gradient(90deg, #fff, #a78bfa, #fff);
-  background-size: 200% auto;
+/* Depth effect on "Redefined" */
+.text-depth {
+  background: linear-gradient(180deg, #fff 0%, #a5a5a5 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  filter: drop-shadow(0 0 30px rgba(184, 169, 255, 0.3));
 }
 
 .home-subtitle {
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  color: rgba(255,255,255,0.85);
-  max-width: 650px;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  color: rgba(255,255,255,0.95); /* More readable */
+  max-width: 540px;
   margin: 0 auto 40px auto;
   line-height: 1.6;
+  font-weight: 400;
 }
 
+/* Buttons */
 .home-buttons {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 24px; /* Increased spacing */
 }
 
-/* ⭐ 4. Hero Button Micro-Animation */
 .primary-btn {
   position: relative;
-  padding: 16px 36px;
+  padding: 14px 32px;
   background: #fff;
   color: #000;
   font-weight: 600;
   border-radius: 8px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+  /* Purple Tinted Glow */
+  box-shadow: 0 0 25px rgba(184, 169, 255, 0.4); 
   display: inline-flex;
   align-items: center;
-}
-
-.primary-btn::after {
-  content: "→";
-  opacity: 0;
-  margin-left: 0px;
-  transform: translateX(-5px);
-  transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  gap: 8px;
 }
 
 .primary-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(255,255,255,0.4);
-  padding-right: 28px; /* Make room for arrow */
+  box-shadow: 0 0 40px rgba(184, 169, 255, 0.6);
+  padding-right: 36px;
 }
 
-.primary-btn:hover::after {
+.icon-arrow {
+  position: absolute;
+  right: 20px;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: all 0.2s ease;
+  font-size: 1.1em;
+}
+
+.primary-btn:hover .icon-arrow {
   opacity: 1;
-  margin-left: 8px;
   transform: translateX(0);
 }
 
 .secondary-btn {
-  padding: 16px 36px;
-  background: rgba(255,255,255,0.05);
+  padding: 14px 32px;
+  background: rgba(255,255,255,0.02);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7);
   font-weight: 500;
   border-radius: 8px;
   text-decoration: none;
@@ -183,287 +212,280 @@
 }
 
 .secondary-btn:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: #fff;
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 60px;
+  left: 54%;
+  transform: translateX(-50%);
+}
+
+.mouse-icon {
+  width: 24px;
+  height: 36px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.wheel {
+  width: 2px;
+  height: 6px;
+  background: #fff;
+  border-radius: 2px;
+  animation: scrollWheel 2s infinite;
+}
+
+@keyframes scrollWheel {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
 }
 
 /* ============================================
-   2. CONTENT FLOW & MANIFESTO
+   2. MANIFESTO
 ============================================ */
 .content-flow {
   position: relative;
   z-index: 10;
   background: var(--bg-black);
-  padding-bottom: 100px;
-  box-shadow: 0 -50px 100px var(--bg-black); 
+  padding-bottom: 80px;
+  box-shadow: 0 -80px 100px var(--bg-black); 
 }
 
 .section {
-  padding: 120px 24px;
+  padding: 0 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .manifesto-section {
-  text-align: left;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 .manifesto-text {
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: clamp(2rem, 4vw, 3.5rem);
   line-height: 1.2;
-  font-weight: 500;
-  color: rgba(255,255,255,0.5);
+  font-weight: 400; /* Lighter weight */
+  color: rgba(255,255,255,0.4);
+  max-width: 900px;
 }
 
-.manifesto-text .highlight {
+.manifesto-text span {
   color: #fff;
-  text-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+/* Animated Underline Effect */
+.animated-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--neon-purple);
+  box-shadow: 0 0 10px var(--neon-purple);
+  transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.manifesto-section:hover .animated-underline::after {
+  width: 100%;
 }
 
 .manifesto-sub {
-  margin-top: 30px;
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.7);
-  max-width: 600px;
+  margin-top: 32px;
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.6);
+  max-width: 540px;
   line-height: 1.7;
-  border-left: 2px solid var(--neon-purple);
-  padding-left: 20px;
+  border-left: 3px solid var(--neon-purple); /* Stronger border */
+  padding-left: 24px;
+  box-shadow: -15px 0 30px -10px rgba(184, 169, 255, 0.1); /* Left Glow */
 }
 
 .manifesto-actions {
-  margin-top: 50px;
-  display: flex;
-  justify-content: flex-start;
+  margin-top: 48px;
 }
 
-.glass-btn-large {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 15px;
-  padding: 18px 40px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50px;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-decoration: none;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  backdrop-filter: blur(10px);
-}
-
-.glass-btn-large:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(184, 169, 255, 0.5);
-  transform: translateX(10px);
-  box-shadow: 0 0 30px rgba(184, 169, 255, 0.15);
-}
-
-.btn-content { position: relative; z-index: 2; letter-spacing: 0.5px; }
-
-.btn-glow {
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s;
-  z-index: 1;
-}
-
-.glass-btn-large:hover .btn-glow {
-  left: 100%;
-  transition: left 0.6s ease-in-out;
-}
-
-.btn-icon {
-  position: relative;
-  z-index: 2;
-  transition: transform 0.3s;
+.glass-link {
   color: var(--neon-purple);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: opacity 0.3s;
 }
-
-.glass-btn-large:hover .btn-icon {
-  transform: translateX(5px);
-}
+.glass-link:hover { opacity: 0.8; }
 
 /* ============================================
-   3. BENTO GRID (Ecosystem)
+   3. BENTO GRID
 ============================================ */
+.bento-section {
+  margin-bottom: 110px; /* Increased spacing */
+}
+
 .section-header {
-  margin-bottom: 50px;
+  margin-bottom: 60px;
 }
 
 .small-label {
   font-family: monospace;
   color: var(--neon-purple);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: block;
 }
 
 .section-header h2 {
   font-size: 2.5rem;
   font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: minmax(250px, auto);
-  gap: 24px;
+  grid-auto-rows: minmax(280px, auto);
+  gap: 28px; /* Tighter/cleaner gap */
 }
 
 .grid-span-large { grid-column: span 2; grid-row: span 2; }
 .grid-span-tall { grid-row: span 2; }
 .grid-span-wide { grid-column: span 2; }
 
-/* SPOTLIGHT CARD STYLES */
+/* CARD STYLES */
 .bento-card {
   position: relative;
   height: 100%;
   width: 100%;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 16px;
+  padding: 24px; /* Reduced padding */
   text-decoration: none;
   color: #fff;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s ease-out, box-shadow 0.3s ease;
-  perspective: 1000px; /* Enable 3D tilt space */
+  transition: all 0.4s ease;
 }
 
-/* Glow Effect Overlay */
-.spotlight-overlay {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.3s;
-  z-index: 1;
-}
-
-.bento-card:hover .spotlight-overlay {
-  opacity: 1;
-}
-
-/* ⭐ 3 & 8. Hover Glow Border & Micro Tilt */
+/* Hover Border Glow Only */
 .bento-card:hover {
-  border-color: rgba(184, 169, 255, 0.5);
-  box-shadow: 0 0 25px rgba(184, 169, 255, 0.2);
-  transform: translateY(-3px) rotateX(1deg) rotateY(-1deg);
+  border-color: rgba(184, 169, 255, 0.3);
 }
 
-/* ⭐ 2. Text Overlay Scale on Hover */
-.bento-card:hover h3, 
-.bento-card:hover p {
-  transform: translateY(-4px);
-  transition: 0.3s ease-out;
-}
-
-.card-main-content {
-  position: relative;
-  z-index: 2; 
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.bento-card h3 {
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-  transition: 0.3s ease-out;
-}
-
-.bento-card p {
-  color: rgba(255,255,255,0.6);
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 30px; 
-  transition: 0.3s ease-out;
-}
-
-.card-arrow-bottom-right {
+/* Glass Reflection Streak */
+.glass-streak {
   position: absolute;
-  bottom: 25px;
-  right: 30px;
-  font-weight: 600;
-  color: var(--neon-purple);
-  z-index: 3;
-  text-shadow: 0 0 10px rgba(184, 169, 255, 0.4);
-  letter-spacing: 0.5px;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: 2;
 }
 
-.card-large {
-  background: linear-gradient(135deg, rgba(30,30,30,0.9), rgba(50,50,50,0.5));
+.glass-streak.animate {
+  animation: shine 0.8s forwards;
 }
 
-.tech-lines {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
-  opacity: 0.5;
-  box-shadow: 0 0 10px var(--neon-purple);
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
 
-/* Video Background in Cards */
 .card-bg-video-wrapper {
   position: absolute;
   inset: 0;
   z-index: 0;
+  border-radius: 16px;
   overflow: hidden;
-  border-radius: 20px;
 }
 
-/* ⭐ 1. Smooth Fade-In to Bento Video */
 .card-bg-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0; /* Start invisible */
-  animation: fadeVideo 1.2s ease forwards; /* Smooth entrance */
-  transition: transform 0.6s ease-out, opacity 0.4s;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0.45; /* Clean reduced opacity */
+  transition: transform 0.6s ease-out;
 }
 
-@keyframes fadeVideo {
-  to { opacity: 0.6; }
-}
-
-/* Zoom video on hover */
 .bento-card:hover .card-bg-video {
-  transform: scale(1.1);
-  opacity: 0.8;
+  transform: scale(1.05);
 }
 
 .card-video-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg, 
-    rgba(0,0,0,0.1) 0%, 
-    rgba(0,0,0,0.8) 100%
-  );
-  z-index: 1;
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%);
+}
+.overlay-darker { background: rgba(0,0,0,0.6); }
+
+.card-text-content {
+  position: relative;
+  z-index: 5;
+  margin-top: auto; /* Push to bottom */
 }
 
-.card-content, .card-main-content {
-  z-index: 2;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5); 
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: inline-block;
+  position: relative;
+  letter-spacing: -0.01em;
+}
+
+/* Line under title on hover */
+.hover-line {
+  height: 1px;
+  width: 0%;
+  background: #fff;
+  transition: width 0.3s ease;
+  margin-top: 4px;
+}
+.bento-card:hover .hover-line { width: 40px; }
+
+.bento-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.card-explore-wrapper {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+}
+
+.explore-text {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
 /* ============================================
-   4. FUTURE SECTION (Aurora / Adaptive)
+   4. FUTURE SECTION
 ============================================ */
 .future-section-immersive {
-  padding: 100px 24px 150px 24px;
+  padding: 0 24px 100px 24px;
   display: flex;
   justify-content: center;
 }
@@ -472,140 +494,84 @@
   position: relative;
   width: 100%;
   max-width: 1000px;
-  height: 500px;
+  height: 450px;
   background: #050505;
-  border-radius: 30px;
+  border-radius: 24px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* ⭐ 5. Light 1px HUD Line at Top */
-.aurora-container::before {
-  content: "";
+/* Faint Grid Background */
+.grid-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: rgba(184,169,255,0.2);
-  z-index: 10;
-  box-shadow: 0 0 10px rgba(184,169,255,0.4);
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
 }
 
+/* Desaturated Blobs */
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.6;
-  animation: float 10s infinite ease-in-out alternate;
+  filter: blur(60px); /* Reduced blur radius */
+  opacity: 0.4; /* Reduced opacity */
 }
 
-.blob-1 {
-  width: 400px; height: 400px; background: #4a3aff;
-  top: -100px; left: -100px; animation-duration: 12s;
-}
-.blob-2 {
-  width: 500px; height: 500px; background: #b8a9ff;
-  bottom: -150px; right: -100px; animation-duration: 15s; animation-delay: -2s;
-}
-.blob-3 {
-  width: 300px; height: 300px; background: #ff4aae;
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  animation-name: pulse; animation-duration: 8s; opacity: 0.4;
-}
-
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(30px, 50px) scale(1.1); }
-}
-@keyframes pulse {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-}
+.blob-1 { width: 300px; height: 300px; background: #3b2c94; top: -50px; left: 10%; }
+.blob-2 { width: 400px; height: 400px; background: #5b4aa8; bottom: -100px; right: 10%; }
+.blob-3 { width: 200px; height: 200px; background: #7c3aed; top: 40%; left: 40%; }
 
 .aurora-glass {
   position: absolute;
   inset: 0;
-  background: rgba(20, 20, 20, 0.3);
-  backdrop-filter: blur(60px);
+  background: rgba(5, 5, 5, 0.4);
+  backdrop-filter: blur(40px);
   z-index: 1;
 }
 
-.future-content {
-  position: relative;
-  z-index: 5;
-  padding: 0 20px;
-}
+.future-content { position: relative; z-index: 5; padding: 0 20px; }
 
 .future-title {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
-  margin-bottom: 20px;
-  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
 }
 
 .adaptive-text {
-  color: transparent;
-  background: linear-gradient(90deg, #fff, #b8a9ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  text-shadow: 0 0 30px rgba(184, 169, 255, 0.5);
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-.future-desc {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 600px;
-  margin: 0 auto 40px auto;
-  line-height: 1.6;
-}
-
-.roadmap-btn {
-  position: relative;
+.roadmap-btn-glass {
   display: inline-block;
-  padding: 18px 40px;
-  background: #fff;
-  color: #000;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  padding: 14px 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
   text-decoration: none;
-  border-radius: 4px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  overflow: hidden;
+  border-radius: 100px;
+  font-weight: 500;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px rgba(43, 0, 255, 0.2);
+  margin-top: 32px;
 }
 
-.roadmap-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
-}
-
-.btn-line-top, .btn-line-bottom {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--neon-purple);
-  transform: scaleX(0);
-  transition: transform 0.4s ease;
-}
-
-.btn-line-top { top: 0; transform-origin: left; }
-.btn-line-bottom { bottom: 0; transform-origin: right; }
-
-.roadmap-btn:hover .btn-line-top,
-.roadmap-btn:hover .btn-line-bottom {
-  transform: scaleX(1);
+.roadmap-btn-glass:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
 }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE (MOBILE)
 ============================================ */
 @media (max-width: 1024px) {
   .bento-grid { grid-template-columns: repeat(2, 1fr); }
@@ -614,12 +580,16 @@
 }
 
 @media (max-width: 768px) {
-  .home-title { font-size: 3rem; }
-  .home-buttons { flex-direction: column; width: 100%; }
-  .primary-btn, .secondary-btn { width: 100%; text-align: center; justify-content: center; }
-  .bento-grid { grid-template-columns: 1fr; }
+  .hero-fullscreen-wrapper { height: 80vh; }
+  .home-buttons { flex-direction: column; width: 100%; gap: 16px; }
+  .primary-btn, .secondary-btn { width: 100%; justify-content: center; }
+  
+  .hero-badge { margin-bottom: 16px; order: -1; }
+  
+  .bento-grid { grid-template-columns: 1fr; gap: 24px; }
   .grid-span-wide, .grid-span-large { grid-column: span 1; }
-  .manifesto-actions { justify-content: center; }
-  .card-arrow-bottom-right { bottom: 20px; right: 20px; }
-  .aurora-container { height: auto; padding: 60px 20px; }
+  
+  .manifesto-sub { border-left-width: 2px; padding-left: 16px; font-size: 1rem; }
+  
+  .aurora-container { height: auto; padding: 80px 20px; }
 }

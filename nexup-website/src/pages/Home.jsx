@@ -1,60 +1,67 @@
-// src/pages/Home.jsx
-import { useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { 
+  motion, 
+  useScroll, 
+  useTransform, 
+  useMotionTemplate, 
+  useMotionValue, 
+  useSpring 
+} from "framer-motion";
 import { Link } from "react-router-dom";
 import "../page-styles/Home.css";
 import Footer from "../components/Footer/Footer";
-
 
 /* =======================================
    ANIMATION VARIANTS
 ======================================= */
 
-// 1. Page/Video Initial Reveal
 const pageRevealVariants = {
   hidden: { opacity: 0, scale: 0.98, filter: "blur(10px)" },
   visible: {
     opacity: 1,
     scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 1.5, ease: "easeOut" }
+    transition: { duration: 1.2, ease: [0.25, 1, 0.5, 1] } // Smoother, premium ease
   }
 };
 
-// 2. Bento Grid Stagger Container
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
   },
 };
 
-// 3. Individual Card Pop-in
 const itemVariants = {
-  hidden: { y: 40, opacity: 0 },
+  hidden: { y: 30, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { type: "spring", stiffness: 60, damping: 15 },
+    transition: { type: "spring", stiffness: 50, damping: 20 },
   },
 };
 
-// 4. Hover Arrow Reveal Variants
-const arrowRevealVariants = {
-  hidden: { opacity: 0, x: -15, transition: { duration: 0.2 } },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { type: "spring", stiffness: 200, damping: 20, delay: 0.1 }
-  }
-};
+/* =======================================
+   COMPONENT: SCROLL INDICATOR
+======================================= */
+function ScrollIndicator() {
+  return (
+    <motion.div 
+      className="scroll-indicator"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.5, duration: 1 }}
+    >
+      <div className="mouse-icon">
+        <div className="wheel"></div>
+      </div>
+    </motion.div>
+  );
+}
 
 /* =======================================
-   COMPONENT: SPOTLIGHT CARD
+   COMPONENT: SPOTLIGHT CARD (PREMIUM)
 ======================================= */
 function SpotlightCard({ children, className = "", to }) {
   const mouseX = useMotionValue(0);
@@ -81,28 +88,31 @@ function SpotlightCard({ children, className = "", to }) {
         style={{
           background: useMotionTemplate`
             radial-gradient(
-              600px circle at ${mouseX}px ${mouseY}px,
-              rgba(184, 169, 255, 0.15),
+              500px circle at ${mouseX}px ${mouseY}px,
+              rgba(184, 169, 255, 0.10),
               transparent 80%
             )
           `,
         }}
       />
       
+      {/* Glass Reflection Streak */}
+      <div className={`glass-streak ${isHovered ? 'animate' : ''}`} />
+
       {/* Card Content Wrapper */}
       <div className="card-main-content">
         {children}
       </div>
 
-      {/* The Revealing Explore Button */}
-      <motion.span 
-        className="card-arrow-bottom-right"
-        variants={arrowRevealVariants}
-        initial="hidden"
-        animate={isHovered ? "visible" : "hidden"}
+      {/* Explore Button */}
+      <motion.div 
+        className="card-explore-wrapper"
+        initial={{ opacity: 0.6, x: 0 }}
+        animate={{ opacity: isHovered ? 1 : 0.6, x: isHovered ? 5 : 0 }}
       >
-        Explore &rarr;
-      </motion.span>
+        <span className="explore-text">Explore</span>
+        <span className="explore-arrow">&rarr;</span>
+      </motion.div>
     </Link>
   );
 }
@@ -112,23 +122,43 @@ function SpotlightCard({ children, className = "", to }) {
 ======================================= */
 export default function Home() {
   const scrollRef = useRef(null);
+  
+  // Parallax Logic for Title
+  const mouseX = useSpring(0, { stiffness: 30, damping: 15 });
+  const mouseY = useSpring(0, { stiffness: 30, damping: 15 });
+
+  function handleHeroMouseMove(e) {
+    const { clientX, clientY, currentTarget } = e;
+    const { width, height } = currentTarget.getBoundingClientRect();
+    // Calculate normalized position -0.5 to 0.5
+    const xPct = (clientX / width) - 0.5;
+    const yPct = (clientY / height) - 0.5;
+    mouseX.set(xPct * 20); // Move 20px max
+    mouseY.set(yPct * 20);
+  }
+
   const { scrollYProgress } = useScroll({
     target: scrollRef,
     offset: ["start start", "end start"],
   });
 
-  // Parallax Transforms
-  const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "80%"]);
+  const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacityHero = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scaleHeroScroll = useTransform(scrollYProgress, [0, 1], [1, 1.1]); 
+  const scaleHeroScroll = useTransform(scrollYProgress, [0, 1], [1, 1.05]); 
 
   return (
     <div className="home-container" ref={scrollRef}>
       
+      {/* Watermark Logo */}
+      <div className="brand-watermark">NEXUP // OS</div>
+
       {/* =====================================================
            1. CINEMATIC HERO SECTION
       ====================================================== */}
-      <section className="hero-fullscreen-wrapper">
+      <section 
+        className="hero-fullscreen-wrapper" 
+        onMouseMove={handleHeroMouseMove}
+      >
         <motion.div 
           className="video-background-wrapper"
           style={{ scale: scaleHeroScroll }}
@@ -143,39 +173,40 @@ export default function Home() {
               loop
               muted
               playsInline
+              preload="metadata"
               className="bg-video"
             />
+            {/* Lighter overlay for clarity */}
             <div className="video-overlay" />
             <div className="video-vignette" />
+            {/* Spatial Grid Overlay */}
+            <div className="spatial-grid-overlay" />
           </div>
         </motion.div>
 
         <motion.div
           className="hero-content-layer"
           style={{ y: yHero, opacity: opacityHero }}
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+          transition={{ delay: 0.3, duration: 1, ease: "easeOut" }}
         >
           <motion.div 
             className="hero-badge"
-            initial={{ scale: 0, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.8, type: "spring" }}
+            transition={{ delay: 0.6 }}
           >
-            v2.0 // Spatial Era
+            v2.0 &bull; Spatial Era
           </motion.div>
           
-          <h1 className="home-title">
+          <motion.h1 
+            className="home-title"
+            style={{ x: mouseX, y: mouseY }}
+          >
             Reality, <br />
-            <motion.span 
-              className="gradient-text"
-              animate={{ backgroundPosition: ["0% center", "200% center"] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            >
-              Redefined.
-            </motion.span>
-          </h1>
+            <span className="text-depth">Redefined.</span>
+          </motion.h1>
 
           <p className="home-subtitle">
             The unified operating system for AR, VR, and intelligent environments.
@@ -183,60 +214,47 @@ export default function Home() {
 
           <div className="home-buttons">
             <Link to="/ecosystem" className="primary-btn">
-              Enter Ecosystem
+              <span>Enter Ecosystem</span>
+              <span className="icon-arrow">&rarr;</span>
             </Link>
             <Link to="/about/vision" className="secondary-btn">
               Our Vision
             </Link>
           </div>
+
+          <ScrollIndicator />
         </motion.div>
       </section>
 
       {/* =====================================================
-           2. THE MANIFESTO (With About Button)
+           2. THE MANIFESTO
       ====================================================== */}
       <div className="content-flow">
         <section className="section manifesto-section">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={{
-              hidden: { opacity: 0, x: -50 },
-              visible: { 
-                opacity: 1, 
-                x: 0, 
-                transition: { staggerChildren: 0.2, delayChildren: 0.1 } 
-              }
-            }}
+            viewport={{ once: true, margin: "-50px" }}
+            variants={containerVariants}
           >
             <motion.h2 
               className="manifesto-text"
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+              variants={itemVariants}
             >
-              We are building a world where <span className="highlight">intelligence</span> and <span className="highlight">immersion</span> merge.
+              We are building a world where <span className="animated-underline">intelligence</span> and <span className="animated-underline">immersion</span> merge.
             </motion.h2>
             
             <motion.p 
               className="manifesto-sub"
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+              variants={itemVariants}
             >
               No longer just screens. NexUP enables a fluid interaction between physical
-              and virtual environments.
+              and virtual environments, powered by a decentralized neural backbone.
             </motion.p>
 
-            {/* --- ABOUT BUTTON --- */}
-            <motion.div 
-              className="manifesto-actions"
-              variants={{ 
-                hidden: { opacity: 0, y: 20 }, 
-                visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50 } } 
-              }}
-            >
-              <Link to="/about" className="glass-btn-large">
-                <span className="btn-content">About NexUP</span>
-                <span className="btn-glow"></span>
-                <span className="btn-icon">&rarr;</span>
+            <motion.div variants={itemVariants} className="manifesto-actions">
+              <Link to="/about" className="glass-link">
+                Read the Manifesto &rarr;
               </Link>
             </motion.div>
 
@@ -244,7 +262,7 @@ export default function Home() {
         </section>
 
         {/* =====================================================
-             3. ECOSYSTEM BENTO GRID (With Video Backgrounds)
+             3. ECOSYSTEM BENTO GRID
         ====================================================== */}
         <section className="section bento-section">
           <motion.div 
@@ -254,14 +272,7 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h3 className="small-label">The Platform</h3>
-            {/* ⭐ 6. Animated Header */}
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              The NeX UP Ecosystem
-            </motion.h2>
+            <h2>The NeX UP Ecosystem</h2>
           </motion.div>
 
           <motion.div
@@ -269,7 +280,7 @@ export default function Home() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-150px" }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             
             {/* ITEM 1: NEXWORLD (Large) */}
@@ -278,13 +289,15 @@ export default function Home() {
                 <div className="card-bg-video-wrapper">
                   <video 
                     className="card-bg-video" 
-                    autoPlay loop muted playsInline 
+                    autoPlay loop muted playsInline preload="metadata"
                     src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexWorld_Futuristic_Drone_Flythrough_f4pwmj.mp4" 
                   />
                   <div className="card-video-overlay" />
                 </div>
-                <h3>NexWorld</h3>
-                <p>The immersive engine powering digital cities and shared 3D realities.</p>
+                <div className="card-text-content">
+                  <h3 className="card-title">NexWorld <div className="hover-line"></div></h3>
+                  <p>The immersive engine powering digital cities and shared 3D realities.</p>
+                </div>
               </SpotlightCard>
             </motion.div>
 
@@ -294,15 +307,16 @@ export default function Home() {
                   <div className="card-bg-video-wrapper">
                     <video 
                       className="card-bg-video" 
-                      autoPlay loop muted playsInline 
+                      autoPlay loop muted playsInline preload="metadata"
                       src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1764942791/NexNodes_Energy_Network_Animation_ufdjqs.mp4" 
                     />
-                    <div className="card-video-overlay" style={{ background: 'rgba(0,0,0,0.6)' }} />
+                    <div className="card-video-overlay overlay-darker" />
                   </div>
-                  <h3>NexNodes</h3>
-                  <p>Decentralized intelligence network.</p>
-                <div className="tech-lines" />
-              </SpotlightCard>
+                  <div className="card-text-content">
+                    <h3 className="card-title">NexNodes <div className="hover-line"></div></h3>
+                    <p>Decentralized intelligence network.</p>
+                  </div>
+               </SpotlightCard>
             </motion.div>
 
             {/* ITEM 3: NEXENGINE */}
@@ -311,13 +325,15 @@ export default function Home() {
                  <div className="card-bg-video-wrapper">
                     <video 
                       className="card-bg-video" 
-                      autoPlay loop muted playsInline 
+                      autoPlay loop muted playsInline preload="metadata"
                       src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765032493/Nexengine_lhm4mf.mp4" 
                     />
                     <div className="card-video-overlay" />
                   </div>
-                  <h3>NexEngine</h3>
-                  <p>Real-time physics and AI computation layer.</p>
+                  <div className="card-text-content">
+                    <h3 className="card-title">NexEngine <div className="hover-line"></div></h3>
+                    <p>Real-time physics and AI computation layer.</p>
+                  </div>
               </SpotlightCard>
             </motion.div>
 
@@ -327,13 +343,15 @@ export default function Home() {
                   <div className="card-bg-video-wrapper">
                     <video 
                       className="card-bg-video" 
-                      autoPlay loop muted playsInline 
-                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4" type="video/mp4"
+                      autoPlay loop muted playsInline preload="metadata"
+                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4"
                     />
                     <div className="card-video-overlay" />
                   </div>
-                  <h3>NexHousing</h3>
-                  <p>AR-powered living spaces.</p>
+                  <div className="card-text-content">
+                    <h3 className="card-title">NexHousing <div className="hover-line"></div></h3>
+                    <p>AR-powered living spaces.</p>
+                  </div>
               </SpotlightCard>
             </motion.div>
 
@@ -343,13 +361,15 @@ export default function Home() {
                   <div className="card-bg-video-wrapper">
                     <video 
                       className="card-bg-video" 
-                      autoPlay loop muted playsInline 
+                      autoPlay loop muted playsInline preload="metadata"
                       src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765029785/NexSearch_AI_Cinematic_Showcase_fl7dwk.mp4" 
                     />
                     <div className="card-video-overlay" />
                   </div>
-                  <h3>Search</h3>
-                  <p>Query the physical world.</p>
+                  <div className="card-text-content">
+                    <h3 className="card-title">Search <div className="hover-line"></div></h3>
+                    <p>Query the physical world.</p>
+                  </div>
               </SpotlightCard>
             </motion.div>
 
@@ -357,16 +377,18 @@ export default function Home() {
         </section>
 
         {/* =====================================================
-             4. FUTURE STATEMENT (The Living Gradient)
+             4. FUTURE STATEMENT (Refined)
         ====================================================== */}
         <section className="section future-section-immersive">
           <div className="aurora-container">
-            {/* The Moving Background Layers */}
+            {/* Faint Grid Background */}
+            <div className="grid-bg"></div>
+
+            {/* The Moving Background Layers (Desaturated) */}
             <div className="aurora-blob blob-1" />
             <div className="aurora-blob blob-2" />
             <div className="aurora-blob blob-3" />
             
-            {/* Glass Overlay to smooth it out */}
             <div className="aurora-glass" />
 
             <motion.div 
@@ -385,10 +407,8 @@ export default function Home() {
                 <br />Powered by real-time neural networks.
               </p>
 
-              <Link to="/sections/roadmap" className="roadmap-btn">
-                <span>View Full Roadmap</span>
-                <div className="btn-line-top"></div>
-                <div className="btn-line-bottom"></div>
+              <Link to="/sections/roadmap" className="roadmap-btn-glass">
+                View Full Roadmap
               </Link>
             </motion.div>
           </div>
