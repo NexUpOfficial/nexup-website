@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import "./styles/Sidebar.css";
-import RisingSmoke from "../animations/RisingSmoke";
+// VisionOS style will use a different CSS file
+import "./styles/Sidebar.css"; 
+// RisingSmoke animation is kept, assuming it fits a 'depth' aesthetic
 
 function Sidebar({ isOpen, onClose }) {
   // ---------------------------------------------------------
@@ -17,8 +18,8 @@ function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
 
   /* ------------------------
-       MOBILE SWIPE LOGIC
-     ------------------------- */
+      MOBILE SWIPE LOGIC
+    ------------------------- */
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
 
@@ -51,8 +52,8 @@ function Sidebar({ isOpen, onClose }) {
   }, [isOpen, touchStartX, touchStartY, onClose]);
 
   /* ------------------------
-       AUTO OPEN & PERSIST
-     ------------------------- */
+      AUTO OPEN & PERSIST
+    ------------------------- */
   useEffect(() => {
     if (openSection) {
       localStorage.setItem("sidebar_open_section", openSection);
@@ -73,12 +74,13 @@ function Sidebar({ isOpen, onClose }) {
     if (targetSection && openSection !== targetSection) {
       setOpenSection(targetSection);
     }
-    if (window.innerWidth <= 768 && isOpen) onClose?.();
-  }, [location.pathname]);
+    // Close sidebar on route change on small screens
+    if (window.innerWidth <= 768 && isOpen) onClose?.(); 
+  }, [location.pathname, isOpen, onClose, openSection]);
 
   /* ------------------------
-       TOGGLE HANDLER
-     ------------------------- */
+      TOGGLE HANDLER
+    ------------------------- */
   const toggle = (key) => {
     setOpenSection((prev) => (prev === key ? null : key));
   };
@@ -91,43 +93,43 @@ function Sidebar({ isOpen, onClose }) {
   };
 
   /* ------------------------
-           DATA
-     ------------------------- */
+              DATA
+    ------------------------- */
   const ecosystemItems = [
-    { label: "NexWorld", to: "/ecosystem/nexworld" },
-    { label: "NexNodes", to: "/ecosystem/nexnodes" },
-    { label: "NexEngine", to: "/ecosystem/nexengine" },
-    { label: "NexHousing", to: "/ecosystem/nexhousing" },
-    { label: "Nex Search", to: "/ecosystem/nexsearch" },
+    { label: "NexWorld", to: "/ecosystem/nexworld", tooltip: "Immersive World environment" },
+    { label: "NexNodes", to: "/ecosystem/nexnodes", tooltip: "Decentralized processing nodes" },
+    { label: "NexEngine", to: "/ecosystem/nexengine", tooltip: "Core platform technology" },
+    { label: "NexHousing", to: "/ecosystem/nexhousing", tooltip: "Digital space management" },
+    { label: "Nex Search", to: "/ecosystem/nexsearch", tooltip: "Platform-wide search functionality" },
   ];
 
   const aboutItems = [
-    { label: "Vision", to: "/about/vision" },
-    { label: "Team", to: "/about/team" },
-    { label: "Stories", to: "/about/stories" },
-    { label: "Company", to: "/about/company" },
-    { label: "Career", to: "/about/career" },
-    { label: "News", to: "/about/news" },
+    { label: "Vision", to: "/about/vision", tooltip: "Our guiding principles" },
+    { label: "Team", to: "/about/team", tooltip: "Meet the core contributors" },
+    { label: "Stories", to: "/about/stories", tooltip: "User and development narratives" },
+    { label: "Company", to: "/about/company", tooltip: "Corporate structure and details" },
+    { label: "Career", to: "/about/career", tooltip: "Job opportunities" },
+    { label: "News", to: "/about/news", tooltip: "Latest updates and announcements" },
   ];
 
   const supportItems = [
-    { label: "Guidelines", to: "/support/guidelines" },
-    { label: "Help / Support", to: "/support/help" },
-    { label: "Contact", to: "/contact" },
+    { label: "Guidelines", to: "/support/guidelines", tooltip: "Platform usage policies" },
+    { label: "Help / Support", to: "/support/help", tooltip: "Access documentation and FAQs" },
+    { label: "Contact", to: "/contact", tooltip: "Get in touch with us" },
   ];
 
   const accountItems = [
-    { label: "Login", to: "/login" },
-    { label: "DNS", to: "/dns" },
-    { label: "Safety Approach", to: "/safety/approach" },
-    { label: "Privacy", to: "/safety/privacy" },
-    { label: "Transparency", to: "/safety/transparency" },
+    { label: "Login", to: "/login", tooltip: "Access your personalized account" },
+    { label: "DNS", to: "/dns", tooltip: "Configure network settings" },
+    { label: "Safety Approach", to: "/safety/approach", tooltip: "Learn about our safety measures" },
+    { label: "Privacy", to: "/safety/privacy", tooltip: "View our privacy policy" },
+    { label: "Transparency", to: "/safety/transparency", tooltip: "Data and operation transparency report" },
   ];
 
   /* ------------------------
-       RENDER HELPERS
-     ------------------------- */
-  const renderLink = (to, label, sectionName, isSubItem = false) => (
+      RENDER HELPERS
+    ------------------------- */
+  const renderLink = (to, label, sectionName, tooltipText, isSubItem = false) => (
     <NavLink
       key={to}
       to={to}
@@ -135,11 +137,12 @@ function Sidebar({ isOpen, onClose }) {
       className={({ isActive }) =>
         `nav-link ${isActive ? "active" : ""} ${isSubItem ? "sub-link" : ""}`
       }
-      // TOOLTIP: Shows "Section • Item Name"
-      data-tooltip={`${sectionName} • ${label}`}
+      // VISIONOS-STYLE TOOLTIP: Descriptive text
+      data-tooltip={tooltipText || `${sectionName} • ${label}`}
     >
       <span className="nav-text">{label}</span>
-      <span className="active-dot" />
+      {/* Active dot/pill now acts as the focus/active indicator */}
+      <span className="active-dot" /> 
     </NavLink>
   );
 
@@ -149,7 +152,7 @@ function Sidebar({ isOpen, onClose }) {
         return (
           <div className="section-group">
             <div className="section-header-label">Platform</div>
-            {renderLink("/", "Home", "Platform")}
+            {renderLink("/", "Home", "Platform", "Navigate to the home dashboard")}
           </div>
         );
       case "ecosystem":
@@ -164,7 +167,7 @@ function Sidebar({ isOpen, onClose }) {
               onKeyDown={(e) => handleKeyDown(e, "ecosystem")}
               tabIndex={0}
               role="button"
-              data-tooltip="Modules • Ecosystem"
+              data-tooltip="View the core product suite modules"
             >
               <span className="nav-text">Ecosystem</span>
               <span className="chevron" />
@@ -176,7 +179,7 @@ function Sidebar({ isOpen, onClose }) {
             >
               <div className="accordion-inner">
                 {ecosystemItems.map((i) =>
-                  renderLink(i.to, i.label, "Modules", true)
+                  renderLink(i.to, i.label, "Modules", i.tooltip, true)
                 )}
               </div>
             </div>
@@ -194,7 +197,7 @@ function Sidebar({ isOpen, onClose }) {
               onKeyDown={(e) => handleKeyDown(e, "about")}
               tabIndex={0}
               role="button"
-              data-tooltip="Organization • About"
+              data-tooltip="Information about the team and company"
             >
               <span className="nav-text">About</span>
               <span className="chevron" />
@@ -206,7 +209,7 @@ function Sidebar({ isOpen, onClose }) {
             >
               <div className="accordion-inner">
                 {aboutItems.map((i) =>
-                  renderLink(i.to, i.label, "Organization", true)
+                  renderLink(i.to, i.label, "Organization", i.tooltip, true)
                 )}
               </div>
             </div>
@@ -216,7 +219,7 @@ function Sidebar({ isOpen, onClose }) {
         return (
           <div className="section-group">
             <div className="section-header-label">Resources</div>
-            {supportItems.map((i) => renderLink(i.to, i.label, "Resources"))}
+            {supportItems.map((i) => renderLink(i.to, i.label, "Resources", i.tooltip))}
           </div>
         );
       case "account":
@@ -231,7 +234,7 @@ function Sidebar({ isOpen, onClose }) {
               onKeyDown={(e) => handleKeyDown(e, "account")}
               tabIndex={0}
               role="button"
-              data-tooltip="Settings • Account"
+              data-tooltip="Manage your user profile and security"
             >
               <span className="nav-text">Account & Safety</span>
               <span className="chevron" />
@@ -243,7 +246,7 @@ function Sidebar({ isOpen, onClose }) {
             >
               <div className="accordion-inner">
                 {accountItems.map((i) =>
-                  renderLink(i.to, i.label, "Settings", true)
+                  renderLink(i.to, i.label, "Settings", i.tooltip, true)
                 )}
               </div>
             </div>
@@ -267,8 +270,10 @@ function Sidebar({ isOpen, onClose }) {
       }}
       aria-hidden={!isOpen}
     >
+      {/* The backdrop will handle the glass effect and depth */}
       <div className="sidebar-backdrop">
-        <RisingSmoke />
+        {/* RisingSmoke is now a subtle background texture element */}
+        {/* <RisingSmoke /> */}
         <div className="noise-overlay" />
       </div>
 
