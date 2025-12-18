@@ -18,7 +18,8 @@
   left: 0;
   width: var(--sidebar-width);
   z-index: 1000;
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Updated transition for a smoother appearance */
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), top 0.3s ease; 
   /* The transform moves it out of view by default, adjusted by 'is-open' */
   transform: translateX(calc(var(--sidebar-width) * -1)); 
   padding: 10px; /* Padding for the inner content to float within the glass */
@@ -225,10 +226,10 @@
 [data-tooltip]:after {
   content: attr(data-tooltip);
   position: absolute;
-  /* Position it slightly outside the link for a floating effect */
-  left: 0; 
+  /* Position it slightly outside the link to the right */
+  left: calc(var(--sidebar-width) - 20px); 
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(20px); /* Add a small gap and initial transform */
   
   /* Glass/Frost styling */
   background-color: rgba(0, 0, 0, 0.6); 
@@ -251,11 +252,11 @@
 }
 
 /* Show on hover/focus */
-[data-tooltip]:hover:after,
-[data-tooltip]:focus:after {
+.sidebar-container:hover [data-tooltip]:after,
+.sidebar-container [data-tooltip]:focus-within:after {
   opacity: 1;
   visibility: visible;
-  /* Adjust transform for a slight "pop" effect */
+  /* Final position */
   transform: translateY(-50%) translateX(0); 
 }
 
@@ -263,24 +264,17 @@
 /* --- Responsive Adjustments (Mobile Sidebar Overlay) --- */
 
 @media (max-width: 768px) {
-@media (max-width: 768px) {
+  /* No need to set top/height here, as the JSX style prop handles it dynamically
+     based on the headerOffset state. We only define the transform/transition. */
   .sidebar-container {
-    top: 64px; /* 👈 push sidebar down on mobile */
-    height: calc(100vh - 64px);
-
     transform: translateX(-100%);
   }
 
   .sidebar-container.is-open {
     transform: translateX(0);
   }
-}
 
-  .sidebar-container.is-open {
-    transform: translateX(0);
-  }
-
-  /* Full screen overlay to dim content */
+  /* Full screen overlay to dim content when open on mobile */
   .sidebar-container.is-open:before {
     content: '';
     position: fixed;
@@ -292,8 +286,10 @@
     z-index: -1; 
   }
 
-  /* Hide tooltips on mobile for a cleaner experience */
+  /* FIXED: Hide tooltips on mobile for a cleaner experience */
   [data-tooltip]:after {
     content: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
   }
 }

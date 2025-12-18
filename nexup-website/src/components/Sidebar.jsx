@@ -6,9 +6,12 @@ import "./styles/Sidebar.css";
 
 function Sidebar({ isOpen, onClose }) {
   // ---------------------------------------------------------
-  // CONFIGURATION: Adjust this value to match your Header height
+  // CONFIGURATION: Adjusted to a cleaner, single mobile header height
   // ---------------------------------------------------------
-  const FIXED_HEADER_OFFSET = 80;
+  // This is for large screens where the header might be bigger (matching CSS :root)
+  const DESKTOP_HEADER_OFFSET = 80; 
+  // This is for mobile screens (matching the CSS @media max-width: 768px)
+  const MOBILE_HEADER_OFFSET = 64; 
 
   const [openSection, setOpenSection] = useState(() => {
     return localStorage.getItem("sidebar_open_section") || null;
@@ -17,8 +20,24 @@ function Sidebar({ isOpen, onClose }) {
   const sidebarRef = useRef(null);
   const location = useLocation();
 
+  // Determine the current header offset based on screen size
+  const [headerOffset, setHeaderOffset] = useState(DESKTOP_HEADER_OFFSET);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setHeaderOffset(
+        window.innerWidth <= 768 ? MOBILE_HEADER_OFFSET : DESKTOP_HEADER_OFFSET
+      );
+    };
+    // Initial call
+    handleResize();
+    // Event listener for screen size changes
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // Run only once on mount
+
   /* ------------------------
-      MOBILE SWIPE LOGIC
+    MOBILE SWIPE LOGIC
     ------------------------- */
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
@@ -38,6 +57,7 @@ function Sidebar({ isOpen, onClose }) {
       const xDiff = touchStartX - touchEndX;
       const yDiff = Math.abs(touchStartY - touchEndY);
 
+      // Condition for a horizontal swipe to the left (closing the sidebar)
       if (xDiff > 60 && yDiff < 30) {
         onClose?.();
       }
@@ -52,7 +72,7 @@ function Sidebar({ isOpen, onClose }) {
   }, [isOpen, touchStartX, touchStartY, onClose]);
 
   /* ------------------------
-      AUTO OPEN & PERSIST
+    AUTO OPEN & PERSIST & CLOSE ON ROUTE CHANGE
     ------------------------- */
   useEffect(() => {
     if (openSection) {
@@ -71,15 +91,20 @@ function Sidebar({ isOpen, onClose }) {
     else if (path.startsWith("/safety") || path === "/dns" || path === "/login")
       targetSection = "account";
 
+    // Auto-open logic for the parent section
     if (targetSection && openSection !== targetSection) {
       setOpenSection(targetSection);
     }
+    
     // Close sidebar on route change on small screens
-    if (window.innerWidth <= 768 && isOpen) onClose?.(); 
+    // Use the dynamic window.innerWidth for the most current check
+    if (window.innerWidth <= 768 && isOpen) {
+      onClose?.(); 
+    }
   }, [location.pathname, isOpen, onClose, openSection]);
 
   /* ------------------------
-      TOGGLE HANDLER
+    TOGGLE HANDLER
     ------------------------- */
   const toggle = (key) => {
     setOpenSection((prev) => (prev === key ? null : key));
@@ -93,7 +118,7 @@ function Sidebar({ isOpen, onClose }) {
   };
 
   /* ------------------------
-              DATA
+    DATA
     ------------------------- */
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld", tooltip: "Immersive World environment" },
@@ -127,7 +152,7 @@ function Sidebar({ isOpen, onClose }) {
   ];
 
   /* ------------------------
-      RENDER HELPERS
+    RENDER HELPERS
     ------------------------- */
   const renderLink = (to, label, sectionName, tooltipText, isSubItem = false) => (
     <NavLink
@@ -139,6 +164,8 @@ function Sidebar({ isOpen, onClose }) {
       }
       // VISIONOS-STYLE TOOLTIP: Descriptive text
       data-tooltip={tooltipText || `${sectionName} • ${label}`}
+      // ADDED: Close sidebar when a link is clicked on mobile
+      onClick={() => window.innerWidth <= 768 && onClose?.()}
     >
       <span className="nav-text">{label}</span>
       {/* Active dot/pill now acts as the focus/active indicator */}
@@ -265,14 +292,14 @@ function Sidebar({ isOpen, onClose }) {
       ref={sidebarRef}
       className={`sidebar-container ${isOpen ? "is-open" : ""}`}
       style={{
-        top: `${FIXED_HEADER_OFFSET}px`,
-        height: `calc(100vh - ${FIXED_HEADER_OFFSET}px)`,
+        // FIXED: Use dynamic headerOffset for top and height
+        top: `${headerOffset}px`, 
+        height: `calc(100vh - ${headerOffset}px)`,
       }}
       aria-hidden={!isOpen}
     >
       {/* The backdrop will handle the glass effect and depth */}
       <div className="sidebar-backdrop">
-        {/* RisingSmoke is now a subtle background texture element */}
         {/* <RisingSmoke /> */}
         <div className="noise-overlay" />
       </div>
