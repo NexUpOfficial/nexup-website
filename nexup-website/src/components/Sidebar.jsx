@@ -7,7 +7,9 @@ function Sidebar({ isOpen, onClose }) {
   // ---------------------------------------------------------
   // CONFIGURATION: Adjust this value to match your Header height
   // ---------------------------------------------------------
-  const FIXED_HEADER_OFFSET = 80;
+
+  const FIXED_HEADER_OFFSET = window.innerWidth <= 768 ? 0 : 80;
+
 
   const [openSection, setOpenSection] = useState(() => {
     return localStorage.getItem("sidebar_open_section") || null;
