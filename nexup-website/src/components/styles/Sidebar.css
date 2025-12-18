@@ -291,14 +291,19 @@
 /* =========================================================
    RESPONSIVE
    ========================================================= */
+
 @media (max-width: 768px) {
   .sidebar-container {
-    width: 85%;
-    max-width: 300px;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    top: 64px; /* 👈 push sidebar down on mobile */
+    height: calc(100vh - 64px);
+
+    transform: translateX(-100%);
   }
-  
-  /* Disable tooltips on mobile to prevent clutter */
+
+  .sidebar-container.is-open {
+    transform: translateX(0);
+  }
+    /* Disable tooltips on mobile to prevent clutter */
   [data-tooltip]:hover::after {
     display: none;
   }
