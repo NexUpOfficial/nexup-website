@@ -325,7 +325,7 @@ a:focus-visible, button:focus-visible {
 .adaptive-text { color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
 .roadmap-btn-glass {
   display: inline-block; padding: 14px 32px; background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.1); color: white; text-decoration: none;
   border-radius: 100px; font-weight: 500; transition: all 0.3s; backdrop-filter: blur(10px);
   margin-top: 32px;
 }
