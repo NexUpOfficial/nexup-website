@@ -102,7 +102,7 @@ body {
     line-height: 0.95; font-weight: 800; letter-spacing: -0.05em;
     margin-bottom: 24px;
     text-transform: uppercase;
-    color: #fff; /* Ensure high contrast */
+    color: white; /* Ensure high contrast */
 }
 
 /* REMOVED: .text-depth class as the title is now one line */
