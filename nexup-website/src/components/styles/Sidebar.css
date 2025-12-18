@@ -1,7 +1,7 @@
 /* VARIABLES for easier color adjustments */
 :root {
   /* Colors for the VisionOS-like 'glass' look */
-  --sidebar-bg-color: rgba(255, 255, 255, 0.05); /* Very light, almost transparent */
+  --sidebar-bg-color: rgba(255, 255, 255, 0.05);
   --sidebar-border-color: rgba(255, 255, 255, 0.1);
   --active-bg-color: rgba(255, 255, 255, 0.2);
   --active-text-color: #ffffff;
@@ -12,51 +12,50 @@
   --sidebar-width: 260px;
 }
 
-/* Base Container & Glassmorphism */
+/* --------------------------------------------------
+   BASE CONTAINER & GLASSMORPHISM
+-------------------------------------------------- */
 .sidebar-container {
   position: fixed;
   left: 0;
   width: var(--sidebar-width);
-  z-index: 1000;
-  /* Updated transition for a smoother appearance */
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), top 0.3s ease; 
-  /* The transform moves it out of view by default, adjusted by 'is-open' */
-  transform: translateX(calc(var(--sidebar-width) * -1)); 
-  padding: 10px; /* Padding for the inner content to float within the glass */
+  z-index: 1001;
+  /* Use a springy transition for VisionOS feel */
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: translateX(calc(var(--sidebar-width) * -1));
+  padding: 10px;
   box-sizing: border-box;
+
+  /* FIX: prevent invisible sidebar blocking clicks */
+  pointer-events: none;
 }
 
 .sidebar-container.is-open {
   transform: translateX(0);
+  pointer-events: auto;
 }
 
-/* Glass Backdrop Effect - This is the core VisionOS element */
+/* --------------------------------------------------
+   GLASS BACKDROP
+-------------------------------------------------- */
 .sidebar-backdrop {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* Key glassmorphism properties */
+  inset: 0;
   background-color: var(--sidebar-bg-color);
   backdrop-filter: blur(var(--blur-radius));
   border: 1px solid var(--sidebar-border-color);
-  border-radius: 18px; /* Prominent rounded corners */
+  border-radius: 18px;
   box-shadow: 
     0 4px 6px rgba(0, 0, 0, 0.1),
     0 1px 10px rgba(0, 0, 0, 0.2),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05); /* Inner white shine for depth */
-  z-index: 0; /* Keep behind content */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  z-index: 0;
 }
 
-/* Optional: Subtle Noise Overlay for texture */
+/* Optional noise */
 .noise-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* You'd typically use a subtle image/gradient for real noise */
+  inset: 0;
   background-image: radial-gradient(circle, rgba(255,255,255,0.01) 1%, transparent 1%);
   background-size: 3px 3px;
   opacity: 0.8;
@@ -64,16 +63,19 @@
   border-radius: 18px;
 }
 
-/* Scroll Area */
+/* --------------------------------------------------
+   SCROLL AREA
+-------------------------------------------------- */
 .sidebar-scroll-area {
   position: relative;
   height: 100%;
   overflow-y: auto;
-  padding-right: 5px; /* Space for scrollbar */
-  z-index: 1; /* Above the backdrop */
+  /* Add padding to account for custom scrollbar width */
+  padding-right: 5px; 
+  z-index: 1;
 }
 
-/* Custom Scrollbar for a cleaner look (Webkit browsers) */
+/* Custom Scrollbar Styles (for Webkit browsers) */
 .sidebar-scroll-area::-webkit-scrollbar {
   width: 6px;
 }
@@ -85,32 +87,34 @@
   background: transparent;
 }
 
-
-/* Content Structure */
+/* --------------------------------------------------
+   CONTENT STRUCTURE
+-------------------------------------------------- */
 .sidebar-content {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Space between main sections */
+  gap: 15px;
   padding-bottom: 20px;
 }
 
 .section-group {
   display: flex;
   flex-direction: column;
-  gap: 4px; /* Space between links/triggers */
+  gap: 4px;
 }
 
-/* Section Header Label - Subtle and non-intrusive */
 .section-header-label {
   color: var(--header-label-color);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 8px 10px 4px 10px;
+  padding: 8px 10px 4px;
 }
 
-/* Nav Link & Accordion Trigger Styling */
+/* --------------------------------------------------
+   NAV LINKS & ACCORDION
+-------------------------------------------------- */
 .nav-link,
 .accordion-trigger {
   display: flex;
@@ -124,38 +128,29 @@
   font-size: 14px;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-  position: relative;
 }
 
 .nav-link.sub-link {
-  padding-left: 20px; /* Indent sub-items */
+  padding-left: 20px;
   font-size: 13px;
-  border-radius: 8px; /* Slightly smaller radius for sub-items */
+  border-radius: 8px;
 }
 
-/* Hover and Focus Effect (subtle background change) */
 .nav-link:hover,
-.nav-link:focus,
-.accordion-trigger:hover,
-.accordion-trigger:focus {
+.accordion-trigger:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  outline: none;
 }
 
-/* Active State (Pill/Tab-like, prominent background) */
 .nav-link.active {
   background-color: var(--active-bg-color);
   color: var(--active-text-color);
   font-weight: 600;
-  /* Add a subtle inset shadow to make it feel embossed/pressed */
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Accordion Trigger Specifics */
-.accordion-trigger {
-  user-select: none;
-}
-
+/* --------------------------------------------------
+   ACCORDION
+-------------------------------------------------- */
 .chevron {
   width: 0;
   height: 0;
@@ -163,7 +158,6 @@
   border-right: 4px solid transparent;
   border-top: 5px solid var(--default-text-color);
   transition: transform 0.2s ease;
-  margin-left: 10px;
 }
 
 .accordion-trigger.open .chevron {
@@ -171,7 +165,6 @@
   border-top-color: var(--active-text-color);
 }
 
-/* Accordion Content (Smooth height transition) */
 .accordion-content {
   max-height: 0;
   overflow: hidden;
@@ -179,117 +172,48 @@
 }
 
 .accordion-content.expanded {
-  max-height: 500px; /* Must be larger than actual content height */
+  /* Set a large enough value to accommodate all children */
+  max-height: 500px;
 }
 
 .accordion-inner {
-  padding: 5px 0 5px 0;
+  padding: 5px 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-/* Active Dot/Indicator (Used for visual emphasis on active link) */
-/* The 'active-dot' is styled to be the active background of the NavLink */
-.active-dot {
-  display: none; /* Hide the dot, use the background for the active state */
-}
-
-/* Footer Status */
+/* --------------------------------------------------
+   FOOTER
+-------------------------------------------------- */
 .sidebar-footer {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 10px;
   color: var(--header-label-color);
-  padding: 20px 10px 10px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05); /* Subtle separator */
+  padding: 20px 10px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .status-dot {
   width: 6px;
   height: 6px;
-  background-color: #38c172; /* Example: Green for 'online' */
+  background-color: #38c172;
   border-radius: 50%;
   box-shadow: 0 0 5px #38c172;
 }
 
-
-/* --- TOOLTIP STYLES (VisionOS-inspired) --- */
-
-/* Base tooltip container */
-[data-tooltip] {
-  position: relative;
-}
-
-/* Tooltip bubble styling */
-[data-tooltip]:after {
-  content: attr(data-tooltip);
-  position: absolute;
-  /* Position it slightly outside the link to the right */
-  left: calc(var(--sidebar-width) - 20px); 
-  top: 50%;
-  transform: translateY(-50%) translateX(20px); /* Add a small gap and initial transform */
-  
-  /* Glass/Frost styling */
-  background-color: rgba(0, 0, 0, 0.6); 
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 8px;
-  white-space: nowrap;
-  font-size: 11px;
-  font-weight: 400;
-  
-  /* Visibility and transition */
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 1010; /* Ensure it floats above everything */
-}
-
-/* Show on hover/focus */
-.sidebar-container:hover [data-tooltip]:after,
-.sidebar-container [data-tooltip]:focus-within:after {
-  opacity: 1;
-  visibility: visible;
-  /* Final position */
-  transform: translateY(-50%) translateX(0); 
-}
-
-
-/* --- Responsive Adjustments (Mobile Sidebar Overlay) --- */
-
+/* --------------------------------------------------
+   MOBILE BEHAVIOR
+-------------------------------------------------- */
 @media (max-width: 768px) {
-  /* No need to set top/height here, as the JSX style prop handles it dynamically
-     based on the headerOffset state. We only define the transform/transition. */
   .sidebar-container {
+    /* Slide out completely */
     transform: translateX(-100%);
   }
 
   .sidebar-container.is-open {
     transform: translateX(0);
-  }
-
-  /* Full screen overlay to dim content when open on mobile */
-  .sidebar-container.is-open:before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: -1; 
-  }
-
-  /* FIXED: Hide tooltips on mobile for a cleaner experience */
-  [data-tooltip]:after {
-    content: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
   }
 }
