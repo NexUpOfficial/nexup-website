@@ -226,7 +226,7 @@
   content: attr(data-tooltip);
   position: absolute;
   /* Position it slightly outside the link for a floating effect */
-  left: calc(100% + 15px); 
+  left: 0; 
   top: 50%;
   transform: translateY(-50%);
   
@@ -263,16 +263,18 @@
 /* --- Responsive Adjustments (Mobile Sidebar Overlay) --- */
 
 @media (max-width: 768px) {
+@media (max-width: 768px) {
   .sidebar-container {
-    /* Full width on mobile, moves off-screen right */
-    width: 80%; 
-    max-width: 300px;
-    height: 100vh !important; /* Full screen height */
-    top: 0 !important;
+    top: 64px; /* 👈 push sidebar down on mobile */
+    height: calc(100vh - 64px);
+
     transform: translateX(-100%);
-    /* Use a fixed position instead of the offset based one */
-    left: 0; 
   }
+
+  .sidebar-container.is-open {
+    transform: translateX(0);
+  }
+}
 
   .sidebar-container.is-open {
     transform: translateX(0);
