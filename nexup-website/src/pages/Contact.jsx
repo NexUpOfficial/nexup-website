@@ -94,22 +94,22 @@ export default function Contact() {
             <ContactCard
               title="Business & Enterprise"
               text="Partnerships, investments, and B2B inquiries." // 3. Fixed Text
-              email="business@nexup.com"
+              email="teamnexup@gmail.com"
             />
             <ContactCard
               title="Careers & Talent"
               text="Join our engineering and design teams."
-              email="careers@nexup.com"
+              email="teamnexup@gmail.com"
             />
             <ContactCard
               title="Press & Media"
               text="Interviews, brand assets, and official statements."
-              email="press@nexup.com"
+              email="teamnexup@gmail.com"
             />
             <ContactCard
               title="Developer Support"
               text="API access, documentation, and technical help."
-              email="dev@nexup.com"
+              email="teamnexup@gmail.com"
             />
           </motion.div>
         </ContactSection>
@@ -185,10 +185,10 @@ export default function Contact() {
                     <div className="input-group">
                       <label>Inquiry Type</label>
                       <select className="form-select">
-                        <option>Partnership Proposal</option>
-                        <option>Job Application</option>
-                        <option>Investment Opportunity</option>
-                        <option>General Inquiry</option>
+                        <option className="form-opt">Partnership Proposal</option>
+                        <option className="form-opt">Job Application</option>
+                        <option className="form-opt">Investment Opportunity</option>
+                        <option className="form-opt">General Inquiry</option>
                       </select>
                     </div>
                   </div>
@@ -247,7 +247,8 @@ export default function Contact() {
               viewport={{ once: true }}
             >
               <h3><FiMapPin /> NeX UP HQ</h3>
-              <p>Hyderabad, Telangana, India</p>
+              <p>Vishkapatanam, 
+                Andra Pradesh, India</p>
               <p className="dimmed">Spatial Computing Research Div.</p>
               <p className="dimmed">9:00 AM — 6:00 PM IST</p>
             </motion.div>

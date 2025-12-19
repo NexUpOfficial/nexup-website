@@ -54,6 +54,10 @@
 .eco-hero-content {
   max-width: 900px;
 }
+.eco-content-wrapper {
+  touch-action: pan-y;
+  overscroll-behavior-x: none;
+}
 
 .eco-badge {
   display: inline-block;

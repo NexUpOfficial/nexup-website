@@ -1,4 +1,3 @@
-// src/pages/Ecosystem/Ecosystem.jsx
 import React, {
   useState,
   useEffect,
@@ -42,6 +41,10 @@ const PRELOADERS = {
   search: () => import("./NexSearch"),
 };
 
+/* Constants */
+const MIN_SWIPE = 75;
+const EDGE_GUARD = 30; // px from left edge
+
 /* Skeleton Loader */
 function SkeletonFallback() {
   return (
@@ -51,43 +54,33 @@ function SkeletonFallback() {
   );
 }
 
-/* Tab Content Wrapper */
-const TabContent = React.memo(
-  ({ activeTab, isRevealing, contentRef, swipeOffset }) => {
-    const ActiveComponent = COMPONENT_MAP[activeTab];
+/* Tab Content */
+const TabContent = React.memo(({ activeTab, swipeOffset }) => {
+  const ActiveComponent = COMPONENT_MAP[activeTab];
 
-    return (
-      <motion.div
-        className="eco-content"
-        ref={contentRef}
-        role="tabpanel"
-        id={`panel-${activeTab}`}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ 
-          opacity: 1, 
-          y: 0, 
-          x: swipeOffset 
-        }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        <Suspense fallback={<SkeletonFallback />}>
-          <ActiveComponent />
-        </Suspense>
-      </motion.div>
-    );
-  }
-);
+  return (
+    <motion.div
+      className="eco-content"
+      role="tabpanel"
+      id={`panel-${activeTab}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0, x: swipeOffset }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+      <Suspense fallback={<SkeletonFallback />}>
+        <ActiveComponent />
+      </Suspense>
+    </motion.div>
+  );
+});
 
 export default function Ecosystem() {
   const tabKeys = useMemo(() => TAB_DATA.map((t) => t.key), []);
-
   const [activeTab, setActiveTab] = useState("nexworld");
   const [hideHeader, setHideHeader] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState(0);
 
-  const minSwipe = 75;
-  const touchStartRef = useRef(0);
-  const contentRef = useRef(null);
+  const touchStartRef = useRef(null);
   const tabListRef = useRef(null);
 
   /* Deep Linking */
@@ -96,17 +89,15 @@ export default function Ecosystem() {
     if (tabKeys.includes(hash)) setActiveTab(hash);
   }, [tabKeys]);
 
-  /* Scroll Header Logic */
+  /* Header Hide on Scroll */
   useEffect(() => {
     let last = window.scrollY;
     const onScroll = () => {
       const now = window.scrollY;
-      // Only hide if we are scrolled down a bit
       if (now > last && now > 100) setHideHeader(true);
       else setHideHeader(false);
       last = now;
     };
-
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -114,25 +105,16 @@ export default function Ecosystem() {
   /* Preload Adjacent Tabs */
   useEffect(() => {
     const index = tabKeys.indexOf(activeTab);
-    const next = tabKeys[index + 1];
-    const prev = tabKeys[index - 1];
-
-    if (next && PRELOADERS[next]) PRELOADERS[next]();
-    if (prev && PRELOADERS[prev]) PRELOADERS[prev]();
+    PRELOADERS[tabKeys[index + 1]]?.();
+    PRELOADERS[tabKeys[index - 1]]?.();
   }, [activeTab, tabKeys]);
 
-  /* Auto-scroll Tab Bar on Mobile */
+  /* Auto-scroll Tab Bar */
   useEffect(() => {
-    if (tabListRef.current) {
-      const activeEl = tabListRef.current.querySelector(`[data-tab="${activeTab}"]`);
-      if (activeEl) {
-        activeEl.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "center",
-        });
-      }
-    }
+    const el = tabListRef.current?.querySelector(
+      `[data-tab="${activeTab}"]`
+    );
+    el?.scrollIntoView({ behavior: "smooth", inline: "center" });
   }, [activeTab]);
 
   /* Change Tab */
@@ -143,39 +125,52 @@ export default function Ecosystem() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /* Swipe Gestures */
+  /* TOUCH HANDLERS — FIXED */
   const onTouchStart = (e) => {
-    touchStartRef.current = e.touches[0].clientX;
+    const startX = e.touches[0].clientX;
+
+    // 🚫 Ignore left-edge swipes (sidebar / browser gesture)
+    if (startX < EDGE_GUARD) {
+      touchStartRef.current = null;
+      return;
+    }
+
+    touchStartRef.current = startX;
     setSwipeOffset(0);
   };
 
   const onTouchMove = (e) => {
+    if (touchStartRef.current === null) return;
+
     const dx = e.touches[0].clientX - touchStartRef.current;
-    // Damping
     setSwipeOffset(dx * 0.4);
   };
 
   const onTouchEnd = (e) => {
+    if (touchStartRef.current === null) return;
+
     const dx = touchStartRef.current - e.changedTouches[0].clientX;
     setSwipeOffset(0);
 
     const i = tabKeys.indexOf(activeTab);
-    let x = i;
+    let nextIndex = i;
 
-    if (dx > minSwipe) x = Math.min(i + 1, tabKeys.length - 1);
-    else if (dx < -minSwipe) x = Math.max(i - 1, 0);
+    if (dx > MIN_SWIPE) nextIndex = Math.min(i + 1, tabKeys.length - 1);
+    else if (dx < -MIN_SWIPE) nextIndex = Math.max(i - 1, 0);
 
-    if (x !== i) changeTab(tabKeys[x]);
+    if (nextIndex !== i) changeTab(tabKeys[nextIndex]);
+
+    touchStartRef.current = null;
   };
 
   return (
     <div className="eco-page">
-      {/* Background Ambience */}
+      {/* Ambient Background */}
       <div className="eco-ambient-bg" />
 
       {/* HERO */}
       <section className="eco-hero-section">
-        <motion.div 
+        <motion.div
           className="eco-hero-content"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -186,13 +181,13 @@ export default function Ecosystem() {
             One Ecosystem. <br /> Infinite Realities.
           </h1>
           <p className="eco-desc">
-            Navigate the layers of the NeX UP universe. From the physics engine to the 
-            social fabric, everything is connected.
+            Navigate the layers of the NeX UP universe. From the physics engine
+            to the social fabric, everything is connected.
           </p>
         </motion.div>
       </section>
 
-      {/* NAVIGATION DOCK */}
+      {/* NAV DOCK */}
       <div className={`eco-dock-wrapper ${hideHeader ? "dock-hidden" : ""}`}>
         <div className="eco-dock" ref={tabListRef}>
           {TAB_DATA.map(({ key, name }) => (
@@ -215,18 +210,14 @@ export default function Ecosystem() {
         </div>
       </div>
 
-      {/* DYNAMIC CONTENT */}
+      {/* CONTENT */}
       <div
         className="eco-content-wrapper"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <TabContent
-          activeTab={activeTab}
-          contentRef={contentRef}
-          swipeOffset={swipeOffset}
-        />
+        <TabContent activeTab={activeTab} swipeOffset={swipeOffset} />
       </div>
     </div>
   );
