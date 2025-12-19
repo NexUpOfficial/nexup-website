@@ -1,15 +1,21 @@
+/* Footer.css (Final Version with Top Bar Auth) */
+
 /* =========================================================
-   GLOBAL VARIABLES
+    GLOBAL VARIABLES
 ========================================================= */
 :root {
   --footer-bg: #050505;
   --footer-text: rgba(255, 255, 255, 0.65);
-  --footer-heading: #b8a9ff;
+  --footer-heading: #b8a9ff; /* Neon Purple/Blue for headings */
   --footer-hover: #ffffff;
+  
+  /* Primary/Secondary Action Colors */
+  --primary-color: #4ade80; /* Green for Sign Up (Primary Action) */
+  --secondary-color: #ffffff; /* White/Light for Login (Secondary Action) */
 }
 
 /* =========================================================
-   FOOTER CONTAINER
+    FOOTER CONTAINER & BACKGROUND (No Change)
 ========================================================= */
 .nx-footer {
   position: relative;
@@ -35,6 +41,7 @@
   box-shadow: 0 0 15px var(--footer-heading);
 }
 
+/* Background Effects (Noise & Glow) */
 .footer-noise {
   position: absolute; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
@@ -56,14 +63,35 @@
 }
 
 /* =========================================================
-   GRID LAYOUT (Desktop Default: 5 Cols)
+    GRID LAYOUT (Brand + Links)
 ========================================================= */
-.nx-footer-grid {
-  display: grid;
-  /* Brand (1.5fr) + 4 Link Columns (1fr each) */
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 80px;
+
+/* Top Row: Brand (Left) & Auth Buttons (Right) */
+.nx-footer-grid-top {
+    display: grid;
+    /* Two columns: 2 parts for brand, 1 part for Auth buttons */
+    grid-template-columns: 2fr 1fr; 
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 40px;
+}
+
+/* Right Column for Auth Buttons */
+.auth-col {
+    /* Aligns content (the auth-buttons container) to the right */
+    align-items: flex-start;
+    justify-content: flex-end; /* Push content to the right edge */
+    flex-direction: row; /* Ensure flex-start aligns them horizontally */
+}
+
+/* Bottom Row: Link Columns (5-Column Layout on Desktop) */
+.nx-footer-grid-bottom {
+    display: grid;
+    /* 5 Link Columns. Connect gets a bit more space for socials. */
+    grid-template-columns: 1fr 1fr 1fr 1fr 1.2fr; 
+    gap: 40px;
+    margin-bottom: 80px; /* Restored larger margin */
 }
 
 .nx-col {
@@ -72,27 +100,29 @@
   gap: 14px;
 }
 
-/* Brand Column */
+/* Brand Column Content */
 .brand-col .nx-logo {
-  font-size: 1.5rem; font-weight: 700; color: #fff;
+  font-size: 1.6rem; font-weight: 700; color: #fff;
   text-decoration: none; letter-spacing: -0.02em; margin-bottom: 8px; display: inline-block;
 }
 .brand-col .nx-desc {
-  font-size: 0.9rem; line-height: 1.6; color: var(--footer-text); max-width: 280px;
+  font-size: 0.95rem; line-height: 1.6; color: var(--footer-text); max-width: 380px;
 }
 
 /* Headings */
 .nx-col h4 {
-  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--footer-heading); margin-bottom: 8px; font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--footer-heading); margin-bottom: 8px; font-weight: 700;
 }
 
-/* Links */
+/* Links Styling */
 .nx-col a {
-  text-decoration: none; color: var(--footer-text); font-size: 0.9rem;
+  text-decoration: none; color: var(--footer-text); font-size: 0.95rem;
   transition: all 0.3s ease; width: fit-content; position: relative;
 }
 
+/* Hover effect: Underline glow for standard links */
 .nx-col a::after {
   content: ""; position: absolute; left: 0; bottom: -2px; width: 0%; height: 1px;
   background: var(--footer-heading); box-shadow: 0 0 8px var(--footer-heading); transition: width 0.3s ease;
@@ -106,14 +136,71 @@
 }
 
 /* Socials & Contact */
-.social-row { display: flex; gap: 16px; margin-top: 16px; }
-.social-row a { font-size: 1.1rem; color: var(--footer-text); transition: transform 0.2s, color 0.2s; }
-.social-row a:hover { color: #fff; transform: translateY(-2px); }
+.social-row { display: flex; gap: 16px; margin-top: 10px; }
+.social-row a { font-size: 1.2rem; color: var(--footer-text); transition: transform 0.2s, color 0.2s; }
+.social-row a:hover { color: var(--footer-hover); transform: translateY(-2px); }
 
 .contact-link { font-family: monospace; letter-spacing: 0.5px; opacity: 0.8; }
 
 /* =========================================================
-   BOTTOM BAR
+    LOGIN / SIGN UP BUTTONS (In Top Bar)
+========================================================= */
+.auth-buttons {
+    display: flex;
+    gap: 20px;
+    /* Aligns the buttons themselves to the right within their container */
+    margin-left: auto; 
+}
+
+.auth-btn {
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 0; /* Padding only top/bottom */
+    transition: color 0.3s ease;
+    position: relative;
+    width: fit-content;
+}
+
+/* Button Hover Effect: Bottom Border */
+.auth-btn::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Secondary Style: Login */
+.auth-btn.secondary {
+    color: var(--secondary-color);
+}
+.auth-btn.secondary:hover {
+    color: var(--footer-hover);
+}
+.auth-btn.secondary:hover::after {
+    width: 100%;
+    background-color: var(--secondary-color);
+}
+
+/* Primary Style: Sign Up */
+.auth-btn.primary {
+    color: var(--primary-color);
+}
+.auth-btn.primary:hover {
+    color: var(--primary-color); /* Keep primary color on hover */
+    text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+}
+.auth-btn.primary:hover::after {
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+
+/* =========================================================
+    BOTTOM BAR
 ========================================================= */
 .nx-footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -131,6 +218,7 @@
 .nx-legal-links a { text-decoration: none; color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; transition: color 0.2s; }
 .nx-legal-links a:hover { color: #fff; }
 
+/* System Status Indicator */
 .nx-system-status {
   display: flex; align-items: center; gap: 8px;
   color: #4ade80; font-family: monospace; font-size: 0.75rem;
@@ -140,48 +228,65 @@
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
 /* =========================================================
-   RESPONSIVE (The Fix)
+    RESPONSIVE
 ========================================================= */
 
-/* Tablet: Wrap to 3 columns usually */
+/* Tablet (1024px and below) */
 @media (max-width: 1024px) {
-  .nx-footer-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-  .brand-col {
-    grid-column: span 3; /* Brand takes full width on tablet */
-    margin-bottom: 20px;
-  }
+    
+    /* Top Bar: Brand and Auth Buttons stack vertically */
+    .nx-footer-grid-top {
+        grid-template-columns: 1fr; /* Force single column on tablet */
+        gap: 20px;
+    }
+    
+    /* Auth buttons are now left-aligned when the container is full width */
+    .auth-col {
+        justify-content: flex-start;
+    }
+    .auth-buttons {
+        margin-left: 0;
+    }
+
+    /* Links: 2 columns (3 rows of 2 categories) */
+    .nx-footer-grid-bottom {
+        grid-template-columns: 1fr 1fr; 
+        gap: 40px;
+    }
 }
 
-/* Mobile: 2 Columns Side-by-Side */
+/* Mobile (600px and below) */
 @media (max-width: 600px) {
-  .nx-footer {
-    padding: 60px 20px 30px;
-  }
-
-  .nx-footer-grid {
-    /* ⭐ FORCE 2 COLUMNS */
-    grid-template-columns: 1fr 1fr; 
-    gap: 40px 20px; /* Vertical Gap 40px, Horizontal Gap 20px */
-  }
-
-  /* Brand Column takes full width at the top */
-  .brand-col {
-    grid-column: span 2; 
-    margin-bottom: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding-bottom: 30px;
-  }
-
-  .nx-footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-  
-  .nx-legal-links {
-    flex-wrap: wrap;
-    gap: 16px;
-  }
+    .nx-footer {
+        padding: 60px 20px 30px;
+    }
+    
+    .nx-footer-grid-top {
+        padding-bottom: 30px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        margin-bottom: 30px;
+    }
+    
+    .nx-footer-grid-bottom {
+        grid-template-columns: 1fr 1fr; 
+        gap: 40px 20px; 
+        margin-bottom: 40px;
+    }
+    
+    /* Stack Login/Sign Up buttons vertically on mobile */
+    .auth-buttons {
+        flex-direction: column; 
+        gap: 10px;
+    }
+    
+    .nx-footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .nx-legal-links {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
 }

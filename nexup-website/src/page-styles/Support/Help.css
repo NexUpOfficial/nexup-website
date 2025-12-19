@@ -1,521 +1,610 @@
+/* Help.css */
+
 /* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal + 1. Grid Background)
+    GLOBAL & LAYOUT (PREFIXED)
 =========================================================== */
 .help-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  min-height: 100vh;
-  
-  /* Hide Scrollbar */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
-  
-  /* 1. Soft Grid Pattern */
-  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
+  width: 100%; min-height: 100vh; background: #050505;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; /* Changed to column/flex-start for better page flow */
+  position: relative; overflow: hidden; font-family: 'Inter', sans-serif;
+  transition: background 0.5s ease;
+  color: #fff;
+  padding-bottom: 50px; /* Ensure space at the bottom */
+}
+.help-page::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+  opacity: 0.4; pointer-events: none; z-index: 1;
+}
+.help-cyber-grid {
+  position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+  background-image: linear-gradient(rgba(184, 169, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(184, 169, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px; transform: perspective(500px) rotateX(60deg);
+  animation: helpGridMove 20s linear infinite; z-index: 0; pointer-events: none; transition: filter 0.5s ease;
+}
+@keyframes helpGridMove { 0% { transform: perspective(500px) rotateX(60deg) rotateZ(0deg) translateY(0); } 100% { transform: perspective(500px) rotateX(60deg) rotateZ(1deg) translateY(60px); } }
+.help-glow-top { position: absolute; top: -20%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(184, 169, 255, 0.1) 0%, transparent 60%); filter: blur(100px); z-index: 0; }
+.help-glow-bottom { position: absolute; bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(119, 56, 255, 0.08) 0%, transparent 60%); filter: blur(100px); z-index: 0; }
+
+/* Main Container */
+.help-center-container { 
+    position: relative; z-index: 2; width: 100%; max-width: 1200px; padding: 40px; 
+    transition: all 0.5s ease;
 }
 
-.help-page::-webkit-scrollbar {
-  display: none;
-}
-
-.help-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-  color: #f0f0f0;
-}
-
-/* ===========================================================
-   HERO SEARCH SECTION
-=========================================================== */
-.help-hero-section {
-  min-height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
-}
-
-.help-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 60%);
-  filter: blur(80px);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.help-hero-content {
-  z-index: 1;
-  width: 100%;
-  max-width: 700px;
-}
-
-.help-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: 30px;
-  line-height: 1.1;
-}
-
-/* Search Bar */
-.search-container {
-  display: flex;
-  align-items: center;
-  padding: 16px 24px;
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Glass Panel Base Style */
+.help-glass-panel {
+  background: rgba(15, 15, 15, 0.9); 
+  border: 1px solid rgba(184, 169, 255, 0.1);
+  backdrop-filter: blur(15px); 
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   transition: all 0.3s ease;
 }
-
-/* 2. Focus Scale & Shadow */
-.search-container:focus-within {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: #b8a9ff;
-  box-shadow: 0 0 20px rgba(184, 169, 255, 0.15);
-  transform: scale(1.01);
+.help-glass-panel:hover {
+    box-shadow: 0 10px 40px rgba(184, 169, 255, 0.15);
 }
 
-.search-icon {
-  font-size: 1.4rem;
-  color: #b8a9ff;
-  margin-right: 14px;
+.help-gradient-text { 
+  background: linear-gradient(90deg, #b8a9ff, #ffffff); 
+  -webkit-background-clip: text; 
+  background-clip: text; 
+  color: transparent; 
 }
+.help-check-icon { color: #4ade80; } 
 
-.search-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 1.1rem;
-  outline: none;
+/* ===========================================================
+    AI GREETING & ANIMATIONS
+=========================================================== */
+.help-ai-greeting-screen {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle, #0d0d0f 0%, #000 80%);
+  z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff;
 }
-
-.search-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+.help-ai-text { font-family: monospace; font-size: 1.5rem; color: #b8a9ff; margin-bottom: 20px; text-align: center; padding: 0 20px; }
+.help-typing-effect {
+  white-space: nowrap; overflow: hidden; border-right: 2px solid #b8a9ff;
+  animation: helpTyping 1.5s steps(42, end), helpBlinkCaret .75s step-end infinite; width: 0; animation-fill-mode: forwards;
 }
-
-/* Search Chips */
-.popular-searches {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+@keyframes helpTyping { from { width: 0 } to { width: 100% } }
+@keyframes helpBlinkCaret { from, to { border-color: transparent } 50% { border-color: #b8a9ff; } }
+.help-loader-line { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
+.help-loader-line::after {
+  content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 50%;
+  background: #b8a9ff; animation: helpLoadingScan 1s ease-in-out infinite;
 }
-
-.search-chip {
+@keyframes helpLoadingScan { 0% { left: -50%; } 100% { left: 100%; } }
+.help-skip-btn {
+  position: absolute; bottom: 40px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px 14px;
-  border-radius: 20px;
-  color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-  transition: 0.2s;
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 10px 20px; border-radius: 30px;
+  font-family: monospace; font-size: 0.85rem;
+  cursor: pointer; transition: 0.3s;
+  backdrop-filter: blur(5px);
 }
+.help-skip-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
 
-/* 5. Chip Hover Pop */
-.search-chip:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: #b8a9ff;
-  color: #fff;
-  transform: translateY(-2px);
-}
+/* Pulse for CTA icon */
+@keyframes helpPulseDot { 0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); } }
+.help-pulse { animation: helpPulseDot 2s infinite; }
 
 /* ===========================================================
-   SYSTEM STATUS BAR
+    HELP CENTER LAYOUT & HEADER (PREFIXED)
 =========================================================== */
-.system-status-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  background: rgba(20, 20, 20, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  font-size: 0.9rem;
-  margin-top: -40px; /* Pull it up closer to hero */
-  backdrop-filter: blur(10px);
-  transition: border-color 0.3s ease;
-  cursor: pointer;
+.help-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.help-title { /* Was .login-title */
+    font-size: clamp(2.5rem, 4vw, 4rem); line-height: 1.1; font-weight: 800; color: #fff; margin-bottom: 20px;
+}
+.help-sub { /* Was .login-sub */
+    font-size: 1.1rem; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 700px; margin: 0 auto 30px auto;
 }
 
-/* 9. Status Bar Hover */
-.system-status-bar:hover {
-  border-color: rgba(184, 169, 255, 0.3);
+/* 1. Search Bar */
+.help-search-bar-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0px auto;
+    padding: 18px 25px; /* Slightly larger padding for better UX */
+    background: rgba(0,0,0,0.4); 
+    border: 1px solid rgba(184, 169, 255, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(184, 169, 255, 0.1);
+}
+.help-search-icon {
+    color: #b8a9ff;
+    margin-right: 15px;
+}
+.help-search-input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    outline: none;
+    color: #fff;
+}
+.help-search-input::placeholder {
+    color: rgba(255,255,255,0.5);
 }
 
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* 2. Content Layout (Flex Fix) */
+.help-content-wrapper-flex { /* New class for the Flex layout */
+    display: flex;
+    gap: 40px;
+    align-items: flex-start; /* Aligns content blocks to the top */
+    width: 100%;
+}
+.help-product-sidebar {
+    flex: 0 0 280px; /* Fixed width sidebar */
+    padding: 25px;
+}
+.help-sidebar-heading {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.help-sidebar-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 14px 10px;
+    margin-bottom: 8px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+.help-sidebar-item:hover {
+    background-color: rgba(184, 169, 255, 0.05);
+    color: #fff;
+    border-left: 3px solid #b8a9ff; /* Subtle hover effect */
+}
+.help-sidebar-item.active {
+    background-color: rgba(184, 169, 255, 0.15); /* Stronger active background */
+    color: #b8a9ff; 
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(184, 169, 255, 0.3);
+    border-left: 3px solid #b8a9ff;
+}
+.help-sidebar-item svg {
+    margin-right: 10px;
+    min-width: 20px;
 }
 
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
+.help-articles-main {
+    flex: 1; /* Main content takes up remaining space */
+    padding-top: 10px;
 }
 
-.status-text {
-  color: rgba(255, 255, 255, 0.9);
+.help-articles-heading {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #fff;
+    padding-left: 10px;
+}
+.help-section-block {
+    margin-bottom: 40px;
+    padding: 30px;
+}
+.help-section-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+.help-section-icon {
+    margin-right: 15px;
+}
+.help-articles-list {
+    display: flex;
+    flex-direction: column;
+}
+.help-article-link {
+    padding: 14px 10px;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s, color 0.15s, border-left 0.15s;
+    border-left: 3px solid transparent;
+}
+.help-article-link:hover {
+    background-color: rgba(184, 169, 255, 0.08);
+    color: #fff;
+    border-left-color: #4ade80; /* Subtle green highlight on hover */
+}
+.help-no-results-message {
+    padding: 40px;
+    background: rgba(255, 59, 48, 0.1);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    border-radius: 10px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+.help-no-results-message p {
+    margin-top: 10px;
+    font-size: 1.1rem;
 }
 
-.status-link {
-  color: #b8a9ff;
-  font-weight: 500;
+
+/* 3. Article Layout */
+.help-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 50px;
+}
+.help-article-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 15px;
+}
+.help-article-short-explanation {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    font-style: italic;
+}
+.help-article-divider {
+    border: none;
+    border-top: 1px dashed rgba(255,255,255,0.2);
+    margin: 40px 0;
+}
+.help-article-steps-heading {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+.help-article-steps-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.help-article-steps-list li {
+    background-color: rgba(255,255,255,0.03);
+    padding: 18px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    border-left: 4px solid #b8a9ff;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+.help-article-steps-list li .help-check-icon {
+    margin-top: 4px;
+    min-width: 18px;
+}
+.help-article-contact-prompt {
+    padding: 30px;
+    border: 1px solid #b8a9ff;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 40px;
+    background-color: rgba(184, 169, 255, 0.05); 
+    box-shadow: 0 0 15px rgba(184, 169, 255, 0.2);
 }
 
-.status-link:hover {
-  text-decoration: underline;
+/* 4. Contact Support Buttons */
+.help-back-button {
+    background: none;
+    border: none;
+    color: #b8a9ff;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 30px;
+    padding: 5px 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s, text-shadow 0.2s;
+}
+.help-back-button:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #b8a9ff;
 }
 
-/* ===========================================================
-   CATEGORY GRID (3 & 4. Card Glow & Border)
-=========================================================== */
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+/* Glow Trail Button (Primary CTA) */
+.help-glow-trail-btn {
+  position: relative; width: 100%; padding: 16px; background: #0f0f0f;
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff;
+  font-size: 1.1rem; font-weight: 600; cursor: pointer; overflow: hidden;
+  margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; z-index: 2;
+  transition: all 0.2s;
 }
-
-.category-card {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  /* 4. Default Border for smooth transition */
-  border: 1px solid rgba(255,255,255,0.06);
+.help-glow-trail-btn:hover {
+    border-color: #b8a9ff;
+    box-shadow: 0 0 15px rgba(184, 169, 255, 0.3);
 }
-
-.cat-icon-wrapper {
-  font-size: 1.8rem;
-  color: #b8a9ff;
-  margin-bottom: 16px;
-  padding: 12px;
-  background: rgba(184, 169, 255, 0.1);
-  border-radius: 12px;
+.help-glow-trail-btn:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+    box-shadow: none; 
+    border-color: rgba(255,255,255,0.1);
 }
-
-.cat-info h3 {
-  font-size: 1.2rem;
-  margin-bottom: 6px;
-  color: #fff;
-}
-
-.cat-info p {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.4;
-}
-
-.cat-arrow {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: 0.3s ease;
-  color: #b8a9ff;
-}
-
-/* 3. Hover Glow */
-.category-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(184, 169, 255, 0.3);
-  box-shadow: 0 6px 20px rgba(184, 169, 255, 0.15);
-}
-
-.category-card:hover .cat-arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* ===========================================================
-   ARTICLE LIST (6. Icon Scale)
-=========================================================== */
-.articles-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.article-row {
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  gap: 20px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.article-row:hover {
-  background: rgba(255, 255, 255, 0.06);
-  transform: translateX(5px);
-}
-
-.article-icon {
-  color: #b8a9ff;
-  font-size: 1.4rem;
-  padding: 10px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 8px;
-  transition: transform 0.3s ease, color 0.3s;
-}
-
-/* 6. Icon Interaction */
-.article-row:hover .article-icon {
-  transform: scale(1.1);
-  color: #fff;
-}
-
-.article-main {
-  flex: 1;
-}
-
-.article-main h4 {
-  font-size: 1.1rem;
-  margin-bottom: 6px;
-  color: #fff;
-}
-
-.article-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.5);
-}
-
-.meta-badge {
-  background: rgba(255,255,255,0.1);
-  padding: 2px 8px;
-  border-radius: 4px;
-  color: rgba(255,255,255,0.8);
-}
-
-.meta-divider {
-  color: rgba(255,255,255,0.2);
-}
-
-.article-read-time {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.4);
-  white-space: nowrap;
-}
-
-/* ===========================================================
-   FAQ ACCORDION (7 & 8. Animations)
-=========================================================== */
-.faq-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.faq-item {
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding-bottom: 16px;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-/* 7. Border Highlight */
-.faq-item.open {
-  border-color: #b8a9ff;
-}
-
-.faq-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.faq-header h4 {
-  font-size: 1.1rem;
-  color: #fff;
-  transition: 0.3s;
-}
-
-.faq-item:hover .faq-header h4 {
-  color: #b8a9ff;
-}
-
-.faq-toggle {
-  font-size: 1.5rem;
-  color: rgba(255,255,255,0.5);
-  /* 8. Icon Rotation */
-  transition: transform 0.3s ease;
-  display: inline-block; /* Needed for transform */
-}
-
-.faq-item.open .faq-toggle {
-  transform: rotate(180deg); /* Flip minus if using + to x icon logic, or just visual spin */
-  color: #fff;
-}
-
-.faq-body {
-  overflow: hidden;
-}
-
-.faq-body p {
-  padding-top: 10px;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.6;
-}
-
-/* ===========================================================
-   FINAL CTA (10. Hover Glow)
-=========================================================== */
-.help-final {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 40px;
-  gap: 30px;
-  flex-wrap: wrap;
-  transition: transform 0.4s, box-shadow 0.4s;
-}
-
-/* 10. Final CTA Interaction */
-.help-final:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 40px rgba(184,169,255,0.15);
-}
-
-.final-icon {
-  font-size: 2.5rem;
-  color: #b8a9ff;
-  padding: 20px;
-  background: rgba(184, 169, 255, 0.1);
+.help-spinner { animation: helpSpin 1s linear infinite; }
+@keyframes helpSpin { 100% { transform: rotate(360deg); } }
+.help-glow-effect {
+  position: absolute; top: 0; left: 0; width: 150px; height: 150px;
+  background: radial-gradient(circle, rgba(184, 169, 255, 0.4) 0%, transparent 70%);
+  pointer-events: none; mix-blend-mode: overlay;
+  transition: transform 0.1s ease-out;
   border-radius: 50%;
 }
-
-.final-content h2 {
-  font-size: 1.6rem;
-  margin-bottom: 8px;
-  color: #fff;
+.help-contact-button { /* Base class for all contact buttons */
+    /* Inherits from .help-glow-trail-btn */
+}
+.help-contact-support-main-cta {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 50px;
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.1); /* Subtle green emphasis for CTA */
+    border: 1px solid rgba(74, 222, 128, 0.2);
+}
+.help-contact-support-main-cta svg {
+    margin-bottom: 20px;
 }
 
-.final-content p {
-  color: rgba(255,255,255,0.7);
+
+/* --- Contact Form Styles (PREFIXED) --- */
+.help-contact-form-container {
+    position: relative;
+    max-width: 500px;
+    padding: 40px;
+    margin: 40px auto;
+    overflow: hidden;
+}
+.help-contact-form-container .help-glow-top,
+.help-contact-form-container .help-glow-bottom {
+    position: absolute;
+    filter: blur(80px);
+    width: 100px; height: 100px;
+    top: 50%; left: 50%;
+    opacity: 0.1;
+}
+.help-contact-form-container .help-holo-sheen {
+    position: absolute; top: 0; left: -100%; width: 200%; height: 100%;
+    background: linear-gradient(75deg, transparent 20%, rgba(184,169,255,0.15) 50%, transparent 80%);
+    animation: helpSheenMove 4s ease-in-out infinite; pointer-events: none; z-index: 0;
+}
+@keyframes helpSheenMove { 0% { left: -100%; } 100% { left: 100%; } }
+
+.help-auth-header { text-align: center; margin-bottom: 30px; position: relative; z-index: 2; }
+.help-auth-header h2 { font-size: 1.8rem; margin-bottom: 8px; color: #fff; font-weight: 700; }
+.help-auth-header p { font-size: 0.95rem; color: rgba(255,255,255,0.6); }
+
+.help-auth-form { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
+.help-input-group { position: relative; border-radius: 10px; }
+.help-input-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem; z-index: 2; transition: 0.3s;
+}
+.help-input-group.focus .help-input-icon { color: #b8a9ff; }
+
+.help-auth-form input, 
+.help-auth-form textarea,
+.help-auth-form select {
+  width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+  padding: 14px 40px 14px 44px; border-radius: 10px; color: #fff; font-size: 1rem; transition: 0.3s; position: relative; z-index: 1;
+}
+.help-auth-form input:focus,
+.help-auth-form textarea:focus,
+.help-auth-form select:focus { outline: none; background: rgba(0,0,0,0.5); border-color: transparent; }
+
+.help-input-border-glow {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  border-radius: 10px; border: 1px solid transparent; pointer-events: none; z-index: 0; transition: 0.3s;
+}
+.help-input-group.focus .help-input-border-glow {
+  border-color: #b8a9ff; box-shadow: 0 0 15px rgba(184, 169, 255, 0.3) inset, 0 0 5px rgba(184, 169, 255, 0.5);
 }
 
-.final-actions {
-  display: flex;
-  gap: 16px;
+.help-input-group.help-select-group select {
+    appearance: none; 
+    background: rgba(0,0,0,0.3) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23b8a9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>') no-repeat right 12px center / 16px;
+    padding-right: 40px;
+}
+.help-input-group.help-textarea-group textarea {
+    min-height: 120px;
+    padding: 14px 14px 14px 44px; 
+}
+.help-input-group.help-textarea-group .help-input-icon {
+    top: 18px; 
+    transform: none;
+}
+
+.help-file-upload-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 14px 15px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.help-file-upload-label:hover {
+    border-color: #b8a9ff;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+}
+.help-file-upload-label input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.help-contact-form-container.submitted {
+    text-align: center;
+    padding: 60px 40px;
+}
+.help-contact-form-container.submitted p {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 20px;
+}
+
+
+/* ===========================================================
+    MEDIA QUERIES (RESPONSIVENESS)
+=========================================================== */
+@media (max-width: 1200px) {
+    .help-center-container {
+        padding: 20px;
+    }
+}
+@media (max-width: 992px) {
+    .help-content-wrapper-flex {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .help-product-sidebar {
+        flex: auto; /* Allow sidebar to take full width */
+        width: 100%;
+        order: -1; /* Place sidebar above main content on mobile */
+    }
+    .help-product-sidebar .help-sidebar-heading {
+        text-align: center;
+    }
+    .help-sidebar-item {
+        justify-content: center;
+    }
+    .help-articles-main {
+        padding-top: 0;
+    }
+}
+@media (max-width: 600px) {
+    .help-article, .help-contact-form-container {
+        padding: 30px 20px;
+    }
+    .help-title {
+        font-size: 2rem;
+    }
+    .help-article-title {
+        font-size: 1.8rem;
+    }
+    .help-article-steps-heading, .help-section-title {
+        font-size: 1.4rem;
+    }
+    .help-search-bar-container {
+        padding: 15px 15px;
+    }
+}
+
+/* Help.css (Append these to the previous Help.css file) */
+
+/* ===========================================================
+    NEW: POPULAR QUESTIONS
+=========================================================== */
+.help-popular-questions {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0px auto 50px auto;
+    padding: 0 40px; /* Aligns with help-center-container padding */
+}
+.help-popular-heading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.help-popular-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.help-popular-link {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.help-popular-link:hover {
+    background: rgba(184, 169, 255, 0.15);
+    border-color: #b8a9ff;
+    box-shadow: 0 0 10px rgba(184, 169, 255, 0.3);
 }
 
 /* ===========================================================
-   UTILITIES
+    NEW: ARTICLE COMMON CAUSES BLOCK (SECTION 4)
 =========================================================== */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
+.help-article-common-causes {
+    padding: 25px;
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    border-radius: 10px;
+    background-color: rgba(255, 59, 48, 0.05); /* Soft red for warning/issue context */
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  transition: 0.3s ease;
+.help-causes-heading {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: #FF7043; /* Orange/Red neon */
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+.help-causes-heading svg {
+    margin-right: 10px;
+    color: #b8a9ff;
+}
+.help-causes-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+.help-causes-list li {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.help-causes-list li:last-child {
+    border-bottom: none;
 }
 
-.glass-panel-sm {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 12px 24px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.white-btn:hover {
-  transform: scale(1.05);
-}
-
-.ghost-btn {
-  background: transparent;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.ghost-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.help-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.help-section-inner {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  margin-bottom: 24px;
-  display: inline-block;
-}
-
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-/* ===========================================================
-   MEDIA QUERIES
-=========================================================== */
-@media (max-width: 768px) {
-  .help-wrapper { padding: 60px 20px; gap: 60px; }
-  .help-final { flex-direction: column; text-align: center; }
-  .system-status-bar { flex-direction: column; gap: 10px; margin-top: 20px; text-align: center; }
-  .article-row { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .article-read-time { margin-top: -8px; }
+/* --- Responsive Adjustments for Popular Questions --- */
+@media (max-width: 600px) {
+    .help-popular-questions {
+        padding: 0 20px;
+    }
+    .help-popular-grid {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .help-popular-link {
+        width: 100%;
+        text-align: center;
+    }
 }
