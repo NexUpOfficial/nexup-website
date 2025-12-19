@@ -19,6 +19,10 @@ const TITLE_MAP = {
   "/contact": "Contact",
   "/login": "Login",
   "/search": "Search",
+  "support/help": "Help" ,
+  "/support/guidelines":"Guidelines" ,
+  "/support/help":"Help" ,
+  "safety/privacy":"Privacy" ,
 };
 
 // Check for mobile size outside the component (or in a separate hook)

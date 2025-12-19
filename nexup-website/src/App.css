@@ -124,3 +124,13 @@ img {
   }
 
 }
+
+/* Remove mobile tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent weird active blur */
+button, a {
+  touch-action: manipulation;
+}
