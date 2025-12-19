@@ -3,12 +3,6 @@ import React from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import "./PageSwipeAnimation.css";
 
-/**
- * PageSwipeAnimation
- * Props:
- * - direction: number (1 previous, -1 next, 0 none)
- * - children: ReactNode
- */
 export default function PageSwipeAnimation({ direction = 0, children }) {
   const dir = Math.sign(direction) || 0;
 

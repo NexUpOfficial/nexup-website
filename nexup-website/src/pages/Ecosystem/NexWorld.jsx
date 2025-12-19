@@ -53,11 +53,6 @@ export default function NexWorld() {
           <div className="video-overlay" />
         </motion.div>
 
-        {/* ⭐ 8. Ambient Sound Toggle UI (Visual Only) */}
-        <div className="sound-toggle-ui">
-          <FiVolumeX /> <span>Sound Off</span>
-        </div>
-
         <div className="nexworld-hero-content">
           <motion.div
             className="nexworld-hero-text-container"

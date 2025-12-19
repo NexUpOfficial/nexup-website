@@ -43,6 +43,7 @@ export default function Footer() {
               <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><FaGithub /></a>
               <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a>
               <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"><FaYoutube /></a>
+              <a href="https://instagram.com/jothish4real" target="_blank" rel="noreferrer" aria-lable="Instagram"><FaInstagram/></a>
             </div>
           </div>
 

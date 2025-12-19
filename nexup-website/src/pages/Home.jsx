@@ -228,7 +228,7 @@ export default function Home() {
               <span className="icon-arrow" aria-hidden="true">&rarr;</span>
             </Link>
             <Link to="/about/vision" className="secondary-btn">
-              View System Specs
+               Our Vision
             </Link>
           </div>
 

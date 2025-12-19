@@ -28,7 +28,7 @@ function Sidebar({ isOpen, onClose }) {
   const [headerOffset, setHeaderOffset] = useState(DESKTOP_HEADER_OFFSET);
 
   // ---------------------------------------------------------
-  // DATA (TOOLTIP REMOVED)
+  // DATA 
   // ---------------------------------------------------------
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld" },
@@ -163,7 +163,7 @@ function Sidebar({ isOpen, onClose }) {
   };
 
   // ---------------------------------------------------------
-  // RENDER HELPERS (TOOLTIP LOGIC REMOVED)
+  // RENDER HELPERS 
   // ---------------------------------------------------------
   const renderLink = (to, label, isSubItem = false) => (
     <NavLink
@@ -305,7 +305,7 @@ function Sidebar({ isOpen, onClose }) {
         {/* Footer */}
         <div className="sidebar-footer">
           <span className="status-dot"></span>
-          <span>NeX UP Systems v2.1</span>
+          <span>NeX UP Systems v2.0</span>
         </div>
       </div>
     </aside>
