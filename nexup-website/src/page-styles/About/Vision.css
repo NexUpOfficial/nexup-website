@@ -1,715 +1,264 @@
-/*
-| -------------------------------------------------------------------
-|  Global CSS Variables
-| -------------------------------------------------------------------
-| Defines core tokens for colors, fonts, spacing, and transitions.
-*/
+/* src/page-styles/About/Vision.css */
+
+/* --- Color Palette (Consistent Dark Mode) --- */
 :root {
-    /* Colors */
-    --color-dark-bg: #0b0b0c;
-    --color-black: #000000;
-    --color-text-primary: #f0f0f0;
-    --color-text-secondary: rgba(255, 255, 255, 0.85);
-    --color-text-faded: rgba(255, 255, 255, 0.7);
-    --color-accent-light: #d4caff; /* Lighter Purple/Accent */
-    --color-accent-main: #b8a9ff; /* Primary Accent Color (Vibrant Purple) */
-    --color-white: #ffffff;
-    
-    /* Typography */
-    --font-family-base: 'Inter', sans-serif;
-    --font-size-base: 1.1rem; /* Standard paragraph size */
-    
-    /* Spacing & Layout */
-    --spacing-page-pad: 80px 32px;
-    --spacing-section-gap: 140px;
-    --max-width-content: 1280px;
-    --border-radius-card: 20px;
-    --border-radius-large: 24px;
-    
-    /* Transitions & Effects */
-    --transition-base: 0.3s ease;
-    --blur-glass: 14px;
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #aaaaaa; 
+    --color-border: #333333; 
+    --color-statement-bg: #1a1a1a;
+    --color-link-hover: #cccccc;
+    --sidebar-width: 280px; 
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --header-height: 60px; 
+
+    /* Media Card Colors (Defined in JSX but set as fallback here) */
+    --card-default-color: #3498db;
 }
 
-/*
-| -------------------------------------------------------------------
-|  Base Styles & Page Wrapper
-| -------------------------------------------------------------------
-*/
 .vision-page {
-    width: 100%;
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
+}
+
+/* --------------------------------------------------
+    MAIN CONTENT ALIGNMENT 
+-------------------------------------------------- */
+.vision-main-content {
+    margin-left: var(--sidebar-width); 
+    max-width: 1100px; /* Wider for media cards */
+    margin-right: auto;
+    margin-top: calc(var(--header-height) + 40px);
+    padding: 0 5%; 
+}
+
+.vision-document {
     display: flex;
     flex-direction: column;
-    /* Updated Background to deepen the contrast */
-    background: linear-gradient(180deg, var(--color-dark-bg) 0%, var(--color-black) 100%);
-    min-height: 100vh;
-    overflow-x: hidden;
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-base);
+    gap: 30px; 
+    line-height: 1.6;
+    font-size: 1rem; 
+}
+
+/* --------------------------------------------------
+    HEADER & INTRO 
+-------------------------------------------------- */
+.document-header {
+    text-align: center;
+    margin-bottom: 30px; 
+}
+
+.document-header h1 {
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+}
+
+.introduction {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.7;
+    padding: 0 10px;
+    text-align: center;
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
+}
+
+.statement-header {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding: 10px 10px 30px; 
+    border-bottom: 1px solid var(--color-border);
+}
+
+
+/* --------------------------------------------------
+    POLICY SECTIONS (Standard Content Blocks)
+-------------------------------------------------- */
+.vision-section {
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+.vision-section h3 {
+    font-size: 1.6rem; 
+    font-weight: 700;
+    margin-bottom: 20px; 
+    color: var(--color-text-primary);
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
+}
+
+.vision-section p {
+    margin-bottom: 12px; 
+    color: var(--color-text-secondary);
+}
+
+.vision-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px; 
+}
+
+.vision-section li {
+    position: relative;
+    padding-left: 20px; 
+    margin-bottom: 8px; 
+    color: var(--color-text-primary);
+    font-size: 0.95rem; 
+}
+
+.vision-section li::before {
+    content: '•'; 
+    color: var(--color-text-secondary);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.priority-note {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-top: 15px; 
+}
+
+.statement {
+    font-size: 1.05rem; 
+    font-weight: 500;
+    margin-top: 20px; 
+    padding: 15px 20px;
+    border-left: 3px solid var(--color-text-primary);
+    background-color: var(--color-statement-bg);
     color: var(--color-text-primary);
 }
 
-/* Scrollbar Removal */
-.vision-page {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-.vision-page::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
 
-.vision-wrapper {
-    flex: 1;
-    width: 100%;
-    max-width: var(--max-width-content);
-    margin: 0 auto;
-    padding: var(--spacing-page-pad);
+/* --------------------------------------------------
+    MEDIA CARD STYLING (The new visual sections)
+-------------------------------------------------- */
+.media-card-section {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-section-gap);
-}
-
-/*
-| -------------------------------------------------------------------
-|  Animations
-| -------------------------------------------------------------------
-*/
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@keyframes driftGlow {
-    0% { transform: translate(-48%, -52%) scale(1); }
-    100% { transform: translate(-52%, -48%) scale(1.08); }
-}
-
-/*
-| -------------------------------------------------------------------
-|  Hero Section
-| -------------------------------------------------------------------
-*/
-.vision-hero-section {
-    min-height: 70vh;
-    display: flex;
-    justify-content: center;
+    gap: 40px;
     align-items: center;
-    position: relative;
-    text-align: center;
-}
-
-/* Ambient Glow Effect */
-.vision-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70vw;
-    height: 70vh;
-    background: radial-gradient(circle, rgba(130, 110, 255, 0.1) 0%, transparent 60%);
-    filter: blur(55px);
-    z-index: 0;
-    pointer-events: none;
-    animation: driftGlow 14s ease-in-out infinite alternate;
-}
-
-.vision-hero-content {
-    z-index: 1;
-    max-width: 1000px;
-    will-change: transform, opacity;
-}
-
-.big-hero-title {
-    font-size: clamp(3rem, 6vw, 5.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    margin-bottom: 30px;
-}
-
-.hero-subtitle {
-    font-size: clamp(1.3rem, 2.2vw, 1.6rem);
-    color: rgba(255, 255, 255, 0.8);
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/*
-| -------------------------------------------------------------------
-|  Typography Utilities
-| -------------------------------------------------------------------
-*/
-/* Animated Gradient Title */
-.gradient-title {
-    background: linear-gradient(90deg, var(--color-accent-main), var(--color-white), var(--color-accent-light), var(--color-accent-main));
-    background-size: 300% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: 700;
-    animation: gradientShift 8s linear infinite;
-}
-
-.center-text {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.section-title {
-    font-size: clamp(2.2rem, 3.5vw, 3rem);
-    margin-bottom: 24px;
-    display: inline-block;
-}
-
-.section-intro-label {
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 3px;
-    color: var(--color-accent-main);
-    margin-bottom: 12px;
-    text-align: center;
-    width: 100%;
-    font-weight: 600;
-}
-
-/*
-| -------------------------------------------------------------------
-|  Sections & Layouts
-| -------------------------------------------------------------------
-*/
-.vision-section {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.column-layout {
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Concept Block (Philosophy Content) */
-.concept-block {
-    text-align: center;
-    max-width: 900px;
-    padding: 50px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--border-radius-large);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-.concept-text-group p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: var(--color-text-secondary);
-    margin-bottom: 20px;
-}
-
-/* Highlight Text (Key Quotes) */
-.concept-text-group .highlight-text {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--color-white);
-    padding-left: 24px;
-    text-align: left;
-    margin-top: 40px;
-    display: block;
-}
-
-@media (min-width: 1024px) {
-    .concept-text-group .highlight-text {
-        text-align: center;
-        border-left: none;
-        border-top: 4px solid var(--color-accent-main);
-        padding-left: 0;
-        padding-top: 24px;
-    }
-}
-
-/* Shift Content (Thematic Change) */
-.shift-content {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    max-width: 800px;
     margin-top: 30px;
-}
-
-.shift-text {
-    font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.shift-text strong {
-    color: var(--color-white);
-}
-
-.shift-quote {
-    font-size: 1.4rem;
-    font-style: italic;
-    color: var(--color-accent-light);
-    border-left: 4px solid var(--color-accent-main);
-    padding: 30px;
-    line-height: 1.6;
-    margin: 20px 0;
-}
-
-/* Two Column Layout (What Changes / How it Feels) */
-.two-col-content-alt {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    width: 100%;
-    max-width: 1100px;
-    margin-top: 40px;
-}
-
-.two-col-item {
-    padding: 30px;
-}
-
-.sub-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--color-accent-light);
-    margin-bottom: 15px;
-}
-
-.world-list, .world-list-bullet {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
-}
-
-.world-list li, .world-list-bullet li {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    position: relative;
-    padding-left: 25px;
-    margin-bottom: 8px;
-    color: var(--color-text-secondary);
-}
-
-.world-list li::before, .world-list-bullet li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent-main);
-    font-weight: 900;
-}
-
-.note-text {
-    font-style: italic;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Why Grid ("One World. Many Realities") */
-.why-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    align-items: stretch;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 40px;
-}
-
-.why-item {
-    padding: 25px;
-    border-radius: 12px;
-    transition: transform var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.why-item:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 8px 30px rgba(184,169,255,0.1);
-}
-
-.reality-icon {
-    font-size: 1.5rem;
-    color: var(--color-accent-light);
-    margin-bottom: 10px;
-}
-
-.why-item h3 {
-    font-size: 1.3rem;
-    color: var(--color-white);
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.why-item p {
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.75);
-}
-
-
-/*
-| -------------------------------------------------------------------
-|  Pillars (Glass Cards)
-| -------------------------------------------------------------------
-*/
-.pillars-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 40px;
-}
-
-.glass-panel {
-    background: rgba(20, 20, 20, 0.6);
-    backdrop-filter: blur(var(--blur-glass));
-    -webkit-backdrop-filter: blur(var(--blur-glass));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 36px;
-    border-radius: var(--border-radius-card);
-    transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
-    will-change: transform, opacity;
-}
-
-/* Hover Ripple Effect */
-.glass-panel:hover {
-    transform: translateY(-10px);
-    border-color: rgba(184, 169, 255, 0.7);
-    background: rgba(30, 30, 30, 0.75);
-    box-shadow: 0 12px 40px rgba(184,169,255,0.2);
-}
-
-.pillar-icon-wrapper {
-    font-size: 2.5rem;
-    color: var(--color-accent-main);
-    margin-bottom: 24px;
-    display: inline-flex;
-    padding: 12px;
-    background: rgba(184,169,255,0.15);
-    border-radius: 14px;
-}
-
-.pillar-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 16px;
-    color: var(--color-white);
-    font-weight: 700;
-}
-
-.pillar-card p {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.75);
-    line-height: 1.7;
-}
-
-/*
-| -------------------------------------------------------------------
-|  Timeline (Vertical)
-| -------------------------------------------------------------------
-*/
-.timeline-container {
-    position: relative;
-    max-width: 900px;
-    width: 100%;
-    margin: 0 auto;
+    margin-bottom: 30px;
     padding: 30px 0;
+    border-bottom: 1px dashed var(--color-border);
 }
 
-.timeline-line {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    /* Faint Connector Circles in Background Line */
-    background: linear-gradient(180deg, var(--color-accent-main) 0%, rgba(255,255,255,0.1) 100%);
-    background-image: radial-gradient(circle, rgba(184,169,255,0.7) 3px, transparent 3px);
-    background-size: 3px 150px;
-}
-
-.timeline-item {
-    position: relative;
-    width: 50%;
-    padding-right: 40px;
-    margin-bottom: 60px;
-    will-change: transform, opacity;
-}
-
-.timeline-item:nth-child(odd) {
-    left: 0;
-    padding-left: 0;
-    text-align: right;
-}
-
-.timeline-item:nth-child(even) {
-    left: 50%;
-    padding-left: 40px;
-    padding-right: 0;
-    text-align: left;
-}
-
-.timeline-dot {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    background: var(--color-dark-bg);
-    border: 4px solid var(--color-accent-main);
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(184, 169, 255, 0.7);
-    z-index: 2;
-}
-
-.timeline-item:nth-child(odd) .timeline-dot {
-    right: -11px;
-    top: 5px;
-}
-.timeline-item:nth-child(even) .timeline-dot {
-    left: -11px;
-    top: 5px;
-}
-
-.timeline-content {
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
-
-.timeline-year {
-    font-family: var(--font-family-base);
-    color: var(--color-accent-light);
-    font-size: 1.1rem;
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-}
-
-.timeline-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--color-white);
-    margin-bottom: 8px;
-}
-
-.timeline-desc {
-    font-size: 1.15rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-}
-
-/*
-| -------------------------------------------------------------------
-|  Final CTA
-| -------------------------------------------------------------------
-*/
-.vision-final-section {
+.card-media-placeholder {
+    flex: 1; 
+    min-width: 300px; /* Ensure media area is substantial */
+    height: 250px; 
+    background-color: var(--card-color, var(--card-default-color)); /* Use color passed from JSX */
+    border-radius: 8px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     display: flex;
+    align-items: center;
     justify-content: center;
-    text-align: center;
-    position: relative;
-}
-
-/* Final CTA Top Glow */
-.final-glow-top {
-    position: absolute;
-    top: -100px;
-    left: 0;
-    width: 100%;
-    height: 150px;
-    background: radial-gradient(circle, rgba(184,169,255,0.1), transparent 70%);
-    filter: blur(80px);
-    pointer-events: none;
-}
-
-.final-content {
-    max-width: 900px;
-    position: relative;
-    z-index: 2;
-}
-
-.final-big {
-    font-size: clamp(3rem, 5vw, 4.5rem);
-    margin-bottom: 25px;
-    line-height: 1.1;
-}
-
-.final-text {
-    font-size: 1.35rem;
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 40px;
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.final-vision-summary {
-    padding: 25px;
-    margin-bottom: 40px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--color-white);
-}
-
-.final-vision-summary strong {
-    color: var(--color-accent-main);
-    font-weight: 700;
-}
-
-/* CTA Button */
-.white-btn {
-    background: var(--color-white);
-    color: var(--color-black);
-    padding: 18px 40px;
-    border-radius: 35px;
-    border: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: var(--transition-base);
     position: relative;
     overflow: hidden;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
 }
 
-/* CTA Button Glow Pulse */
-.white-btn::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
+.media-box {
+    color: var(--color-page-bg); 
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
 }
 
-.white-btn:hover::after {
-    opacity: 1;
+.card-content {
+    flex: 2; 
+    padding: 10px 0;
 }
 
-.white-btn:hover {
-    transform: scale(1.07);
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+.card-content h3 {
+    font-size: 1.8rem; 
+    font-weight: 800;
+    color: var(--card-color, var(--card-default-color));
+    margin-bottom: 15px;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
-/*
-| -------------------------------------------------------------------
-|  Utilities
-| -------------------------------------------------------------------
-*/
-.break-line {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(184, 169, 255, 0.2), transparent);
+.card-content ul li::before {
+    color: var(--card-color, var(--card-default-color)); /* Use card color for list bullets */
 }
 
-/*
-| -------------------------------------------------------------------
-|  Media Queries (Responsiveness)
-| -------------------------------------------------------------------
-*/
-/* Tablet (Max 1024px) */
-@media (max-width: 1024px) {
-    .two-col-content-alt {
-        grid-template-columns: 1fr;
+/* Reverse Layout */
+.media-card-section.reverse {
+    flex-direction: row-reverse;
+}
+
+/* --------------------------------------------------
+    FINAL SECTION
+-------------------------------------------------- */
+.final-section {
+    padding-bottom: 30px; 
+}
+
+.final-message-box {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid var(--color-text-primary);
+    border-radius: 6px;
+    background-color: var(--color-statement-bg);
+}
+
+.final-message-box p {
+    color: var(--color-text-primary);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+
+/* --------------------------------------------------
+    RESPONSIVENESS (Mobile)
+-------------------------------------------------- */
+@media (max-width: 900px) {
+    .vision-main-content {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+        margin-top: calc(var(--header-height) + 20px);
+        padding: 0 3%;
     }
-    .why-grid, .pillars-grid {
-        grid-template-columns: 1fr 1fr; /* 2-column on tablet */
-        gap: 25px;
+
+    .document-header h1 {
+        font-size: 2.2rem;
     }
     
-    /* Timeline adjustment for less wide screens */
-    .timeline-line {
-        left: 20px;
-        transform: none;
-    }
-    .timeline-item {
-        width: 100%;
-        padding-left: 55px;
-        padding-right: 0;
-        left: 0;
-        text-align: left;
-    }
-    .timeline-item:nth-child(even) {
-        padding-left: 55px;
-        left: 0;
-    }
-    .timeline-item:nth-child(odd) {
-        text-align: left;
-    }
-    .timeline-item:nth-child(odd) .timeline-dot {
-        right: auto;
-        left: 10px;
-    }
-    .timeline-item:nth-child(even) .timeline-dot {
-        left: 10px;
-    }
-}
-
-/* Mobile (Max 768px) */
-@media (max-width: 768px) {
-    .vision-wrapper {
-        gap: 100px;
-        padding: 60px 20px;
-    }
-    .big-hero-title {
-        font-size: clamp(2.5rem, 8vw, 4rem);
-    }
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-
-    .why-grid, .pillars-grid {
-        grid-template-columns: 1fr; /* Single column on mobile */
+    /* Stack media cards vertically on small screens */
+    .media-card-section,
+    .media-card-section.reverse {
+        flex-direction: column;
         gap: 20px;
     }
-    
-    .concept-block {
-        padding: 30px 20px;
-    }
-    .concept-text-group p {
-        font-size: 1.05rem;
-    }
-    .concept-text-group .highlight-text {
-        font-size: 1.2rem;
-        text-align: left;
-        border-left: 3px solid var(--color-accent-main);
-        border-top: none;
-        padding-left: 20px;
-        padding-top: 0;
+
+    .card-media-placeholder {
+        width: 100%;
+        min-width: unset;
+        height: 200px;
+        order: -1; /* Place media on top for mobile view */
     }
 
-    /* Timeline adjustment for small mobile */
-    .timeline-line { left: 15px; width: 2px; }
-    .timeline-dot { 
-        left: 8px !important; 
-        width: 18px; 
-        height: 18px; 
-        border: 3px solid var(--color-accent-main); 
-    }
-    .timeline-item { padding-left: 45px; margin-bottom: 40px;}
-    .timeline-year { font-size: 0.95rem; }
-    .timeline-title { font-size: 1.2rem; }
-    .timeline-desc { font-size: 1.0rem; }
-
-    .final-big {
-        font-size: 2.5rem;
-    }
-    .final-text {
-        font-size: 1.1rem;
-    }
-    .final-vision-summary {
-        font-size: 1.05rem;
-    }
-    .white-btn {
-        padding: 15px 30px;
-        font-size: 1rem;
+    .card-content {
+        flex: auto;
+        padding: 0;
     }
 }

@@ -1,610 +1,291 @@
-/* Help.css */
+/* src/page-styles/Support/Help.css (STRICT BLACK & WHITE DOCS STYLE) */
 
-/* ===========================================================
-    GLOBAL & LAYOUT (PREFIXED)
-=========================================================== */
+/* --- Color Palette (OpenAI/Dark Mode Inspired - ONLY Black/White/Grays) --- */
+:root {
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #999999; 
+    --color-border: #333333; 
+    --color-button-bg: #ffffff;
+    --color-button-text: #000000;
+    --color-link-hover: #cccccc;
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .help-page {
-  width: 100%; min-height: 100vh; background: #050505;
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; /* Changed to column/flex-start for better page flow */
-  position: relative; overflow: hidden; font-family: 'Inter', sans-serif;
-  transition: background 0.5s ease;
-  color: #fff;
-  padding-bottom: 50px; /* Ensure space at the bottom */
-}
-.help-page::after {
-  content: ""; position: absolute; inset: 0;
-  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
-  opacity: 0.4; pointer-events: none; z-index: 1;
-}
-.help-cyber-grid {
-  position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-  background-image: linear-gradient(rgba(184, 169, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(184, 169, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px; transform: perspective(500px) rotateX(60deg);
-  animation: helpGridMove 20s linear infinite; z-index: 0; pointer-events: none; transition: filter 0.5s ease;
-}
-@keyframes helpGridMove { 0% { transform: perspective(500px) rotateX(60deg) rotateZ(0deg) translateY(0); } 100% { transform: perspective(500px) rotateX(60deg) rotateZ(1deg) translateY(60px); } }
-.help-glow-top { position: absolute; top: -20%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(184, 169, 255, 0.1) 0%, transparent 60%); filter: blur(100px); z-index: 0; }
-.help-glow-bottom { position: absolute; bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(119, 56, 255, 0.08) 0%, transparent 60%); filter: blur(100px); z-index: 0; }
-
-/* Main Container */
-.help-center-container { 
-    position: relative; z-index: 2; width: 100%; max-width: 1200px; padding: 40px; 
-    transition: all 0.5s ease;
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
 }
 
-/* Glass Panel Base Style */
-.help-glass-panel {
-  background: rgba(15, 15, 15, 0.9); 
-  border: 1px solid rgba(184, 169, 255, 0.1);
-  backdrop-filter: blur(15px); 
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  transition: all 0.3s ease;
-}
-.help-glass-panel:hover {
-    box-shadow: 0 10px 40px rgba(184, 169, 255, 0.15);
+/* --------------------------------------------------
+    MAIN CONTENT ALIGNMENT (Centered)
+-------------------------------------------------- */
+.help-main-content {
+    max-width: 900px;
+    margin: 120px auto 100px;
+    padding: 0 5%; 
 }
 
-.help-gradient-text { 
-  background: linear-gradient(90deg, #b8a9ff, #ffffff); 
-  -webkit-background-clip: text; 
-  background-clip: text; 
-  color: transparent; 
+.help-document {
+    display: flex;
+    flex-direction: column;
+    gap: 50px; /* Increased gap for breathing space */
+    line-height: 1.7;
+    font-size: 1.05rem;
 }
-.help-check-icon { color: #4ade80; } 
 
-/* ===========================================================
-    AI GREETING & ANIMATIONS
-=========================================================== */
-.help-ai-greeting-screen {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle, #0d0d0f 0%, #000 80%);
-  z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff;
-}
-.help-ai-text { font-family: monospace; font-size: 1.5rem; color: #b8a9ff; margin-bottom: 20px; text-align: center; padding: 0 20px; }
-.help-typing-effect {
-  white-space: nowrap; overflow: hidden; border-right: 2px solid #b8a9ff;
-  animation: helpTyping 1.5s steps(42, end), helpBlinkCaret .75s step-end infinite; width: 0; animation-fill-mode: forwards;
-}
-@keyframes helpTyping { from { width: 0 } to { width: 100% } }
-@keyframes helpBlinkCaret { from, to { border-color: transparent } 50% { border-color: #b8a9ff; } }
-.help-loader-line { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
-.help-loader-line::after {
-  content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 50%;
-  background: #b8a9ff; animation: helpLoadingScan 1s ease-in-out infinite;
-}
-@keyframes helpLoadingScan { 0% { left: -50%; } 100% { left: 100%; } }
-.help-skip-btn {
-  position: absolute; bottom: 40px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
-  padding: 10px 20px; border-radius: 30px;
-  font-family: monospace; font-size: 0.85rem;
-  cursor: pointer; transition: 0.3s;
-  backdrop-filter: blur(5px);
-}
-.help-skip-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
-
-/* Pulse for CTA icon */
-@keyframes helpPulseDot { 0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); } }
-.help-pulse { animation: helpPulseDot 2s infinite; }
-
-/* ===========================================================
-    HELP CENTER LAYOUT & HEADER (PREFIXED)
-=========================================================== */
-.help-header {
+/* --------------------------------------------------
+    HEADER & INTRO (Large and Prominent)
+-------------------------------------------------- */
+.document-header {
     text-align: center;
     margin-bottom: 50px;
 }
-.help-title { /* Was .login-title */
-    font-size: clamp(2.5rem, 4vw, 4rem); line-height: 1.1; font-weight: 800; color: #fff; margin-bottom: 20px;
-}
-.help-sub { /* Was .login-sub */
-    font-size: 1.1rem; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 700px; margin: 0 auto 30px auto;
-}
 
-/* 1. Search Bar */
-.help-search-bar-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 800px;
-    margin: 0px auto;
-    padding: 18px 25px; /* Slightly larger padding for better UX */
-    background: rgba(0,0,0,0.4); 
-    border: 1px solid rgba(184, 169, 255, 0.3);
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(184, 169, 255, 0.1);
-}
-.help-search-icon {
-    color: #b8a9ff;
-    margin-right: 15px;
-}
-.help-search-input {
-    flex-grow: 1;
-    border: none;
-    background: transparent;
-    font-size: 1.1rem;
-    outline: none;
-    color: #fff;
-}
-.help-search-input::placeholder {
-    color: rgba(255,255,255,0.5);
-}
-
-/* 2. Content Layout (Flex Fix) */
-.help-content-wrapper-flex { /* New class for the Flex layout */
-    display: flex;
-    gap: 40px;
-    align-items: flex-start; /* Aligns content blocks to the top */
-    width: 100%;
-}
-.help-product-sidebar {
-    flex: 0 0 280px; /* Fixed width sidebar */
-    padding: 25px;
-}
-.help-sidebar-heading {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 25px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-.help-sidebar-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 14px 10px;
-    margin-bottom: 8px;
-    background: transparent;
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    font-size: 1rem;
-    color: rgba(255,255,255,0.7);
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-.help-sidebar-item:hover {
-    background-color: rgba(184, 169, 255, 0.05);
-    color: #fff;
-    border-left: 3px solid #b8a9ff; /* Subtle hover effect */
-}
-.help-sidebar-item.active {
-    background-color: rgba(184, 169, 255, 0.15); /* Stronger active background */
-    color: #b8a9ff; 
-    font-weight: 600;
-    box-shadow: 0 0 10px rgba(184, 169, 255, 0.3);
-    border-left: 3px solid #b8a9ff;
-}
-.help-sidebar-item svg {
-    margin-right: 10px;
-    min-width: 20px;
-}
-
-.help-articles-main {
-    flex: 1; /* Main content takes up remaining space */
-    padding-top: 10px;
-}
-
-.help-articles-heading {
-    display: flex;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 40px;
-    color: #fff;
-    padding-left: 10px;
-}
-.help-section-block {
-    margin-bottom: 40px;
-    padding: 30px;
-}
-.help-section-title {
-    display: flex;
-    align-items: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid rgba(255,255,255,0.1);
-}
-.help-section-icon {
-    margin-right: 15px;
-}
-.help-articles-list {
-    display: flex;
-    flex-direction: column;
-}
-.help-article-link {
-    padding: 14px 10px;
-    font-size: 1.1rem;
-    color: rgba(255,255,255,0.85);
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.15s, color 0.15s, border-left 0.15s;
-    border-left: 3px solid transparent;
-}
-.help-article-link:hover {
-    background-color: rgba(184, 169, 255, 0.08);
-    color: #fff;
-    border-left-color: #4ade80; /* Subtle green highlight on hover */
-}
-.help-no-results-message {
-    padding: 40px;
-    background: rgba(255, 59, 48, 0.1);
-    border: 1px solid rgba(255, 59, 48, 0.3);
-    border-radius: 10px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.7);
-}
-.help-no-results-message p {
-    margin-top: 10px;
-    font-size: 1.1rem;
-}
-
-
-/* 3. Article Layout */
-.help-article {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 50px;
-}
-.help-article-title {
-    font-size: 2.8rem;
+.document-header h1 {
+    font-size: clamp(2.8rem, 6vw, 4rem);
     font-weight: 800;
-    color: #fff;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
-.help-article-short-explanation {
-    font-size: 1.2rem;
-    color: rgba(255,255,255,0.6);
+
+.subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+}
+
+.introduction {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.8;
+    padding: 0 20px;
+    text-align: center;
+    color: var(--color-text-primary);
     margin-bottom: 40px;
-    font-style: italic;
 }
-.help-article-divider {
-    border: none;
-    border-top: 1px dashed rgba(255,255,255,0.2);
-    margin: 40px 0;
+
+/* --------------------------------------------------
+    POLICY SECTIONS (Content Blocks)
+-------------------------------------------------- */
+.policy-section {
+    padding: 30px 0;
+    border-top: 1px solid var(--color-border);
 }
-.help-article-steps-heading {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+
+.policy-section h3 {
+    font-size: 1.7rem;
     font-weight: 700;
-}
-.help-article-steps-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-.help-article-steps-list li {
-    background-color: rgba(255,255,255,0.03);
-    padding: 18px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    border-left: 4px solid #b8a9ff;
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-}
-.help-article-steps-list li .help-check-icon {
-    margin-top: 4px;
-    min-width: 18px;
-}
-.help-article-contact-prompt {
-    padding: 30px;
-    border: 1px solid #b8a9ff;
-    border-radius: 10px;
-    text-align: center;
-    margin-top: 40px;
-    background-color: rgba(184, 169, 255, 0.05); 
-    box-shadow: 0 0 15px rgba(184, 169, 255, 0.2);
-}
-
-/* 4. Contact Support Buttons */
-.help-back-button {
-    background: none;
-    border: none;
-    color: #b8a9ff;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-bottom: 30px;
-    padding: 5px 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: color 0.2s, text-shadow 0.2s;
-}
-.help-back-button:hover {
-    color: #fff;
-    text-shadow: 0 0 10px #b8a9ff;
-}
-
-/* Glow Trail Button (Primary CTA) */
-.help-glow-trail-btn {
-  position: relative; width: 100%; padding: 16px; background: #0f0f0f;
-  border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff;
-  font-size: 1.1rem; font-weight: 600; cursor: pointer; overflow: hidden;
-  margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; z-index: 2;
-  transition: all 0.2s;
-}
-.help-glow-trail-btn:hover {
-    border-color: #b8a9ff;
-    box-shadow: 0 0 15px rgba(184, 169, 255, 0.3);
-}
-.help-glow-trail-btn:disabled { 
-    opacity: 0.5; 
-    cursor: not-allowed; 
-    box-shadow: none; 
-    border-color: rgba(255,255,255,0.1);
-}
-.help-spinner { animation: helpSpin 1s linear infinite; }
-@keyframes helpSpin { 100% { transform: rotate(360deg); } }
-.help-glow-effect {
-  position: absolute; top: 0; left: 0; width: 150px; height: 150px;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.4) 0%, transparent 70%);
-  pointer-events: none; mix-blend-mode: overlay;
-  transition: transform 0.1s ease-out;
-  border-radius: 50%;
-}
-.help-contact-button { /* Base class for all contact buttons */
-    /* Inherits from .help-glow-trail-btn */
-}
-.help-contact-support-main-cta {
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 50px;
-    box-shadow: 0 0 20px rgba(74, 222, 128, 0.1); /* Subtle green emphasis for CTA */
-    border: 1px solid rgba(74, 222, 128, 0.2);
-}
-.help-contact-support-main-cta svg {
-    margin-bottom: 20px;
-}
-
-
-/* --- Contact Form Styles (PREFIXED) --- */
-.help-contact-form-container {
-    position: relative;
-    max-width: 500px;
-    padding: 40px;
-    margin: 40px auto;
-    overflow: hidden;
-}
-.help-contact-form-container .help-glow-top,
-.help-contact-form-container .help-glow-bottom {
-    position: absolute;
-    filter: blur(80px);
-    width: 100px; height: 100px;
-    top: 50%; left: 50%;
-    opacity: 0.1;
-}
-.help-contact-form-container .help-holo-sheen {
-    position: absolute; top: 0; left: -100%; width: 200%; height: 100%;
-    background: linear-gradient(75deg, transparent 20%, rgba(184,169,255,0.15) 50%, transparent 80%);
-    animation: helpSheenMove 4s ease-in-out infinite; pointer-events: none; z-index: 0;
-}
-@keyframes helpSheenMove { 0% { left: -100%; } 100% { left: 100%; } }
-
-.help-auth-header { text-align: center; margin-bottom: 30px; position: relative; z-index: 2; }
-.help-auth-header h2 { font-size: 1.8rem; margin-bottom: 8px; color: #fff; font-weight: 700; }
-.help-auth-header p { font-size: 0.95rem; color: rgba(255,255,255,0.6); }
-
-.help-auth-form { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
-.help-input-group { position: relative; border-radius: 10px; }
-.help-input-icon {
-  position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem; z-index: 2; transition: 0.3s;
-}
-.help-input-group.focus .help-input-icon { color: #b8a9ff; }
-
-.help-auth-form input, 
-.help-auth-form textarea,
-.help-auth-form select {
-  width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-  padding: 14px 40px 14px 44px; border-radius: 10px; color: #fff; font-size: 1rem; transition: 0.3s; position: relative; z-index: 1;
-}
-.help-auth-form input:focus,
-.help-auth-form textarea:focus,
-.help-auth-form select:focus { outline: none; background: rgba(0,0,0,0.5); border-color: transparent; }
-
-.help-input-border-glow {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  border-radius: 10px; border: 1px solid transparent; pointer-events: none; z-index: 0; transition: 0.3s;
-}
-.help-input-group.focus .help-input-border-glow {
-  border-color: #b8a9ff; box-shadow: 0 0 15px rgba(184, 169, 255, 0.3) inset, 0 0 5px rgba(184, 169, 255, 0.5);
-}
-
-.help-input-group.help-select-group select {
-    appearance: none; 
-    background: rgba(0,0,0,0.3) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23b8a9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>') no-repeat right 12px center / 16px;
-    padding-right: 40px;
-}
-.help-input-group.help-textarea-group textarea {
-    min-height: 120px;
-    padding: 14px 14px 14px 44px; 
-}
-.help-input-group.help-textarea-group .help-input-icon {
-    top: 18px; 
-    transform: none;
-}
-
-.help-file-upload-label {
+    margin-bottom: 25px; /* Increased space below main section heading */
+    color: var(--color-text-primary);
     display: flex;
     align-items: center;
-    gap: 8px;
-    width: 100%;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 14px 15px;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    color: rgba(255,255,255,0.6);
-    cursor: pointer;
-    transition: 0.3s;
-}
-.help-file-upload-label:hover {
-    border-color: #b8a9ff;
-    color: #fff;
-    background: rgba(0,0,0,0.4);
-}
-.help-file-upload-label input[type="file"] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
 }
 
-.help-contact-form-container.submitted {
-    text-align: center;
-    padding: 60px 40px;
-}
-.help-contact-form-container.submitted p {
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 20px;
+.policy-section .section-icon {
+    margin-right: 12px;
+    font-size: 1.2em;
 }
 
-
-/* ===========================================================
-    MEDIA QUERIES (RESPONSIVENESS)
-=========================================================== */
-@media (max-width: 1200px) {
-    .help-center-container {
-        padding: 20px;
-    }
-}
-@media (max-width: 992px) {
-    .help-content-wrapper-flex {
-        flex-direction: column;
-        gap: 30px;
-    }
-    .help-product-sidebar {
-        flex: auto; /* Allow sidebar to take full width */
-        width: 100%;
-        order: -1; /* Place sidebar above main content on mobile */
-    }
-    .help-product-sidebar .help-sidebar-heading {
-        text-align: center;
-    }
-    .help-sidebar-item {
-        justify-content: center;
-    }
-    .help-articles-main {
-        padding-top: 0;
-    }
-}
-@media (max-width: 600px) {
-    .help-article, .help-contact-form-container {
-        padding: 30px 20px;
-    }
-    .help-title {
-        font-size: 2rem;
-    }
-    .help-article-title {
-        font-size: 1.8rem;
-    }
-    .help-article-steps-heading, .help-section-title {
-        font-size: 1.4rem;
-    }
-    .help-search-bar-container {
-        padding: 15px 15px;
-    }
-}
-
-/* Help.css (Append these to the previous Help.css file) */
-
-/* ===========================================================
-    NEW: POPULAR QUESTIONS
-=========================================================== */
-.help-popular-questions {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0px auto 50px auto;
-    padding: 0 40px; /* Aligns with help-center-container padding */
-}
-.help-popular-heading {
-    font-size: 1.2rem;
+.policy-section h4 {
+    font-size: 1.3rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.help-popular-grid {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-.help-popular-link {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-.help-popular-link:hover {
-    background: rgba(184, 169, 255, 0.15);
-    border-color: #b8a9ff;
-    box-shadow: 0 0 10px rgba(184, 169, 255, 0.3);
+    margin-top: 30px; 
+    margin-bottom: 10px;
+    color: var(--color-text-primary);
 }
 
-/* ===========================================================
-    NEW: ARTICLE COMMON CAUSES BLOCK (SECTION 4)
-=========================================================== */
-.help-article-common-causes {
-    padding: 25px;
-    border: 1px solid rgba(255, 59, 48, 0.2);
-    border-radius: 10px;
-    background-color: rgba(255, 59, 48, 0.05); /* Soft red for warning/issue context */
-}
-
-.help-causes-heading {
-    display: flex;
-    align-items: center;
-    font-size: 1.4rem;
-    color: #FF7043; /* Orange/Red neon */
+.policy-section p {
     margin-bottom: 15px;
-    font-weight: 700;
+    color: var(--color-text-secondary);
 }
-.help-causes-heading svg {
-    margin-right: 10px;
-    color: #b8a9ff;
-}
-.help-causes-list {
+
+.policy-section ul {
     list-style: none;
     padding-left: 0;
-    margin: 0;
-}
-.help-causes-list li {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-.help-causes-list li:last-child {
-    border-bottom: none;
+    margin-top: 15px;
 }
 
-/* --- Responsive Adjustments for Popular Questions --- */
-@media (max-width: 600px) {
-    .help-popular-questions {
-        padding: 0 20px;
+.policy-section li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px; /* Increased line spacing */
+    color: var(--color-text-primary);
+    font-size: 1rem;
+}
+
+/* Custom bullet point styling (black and white only) */
+.policy-section li::before {
+    content: '•'; 
+    color: var(--color-text-primary);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Style for sub-lists inside articles */
+.sub-list li::before {
+    content: '-';
+    font-weight: normal;
+}
+
+/* Statement paragraphs (like principles and ecosystem summary) */
+.statement {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 30px;
+    padding: 15px 0;
+    border-top: 1px dashed var(--color-border);
+    color: var(--color-text-primary);
+}
+
+/* Inline links */
+.inline-link {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+.inline-link:hover {
+    color: var(--color-link-hover);
+}
+
+/* Structure Tags */
+.structure-section .core-sections-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.structure-section .section-tag {
+    background-color: var(--color-border);
+    color: var(--color-text-primary);
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Ecosystem Grid */
+.ecosystem-components {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.ecosystem-components article h4 {
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+/* Final Message and Contact */
+.contact-final-section {
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.contact-callout {
+    font-style: italic;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.final-message {
+    margin-top: 40px;
+    padding: 30px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+}
+
+.final-message .final-heading {
+    font-size: 1.5rem;
+    margin-top: 0;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* --------------------------------------------------
+    CONTACT BUTTON
+-------------------------------------------------- */
+.contact-queries-section {
+    padding: 40px 0;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    margin-top: 40px;
+}
+
+.contact-queries-section p {
+    color: var(--color-text-secondary);
+    margin-bottom: 25px;
+}
+
+.contact-button-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    background-color: var(--color-page-bg);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.contact-button-link svg {
+    margin-right: 8px;
+}
+
+.contact-button-link:hover {
+    background-color: #111111;
+    color: var(--color-text-primary);
+}
+
+
+/* --------------------------------------------------
+    RESPONSIVENESS
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .help-main-content {
+        padding: 0 3%;
+        margin: 80px auto 60px;
     }
-    .help-popular-grid {
-        flex-direction: column;
+
+    .document-header {
+        margin-bottom: 40px;
+    }
+    
+    .document-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .help-document {
+        gap: 40px;
+    }
+    
+    .policy-section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .structure-section .core-sections-list {
         gap: 10px;
     }
-    .help-popular-link {
-        width: 100%;
-        text-align: center;
+    
+    .ecosystem-components {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .final-message {
+        padding: 20px;
+    }
+    
+    .contact-queries-section {
+        padding: 30px 0;
     }
 }

@@ -1,259 +1,153 @@
-// src/pages/Support/Trust.jsx
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { 
-  FiShield, FiLock, FiUserCheck, FiEye, 
-  FiGlobe, FiCheckSquare, FiAlertCircle 
-} from "react-icons/fi";
+// src/pages/Safety/Trust.jsx
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom"; 
 import "../../page-styles/Safety/Trust.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- DATA --- */
-const PRINCIPLES = [
-  {
-    icon: <FiEye />,
-    title: "Radical Transparency",
-    text: "We open-source our safety policies and clearly explain how every algorithm works."
-  },
-  {
-    icon: <FiUserCheck />,
-    title: "User Sovereignty",
-    text: "You own your data, your identity, and your digital assets. We are just the custodians."
-  },
-  {
-    icon: <FiShield />,
-    title: "Proactive Safety",
-    text: "We don't wait for harm to happen. Our systems predict and prevent abuse before it scales."
-  },
-  {
-    icon: <FiGlobe />,
-    title: "Global Compliance",
-    text: "We adhere to the strictest international standards for digital rights and data protection."
-  }
-];
+const Trust = () => {
+    // Ensure the page scrolls to the top on mount
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
-const COMPLIANCE_BADGES = [
-  { label: "GDPR Compliant", color: "#4ade80" },
-  { label: "SOC2 Type II", color: "#60a5fa" },
-  { label: "ISO 27001", color: "#f472b6" },
-  { label: "CCPA Ready", color: "#fbbf24" }
-];
+    return (
+        <div className="trust-page">
+            <main className="trust-main-content">
+                <div className="trust-document">
+                    
+                    <header className="document-header">
+                        <h1 className="title">Trust at NexUP</h1>
+                        <h2 className="subtitle">Our Commitment to Trust</h2>
+                    </header>
+                    
+                    <p className="introduction">
+                        At NexUP, trust is not an afterthought—it is the foundation of everything we build. As we work toward creating a unified spatial computing ecosystem that blends digital worlds, AI, and immersive technologies, we understand that users place immense trust in our platform.
+                        We are committed to earning and maintaining that trust through transparency, security, ethical design, and long-term responsibility.
+                    </p>
 
-/* --- VARIANTS --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+                    <section className="policy-section">
+                        <h3>Transparency & Accountability</h3>
+                        <p>We believe users deserve clarity about how platforms operate.</p>
+                        <ul>
+                            <li>We clearly communicate what NexUP is, what it is not, and how it evolves.</li>
+                            <li>Our platform decisions are driven by long-term value, not short-term exploitation.</li>
+                            <li>Any major changes to our systems, policies, or data handling practices are communicated openly.</li>
+                            <li>We hold ourselves accountable to our community, contributors, and partners.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section">
+                        <h3>User Data Protection & Privacy</h3>
+                        <p>Your data belongs to you, not us.</p>
+                        <ul>
+                            <li>NexUP follows privacy-first principles from day one.</li>
+                            <li>We collect only the minimum data necessary to operate and improve our services.</li>
+                            <li>User data is never sold or misused.</li>
+                            <li>Sensitive information is protected using modern security standards and encryption practices.</li>
+                            <li>As NexUP expands into AR/VR and spatial environments, privacy remains a non-negotiable priority.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section">
+                        <h3>Security by Design</h3>
+                        <p>Security is embedded into NexUP’s architecture—not added later.</p>
+                        <ul>
+                            <li>Secure authentication mechanisms</li>
+                            <li>Role-based access control</li>
+                            <li>Continuous monitoring and system integrity checks</li>
+                            <li>Protection against unauthorized access and misuse</li>
+                            <li>Our infrastructure (including NexNodes and backend systems) is designed to scale securely as the platform grows.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section">
+                        <h3>Ethical Technology & AI Responsibility</h3>
+                        <p>NexUP is committed to ethical AI and responsible technology use.</p>
+                        <ul>
+                            <li>AI systems are designed to assist humans, not manipulate or replace human judgment.</li>
+                            <li>We actively avoid dark patterns, addictive loops, or exploitative engagement models.</li>
+                            <li>User autonomy, consent, and control are core principles of our design philosophy.</li>
+                            <li>Technology should empower—not exploit.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section">
+                        <h3>Community-Centered Ecosystem</h3>
+                        <p>NexUP is not just a platform; it is a community-driven ecosystem.</p>
+                        <ul>
+                            <li>We respect creators, developers, educators, and learners.</li>
+                            <li>Fair recognition and attribution are core values.</li>
+                            <li>Abuse, harassment, misinformation, and harmful behavior are not tolerated.</li>
+                            <li>Our goal is to create safe, meaningful digital spaces where people can build, learn, and collaborate.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section">
+                        <h3>Long-Term Vision & Stability</h3>
+                        <p>NexUP is built with a long-term mindset.</p>
+                        <ul>
+                            <li>We are not chasing trends or short-lived hype.</li>
+                            <li>Our vision spans years, not months.</li>
+                            <li>Decisions are made to ensure platform continuity, stability, and sustainability.</li>
+                            <li>Users can trust that NexUP is being built to last.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section">
+                        <h3>Compliance & Legal Responsibility</h3>
+                        <p>We respect applicable laws, regulations, and digital rights.</p>
+                        <ul>
+                            <li>Compliance with data protection and cybersecurity regulations</li>
+                            <li>Cooperation with lawful authorities when required</li>
+                            <li>Clear policies governing platform usage and responsibilities</li>
+                            <li>As regulations evolve, NexUP evolves responsibly with them.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section">
+                        <h3>Continuous Improvement</h3>
+                        <p>Trust is not static—it must be earned every day.</p>
+                        <ul>
+                            <li>We regularly review and improve our systems</li>
+                            <li>Security practices are updated as threats evolve</li>
+                            <li>Feedback from users and partners is taken seriously</li>
+                            <li>Mistakes, if they occur, are acknowledged and corrected—not hidden.</li>
+                        </ul>
+                    </section>
+
+                    <section className="policy-section final-promise">
+                        <h3>Our Promise</h3>
+                        <p>We promise to:</p>
+                        <ul>
+                            <li>Put users first</li>
+                            <li>Protect privacy and security</li>
+                            <li>Act ethically and transparently</li>
+                            <li>Build responsibly for the future</li>
+                            <li>Never compromise trust for growth</li>
+                        </ul>
+                        <p className="final-statement">
+                            Trust is the backbone of NexUP—and we are committed to protecting it.
+                        </p>
+                    </section>
+
+                    <section className="policy-contact">
+                        <h3>Contact & Trust Concerns</h3>
+                        <p>
+                            If you have questions, concerns, or suggestions related to trust, safety, or platform integrity, we encourage you to reach out through our official communication channels.
+                        </p>
+                        <p className="contact-callout">
+                            Your voice matters.
+                        </p>
+                        <Link to="/feedback" className="feedback-button-link">
+                           Submit Feedback
+                        </Link>
+                    </section>
+
+                </div>
+            </main>
+            <Footer />
+        </div>
+    );
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-export default function Trust() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="trust-page">
-      <div className="trust-wrapper">
-        
-        {/* ================= HERO ================= */}
-        <section className="trust-hero-section">
-          {/* 2. Improved Glow (CSS) */}
-          <div className="trust-glow" />
-          
-          <motion.div
-            className="trust-hero-content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            <span className="hero-badge">Trust & Safety Center</span>
-            <h1 className="gradient-title trust-hero-title">
-              Built on Integrity.
-            </h1>
-            <p className="trust-hero-sub">
-              Trust isn't a feature—it's our operating system. 
-              We prioritize user rights, data ethics, and system reliability above all else.
-            </p>
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= TRUST MANIFESTO ================= */}
-        <TrustSection>
-          <motion.div 
-            className="manifesto-card glass-panel"
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="manifesto-icon"><FiLock /></div>
-            <h2>The NeX UP Promise</h2>
-            {/* 9. Improved Line Height */}
-            <p>
-              In an era of digital uncertainty, we promise to be a stable foundation. 
-              We will never sell your personal data. We will never manipulate your reality 
-              for profit. We will always prioritize your safety over engagement metrics.
-            </p>
-          </motion.div>
-        </TrustSection>
-
-        {/* ================= CORE PRINCIPLES ================= */}
-        <TrustSection title="The Pillars of Trust">
-          <motion.div 
-            className="trust-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {PRINCIPLES.map((item, idx) => (
-              <motion.div 
-                key={idx} 
-                className="trust-card glass-panel"
-                variants={itemVariants}
-                // 3. Hover Effect handled in CSS
-              >
-                <div className="trust-icon">{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </TrustSection>
-
-        <BreakLine />
-
-        {/* ================= COMPLIANCE & STANDARDS ================= */}
-        <TrustSection title="Standards & Compliance">
-          <p className="centered-intro">
-            We adhere to rigorous global standards to ensure your data and experience remain secure.
-          </p>
-          {/* Bonus: Margin Bottom */}
-          <div className="compliance-row">
-            {COMPLIANCE_BADGES.map((badge, idx) => (
-              <motion.div 
-                key={idx} 
-                className="compliance-badge"
-                // 5. Hover Glow handled in CSS, Motion used for scale
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="badge-dot" style={{ background: badge.color }} />
-                <span>{badge.label}</span>
-              </motion.div>
-            ))}
-          </div>
-        </TrustSection>
-
-        <BreakLine />
-
-        {/* ================= AI ETHICS ================= */}
-        <TrustSection title="Ethical Intelligence">
-          <div className="ethics-layout">
-            <div className="ethics-content">
-              <p className="trust-text-lead">
-                NeX UP uses AI to enhance reality, not replace it. Our intelligence models 
-                are designed to be tools for human creativity, not black boxes of manipulation.
-              </p>
-              <ul className="ethics-list">
-                {/* 10. Interactive List Items */}
-                <li><FiCheckSquare /> No hidden behavioral nudging.</li>
-                <li><FiCheckSquare /> Transparent algorithmic ranking.</li>
-                <li><FiCheckSquare /> User control over AI assistance levels.</li>
-              </ul>
-            </div>
-            <div className="ethics-visual glass-panel-sm">
-              {/* 6. Animated Visual */}
-              <div className="visual-circle" />
-              <div className="visual-bar" />
-              <div className="visual-bar short" />
-            </div>
-          </div>
-        </TrustSection>
-
-        <BreakLine />
-
-        {/* ================= REPORTING ================= */}
-        <TrustSection>
-          <motion.div 
-            className="reporting-banner glass-panel"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Bonus: Fade-in Icon */}
-            <div className="reporting-icon">
-              <FiAlertCircle />
-            </div>
-            <div className="reporting-content">
-              <h3>See something wrong?</h3>
-              <p>
-                Trust is a community effort. If you encounter unsafe behavior, 
-                bugs, or ethical violations, report them immediately.
-              </p>
-            </div>
-            <button className="report-btn" onClick={() => navigate("/report")}>File a Report</button>
-          </motion.div>
-        </TrustSection>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="trust-final-section">
-          <motion.div
-            className="trust-final"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="gradient-title final-big">
-              Verification is key.
-            </h2>
-            <p className="final-text">
-              Dive deeper into our policies or contact our Data Protection Officer directly.
-            </p>
-            <div className="trust-final-actions">
-              <button className="white-btn" onClick={() => navigate("/contact")}>
-                Contact DPO
-              </button>
-              <button className="ghost-btn" onClick={() => navigate("/safety/transparency")}>
-                Transparency Report
-              </button>
-            </div>
-          </motion.div>
-        </section>
-
-      </div>
-      <Footer />
-    </div>
-  );
-}
-
-/* ================= COMPONENTS ================= */
-
-function TrustSection({ title, children }) {
-  return (
-    <section className="trust-section">
-      <motion.div
-        className="trust-section-inner"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        {title && <h2 className="gradient-title section-title">{title}</h2>}
-        {children}
-      </motion.div>
-    </section>
-  );
-}
-
-function BreakLine() {
-  return <div className="break-line" />;
-}
+export default Trust;

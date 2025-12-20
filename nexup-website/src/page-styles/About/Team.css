@@ -1,406 +1,288 @@
-/* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal)
-=========================================================== */
+/* src/page-styles/About/Team.css */
+
+/* --- Color Palette (Consistent Dark Mode) --- */
+:root {
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #aaaaaa; 
+    --color-border: #333333; 
+    --color-statement-bg: #1a1a1a;
+    --color-link-hover: #cccccc;
+    --sidebar-width: 280px; 
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --header-height: 60px; 
+
+    /* CTA Colors */
+    --cta-bg-color: #ffffff;
+    --cta-text-color: #000000;
+    --cta-hover-bg: #cccccc;
+}
+
 .team-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  min-height: 100vh;
-  /* Remove scrollbar visually */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
 }
 
-.team-page::-webkit-scrollbar {
-  display: none;
+/* --------------------------------------------------
+    MAIN CONTENT ALIGNMENT 
+-------------------------------------------------- */
+.team-main-content {
+    margin-left: var(--sidebar-width); 
+    max-width: 1100px;
+    margin-right: auto;
+    margin-top: calc(var(--header-height) + 40px);
+    padding: 0 5%; 
 }
 
-.team-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
-  color: #f0f0f0;
-  position: relative;
-  z-index: 2;
+.team-document {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+    line-height: 1.6;
+    font-size: 1rem; 
 }
 
-/* ===========================================================
-   ANIMATION KEYFRAMES
-=========================================================== */
-/* 3. Animated Gradient Title */
-@keyframes titleGlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes floatGlow {
-  from { transform: translate(-50%, -50%) scale(1); }
-  to   { transform: translate(-48%, -45%) scale(1.1); }
-}
-
-/* ===========================================================
-   HERO & GLOW
-=========================================================== */
-.team-hero-section {
-  min-height: 60vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
-}
-
-/* 9. Micro Shadow under hero & 15. Reduced Blur */
-.team-hero-section::before {
-  content: "";
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(184,169,255,0.05), transparent);
-  filter: blur(100px);
-  top: 55%;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.team-glow {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  width: 50vw;
-  height: 50vh;
-  /* 15. Blur optimization */
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 70%);
-  filter: blur(60px); 
-  z-index: 0;
-  pointer-events: none;
-  animation: floatGlow 12s ease-in-out infinite alternate;
-}
-
-.team-hero-content {
-  z-index: 1;
-  max-width: 900px;
-}
-
-.team-hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-
-/* 3. Gradient Animation */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff, #cbbdff);
-  background-size: 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-  animation: titleGlow 4s linear infinite;
-}
-
-.team-hero-sub {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.8;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-/* ===========================================================
-   LEADERSHIP GRID
-=========================================================== */
-.leaders-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
-}
-
-.leader-card {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  /* 10. Pointer Cursor & 16. Will-change */
-  cursor: pointer;
-  will-change: transform;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* 2. Hover Movement */
-.leader-card:hover {
-  transform: translateY(-6px);
-}
-
-.leader-avatar-wrapper {
-  margin-bottom: 20px;
-  padding: 4px;
-  background: linear-gradient(135deg, rgba(184,169,255,0.3), transparent);
-  border-radius: 50%;
-  position: relative;
-  z-index: 1;
-}
-
-/* 1. Subtle Animated Glow behind avatar */
-.leader-avatar-wrapper::after {
-  content: "";
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(184,169,255,0.18), transparent 70%);
-  filter: blur(28px);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.leader-card:hover .leader-avatar-wrapper::after {
-  opacity: 1;
-}
-
-.leader-avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: #1a1a1a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #666;
-  border: 4px solid #0f0f11;
-  overflow: hidden;
-}
-
-.leader-info h3 {
-  font-size: 1.5rem;
-  margin-bottom: 6px;
-  color: #fff;
-}
-
-.leader-role {
-  color: #b8a9ff;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.leader-bio {
-  font-size: 1rem;
-  /* 8. Increased Readability */
-  line-height: 1.65;
-  color: rgba(255,255,255,0.75);
-  margin-top: 8px;
-}
-
-/* ===========================================================
-   TEAM CARDS & DEPARTMENTS (4. Color Codes)
-=========================================================== */
-.teams-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-/* 4. Department Colors */
-.dept-engineering .team-card:hover { border-color: #5fb6ff; }
-.dept-engineering h3 { color: #5fb6ff; }
-
-.dept-design .team-card:hover { border-color: #b8a9ff; }
-.dept-design h3 { color: #b8a9ff; }
-
-.dept-research .team-card:hover { border-color: #2dd4bf; }
-.dept-research h3 { color: #2dd4bf; }
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 24px;
-  transition: all 0.3s ease;
-  will-change: transform;
-}
-
-.glass-panel:hover {
-  transform: translateY(-6px);
-  background: rgba(255, 255, 255, 0.06);
-  /* border color handled by dept classes above or default below */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.team-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 10px;
-  color: #fff; /* Fallback */
-  transition: color 0.3s;
-}
-
-.team-card p {
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.5;
-}
-
-/* ===========================================================
-   LIFE AT NEX UP (Masonry)
-=========================================================== */
-.life-masonry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-auto-rows: 200px;
-  gap: 20px;
-  width: 100%;
-  /* 14. Smoother Masonry Flow */
-  grid-auto-flow: dense;
-}
-
-.life-item {
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-  background: #181818;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.3s ease;
-  cursor: default;
-}
-
-.life-item:hover {
-  transform: scale(1.02);
-  z-index: 2;
-  border-color: #b8a9ff;
-}
-
-/* 6. Hover Description Overlay */
-.life-item::after {
-  content: attr(data-label);
-  position: absolute;
-  bottom: 14px;
-  left: 14px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: white;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-  z-index: 3;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-}
-
-.life-item:hover::after {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Specific Sizes */
-.item-large { grid-column: span 2; grid-row: span 2; }
-.item-wide { grid-column: span 2; }
-
-@media (max-width: 600px) {
-  .item-large, .item-wide {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-}
-
-.life-img-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgba(255,255,255,0.3);
-  background: linear-gradient(45deg, #111, #1a1a1a);
-}
-
-/* ===========================================================
-   FINAL CTA
-=========================================================== */
-.team-final-section {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
-.final-big {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  margin-bottom: 16px;
-}
-
-.final-text {
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 30px;
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 14px 32px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.white-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-}
-
-/* ===========================================================
-   UTILITIES
-=========================================================== */
+/* --------------------------------------------------
+    STANDARD SECTIONS
+-------------------------------------------------- */
 .team-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+    padding-top: 15px;
+    padding-bottom: 5px;
 }
 
-.team-section-inner {
-  width: 100%;
-  max-width: 1000px;
-  /* 11. Consistent Padding */
-  padding: 0 16px;
+.team-section h3 {
+    font-size: 1.6rem; 
+    font-weight: 700;
+    margin-bottom: 20px; 
+    color: var(--color-text-primary);
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
 }
 
-.centered-intro {
-  text-align: center;
-  max-width: 650px;
-  margin: 0 auto 40px auto;
-  font-size: 1.15rem;
-  color: rgba(255, 255, 255, 0.7);
+.team-section p {
+    margin-bottom: 12px; 
+    color: var(--color-text-secondary);
 }
 
-.section-title {
-  font-size: 2.2rem;
-  margin-bottom: 24px;
-  text-align: center;
-  display: block;
+.priority-note {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-top: 15px; 
 }
 
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+.statement {
+    font-size: 1.05rem; 
+    font-weight: 500;
+    margin-top: 20px; 
+    padding: 15px 20px;
+    border-left: 3px solid var(--color-text-primary);
+    background-color: var(--color-statement-bg);
+    color: var(--color-text-primary);
 }
 
-@media (max-width: 768px) {
-  /* 13. Mobile Avatar Size */
-  .leader-avatar { width: 160px; height: 160px; }
-  .leader-avatar-wrapper::after { width: 160px; height: 160px; }
+
+/* --------------------------------------------------
+    LEADERSHIP BIOS SECTION
+-------------------------------------------------- */
+.leadership-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.leader-bio-card {
+    background-color: var(--color-statement-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border-top: 4px solid var(--leader-color);
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.leader-photo-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--leader-color);
+    color: var(--color-page-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    flex-shrink: 0; /* Prevents shrinking */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.leader-info h4 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--leader-color);
+}
+
+.leader-title {
+    margin: 4px 0 10px;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+.leader-bio-text {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+}
+
+
+/* --------------------------------------------------
+    TEAM BLOCKS CONTAINER (Culture & Structure)
+-------------------------------------------------- */
+.team-blocks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.team-block {
+    background-color: var(--color-statement-bg); 
+    border: 1px solid var(--color-border);
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 5px solid var(--block-color); 
+}
+
+.team-block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 10px var(--block-color);
+}
+
+.block-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    background-color: var(--block-color);
+}
+
+.team-block h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--block-color);
+    margin: 0 0 10px;
+}
+
+.team-block p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+}
+
+
+/* --------------------------------------------------
+    JOIN THE TEAM CTA SECTION
+-------------------------------------------------- */
+.join-team-cta {
+    background-color: var(--color-statement-bg);
+    border: 1px solid var(--color-border);
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 40px 0;
+}
+
+.join-team-cta h3 {
+    font-size: 2rem;
+    color: var(--color-text-primary);
+    margin-bottom: 15px;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.join-team-cta p {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: var(--cta-bg-color);
+    color: var(--cta-text-color);
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.cta-button:hover {
+    background-color: var(--cta-hover-bg);
+}
+
+
+/* --------------------------------------------------
+    RESPONSIVENESS 
+-------------------------------------------------- */
+@media (max-width: 900px) {
+    .team-main-content {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+        margin-top: calc(var(--header-height) + 20px);
+        padding: 0 3%;
+    }
+
+    .document-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .leadership-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .leader-bio-card {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .leader-photo-placeholder {
+        margin-bottom: 10px;
+    }
+
+    .leader-info {
+        text-align: center;
+    }
+
+    .team-blocks-container {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    
+    .join-team-cta {
+        padding: 30px 15px;
+    }
+
+    .join-team-cta h3 {
+        font-size: 1.6rem;
+    }
+
+    .join-team-cta p {
+        font-size: 1rem;
+    }
 }

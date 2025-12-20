@@ -1,489 +1,299 @@
-/* ===========================================================
-   GLOBAL CSS FIXES (For Scrollbar Hiding)
-=========================================================== */
+/* src/page-styles/About/Career.css */
+
+/* --- Color Palette (Consistent Dark Mode) --- */
+:root {
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #999999; 
+    --color-border: #333333; 
+    --color-statement-bg: #1a1a1a;
+    --color-link-hover: #cccccc;
+    --color-apply-button-bg: #ffffff;
+    --color-apply-button-text: #000000;
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .career-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  min-height: 100vh;
-  /* HIDE SCROLLBAR visually while retaining functionality */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
 }
 
-.career-page::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+/* --------------------------------------------------
+    MAIN CONTENT ALIGNMENT
+-------------------------------------------------- */
+.career-main-content {
+    max-width: 900px;
+    margin: 100px auto 80px; 
+    padding: 0 5%; 
 }
 
-/* ===========================================================
-   PAGE LAYOUT & WRAPPER
-=========================================================== */
-.career-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
-  color: #f0f0f0;
-  position: relative;
-  z-index: 2;
-}
-
-/* ===========================================================
-   ANIMATION KEYFRAMES
-=========================================================== */
-
-/* ⭐ 1. Animated Gradient Shift */
-@keyframes glowShift {
-  0% { background-position: 0%; }
-  50% { background-position: 100%; }
-  100% { background-position: 0%; }
-}
-
-/* ⭐ 3. Parallax Glow Animation */
-@keyframes floatGlow {
-  from { transform: translate(-50%, -50%) scale(1); }
-  to   { transform: translate(-47%, -48%) scale(1.1); }
-}
-
-/* ⭐ 9. Scroll Hint Bounce */
-@keyframes hintBounce {
-  0%, 100% { transform: translate(-50%,0); }
-  50% { transform: translate(-50%,6px); }
-}
-
-/* ===========================================================
-   HERO & GLOW
-=========================================================== */
-.career-hero-section {
-  min-height: 60vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
-}
-
-.career-glow {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
-  /* 10. Reduce shadow blur cost */
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.06) 0%, transparent 65%);
-  filter: blur(60px);
-  opacity: 0.8;
-  z-index: 0;
-  pointer-events: none;
-  /* ⭐ 3. Parallax Glow Motion */
-  animation: floatGlow 12s ease-in-out infinite alternate;
-}
-
-.career-hero-content {
-  z-index: 1;
-  max-width: 900px;
-  /* 12. Performance Hint */
-  will-change: transform, opacity;
-}
-
-.hero-badge {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(184, 169, 255, 0.1);
-  border: 1px solid rgba(184, 169, 255, 0.2);
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #b8a9ff;
-  margin-bottom: 24px;
-}
-
-.career-big-title {
-  font-size: clamp(2.5rem, 5vw, 4.2rem);
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-
-.career-sub {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.8;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-/* ⭐ 9. Scroll Hint Cue */
-.scroll-hint {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255,255,255,.4);
-  font-size: 1.5rem;
-  animation: hintBounce 2s infinite ease-in-out;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* ===========================================================
-   MANIFESTO (Why Us)
-=========================================================== */
-.manifesto-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: center;
-}
-
-.manifesto-text h3 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  color: #fff;
-}
-
-.manifesto-text p {
-  /* ⭐ 8. Improved mobile readability */
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 20px;
-}
-
-.manifesto-visual {
-  height: 350px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgba(255,255,255,0.3);
-  font-style: italic;
-  text-align: center;
-  padding: 20px;
-}
-
-.visual-placeholder {
-  font-family: monospace;
-  font-size: 1rem;
-}
-
-/* ===========================================================
-   BENEFITS GRID
-=========================================================== */
-.benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-.benefit-card {
-  padding: 30px;
-}
-
-.benefit-icon-line {
-  width: 30px;
-  height: 3px;
-  background: #b8a9ff;
-  margin-bottom: 16px;
-  border-radius: 2px;
-}
-
-.benefit-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 8px;
-  color: #fff;
-}
-
-.benefit-card p {
-  color: rgba(255,255,255,0.7);
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-/* ===========================================================
-   TEAMS GRID
-=========================================================== */
-.teams-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
-}
-
-.team-card {
-  padding: 24px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 160px;
-  transition: all 0.3s ease;
-}
-
-/* ⭐ 7. Shadow Pop on Team Cards */
-.team-card:hover {
-  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
-}
-
-.team-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-/* ===========================================================
-   ROLES LIST (Job Tickets)
-=========================================================== */
-.roles-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0; /* Remove gap, use border for structure */
-  width: 100%;
-}
-
-.role-ticket {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 32px;
-  cursor: pointer;
-  border-left: 3px solid transparent;
-  /* ⭐ 4. Role Ticket Hover Transition */
-  transition: all .25s cubic-bezier(.16,1,.3,1);
-  will-change: transform, background-color;
-}
-
-/* ⭐ 5. Add Divider Between Roles */
-.role-ticket + .role-ticket {
-  border-top: 1px solid rgba(255,255,255,0.07);
-}
-
-.role-ticket:hover {
-  border-left-color: #b8a9ff;
-  /* ⭐ 4. Hover effect */
-  transform: translateX(6px);
-  background: rgba(255,255,255,0.06);
-}
-
-.role-info h3 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.role-meta {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.pill {
-  font-size: 0.85rem;
-  padding: 4px 12px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.7);
-}
-
-.role-action {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #b8a9ff;
-  font-weight: 500;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-.role-ticket:hover .role-action {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* ⭐ 6. Hover Ripple/Arrow */
-.role-action span.arrow {
-  transition: transform .25s ease;
-}
-
-.role-ticket:hover .arrow {
-  transform: translateX(4px);
-}
-
-/* ===========================================================
-   LIFE AT NEX UP
-=========================================================== */
-.life-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-.life-card {
-  height: 200px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.3s ease;
-}
-
-.life-card:hover {
-  transform: scale(1.02);
-  border-color: #b8a9ff;
-}
-
-.life-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgba(255,255,255,0.3);
-  background: linear-gradient(135deg, #111, #1a1a1a);
-}
-
-/* ===========================================================
-   FINAL CTA
-=========================================================== */
-.career-final-section {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
-.career-final {
-  max-width: 800px;
-}
-
-.final-big {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  margin-bottom: 16px;
-}
-
-.final-text {
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 30px;
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 14px 32px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.white-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-}
-
-/* ===========================================================
-   UTILITIES
-=========================================================== */
-
-/* ⭐ 1. Animated Gradient Titles */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  background-size: 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-  animation: glowShift 6s ease infinite;
-  will-change: background-position;
-}
-
-@keyframes glowShift {
-  0% { background-position: 0%; }
-  50% { background-position: 100%; }
-  100% { background-position: 0%; }
-}
-
-/* ⭐ 2. Motion improvements for glass panels */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  will-change: transform, opacity;
-}
-
-.glass-panel:hover {
-  transform: translateY(-6px) scale(1.015);
-  border-color: rgba(184, 169, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.career-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.career-section-inner {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.section-title {
-  font-size: 2.2rem;
-  margin-bottom: 30px;
-  display: inline-block;
-}
-
-.centered-title {
-  width: 100%;
-  text-align: center;
-}
-
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-/* ===========================================================
-   MEDIA QUERIES
-=========================================================== */
-@media (max-width: 768px) {
-  .career-wrapper {
-    padding: 60px 20px;
-    gap: 70px;
-  }
-  
-  .manifesto-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .manifesto-visual {
-    height: 250px;
-  }
-
-  .manifesto-text p {
-    font-size: 1rem;
-    line-height: 1.6;
-  } /* ⭐ 8. Improvement */
-
-  .role-ticket {
+.career-document {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
+    gap: 30px; 
+    line-height: 1.6;
+    font-size: 1rem; 
+}
 
-  .role-action {
-    opacity: 1;
-    transform: none;
-    font-size: 0.9rem;
-  }
+/* Scroll target */
+.scroll-target {
+    scroll-margin-top: 60px; 
+}
+
+/* --------------------------------------------------
+    HEADER & INTRO
+-------------------------------------------------- */
+.document-header {
+    text-align: center;
+    margin-bottom: 30px; 
+}
+
+.document-header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+}
+
+.introduction {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.7;
+    padding: 0 10px;
+    text-align: center;
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
+}
+
+.statement-header {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding: 10px 10px 30px; 
+    border-bottom: 1px solid var(--color-border);
+}
+
+
+/* --------------------------------------------------
+    POLICY SECTIONS (Content Blocks)
+-------------------------------------------------- */
+.policy-section {
+    padding-top: 25px;
+}
+
+.policy-section h3 {
+    font-size: 1.6rem; 
+    font-weight: 700;
+    margin-bottom: 20px; 
+    color: var(--color-text-primary);
+    /* Icon spacing removed */
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
+}
+
+/* Removed .section-icon CSS */
+
+.policy-section h4 {
+    font-size: 1.2rem; 
+    font-weight: 600;
+    margin-top: 15px; 
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+    /* Icon alignment removed */
+}
+
+/* Removed .policy-section h4 svg CSS */
+
+.policy-section p {
+    margin-bottom: 12px; 
+    color: var(--color-text-secondary);
+}
+
+/* Lists */
+.policy-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px; 
+}
+
+.policy-section li {
+    position: relative;
+    padding-left: 20px; 
+    margin-bottom: 8px; 
+    color: var(--color-text-primary);
+    font-size: 0.95rem; 
+}
+
+.policy-section li::before {
+    content: '•'; 
+    color: var(--color-text-secondary);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.inline-link {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+.inline-link:hover {
+    color: var(--color-link-hover);
+}
+
+.priority-note {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-top: 15px; 
+}
+
+/* Statement Box */
+.statement {
+    font-size: 1.05rem; 
+    font-weight: 500;
+    margin-top: 20px; 
+    padding: 15px 20px;
+    border-left: 3px solid var(--color-text-primary);
+    background-color: var(--color-statement-bg);
+    color: var(--color-text-primary);
+}
+
+
+/* --------------------------------------------------
+    2. CORE VALUES GRID
+-------------------------------------------------- */
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.values-grid article {
+    border: 1px solid var(--color-border);
+    padding: 20px;
+    border-radius: 6px;
+}
+.values-grid article p {
+    font-size: 0.95rem;
+}
+
+
+/* --------------------------------------------------
+    5. TEAMS & ROLES
+-------------------------------------------------- */
+.roles-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.role-card {
+    background-color: var(--color-statement-bg);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.role-card ul {
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.role-card h4 {
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+/* Apply Button (Flow to Contact Page) */
+.apply-button {
+    text-decoration: none;
+    padding: 12px 20px;
+    background-color: var(--color-apply-button-bg);
+    color: var(--color-apply-button-text);
+    border-radius: 4px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: auto; 
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+    font-size: 0.95rem;
+}
+
+/* Removed arrow icon styles */
+
+.apply-button:hover {
+    background-color: var(--color-text-secondary);
+    color: var(--color-text-primary);
+}
+
+
+/* --------------------------------------------------
+    FINAL SECTION
+-------------------------------------------------- */
+.final-section {
+    padding-bottom: 30px; 
+}
+
+.final-message-box {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid var(--color-text-primary);
+    border-radius: 6px;
+    background-color: var(--color-statement-bg);
+}
+
+.final-message-box p {
+    color: var(--color-text-primary);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.final-message-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------
+    RESPONSIVENESS
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .career-main-content {
+        padding: 0 3%;
+        margin: 60px auto 40px;
+    }
+
+    .document-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .career-document {
+        gap: 25px;
+    }
+    
+    .policy-section h3 {
+        font-size: 1.4rem;
+        padding-bottom: 8px;
+    }
+    
+    .values-grid, .roles-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .apply-button {
+        padding: 14px;
+        font-size: 1rem;
+    }
 }

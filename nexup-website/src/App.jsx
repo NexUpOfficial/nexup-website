@@ -47,6 +47,8 @@ import Cookies from "./pages/Safety/Cookies";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import SearchPage from "./pages/Search/Search";
+import FeedbackForm from "./pages/FeedbackForm";
+
 
 /* Account */
 import DNS from "./pages/Account/DNS";
@@ -54,7 +56,6 @@ import DNS from "./pages/Account/DNS";
 /* Sections */
 import Roadmap from "./pages/sections/Roadmap";
 import Terms from "./pages/sections/Terms";
-
 
 /* ============================================================
    Global Scroll Override — Fixes all pages
@@ -82,7 +83,6 @@ function useGlobalScrollOverride() {
   }, []);
 }
 
-
 /* ============================================================
    Animated Routes Wrapper
 ============================================================ */
@@ -92,7 +92,6 @@ function AnimatedRoutesWrapper() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-
         {/* Home */}
         <Route path="/" element={<Home />} />
 
@@ -137,6 +136,8 @@ function AnimatedRoutesWrapper() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/feedback" element={<FeedbackForm />} />
+
 
         {/* Sections */}
         <Route path="/sections/roadmap" element={<Roadmap />} />
@@ -145,7 +146,6 @@ function AnimatedRoutesWrapper() {
     </AnimatePresence>
   );
 }
-
 
 /* ============================================================
    App Root Component
@@ -157,6 +157,7 @@ export default function App() {
 
   useGlobalScrollOverride();
 
+  /* EXISTING – DO NOT REMOVE */
   const toggleSidebar = () => {
     setIsOpen(prev => {
       const next = !prev;
@@ -165,9 +166,27 @@ export default function App() {
     });
   };
 
+  /* EXISTING – DO NOT REMOVE */
   const closeSidebar = () => {
     setIsOpen(false);
     localStorage.setItem("sidebar_open", "false");
+  };
+
+  /* ============================================================
+     ✅ NEW – SAFE ADDITION (DO NOT REMOVE EXISTING CODE)
+     Allows Sidebar to toggle itself (Ctrl + S)
+  ============================================================ */
+  const setSidebarState = (value) => {
+    if (typeof value === "function") {
+      setIsOpen(prev => {
+        const next = value(prev);
+        localStorage.setItem("sidebar_open", next);
+        return next;
+      });
+    } else {
+      setIsOpen(value);
+      localStorage.setItem("sidebar_open", value);
+    }
   };
 
   return (
@@ -177,7 +196,10 @@ export default function App() {
       {/* Reset scroll on route */}
       <ScrollToTop />
 
-      <Sidebar isOpen={isOpen} onClose={closeSidebar} />
+      {/* 🔽 ONLY THIS PROP IS CHANGED */}
+      <Sidebar isOpen={isOpen} onClose={setSidebarState} />
+
+      {/* EXISTING – UNCHANGED */}
       <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
       <PageLayout isOpen={isOpen}>

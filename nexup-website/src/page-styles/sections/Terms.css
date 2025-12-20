@@ -1,226 +1,213 @@
-/* ===========================================================
-   PAGE WRAPPER (1. Grid Background + Scrollbar Fix)
-=========================================================== */
+/* src/page-styles/sections/Terms.css */
+
+/* --- Color Palette (Consistent Dark Mode) --- */
+:root {
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #aaaaaa; 
+    --color-border: #333333; 
+    --color-statement-bg: #1a1a1a;
+    --color-link-hover: #cccccc;
+    --sidebar-width: 280px; 
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --header-height: 60px; 
+}
+
 .terms-page {
-  width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  
-  /* 1. Soft Grid */
-  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
-  
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  display: flex;
-  flex-direction: column;
-  
-  /* Hide Scrollbar */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
 }
 
-.terms-page::-webkit-scrollbar {
-  display: none;
+/* --------------------------------------------------
+    MAIN CONTENT ALIGNMENT (Centering for Sidebar Layout)
+-------------------------------------------------- */
+.terms-main-content {
+    /* 1. Ensure the content starts past the fixed sidebar */
+    margin-left: var(--sidebar-width); 
+    
+    /* 2. Set max width for readability */
+    max-width: 900px;
+    
+    /* 3. Center the max-width content horizontally in the remaining space */
+    margin-right: auto;
+    
+    /* Vertical positioning for content below the main page header */
+    margin-top: calc(var(--header-height) + 40px);
+
+    padding: 0 5%; 
 }
 
-/* ===========================================================
-   HEADER
-=========================================================== */
-.terms-header {
-  padding: 120px 24px 60px;
-  text-align: center;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.terms-document {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+    line-height: 1.6;
+    font-size: 1rem; 
 }
 
-/* 2. Hero Glow */
-.terms-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 65%);
-  filter: blur(90px);
-  pointer-events: none;
-  z-index: 0;
+/* Scroll target for header links */
+.scroll-target {
+    scroll-margin-top: 60px; 
 }
 
-.header-content {
-  position: relative;
-  z-index: 1;
+
+/* --------------------------------------------------
+    HEADER & INTRO 
+-------------------------------------------------- */
+.document-header {
+    text-align: center;
+    margin-top: 0; 
+    margin-bottom: 30px; 
 }
 
-/* 8. Unified Badge */
-.doc-badge {
-  display: inline-block;
-  font-family: monospace;
-  font-size: 0.8rem;
-  color: #b8a9ff;
-  border: 1px solid rgba(184, 169, 255, 0.3);
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  letter-spacing: 1px;
-  background: rgba(184, 169, 255, 0.05);
+.document-header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 8px;
 }
 
-.terms-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  margin: 0 0 10px 0;
-  line-height: 1.1;
+.subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-weight: 400;
+    color: var(--color-text-secondary);
 }
 
-.terms-subtitle {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.5);
-  font-family: monospace;
+.introduction {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.7;
+    padding: 0 10px;
+    text-align: center;
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
 }
 
-/* ===========================================================
-   LAYOUT (Sidebar + Content)
-=========================================================== */
-.terms-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  max-width: 1100px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 24px 100px;
-  gap: 60px;
-  position: relative;
-  z-index: 1;
+.statement-header {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding: 10px 10px 30px; 
+    border-bottom: 1px solid var(--color-border);
 }
 
-/* SIDEBAR */
-.terms-sidebar {
-  position: sticky;
-  top: 100px;
-  height: fit-content;
-  padding-right: 20px;
-  border-right: 1px solid rgba(255,255,255,0.05);
+
+/* --------------------------------------------------
+    POLICY SECTIONS (Content Blocks)
+-------------------------------------------------- */
+.terms-section {
+    padding-top: 25px;
 }
 
-.terms-sidebar ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.terms-section h3 {
+    font-size: 1.6rem; 
+    font-weight: 700;
+    margin-bottom: 20px; 
+    color: var(--color-text-primary);
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
 }
 
-.terms-sidebar a {
-  display: block;
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  padding: 4px 0;
-  /* 4. Sidebar Glow Indicator Base */
-  border-left: 3px solid transparent;
-  padding-left: 12px;
-  margin-left: -15px; /* Align visually */
+.terms-section p {
+    margin-bottom: 12px; 
+    color: var(--color-text-secondary);
 }
 
-/* 4. Sidebar Active & Hover */
-.terms-sidebar a:hover {
-  color: #fff;
-  transform: translateX(4px);
+/* Lists */
+.terms-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px; 
 }
 
-.terms-sidebar a.active {
-  color: #b8a9ff;
-  font-weight: 600;
-  border-left: 3px solid #b8a9ff;
-  background: linear-gradient(90deg, rgba(184,169,255,0.1), transparent);
+.terms-section li {
+    position: relative;
+    padding-left: 20px; 
+    margin-bottom: 8px; 
+    color: var(--color-text-primary);
+    font-size: 0.95rem; 
 }
 
-/* MAIN CONTENT */
-.terms-content {
-  display: flex;
-  flex-direction: column;
-  /* 6. Spacing handled by BreakLine & margin */
+.terms-section li::before {
+    content: '•'; 
+    color: var(--color-text-secondary);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
 }
 
-/* 3. Glass Panel for Sections */
-.terms-block {
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  backdrop-filter: blur(12px);
-  transition: border-color 0.3s ease;
+.priority-note {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-top: 15px; 
 }
 
-.terms-block:hover {
-  border-color: rgba(184, 169, 255, 0.2);
+/* Statement Box */
+.statement {
+    font-size: 1.05rem; 
+    font-weight: 500;
+    margin-top: 20px; 
+    padding: 15px 20px;
+    border-left: 3px solid var(--color-text-primary);
+    background-color: var(--color-statement-bg);
+    color: var(--color-text-primary);
 }
 
-.terms-block h2 {
-  font-size: 1.6rem;
-  margin-bottom: 20px;
-  color: #fff;
+
+/* --------------------------------------------------
+    FINAL SECTION
+-------------------------------------------------- */
+.final-section {
+    padding-bottom: 30px; 
 }
 
-.terms-block p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 16px;
+.final-message-box {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid var(--color-text-primary);
+    border-radius: 6px;
+    background-color: var(--color-statement-bg);
 }
 
-.terms-block p:last-child {
-  margin-bottom: 0;
+.final-message-box p {
+    color: var(--color-text-primary);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 0;
 }
 
-.terms-block strong {
-  color: #fff;
-}
 
-.terms-block a {
-  color: #b8a9ff;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: 0.2s;
-}
-
-.terms-block a:hover {
-  border-bottom-color: #b8a9ff;
-}
-
-/* 7. Subtle Divider */
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  margin: 30px 0;
-  opacity: 0.6;
-}
-
-/* ===========================================================
-   RESPONSIVE
-=========================================================== */
+/* --------------------------------------------------
+    RESPONSIVENESS (Mobile: Sidebar hidden, full width content)
+-------------------------------------------------- */
 @media (max-width: 900px) {
-  .terms-layout {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+    /* On mobile, revert to full width and simple centering */
+    .terms-main-content {
+        margin-left: auto; /* Remove sidebar offset */
+        margin-right: auto;
+        max-width: 100%;
+        margin-top: calc(var(--header-height) + 20px); /* Adjust top margin */
+        padding: 0 3%;
+    }
 
-  /* Hide Sidebar on Mobile (or convert to dropdown if needed, keeping simple for now) */
-  .terms-sidebar {
-    display: none; 
-  }
+    .document-header {
+        margin-top: 0; 
+    }
 
-  .terms-header {
-    padding-top: 80px;
-  }
-  
-  .terms-block {
-    padding: 24px;
-  }
+    .document-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .terms-document {
+        gap: 25px;
+    }
+    
+    .terms-section h3 {
+        font-size: 1.4rem;
+        padding-bottom: 8px;
+    }
 }

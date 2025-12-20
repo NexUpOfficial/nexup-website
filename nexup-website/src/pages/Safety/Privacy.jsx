@@ -1,347 +1,237 @@
-// src/pages/Support/Privacy.jsx (Retained from previous update)
-// No changes required in JSX for alignment, as the CSS handles positioning.
+// src/pages/Safety/Privacy.jsx
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import "../../page-styles/Safety/Privacy.css";
+import Footer from "../../components/Footer/Footer";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { 
-  FiShield, FiLock, FiEye, FiDatabase, FiServer, 
-  FiUserCheck, FiGlobe, FiFileText, FiLink, FiMail,
-  FiActivity, FiTarget, FiTool, FiZap, FiBox, FiAlertTriangle 
-} from "react-icons/fi";
-// Ensure the correct path to the CSS file
-import "../../page-styles/Safety/Privacy.css"; 
-// Ensure the Footer component is imported
-import Footer from "../../components/Footer/Footer"; 
+// Helper for structured sections
+const Section = ({ id, title, children }) => (
+    <section className="policy-section scroll-target" id={id}>
+        <h3>{title}</h3>
+        {children}
+    </section>
+);
 
-/* --- DATA --- */
-const EFFECTIVE_DATE = "December 2025";
-const COMPANY_NAME = "NexUP";
+const Privacy = () => {
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
-// SECTION 2.1: Personal Data You Provide to Us
-const DATA_PROVIDED = [
-  { 
-    title: "Account & Contact Information", 
-    icon: <FiUserCheck />,
-    points: [
-      "Name, Email address, Username or profile identifiers.",
-      "Organization or company name (if applicable)"
-    ] 
-  },
-  { 
-    title: "User Communications & Content", 
-    icon: <FiMail />,
-    points: [
-      "Messages submitted via contact forms, support requests, and feedback.",
-      "Reports, inputs, uploads, or content shared through NexUP tools."
-    ] 
-  },
-];
-
-// SECTION 2.2: Personal Data Collected Automatically
-const DATA_AUTO = [
-  { 
-    title: "Log & Usage Data", 
-    icon: <FiDatabase />,
-    points: [
-      "IP address, Browser type and version, Device type and operating system.",
-      "Pages viewed, interactions, and navigation patterns."
-    ] 
-  },
-  { 
-    title: "Device & Location Info", 
-    icon: <FiGlobe />,
-    points: [
-      "Device identifiers, Platform type, Language and region settings.",
-      "Approximate location derived from IP address."
-    ] 
-  },
-];
-
-// SECTION 3: How We Use Personal Data
-const HOW_WE_USE = [
-  { icon: <FiServer />, text: "Provide, operate, and maintain Services." },
-  { icon: <FiTool />, text: "Develop new features and virtual environments." },
-  { icon: <FiActivity />, text: "Improve performance, design, and functionality." },
-  { icon: <FiEye />, text: "Ensure platform security and prevent misuse." },
-  { icon: <FiTarget />, text: "Comply with legal obligations and enforce policies." },
-];
-
-// SECTION 5: Disclosure Circumstances
-const DISCLOSURE_REASONS = [
-  { 
-    title: "5.1 Service Providers", 
-    desc: "Sharing with trusted vendors (hosting, analytics, security) necessary to operate our Services." 
-  },
-  { 
-    title: "5.2 Legal & Safety Reasons", 
-    desc: "Disclosure required to comply with law, respond to requests, or protect rights, safety, or property." 
-  },
-  { 
-    title: "5.3 Business Transfers", 
-    desc: "Transfer of data in the event of a merger, acquisition, restructuring, or asset transfer." 
-  },
-];
-
-// SECTION 7: Your Rights & Choices
-const USER_RIGHTS = [
-  { title: "Access", desc: "Access your Personal Data." },
-  { title: "Correction/Update", desc: "Correct or update inaccurate data." },
-  { title: "Deletion", desc: "Request deletion of your data." },
-  { title: "Objection", desc: "Restrict or object to certain processing." }
-];
-
-/* --- ANIMATION VARIANTS --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-/* --- MAIN COMPONENT --- */
-export default function Privacy() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="privacy-page">
-      <div className="privacy-wrapper">
-        
-        {/* ================= HERO: Title and Scope (Now Centered via CSS) ================= */}
-        <section className="privacy-hero-section">
-          <div className="privacy-glow" />
-          <motion.div
-            className="privacy-hero-content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            <div className="status-badge">
-              <span className="status-dot"></span> Effective Date: {EFFECTIVE_DATE}
-            </div>
-            <h1 className="gradient-title privacy-hero-title">
-              {COMPANY_NAME} Privacy Policy
-            </h1>
-            <p className="privacy-hero-sub">
-              This policy describes how we handle Personal Data when you use our Services, including NexWorld and NexEngine.
-            </p>
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= SECTION 1: SCOPE ================= */}
-        <PrivacySection title="1. Scope of This Privacy Policy">
-          <div className="privacy-intro glass-panel">
-            <FiBox className="intro-icon" />
-            <div className="intro-text">
-              <h3>Applicability</h3>
-              <p>
-                This Policy applies to personal data collected directly by NexUP through our websites, contact forms, and future 
-                spatial computing platforms. It covers individual users, creators, developers, and partners.
-              </p>
-              <p className="note-text-full">
-                **Exclusions:** This policy does not apply to third-party services linked from our platforms.
-              </p>
-            </div>
-          </div>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ================= SECTION 2: DATA WE COLLECT (2.1, 2.2, 2.3) ================= */}
-        <PrivacySection title="2. Personal Data We Collect">
-          <div className="sub-section-grid">
-            {/* 2.1 Personal Data You Provide to Us */}
-            <DataListCard sectionTitle="2.1 Personal Data You Provide to Us" data={DATA_PROVIDED[0]} />
-            <DataListCard sectionTitle="" data={DATA_PROVIDED[1]} />
-
-            {/* 2.2 Personal Data Collected Automatically */}
-            <DataListCard sectionTitle="2.2 Personal Data Collected Automatically" data={DATA_AUTO[0]} />
-            <DataListCard sectionTitle="" data={DATA_AUTO[1]} />
-          </div>
-          
-          <div className="cookies-section glass-panel-sm">
-            <h4>2.3 Cookies & Similar Technologies</h4>
-            <p>We use cookies to ensure core website functionality, remember user preferences, and analyze usage trends. You can control cookies through your browser settings.</p>
-          </div>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ================= SECTION 3: HOW WE USE DATA ================= */}
-        <PrivacySection title="3. How We Use Personal Data">
-          <div className="use-grid">
-            {HOW_WE_USE.map((item, idx) => (
-              <motion.div key={idx} className="use-card glass-panel-sm" variants={itemVariants}>
-                <div className="card-icon-wrapper-sm">{item.icon}</div>
-                <p>{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-          <p className="note-text-full mt-30">
-            **Aggregated Data:** We may aggregate or anonymize data so it no longer identifies you and use it for research and platform improvement.
-          </p>
-        </PrivacySection>
-
-        <BreakLine />
-        
-        {/* ================= SECTION 4: AI & PLATFORM EVOLUTION ================= */}
-        <PrivacySection title="4. AI, Virtual Worlds & Platform Evolution">
-          <div className="legal-panel glass-panel-sm">
-            <h4 className="flex-center"><FiZap style={{ marginRight: '10px' }}/> AI & Platform Evolution</h4>
-            <p>Interaction data and AI-assisted tools may process user inputs to generate environments or responses. **Such data is used only to operate and improve NexUP Services.** We do not sell personal data or use it for intrusive advertising.</p>
-          </div>
-        </PrivacySection>
-        
-        <BreakLine />
-
-        {/* ================= SECTION 5: DISCLOSURE (5.1, 5.2, 5.3) ================= */}
-        <PrivacySection title="5. Disclosure of Personal Data">
-          <motion.div 
-            className="disclosure-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {DISCLOSURE_REASONS.map((reason, idx) => (
-              <motion.div key={idx} className="disclosure-card glass-panel-sm" variants={itemVariants}>
-                <h4>{reason.title}</h4>
-                <p>{reason.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </PrivacySection>
-
-        <BreakLine />
-        
-        {/* ================= SECTION 6 & 7: RETENTION & RIGHTS ================= */}
-        <PrivacySection title="6. Data Retention & 7. Your Rights">
-          <div className="info-two-col">
-            <div className="info-card glass-panel-sm">
-                <h4>6. Data Retention</h4>
-                <p>We retain Personal Data only for as long as necessary to provide and maintain our Services, fulfill legal/security obligations, resolve disputes, and enforce agreements.</p>
-                <p className="small-detail">Retention periods depend on the type, purpose, and sensitivity of the data.</p>
-            </div>
-            <div className="info-card rights-section glass-panel-sm">
-                <h4>7. Your Rights & Choices</h4>
-                <div className="rights-list">
-                  {USER_RIGHTS.map((right, idx) => (
-                    <div key={idx} className="right-item">
-                      <strong>{right.title}:</strong> {right.desc}
-                    </div>
-                  ))}
-                </div>
-                <p className="small-detail">You may exercise these rights by contacting us.</p>
-            </div>
-          </div>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ================= SECTION 8, 9, 10, 11: COMPLIANCE ================= */}
-        <PrivacySection title="Compliance & Security">
-          <div className="compliance-grid">
-            <div className="compliance-panel glass-panel-sm">
-                <h4>8. Children’s Privacy</h4>
-                <p>Services are **not intended for children under 13**. We delete data promptly if we become aware such data was collected unknowingly.</p>
-            </div>
-            <div className="compliance-panel glass-panel-sm">
-                <h4>9. Data Security</h4>
-                <p>We implement reasonable technical, administrative, and organizational safeguards. <FiAlertTriangle style={{color: 'red'}}/> No system is completely secure, and we cannot guarantee absolute online security.</p>
-            </div>
-            <div className="compliance-panel glass-panel-sm">
-                <h4>10. International Transfers</h4>
-                <p>We may process and store data on servers located in different jurisdictions, applying appropriate safeguards regardless of location.</p>
-            </div>
-            <div className="compliance-panel glass-panel-sm">
-                <h4>11. Policy Changes</h4>
-                <p>We update this Policy from time to time. We will update the effective date and publish the revised policy on this page.</p>
-            </div>
-          </div>
-        </PrivacySection>
-
-        <BreakLine />
-
-        {/* ================= SECTION 12: CONTACT US ================= */}
-        <section className="privacy-final-section">
-          <motion.div
-            className="privacy-final"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="gradient-title final-big">
-              12. Contact Us
-            </h2>
-            <p className="final-text">
-              If you have questions, concerns, or requests related to this Privacy Policy:
-            </p>
-            <div className="privacy-final-actions">
-              <a href="mailto:privacy@nexup.world" className="white-btn">
-                <FiMail style={{ marginRight: '8px' }}/> Email: privacy@nexup.world
-              </a>
-              <button className="ghost-btn" onClick={() => navigate("/support/help")}>
-                <FiLink style={{ marginRight: '8px' }}/> Contact Support
-              </button>
-            </div>
-            <p className="company-info">Company: {COMPANY_NAME}</p>
-          </motion.div>
-        </section>
-
-      </div>
-      <Footer />
-      {/* The rest of the page content */}
-    </div>
-  );
-}
-
-/* ================= UTILITY COMPONENTS ================= */
-
-function PrivacySection({ title, children }) {
-  return (
-    <section className="privacy-section">
-      <motion.div
-        className="privacy-section-inner"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.1 }} 
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        {title && <h2 className="gradient-title section-title">{title}</h2>}
-        {children}
-      </motion.div>
-    </section>
-  );
-}
-
-function BreakLine() {
-  return <div className="break-line" />;
-}
-
-function DataListCard({ sectionTitle, data }) {
     return (
-        <motion.div 
-            className="data-list-card glass-panel"
-            variants={itemVariants}
-        >
-            <div className="list-card-header">
-                {data.icon && <div className="card-icon-wrapper-sm">{data.icon}</div>}
-                <div className="header-text">
-                  {sectionTitle && <h5 className="section-title-sm">{sectionTitle}</h5>}
-                  <h4>{data.title}</h4>
+        <div className="privacy-page">
+            <main className="privacy-main-content">
+                <div className="privacy-document">
+                    
+                    <header className="document-header">
+                        <h1>NexUP Privacy & Data Protection Guide</h1>
+                        <h2 className="subtitle">Our Commitment to Privacy and Trust</h2>
+                    </header>
+                    
+                    <p className="introduction">
+                        At NexUP, privacy is a core design principle, not a feature added later.
+                    </p>
+                    <p className="statement-header">
+                        We recognize that building AI-powered and immersive digital environments requires deep responsibility in how user data is handled, protected, and respected. This document explains what data we collect, why we collect it, how it is used, and how it is protected — transparently and honestly.
+                    </p>
+
+                    
+                    {/* 1. Scope of This Guide (Alignment with Terms) */}
+                    <Section id="scope" title="1. Scope of This Guide">
+                        <p>This Privacy & Data Guide applies to:</p>
+                        <ul>
+                            <li>The NexUP website</li>
+                            <li>User accounts and profiles</li>
+                            <li>Feedback, contact, and job application submissions</li>
+                            <li>Future NexUP platforms, including AI systems and immersive environments</li>
+                            <li>Any services, tools, or experiences provided under NexUP</li>
+                        </ul>
+                        <p className="priority-note">By using NexUP, users agree to the practices described here.</p>
+                    </Section>
+
+                    {/* 2. Core Privacy Principles (GDPR/IT Act Alignment) */}
+                    <Section id="principles" title="2. Core Privacy Principles">
+                        <p>All data practices at NexUP follow these principles:</p>
+                        <ul>
+                            <li>Minimal collection — collect only what is necessary</li>
+                            <li>Purpose limitation — use data only for clear, defined reasons</li>
+                            <li>User control — respect consent and choice</li>
+                            <li>Security by design — protect data at every layer</li>
+                            <li>Transparency — no hidden data usage</li>
+                        </ul>
+                        <p className="priority-note">Privacy decisions are reviewed continuously as the platform evolves.</p>
+                    </Section>
+
+                    {/* 3. Types of Data We May Collect */}
+                    <Section id="data-collected" title="3. Types of Data We May Collect">
+                        <h4>A. Information You Provide Directly</h4>
+                        <ul>
+                            <li>Name and email address (when provided)</li>
+                            <li>Contact messages and feedback</li>
+                            <li>Job application details and resumes</li>
+                            <li>Optional profile information</li>
+                        </ul>
+                        <p>Providing this information is voluntary unless required for a specific service.</p>
+
+                        <h4>B. Technical & Usage Data</h4>
+                        <ul>
+                            <li>Device and browser information</li>
+                            <li>Pages visited and basic usage patterns</li>
+                            <li>Error logs and performance metrics</li>
+                        </ul>
+                        <p>This data helps improve reliability, performance, and user experience.</p>
+
+                        <h4>C. Future Platform Data (Planned)</h4>
+                        <p>As NexUP expands into AI and spatial environments:</p>
+                        <ul>
+                            <li>Interaction data within virtual spaces</li>
+                            <li>AI-assisted creation inputs</li>
+                            <li>System performance signals</li>
+                        </ul>
+                        <p className="priority-note">This data will always follow the same privacy principles outlined here.</p>
+                    </Section>
+
+                    {/* 4. What We Do NOT Collect */}
+                    <Section id="data-not-collected" title="4. What We Do NOT Collect">
+                        <p>To be explicit, NexUP does not:</p>
+                        <ul>
+                            <li>Sell personal data</li>
+                            <li>Track users across unrelated platforms</li>
+                            <li>Collect unnecessary sensitive personal data</li>
+                            <li>Use hidden surveillance techniques</li>
+                            <li>Profile users for manipulation or exploitation</li>
+                        </ul>
+                        <p className="priority-note">If a feature requires sensitive data in the future, it will be clearly disclosed.</p>
+                    </Section>
+
+                    {/* 5. How We Use Data */}
+                    <Section id="data-use" title="5. How We Use Data">
+                        <p>User data may be used to:</p>
+                        <ul>
+                            <li>Operate and maintain NexUP services</li>
+                            <li>Respond to inquiries and applications</li>
+                            <li>Improve product performance and usability</li>
+                            <li>Ensure security and prevent abuse</li>
+                            <li>Comply with legal obligations</li>
+                        </ul>
+                        <p className="statement">Data is never used for deceptive, exploitative, or unethical purposes.</p>
+                    </Section>
+
+                    {/* 6. AI, Automation & Data Use */}
+                    <Section id="ai-data" title="6. AI, Automation & Data Use">
+                        <p>NexUP uses AI responsibly.</p>
+                        <ul>
+                            <li>AI systems are designed to assist users, not manipulate them.</li>
+                            <li>User data is not used to train AI models without proper safeguards.</li>
+                            <li>Automated decisions that significantly affect users are avoided or clearly explained.</li>
+                        </ul>
+                        <p className="priority-note">Human oversight remains a core requirement.</p>
+                    </Section>
+
+                    {/* 7. Data Storage & Security (GDPR/IT Act Requirement) */}
+                    <Section id="storage-security" title="7. Data Storage & Security">
+                        <p>We take data security seriously.</p>
+                        <ul>
+                            <li>Secure storage systems</li>
+                            <li>Access controls and role-based permissions</li>
+                            <li>Encryption where appropriate</li>
+                            <li>Regular security reviews and updates</li>
+                        </ul>
+                        <p className="priority-note">While no system is risk-free, we actively work to minimize threats and respond responsibly to incidents.</p>
+                    </Section>
+
+                    {/* 8. Data Retention Policy */}
+                    <Section id="retention" title="8. Data Retention Policy">
+                        <p>Data is kept only as long as necessary</p>
+                        <ul>
+                            <li>Job application data is retained for recruitment purposes only.</li>
+                            <li>Feedback and contact data is retained to improve services.</li>
+                            <li>Inactive or outdated data may be securely deleted.</li>
+                        </ul>
+                        <p className="priority-note">Retention periods may evolve but will always follow minimal-data principles.</p>
+                    </Section>
+
+                    {/* 9. User Rights & Control (GDPR Alignment) */}
+                    <Section id="user-rights" title="9. User Rights & Control">
+                        <p>Users have the right to:</p>
+                        <ul>
+                            <li>Request access to their data</li>
+                            <li>Request correction of inaccurate information</li>
+                            <li>Request deletion of their data (where applicable)</li>
+                            <li>Withdraw consent for optional data usage</li>
+                        </ul>
+                        <p className="statement">Requests can be made through official NexUP contact channels.</p>
+                    </Section>
+
+                    {/* 10. Cookies & Tracking Technologies */}
+                    <Section id="cookies" title="10. Cookies & Tracking Technologies">
+                        <p>NexUP uses limited cookies where necessary</p>
+                        <ul>
+                            <li>Cookies support basic functionality and performance.</li>
+                            <li>No aggressive or cross-site tracking cookies are used.</li>
+                        </ul>
+                        <p className="priority-note">Detailed cookie behavior may be explained separately if required.</p>
+                    </Section>
+                    
+                    {/* 11. Third-Party Services */}
+                    <Section id="third-party" title="11. Third-Party Services">
+                        <p>NexUP may use trusted third-party services for:</p>
+                        <ul>
+                            <li>Hosting</li>
+                            <li>Analytics</li>
+                            <li>Email communication</li>
+                            <li>Security monitoring</li>
+                        </ul>
+                        <p className="priority-note">These providers are selected carefully and are expected to meet strong privacy standards.</p>
+                    </Section>
+                    
+                    {/* 12. Legal Compliance */}
+                    <Section id="legal-compliance" title="12. Legal Compliance">
+                        <p>NexUP aims to comply with applicable data protection laws, including:</p>
+                        <ul>
+                            <li>Local data protection regulations</li>
+                            <li>International privacy standards (where applicable)</li>
+                        </ul>
+                        <p className="priority-note">As laws evolve, NexUP will adapt its practices responsibly.</p>
+                    </Section>
+
+                    {/* 13. Children & Minors */}
+                    <Section id="minors" title="13. Children & Minors">
+                        <p>NexUP does not knowingly collect personal data from minors without appropriate safeguards.</p>
+                        <p className="priority-note">If such data is discovered, it will be handled or removed responsibly.</p>
+                    </Section>
+
+                    {/* 14. Policy Updates */}
+                    <Section id="policy-updates" title="14. Policy Updates">
+                        <p>This guide may be updated as NexUP evolves</p>
+                        <ul>
+                            <li>Significant changes will be communicated clearly.</li>
+                            <li>Continued use of NexUP implies acceptance of updated practices.</li>
+                        </ul>
+                        <p className="priority-note">Transparency remains a priority.</p>
+                    </Section>
+
+                    {/* 15. Final Statement */}
+                    <section className="policy-section final-section" id="final-statement">
+                        <h3>15. Final Statement</h3>
+                        <p>Privacy is foundational to trust.</p>
+                        <div className="final-message-box">
+                            <p>NexUP is committed to building technology that respects people, protects data, and earns confidence over time. If something feels unclear, we believe that clarity is our responsibility — not yours.</p>
+                        </div>
+                    </section>
+                    
+
                 </div>
-            </div>
-            <ul>
-                {data.points.map((point, idx) => (
-                    <li key={idx}>{point}</li>
-                ))}
-            </ul>
-        </motion.div>
+            </main>
+            
+            {/* Footer Component with one-liner */}
+            <Footer>
+                Privacy & Data — How NexUP protects your information responsibly.
+            </Footer>
+            
+        </div>
     );
-}
+};
+
+export default Privacy;

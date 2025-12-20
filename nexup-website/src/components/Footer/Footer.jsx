@@ -76,6 +76,7 @@ export default function Footer() {
             <Link to="/about/team">Team</Link>
             <Link to="/about/career">Careers <span className="hiring-badge">Hiring</span></Link>
             <Link to="/about/news">Newsroom</Link>
+            <Link to="/about/stories">Stories</Link>
             <Link to="/sections/roadmap">Roadmap</Link>
           </div>
 

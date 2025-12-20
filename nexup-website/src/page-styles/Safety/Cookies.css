@@ -1,330 +1,156 @@
-/* src/page-styles/Safety/Cookies.css */
+/* src/components/Modals/PolicyAcceptanceModal.css */
 
+/* --- Variables --- */
 :root {
-  --neon-purple: #b8a9ff;
-  --neon-green: #00ffa3;
-  --bg-black: #050505;
-  --glass-bg: rgba(20, 20, 20, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-dim: rgba(255, 255, 255, 0.6);
+    --modal-bg: #111111;
+    --modal-text: #ffffff;
+    --modal-border: #333333;
+    --accept-btn-bg: #ffffff;
+    --accept-btn-text: #000000;
+    --link-color: #aaaaaa;
+    --font-family: 'Inter', sans-serif;
 }
 
-/* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal + 6. Fade In)
-=========================================================== */
-.cookies-page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 100px 24px;
-  background: var(--bg-black);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Inter', sans-serif;
-  
-  /* Scrollbar Hide */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
-
-  /* 6. Page Fade In */
-  animation: fadeIn 0.6s ease;
-
-  /* 7. Faint Pattern Grid */
-  background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 48px 48px;
+/* --------------------------------------------------
+    Modal Overlay (Covers the whole screen)
+-------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark, transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top of everything */
+    font-family: var(--font-family);
 }
 
-.cookies-page::-webkit-scrollbar {
-  display: none;
+/* --------------------------------------------------
+    Modal Container (The popup itself)
+-------------------------------------------------- */
+.policy-modal {
+    width: 90%;
+    max-width: 600px;
+    background-color: var(--modal-bg);
+    color: var(--modal-text);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh; /* Prevents modal from overflowing small screens */
+    overflow-y: auto; /* Allows scrolling if content is too long */
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.modal-header {
+    padding: 20px 30px 15px;
+    border-bottom: 1px solid var(--modal-border);
 }
 
-/* --- HEADER --- */
-.cookies-header {
-  text-align: center;
-  margin-bottom: 60px;
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-/* 5. Badge Shimmer */
-.doc-badge {
-  display: inline-block;
-  font-family: monospace;
-  font-size: 0.8rem;
-  color: var(--neon-purple);
-  border: 1px solid rgba(184, 169, 255, 0.3);
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  letter-spacing: 1px;
-  background: linear-gradient(90deg, transparent, rgba(184,169,255,0.1), transparent);
-  background-size: 200%;
-  animation: badgeShimmer 4s linear infinite;
+.modal-body {
+    padding: 20px 30px;
+    line-height: 1.6;
+    flex-grow: 1;
 }
 
-@keyframes badgeShimmer {
-  0% { background-position: 0%; }
-  100% { background-position: 200%; }
+.summary-intro {
+    font-size: 1rem;
+    color: var(--link-color);
+    margin-bottom: 25px;
 }
 
-.cookies-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  margin: 0;
+/* Policy List Sections */
+.policy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-left: 5px;
 }
 
-/* --- MAIN CONTAINER --- */
-.cookies-container {
-  width: 100%;
-  max-width: 1000px;
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Split layout: Text | Controls */
-  gap: 40px;
-  align-items: start;
+.policy-item {
+    border-left: 3px solid var(--modal-border);
+    padding-left: 15px;
 }
 
-/* --- LEFT: TEXT PANEL --- */
-.cookies-text-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.policy-item h4 {
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
-.cookies-text-panel h2 {
-  font-size: 1.4rem;
-  color: #fff;
-  margin-bottom: 10px;
+.policy-item p {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    color: var(--link-color);
 }
 
-.cookies-text-panel p, 
-.cookies-text-panel li {
-  color: var(--text-dim);
-  line-height: 1.6;
-  font-size: 1rem;
+.policy-link {
+    color: var(--modal-text);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    transition: color 0.2s;
 }
 
-.cookies-text-panel ul {
-  padding-left: 20px;
-  margin-top: 10px;
-  list-style: disc;
+.policy-link:hover {
+    color: var(--link-color);
 }
 
-/* --- RIGHT: CONTROL PANEL --- */
-.cookies-control-panel {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 30px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-  position: relative; /* Context for glow */
-  z-index: 1;
+.final-prompt {
+    font-weight: 500;
+    font-size: 1rem;
+    border-top: 1px solid var(--modal-border);
+    padding-top: 15px;
+    margin-top: 15px;
 }
 
-/* 1. Control Panel Floating Glow */
-.cookies-control-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle at top right, rgba(184,169,255,0.12), transparent 60%);
-  z-index: -1;
+/* Modal Footer and Button */
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid var(--modal-border);
+    text-align: right;
+    flex-shrink: 0;
 }
 
-.cookies-control-panel h3 {
-  font-size: 1.5rem;
-  margin-bottom: 5px;
+.btn-accept {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 700;
+    background-color: var(--accept-btn-bg);
+    color: var(--accept-btn-text);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.panel-desc {
-  color: var(--text-dim);
-  font-size: 0.9rem;
-  margin-bottom: 30px;
+.btn-accept:hover {
+    background-color: #cccccc;
 }
 
-/* --- TOGGLES --- */
-.toggles-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 40px;
-}
-
-.cookie-toggle-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255,255,255,0.03);
-  padding: 15px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-/* 2. Micro Hover Lift */
-.cookie-toggle-row:hover {
-  background: rgba(255,255,255,0.06);
-  transform: translateY(-2px);
-}
-
-/* 3. Smooth Shadow Glow when Active */
-.cookie-toggle-row.active {
-  border-color: rgba(184, 169, 255, 0.3);
-  background: rgba(184, 169, 255, 0.05);
-  box-shadow: 0 0 12px rgba(184,169,255,0.15);
-}
-
-.cookie-toggle-row.locked {
-  cursor: default;
-  opacity: 0.7;
-}
-
-/* Disable hover lift for locked items */
-.cookie-toggle-row.locked:hover {
-    transform: none;
-}
-
-.toggle-info h4 {
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.toggle-info p {
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  margin: 0;
-  max-width: 250px;
-}
-
-/* --- THE SWITCH UI --- */
-.toggle-switch {
-  width: 50px;
-  height: 28px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 50px;
-  position: relative;
-  transition: all 0.3s;
-}
-
-.toggle-switch.active {
-  background: var(--neon-purple);
-  box-shadow: 0 0 10px rgba(184, 169, 255, 0.4);
-}
-
-.toggle-switch.disabled {
-  background: rgba(255,255,255,0.2);
-}
-
-.toggle-knob {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 20px;
-  height: 20px;
-  background: #fff;
-  border-radius: 50%;
-  /* 4. Premium Apple Easing */
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.toggle-switch.active .toggle-knob {
-  transform: translateX(22px);
-}
-
-/* --- ACTION BUTTONS --- */
-.action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 14px;
-  background: #fff;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255,255,255,0.3);
-}
-
-.btn-secondary {
-  width: 100%;
-  padding: 14px;
-  background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-
-.btn-secondary:hover {
-  background: rgba(255,255,255,0.05);
-  border-color: #fff;
-  /* 9. Hover Glow */
-  box-shadow: 0 0 10px rgba(184,169,255,0.2);
-}
-
-/* --- SUCCESS STATE --- */
-.success-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  padding: 20px;
-  background: rgba(0, 255, 163, 0.1); /* Green tint */
-  border: 1px solid var(--neon-green);
-  border-radius: 12px;
-  color: var(--neon-green);
-  font-weight: 600;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-/* 8. Success State Glow */
-.success-message::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle, rgba(0,255,163,0.15), transparent 70%);
-  z-index: -1;
-}
-
-.success-icon {
-  font-size: 2rem;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--neon-green);
-  border-radius: 50%;
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 900px) {
-  .cookies-container {
-    grid-template-columns: 1fr; /* Stack */
-  }
-  
-  .cookies-control-panel {
-    order: -1; /* Put controls on top for mobile users */
-  }
+/* Mobile Adjustments */
+@media (max-width: 500px) {
+    .policy-modal {
+        max-width: 95%;
+    }
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    .modal-header, .modal-body, .modal-footer {
+        padding: 15px 20px;
+    }
+    .modal-footer {
+        text-align: center;
+    }
+    .btn-accept {
+        width: 100%;
+    }
 }

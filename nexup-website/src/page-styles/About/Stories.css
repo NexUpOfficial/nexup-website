@@ -1,568 +1,155 @@
-/* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal)
-=========================================================== */
-.stories-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
+/* --- Global Page Reset and Dark Theme Setup --- */
+
+/* Applying a high-contrast dark theme to the main container */
+.stories-page-container {
+  background-color: #000000; /* Deep black background */
+  color: #ffffff; /* Pure white text for high contrast */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
   min-height: 100vh;
-  /* Hide Scrollbar */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
 }
 
-.stories-page::-webkit-scrollbar {
-  display: none;
-}
-
-.stories-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-  color: #f0f0f0;
-}
-
-/* ===========================================================
-   ANIMATION KEYFRAMES
-=========================================================== */
-/* 2. Animated Title Gradient */
-@keyframes titleGlow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-/* 4. Active Line Fade In */
-@keyframes fadeIn {
-  from { width: 0; opacity: 0; }
-  to { width: 40%; opacity: 1; }
-}
-
-/* ===========================================================
-   HERO & GLOW
-=========================================================== */
-.stories-hero-section {
-  min-height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
-}
-
-.stories-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60vw;
-  height: 50vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
-  /* 19. Optimized Blur */
-  filter: blur(60px);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.stories-hero-content {
-  z-index: 1;
+/* Limit content width for better readability on large screens */
+.stories-content {
   max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.hero-badge {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #b8a9ff;
-  margin-bottom: 24px;
+/* --- Header Styling --- */
+.stories-header {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px 60px 20px;
+  text-align: left;
+  border-bottom: 1px solid #333333; /* Subtle separator line */
 }
 
-.stories-hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.15;
+.page-main-title {
+  font-size: 3.5rem; /* Large, bold title */
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  letter-spacing: -1px;
+}
+
+.page-subtitle {
+  font-size: 1.25rem;
+  color: #aaaaaa; /* Slightly desaturated subtitle */
+  margin: 0;
+}
+
+/* --- Section and Text Styling --- */
+
+.story-section {
+  padding: 40px 0;
+  border-bottom: 1px solid #1a1a1a; /* Very subtle separation between sections */
+}
+
+.story-section:last-child {
+  border-bottom: none; /* No line after the last main section */
+}
+
+.intro-paragraph {
+  font-size: 1.15rem;
+  font-weight: 300;
+  margin-bottom: 40px;
+  color: #dddddd;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 25px;
+  border-left: 4px solid #ffffff; /* Visual anchor, inspired by code blocks/titles */
+  padding-left: 15px;
+}
+
+.subsection-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #eeeeee;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+p {
+  margin: 0 0 15px 0;
+}
+
+.note-emphasis {
+  font-style: italic;
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #111111; /* Subtle dark background for emphasis boxes */
+  border-left: 4px solid #ffffff;
+}
+
+.detail-text {
+  font-size: 0.9rem;
+  color: #888888;
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
+/* --- List Styling (Key to the clean look) --- */
+
+.story-list {
+  list-style: none; /* Remove default bullets */
+  padding-left: 20px;
   margin-bottom: 20px;
 }
 
-/* 2. Animated Gradient Title */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff, #cbbdff);
-  background-size: 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-  animation: titleGlow 4s linear infinite;
-}
-
-.stories-hero-sub {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.8;
-  max-width: 650px;
-  margin: 0 auto;
-}
-
-/* ===========================================================
-   FEATURED STORY
-=========================================================== */
-.featured-section {
-  width: 100%;
-}
-
-.featured-card {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 40px;
-  align-items: center;
-  padding: 0;
-  overflow: hidden;
-  cursor: pointer;
+.story-list li {
   position: relative;
-  /* 9. Depth Glass */
-  backdrop-filter: blur(14px) saturate(160%);
-}
-
-/* 6. Floating Glow Behind Featured */
-.featured-card::before {
-  content: "";
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(184,169,255,0.08), transparent 70%);
-  filter: blur(50px);
-  top: 50%;
-  left: 70%;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.featured-image-container {
-  width: 100%;
-  height: 100%;
-  min-height: 350px;
-  overflow: hidden;
-  border-right: 1px solid rgba(255,255,255,0.05);
-}
-
-.featured-img {
-  width: 100%;
-  height: 100%;
-  background: #1a1a1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  transition: transform 0.5s ease;
-}
-
-/* 7. Hover Tilt */
-.featured-card:hover .featured-img {
-  transform: scale(1.03) rotate(0.5deg);
-}
-
-.featured-content {
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.meta-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.story-tag {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.story-date {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.4);
-}
-
-.featured-title {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  line-height: 1.2;
-  margin-bottom: 16px;
-  color: #fff;
-}
-
-.featured-text {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 24px;
-}
-
-.read-more-btn {
-  align-self: flex-start;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-bottom: 1px solid #b8a9ff;
-  padding-bottom: 4px;
-  transition: 0.3s;
-  display: flex;
-  align-items: center;
-}
-
-/* 8. Arrow Slide */
-.read-more-btn::after {
-  content: "→";
-  margin-left: 8px;
-  transition: transform 0.3s ease;
-}
-
-.read-more-btn:hover::after {
-  transform: translateX(4px);
-}
-
-.read-more-btn:hover {
-  color: #b8a9ff;
-}
-
-/* ===========================================================
-   CATEGORY FILTER
-=========================================================== */
-.category-section {
-  display: flex;
-  justify-content: center;
-}
-
-/* 12. Scroll Container */
-.category-scroll-container {
-  width: 100%;
-  overflow-x: auto;
-  padding: 4px;
-}
-
-.category-scroll {
-  display: flex;
-  gap: 12px;
-  min-width: max-content;
-  justify-content: center;
-  padding: 0 10px;
-}
-
-.category-pill {
-  position: relative;
-  padding: 10px 24px;
-  border-radius: 30px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-size: 0.95rem;
-  overflow: hidden;
-}
-
-.category-pill:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: #fff;
-  color: #fff;
-}
-
-.category-pill.active {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.4);
-  color: #fff;
-  font-weight: 600;
-}
-
-/* 4. Active Underline */
-.active-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #b8a9ff;
-}
-
-/* ===========================================================
-   BENTO GRID
-=========================================================== */
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-.card-wide {
-  grid-column: span 2;
-}
-
-@media (max-width: 800px) {
-  .card-wide {
-    grid-column: span 1;
-  }
-}
-
-.story-card {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  height: 100%;
-  cursor: pointer;
-  /* 1. Lift Transition */
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
-}
-
-/* 1. Card Lift & Shadow */
-.story-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-  border-color: rgba(184, 169, 255, 0.3);
-}
-
-.card-image-wrapper {
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.card-img {
-  width: 100%;
-  height: 100%;
-  background: #1a1a1a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #555;
-  transition: transform 0.5s ease;
-}
-
-.story-card:hover .card-img {
-  transform: scale(1.05);
-}
-
-.card-body {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.card-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 0.85rem;
-}
-
-.read-time {
-  color: rgba(255,255,255,0.4);
-}
-
-.story-card h3 {
-  font-size: 1.3rem;
   margin-bottom: 10px;
-  line-height: 1.3;
-  color: #fff;
-}
-
-.story-card p {
+  padding-left: 15px;
   font-size: 1rem;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.5;
 }
 
-/* ===========================================================
-   NEWSLETTER
-=========================================================== */
-.newsletter-section {
-  width: 100%;
+.story-list li::before {
+  content: '—'; /* Use a dash or a simple shape for the bullet */
+  color: #ffffff;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
 }
 
-.newsletter-box {
-  padding: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 30px;
+.story-list.list-negative li::before {
+  content: '×'; /* Use an 'x' for the "What Are Not" list */
+  color: #ff0000; /* A touch of red for negation */
+  font-weight: bold;
 }
 
-.newsletter-content {
-  flex: 1;
-  min-width: 300px;
-}
+/* --- Final Note Block --- */
 
-.newsletter-content h2 {
-  font-size: 2rem;
-  margin-bottom: 8px;
-}
-
-.newsletter-content p {
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.7);
-}
-
-.newsletter-form {
-  display: flex;
-  gap: 12px;
-  flex: 1;
-  min-width: 300px;
-}
-
-.newsletter-form input {
-  flex: 1;
-  padding: 14px 20px;
-  border-radius: 30px;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #fff;
-  outline: none;
-  transition: all 0.3s;
-}
-
-/* 10. Input Focus Glow */
-.newsletter-form input:focus {
-  border-color: #b8a9ff;
-  box-shadow: 0 0 10px rgba(184, 169, 255, 0.2);
-}
-
-/* ===========================================================
-   FINAL CTA (11. Button Micro-interactions)
-=========================================================== */
-.stories-final-section {
+.final-note-block {
+  padding: 60px 0;
   text-align: center;
-  display: flex;
-  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #aaaaaa;
 }
 
-.stories-final {
-  max-width: 800px;
+/* --- Optional Footer Line --- */
+
+.footer-line-optional {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #444444; /* Very subtle text */
+  border-top: 1px solid #1a1a1a;
 }
 
-.final-big {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  margin-bottom: 16px;
-}
-
-.final-text {
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 30px;
-}
-
-.stories-final-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-/* ===========================================================
-   UTILITIES
-=========================================================== */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(14px) saturate(160%); /* 9. Glass Depth */
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 14px 32px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.white-btn:hover {
-  transform: translateY(-3px) scale(1.03); /* 11. CTA Lift */
-  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
-}
-
-.ghost-btn {
-  background: transparent;
-  color: #fff;
-  padding: 14px 32px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.ghost-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-3px) scale(1.03); /* 11. CTA Lift */
-}
-
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-/* ===========================================================
-   MEDIA QUERIES
-=========================================================== */
-@media (max-width: 768px) {
-  .stories-wrapper {
-    padding: 60px 20px;
-    gap: 60px;
-  }
-  
-  .featured-card {
-    grid-template-columns: 1fr;
-  }
-  
-  .featured-image-container {
-    height: 250px;
-    min-height: auto;
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .featured-content {
-    padding: 24px;
-  }
-
-  .newsletter-box {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .newsletter-form {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  /* 12. Mobile Category Scroll */
-  .category-scroll {
-    justify-content: flex-start; 
-  }
-  
-  /* 12. Increased Image Height Mobile */
-  .card-image-wrapper {
-    height: 260px; 
-  }
-}
+/* You would need to ensure your 'Footer' component also respects the dark theme */
+/* For example, if you have a component like this: */
+/* .footer-component {
+  background-color: #000000;
+  color: #888888;
+  padding: 20px;
+  text-align: center;
+} */

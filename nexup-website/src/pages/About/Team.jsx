@@ -1,304 +1,259 @@
 // src/pages/About/Team.jsx
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../../page-styles/About/Team.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- DATA CONSTANTS --- */
-const LEADERSHIP_DATA = [
-  {
-    id: "jothish",
-    name: "Jothish Gandham",
-    role: "Vision Architect & Founder",
-    bio: "Leading the creation of the NeX UP spatial ecosystem, connecting physical and digital intelligence through adaptive systems.",
-  },
-  {
-    id: "alex",
-    name: "Alex V.",
-    role: "Co-Founder / CTO",
-    bio: "Building the intelligence infrastructure powering NexWorld, NexNode, and spatial computing frameworks.",
-  },
-  {
-    id: "sarah",
-    name: "Sarah L.",
-    role: "Head of Operations",
-    bio: "Ensuring seamless execution across engineering, design, research, and multi-layer ecosystem development.",
-  },
-];
-
-const TEAMS_DATA = {
-  engineering: [
-    { title: "Spatial Computing", text: "Build immersive processing pipelines enabling real-time spatial understanding." },
-    { title: "Platform & Systems", text: "Architect scalable computation for NexNode and cross-ecosystem intelligence." },
-    { title: "Experience Eng.", text: "Craft performance-optimized interfaces that merge with immersive worlds." },
-  ],
-  design: [
-    { title: "Spatial UI/UX", text: "Define interaction models that feel natural in digital + physical worlds." },
-    { title: "3D & World Building", text: "Shape dynamic scenes, world interfaces, and immersive visual systems." },
-    { title: "Motion Design", text: "Craft motion languages that blend with real-world physics and presence." },
-  ],
-  research: [
-    { title: "AI & Cognition", text: "Develop agents that understand spatial context, intent, and behavior." },
-    { title: "Spatial Research", text: "Study how humans perceive environments to build intuitive systems." },
-    { title: "HCI Labs", text: "Experiment with future interaction paradigms and spatial interfaces." },
-  ],
-};
-
-const CULTURE_IMAGES = [
-  { id: 1, size: "large", label: "Collab Space" },
-  { id: 2, size: "small", label: "VR Testing" },
-  { id: 3, size: "small", label: "Team Retreat" },
-  { id: 4, size: "wide", label: "Hackathon" },
-];
-
-/* --- VARIANTS --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    // 12. Motion delay optimization
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-export default function Team() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="team-page">
-      {/* 16. Global Performance Hint */}
-      <style global jsx>{`
-        .team-page * { backface-visibility: hidden; }
-      `}</style>
-
-      <div className="team-wrapper">
-        
-        {/* ================= HERO ================= */}
-        <section className="team-hero-section">
-          {/* 15. Reduced Blur (CSS) & 9. Micro Shadow (CSS) */}
-          <div className="team-glow" /> 
-          
-          <motion.div
-            className="team-hero-content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            {/* 3. Animated Gradient Title (CSS) */}
-            <h1 className="gradient-title team-hero-title">
-              Meet the Minds Behind NeX UP.
-            </h1>
-            <p className="team-hero-sub">
-              NeX UP is shaped by engineers, designers, researchers, and creators
-              building the future of intelligent digital reality.
-            </p>
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= LEADERSHIP ================= */}
-        <TeamSection title="Leadership">
-          <motion.div 
-            className="leaders-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            {LEADERSHIP_DATA.map((leader, idx) => (
-              <motion.div 
-                key={idx} 
-                className="leader-card glass-panel"
-                variants={cardVariants}
-                // 5. Clickable Leader Card
-                onClick={() => navigate(`/about/team/${leader.id}`)}
-                // 2. Hover Movement (CSS handles simple transform, this adds depth)
-                whileHover={{ y: -6 }} 
-              >
-                <div className="leader-avatar-wrapper">
-                  {/* 1. Animated Glow behind avatar (CSS) */}
-                  <div className="leader-avatar placeholder-img">Photo</div>
-                </div>
-                <div className="leader-info">
-                  <h3>{leader.name}</h3>
-                  <p className="leader-role">{leader.role}</p>
-                  {/* 8. Improved Readability (CSS) */}
-                  <p className="leader-bio">{leader.bio}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </TeamSection>
-
-        <BreakLine />
-
-        {/* ================= DEPARTMENTS (Engineering) ================= */}
-        <TeamSection title="Engineering">
-          {/* 7. Smooth Fade Transition */}
-          <motion.p 
-            className="team-text centered-intro"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Powering the foundation of real-time spatial computation and intelligent networks.
-          </motion.p>
-          {/* 4. Color Coded via class 'dept-engineering' */}
-          <GridSection data={TEAMS_DATA.engineering} deptClass="dept-engineering" />
-        </TeamSection>
-
-        <BreakLine />
-
-        {/* ================= DEPARTMENTS (Design) ================= */}
-        <TeamSection title="Design">
-          <motion.p 
-            className="team-text centered-intro"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Building how the future feels — fluid, intuitive, beautiful, and human-centered.
-          </motion.p>
-          <GridSection data={TEAMS_DATA.design} deptClass="dept-design" />
-        </TeamSection>
-
-        <BreakLine />
-
-        {/* ================= DEPARTMENTS (Research) ================= */}
-        <TeamSection title="Research">
-          <motion.p 
-            className="team-text centered-intro"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Exploring human cognition, adaptive intelligence, and next-gen interaction models.
-          </motion.p>
-          <GridSection data={TEAMS_DATA.research} deptClass="dept-research" />
-        </TeamSection>
-
-        <BreakLine />
-
-        {/* ================= LIFE AT NEX UP (Masonry) ================= */}
-        <TeamSection title="Life at NeX UP">
-          <motion.p 
-            className="team-text centered-intro"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            A culture built for builders — experimentation, deep work, and breakthroughs.
-          </motion.p>
-          
-          <motion.div 
-            className="life-masonry-grid"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            {CULTURE_IMAGES.map((img) => (
-              <div 
-                key={img.id} 
-                className={`life-item item-${img.size}`}
-                // 6. Hover Description Overlay (handled via data-attribute in CSS)
-                data-label={img.label}
-              >
-                <div className="life-img-placeholder">{img.label}</div>
-              </div>
-            ))}
-          </motion.div>
-        </TeamSection>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="team-final-section">
-          <motion.div
-            className="team-final"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="gradient-title final-big">
-              Join the future.
-            </h2>
-            <p className="final-text">
-              Start building with a team pushing the boundaries of immersive technology.
-            </p>
-            <button
-              className="white-btn"
-              onClick={() => navigate("/about/career")}
-            >
-              Explore Careers →
-            </button>
-          </motion.div>
-        </section>
-      </div>
-
-      <Footer />
-    </div>
-  );
-}
-
-/* ================= SUB-COMPONENTS ================= */
-
-function TeamSection({ title, children }) {
-  return (
-    <section className="team-section">
-      <motion.div
-        className="team-section-inner"
-        // 7. Smooth Fade Transition for Sections
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <h2 className="gradient-title section-title">{title}</h2>
+// Helper for standard descriptive sections
+const Section = ({ title, children, className = '' }) => (
+    <section className={`team-section ${className}`}>
+        <h3>{title}</h3>
         {children}
-      </motion.div>
     </section>
-  );
-}
+);
 
-function GridSection({ data, deptClass }) {
-  return (
-    <motion.div 
-      className={`teams-grid ${deptClass}`}
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      {data.map((item, idx) => (
-        <motion.div 
-          key={idx} 
-          className="team-card glass-panel"
-          variants={cardVariants}
-          // 16. Performance
-          style={{ willChange: 'transform, opacity' }}
-        >
-          {/* 4. Color Code Border/Highlight handled in CSS via deptClass */}
-          <h3>{item.title}</h3>
-          <p>{item.text}</p>
-        </motion.div>
-      ))}
-    </motion.div>
-  );
-}
+// Helper for colorful blocks (e.g., Culture, Structure)
+const TeamBlock = ({ icon, title, description, color }) => (
+    <div className="team-block" style={{ '--block-color': color }}>
+        <div className="block-icon" style={{ backgroundColor: color }}>
+            {icon}
+        </div>
+        <h4>{title}</h4>
+        <p>{description}</p>
+    </div>
+);
 
-function BreakLine() {
-  return <div className="break-line" />;
-}
+// NEW: Leadership Bio Component
+const LeaderBio = ({ name, title, bio, color }) => (
+    <div className="leader-bio-card" style={{ '--leader-color': color }}>
+        <div className="leader-photo-placeholder" style={{ backgroundColor: color }}>
+            {name.split(' ').map(n => n[0]).join('')} {/* Initials placeholder */}
+        </div>
+        <div className="leader-info">
+            <h4>{name}</h4>
+            <p className="leader-title">{title}</p>
+            <p className="leader-bio-text">{bio}</p>
+        </div>
+    </div>
+);
+
+// NEW: Join the Team CTA Section
+const JoinTheTeamCTA = () => (
+    <section className="join-team-cta">
+        <h3>Join the Team</h3>
+        <p>
+            The future of digital worlds requires committed builders, thinkers, and innovators. If you share our commitment to responsible technology, long-term thinking, and human-centered design, we invite you to explore career opportunities at NexUP.
+        </p>
+        <Link to="/careers" className="cta-button">
+            View Open Roles & Apply
+        </Link>
+    </section>
+);
+
+
+const Team = () => {
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    return (
+        <div className="team-page">
+            <main className="team-main-content">
+                <div className="team-document">
+                    
+                    <header className="document-header">
+                        <h1>Our Team</h1>
+                        <h2 className="subtitle">The People Behind NexUP</h2>
+                    </header>
+                    
+                    <p className="introduction">
+                        NexUP is built by people who believe that technology should be purposeful, responsible, and human-centered.
+                    </p>
+                    <p className="statement-header">
+                        Our team brings together individuals from diverse backgrounds who share a common goal: to build meaningful digital and spatial experiences that last. We are not defined by titles alone — we are defined by how we think, how we build, and how we treat responsibility.
+                    </p>
+
+                    {/* NEW: Leadership Bios Section */}
+                    <Section title="Leadership Bios" className="leadership-bios-section">
+                        <div className="leadership-grid">
+                            <LeaderBio
+                                name="Alex Chen"
+                                title="Chief Architect & CEO"
+                                bio="Alex drives the technical vision for NexUP, focusing on scalable, persistent infrastructure and ethical AI integration. Their background is in spatial computing and large-scale decentralized systems."
+                                color="#3498db"
+                            />
+                            <LeaderBio
+                                name="Dr. Elena Rossi"
+                                title="Head of Trust & Safety"
+                                bio="Dr. Rossi oversees policy, community engagement, and data protection, ensuring NexUP adheres to human-centered design principles and global safety standards."
+                                color="#2ecc71"
+                            />
+                            <LeaderBio
+                                name="Kai Nakamura"
+                                title="VP of NexEngine Development"
+                                bio="Kai leads the team crafting the NexEngine, aiming to democratize world-building through intuitive tools and AI-assisted creation workflows."
+                                color="#f39c12"
+                            />
+                        </div>
+                    </Section>
+
+
+                    {/* How We Work Together */}
+                    <Section title="How We Work Together">
+                        <p>The NexUP team operates with a strong sense of ownership and collaboration.</p>
+                        <ul>
+                            <li>Small, focused teams</li>
+                            <li>Clear responsibility and accountability</li>
+                            <li>Open communication and shared learning</li>
+                            <li>Respect for different perspectives</li>
+                        </ul>
+                        <p className="priority-note">We value clarity over hierarchy and collaboration over silos.</p>
+                    </Section>
+
+                    {/* Our Culture */}
+                    <Section title="Our Culture" className="culture-section">
+                        <div className="team-blocks-container">
+                            <TeamBlock
+                                icon="💡"
+                                title="Curiosity-Driven"
+                                description="We ask questions, explore ideas, and remain open to learning. No one is expected to know everything."
+                                color="#f39c12" 
+                            />
+                            <TeamBlock
+                                icon="🛡️"
+                                title="Responsibility-Led"
+                                description="AI and immersive technologies have real-world impact. We take that responsibility seriously in every decision."
+                                color="#e74c3c" 
+                            />
+                            <TeamBlock
+                                icon="⏳"
+                                title="Long-Term Thinking"
+                                description="We prioritize sustainable progress over quick wins. Every choice is measured against long-term trust and value."
+                                color="#2ecc71" 
+                            />
+                            <TeamBlock
+                                icon="🤝"
+                                title="Respect & Inclusion"
+                                description="Diverse viewpoints make better systems. We foster an environment where people feel safe to contribute and grow."
+                                color="#9b59b6" 
+                            />
+                        </div>
+                    </Section>
+
+                    {/* Team Structure */}
+                    <Section title="Team Structure" className="structure-section">
+                        <p className="intro-text">NexUP is organized around capability and impact, not rigid hierarchy.</p>
+                        <div className="team-blocks-container">
+                            <TeamBlock
+                                icon="💻"
+                                title="Engineering & Infrastructure"
+                                description="Building the core systems that power NexUP — from backend infrastructure to real-time platforms."
+                                color="#3498db" 
+                            />
+                            <TeamBlock
+                                icon="🧠"
+                                title="AI & Intelligence"
+                                description="Designing AI systems that assist creativity, learning, and interaction responsibly."
+                                color="#f1c40f" 
+                            />
+                            <TeamBlock
+                                icon="🎨"
+                                title="Design & Experience"
+                                description="Crafting intuitive interfaces and spatial experiences that feel natural and empowering."
+                                color="#1abc9c" 
+                            />
+                            <TeamBlock
+                                icon="🗺️"
+                                title="Product & Strategy"
+                                description="Ensuring that everything we build aligns with the long-term vision and real user needs."
+                                color="#d35400" 
+                            />
+                            <TeamBlock
+                                icon="📣"
+                                title="Community, Trust & Operations"
+                                description="Supporting users, maintaining safety, and ensuring transparency across the platform."
+                                color="#c0392b" 
+                            />
+                        </div>
+                    </Section>
+
+                    {/* Leadership Philosophy (Original section remains for context) */}
+                    <Section title="Leadership Philosophy">
+                        <p>Leadership at NexUP is about direction, not control.</p>
+                        <p>Leaders are expected to:</p>
+                        <ul>
+                            <li>Set clear vision and priorities</li>
+                            <li>Enable teams rather than micromanage</li>
+                            <li>Encourage honest discussion and feedback</li>
+                            <li>Take responsibility for outcomes</li>
+                        </ul>
+                        <p className="statement">Authority exists to support progress, not restrict it.</p>
+                    </Section>
+
+                    {/* Growing the Team (Now directly connects to the CTA) */}
+                    <Section title="Growing the Team">
+                        <p>NexUP is evolving, and so is our team.</p>
+                        <p>We look for people who:</p>
+                        <ul>
+                            <li>Care deeply about the future of technology</li>
+                            <li>Are comfortable working in evolving environments</li>
+                            <li>Take responsibility for their work</li>
+                            <li>Value ethics, trust, and long-term impact</li>
+                        </ul>
+                        <p className="priority-note">Skills matter — but mindset matters more.</p>
+                    </Section>
+                    
+                    {/* Collaboration Beyond NexUP */}
+                    <Section title="Collaboration Beyond NexUP">
+                        <p>We believe great platforms are built with collaboration.</p>
+                        <p>NexUP works with:</p>
+                        <ul>
+                            <li>Independent creators and developers</li>
+                            <li>Researchers and educators</li>
+                            <li>Communities and partners</li>
+                            <li>Contributors aligned with our values</li>
+                        </ul>
+                        <p className="priority-note">Building the future is a shared effort.</p>
+                    </Section>
+
+                    {/* Transparency & Trust Within the Team */}
+                    <Section title="Transparency & Trust Within the Team">
+                        <p>We strive to maintain:</p>
+                        <ul>
+                            <li>Honest internal communication</li>
+                            <li>Clear expectations</li>
+                            <li>Fair decision-making</li>
+                            <li>Respect for individual contributions</li>
+                        </ul>
+                        <p className="statement">Trust inside the team reflects trust we aim to build outside.</p>
+                    </Section>
+
+                    {/* NEW: CTA Section */}
+                    <JoinTheTeamCTA />
+                    
+                    {/* Looking Ahead (Final concluding section) */}
+                    <section className="team-section final-section">
+                        <h3>Looking Ahead</h3>
+                        <p>As NexUP grows, the team will grow with it — thoughtfully and responsibly.</p>
+                        <p>We are committed to building a workplace where:</p>
+                        <ul>
+                            <li>People do meaningful work</li>
+                            <li>Technology serves humanity</li>
+                            <li>Long-term vision guides daily action</li>
+                        </ul>
+                    </section>
+                    
+                </div>
+            </main>
+            
+            <Footer>
+                Our Team — The people building NexUP with responsibility, curiosity, and purpose.
+            </Footer>
+            
+        </div>
+    );
+};
+
+export default Team;

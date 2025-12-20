@@ -1,287 +1,177 @@
-// src/pages/About/Stories.jsx
-import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import "../../page-styles/About/Stories.css";
-import Footer from "../../components/Footer/Footer";
+import React from 'react';
+// Assuming the provided CSS file exists in the specified path
+import '../../page-styles/About/Stories.css'; 
+import Footer from '../../components/Footer/Footer';
 
-/* --- DATA CONSTANTS --- */
-const CATEGORIES = ["All", "Engineering", "Design", "Research", "Culture", "NexWorld"];
+// Component for a reusable section block
+const StorySection = ({ title, children }) => (
+  <section className="story-section">
+    <h3 className="section-title">{title}</h3>
+    {children}
+  </section>
+);
 
-/* 13. Tag Color Mapping */
-const TAG_COLORS = {
-  Engineering: "#5fb6ff",
-  Design: "#b8a9ff",
-  Research: "#8af9ff",
-  Culture: "#ffe59d",
-  NexWorld: "#ff9dff",
-  Announcements: "#ffffff"
-};
-
-const FEATURED_STORY = {
-  id: "featured-1",
-  tag: "Design",
-  title: "Designing the Future of Spatial Interfaces",
-  desc: "How the NeX UP design team is shaping interaction patterns that feel natural inside AR, VR, and adaptive intelligent environments.",
-  readTime: "8 min read",
-  date: "Oct 12, 2025",
-  image: "https://res.cloudinary.com/dgzikn7nn/image/upload/v1709848523/nex-spatial-design.jpg" // Placeholder
-};
-
-const STORIES_DATA = [
-  {
-    id: 1,
-    tag: "Engineering",
-    title: "How NexNode Synchronizes Spatial Intelligence",
-    desc: "Exploring the architecture behind real-time, world-scale intelligent systems.",
-    readTime: "6 min read",
-    size: "wide", 
-  },
-  {
-    id: 2,
-    tag: "NexWorld",
-    title: "The Evolution of Digital Environments",
-    desc: "From simulation-based prototypes to fully adaptive spatial worlds.",
-    readTime: "5 min read",
-    size: "standard",
-  },
-  {
-    id: 3,
-    tag: "Research",
-    title: "Understanding Human Spatial Cognition",
-    desc: "How neuroscience guides the future of AR/VR experience design.",
-    readTime: "10 min read",
-    size: "standard",
-  },
-  {
-    id: 4,
-    tag: "Culture",
-    title: "Life at NeX UP: A Builder’s Diary",
-    desc: "A behind-the-scenes look at how our builders prototype the future.",
-    readTime: "4 min read",
-    size: "standard",
-  },
-  {
-    id: 5,
-    tag: "Announcements",
-    title: "NexWorld Alpha: What to Expect",
-    desc: "Our biggest update yet for immersive spatial environments.",
-    readTime: "3 min read",
-    size: "wide",
-  },
-];
-
-/* --- VARIANTS --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-  exit: { opacity: 0, transition: { duration: 0.2 } }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-export default function Stories() {
-  const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState("All");
-
-  const filteredStories = useMemo(() => {
-    return activeCategory === "All" 
-      ? STORIES_DATA 
-      : STORIES_DATA.filter(story => story.tag === activeCategory);
-  }, [activeCategory]);
-
+const StoriesPage = () => {
   return (
-    <div className="stories-page">
-      <div className="stories-wrapper">
+    // The main container uses a dark-themed class for the OpenAI-inspired look
+    <div className="stories-page-container">
+      <header className="stories-header">
+        <h1 className="page-main-title">Stories</h1>
+        <p className="page-subtitle">Real Experiences from the NexUP Journey</p>
+      </header>
+
+      <main className="stories-content">
+        <p className="intro-paragraph">
+          The NexUP Stories page is a space for human narratives — stories of building, learning, experimenting, and growing alongside the NexUP ecosystem.
+          These stories reflect the process, not just the outcomes.
+        </p>
+
+        <StorySection title="Purpose of the Stories Page">
+          <p>Stories exist to:</p>
+          <ul className="story-list">
+            <li>Share real journeys behind the platform</li>
+            <li>Highlight people, not just technology</li>
+            <li>Capture lessons learned along the way</li>
+            <li>Show how NexUP is evolving through experience</li>
+            <li>Inspire thoughtful engagement, not hype</li>
+          </ul>
+          <p className="note-emphasis">This page values **authenticity** over perfection.</p>
+        </StorySection>
+
+        <StorySection title="What You’ll Find Here">
+          {/* --- Builder Stories --- */}
+          <h4 className="subsection-title">Builder Stories</h4>
+          <p>Experiences from people who are:</p>
+          <ul className="story-list">
+            <li>Designing systems</li>
+            <li>Writing code</li>
+            <li>Creating worlds</li>
+            <li>Solving hard problems</li>
+            <li>Learning through iteration</li>
+          </ul>
+          <p className="detail-text">These stories focus on **how** things are built, not just **what** is built.</p>
+
+          {/* --- Creator & Explorer Stories --- */}
+          <h4 className="subsection-title">Creator & Explorer Stories</h4>
+          <p>Stories from users, creators, or early contributors who:</p>
+          <ul className="story-list">
+            <li>Experiment with NexUP tools</li>
+            <li>Explore NexWorld concepts</li>
+            <li>Build digital spaces or ideas</li>
+            <li>Learn new ways of working and thinking</li>
+          </ul>
+          <p className="detail-text">These reflect discovery and creativity.</p>
+
+          {/* --- Learning & Growth Stories --- */}
+          <h4 className="subsection-title">Learning & Growth Stories</h4>
+          <p>Narratives about:</p>
+          <ul className="story-list">
+            <li>Mistakes and lessons</li>
+            <li>Challenges faced during development</li>
+            <li>Decisions that shaped the platform</li>
+            <li>Changes in thinking over time</li>
+          </ul>
+          <p className="detail-text">Growth is rarely linear — these stories reflect that **honestly**.</p>
+
+          {/* --- Community Stories --- */}
+          <h4 className="subsection-title">Community Stories</h4>
+          <p>Stories highlighting:</p>
+          <ul className="story-list">
+            <li>Collaboration</li>
+            <li>Shared problem-solving</li>
+            <li>Community discussions</li>
+            <li>Collective learning moments</li>
+          </ul>
+          <p className="detail-text">They show NexUP as a **shared effort**, not a closed system.</p>
+        </StorySection>
+
+        <StorySection title="What Stories Are Not">
+          <p>To keep this page meaningful, Stories are not:</p>
+          <ul className="story-list list-negative">
+            <li>Marketing testimonials</li>
+            <li>Promotional success claims</li>
+            <li>Sales-driven narratives</li>
+            <li>Announcements or press releases</li>
+            <li>Pure opinion pieces without experience</li>
+          </ul>
+          <p className="note-emphasis">Stories must be **grounded in real experience**.</p>
+        </StorySection>
+
+        <StorySection title="Story Tone & Style">
+          <p>All stories on NexUP follow these principles:</p>
+          <ul className="story-list">
+            <li>**Honest** and reflective</li>
+            <li>Written in **clear, human language**</li>
+            <li>Focused on **learning and insight**</li>
+            <li>Respectful of privacy and context</li>
+            <li>Free from exaggeration or hype</li>
+          </ul>
+          <p className="detail-text">Uncertainty and questions are welcome.</p>
+        </StorySection>
+
+        <StorySection title="Who Can Share Stories">
+          <p>Stories may come from:</p>
+          <ul className="story-list">
+            <li>NexUP team members</li>
+            <li>Builders and developers</li>
+            <li>Designers and researchers</li>
+            <li>Early users or contributors</li>
+            <li>Collaborators aligned with NexUP values</li>
+          </ul>
+          <p className="detail-text">Not every story needs to be public — only those that add value and clarity.</p>
+        </StorySection>
+
+        <StorySection title="Review & Responsibility">
+          <p>To maintain trust:</p>
+          <ul className="story-list">
+            <li>Stories are reviewed before publishing</li>
+            <li>Sensitive details are handled carefully</li>
+            <li>Personal data is protected</li>
+            <li>Misleading or harmful content is not published</li>
+          </ul>
+          <p className="detail-text">Storytelling is treated as a **responsibility**.</p>
+        </StorySection>
         
-        {/* ================= HERO ================= */}
-        <section className="stories-hero-section">
-          <div className="stories-glow" />
-          <motion.div
-            className="stories-hero-content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            <span className="hero-badge">The NeX UP Journal</span>
-            <h1 className="gradient-title stories-hero-title">
-              Insights from the Edge of Reality.
-            </h1>
-            <p className="stories-hero-sub">
-              Breakthroughs, designs, and ideas shaping the intelligent digital universe.
-            </p>
-          </motion.div>
-        </section>
+        <StorySection title="How Stories Support the Vision">
+          <p>Stories help NexUP by:</p>
+          <ul className="story-list">
+            <li>Making abstract ideas concrete</li>
+            <li>Showing the human side of technology</li>
+            <li>Building trust through transparency</li>
+            <li>Preserving institutional memory</li>
+            <li>Encouraging thoughtful participation</li>
+          </ul>
+          <p className="detail-text">They act as a **living archive** of the journey.</p>
+        </StorySection>
 
-        <BreakLine />
+        <StorySection title="Future Direction">
+          <p>As NexUP grows, the Stories page may expand to include:</p>
+          <ul className="story-list">
+            <li>Long-form narratives</li>
+            <li>Visual or spatial storytelling</li>
+            <li>In-world stories from NexWorld</li>
+            <li>Reflections on major milestones</li>
+            <li>Curated story collections</li>
+          </ul>
+          <p className="detail-text">The format may evolve, but the purpose remains the same.</p>
+        </StorySection>
 
-        {/* ================= FEATURED STORY ================= */}
-        <section className="featured-section">
-          <motion.div
-            className="featured-card glass-panel"
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            onClick={() => navigate(`/stories/${FEATURED_STORY.id}`)}
-          >
-            <div className="featured-image-container">
-               {/* 15. Lazy Loading */}
-               <div className="featured-img placeholder-img">Featured Visual</div>
-            </div>
+        <div className="final-note-block">
+          <p>
+            Technology shapes the future — but stories remind us **why** and **for whom** we build.
+            The NexUP Stories page exists to capture those moments honestly, thoughtfully, and responsibly.
+          </p>
+        </div>
+      </main>
 
-            <div className="featured-content">
-              <div className="meta-row">
-                <span 
-                  className="story-tag tag-highlight"
-                  style={{ color: TAG_COLORS[FEATURED_STORY.tag] || '#b8a9ff' }}
-                >
-                  {FEATURED_STORY.tag}
-                </span>
-                <span className="story-date">{FEATURED_STORY.date} • {FEATURED_STORY.readTime}</span>
-              </div>
-
-              <h2 className="featured-title">{FEATURED_STORY.title}</h2>
-              <p className="featured-text">{FEATURED_STORY.desc}</p>
-
-              <button className="read-more-btn">Read Full Story</button>
-            </div>
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= CATEGORY FILTER ================= */}
-        <section className="category-section">
-          <div className="category-scroll-container"> {/* Container for mobile scroll */}
-            <div className="category-scroll">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  className={`category-pill ${activeCategory === cat ? "active" : ""}`}
-                  onClick={() => setActiveCategory(cat)}
-                >
-                  {cat}
-                  {/* 4. Active Underline */}
-                  {activeCategory === cat && (
-                    <motion.div 
-                      className="active-line" 
-                      layoutId="underline"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= STORIES GRID (BENTO STYLE) ================= */}
-        <section className="stories-list-section">
-          <AnimatePresence mode="wait">
-            {/* 5. Fade Transition on Category Change */}
-            <motion.div 
-              className="bento-grid"
-              key={activeCategory} 
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              {filteredStories.map((story) => (
-                <motion.div 
-                  key={story.id} 
-                  className={`story-card glass-panel card-${story.size}`}
-                  variants={cardVariants}
-                  // 14. Click Navigation
-                  onClick={() => navigate(`/stories/${story.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="card-image-wrapper">
-                    <div className="card-img placeholder-img">Image</div>
-                  </div>
-                  <div className="card-body">
-                    <div className="card-meta">
-                      {/* 13. Dynamic Tag Color */}
-                      <span 
-                        className="story-tag"
-                        style={{ color: TAG_COLORS[story.tag] || '#fff' }}
-                      >
-                        {story.tag}
-                      </span>
-                      <span className="read-time">{story.readTime}</span>
-                    </div>
-                    <h3>{story.title}</h3>
-                    <p>{story.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= NEWSLETTER ================= */}
-        <section className="newsletter-section">
-          <motion.div
-            className="newsletter-box glass-panel"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="newsletter-content">
-              <h2 className="gradient-title">Stay in the loop.</h2>
-              <p>Get the latest engineering deep dives and design insights delivered to your inbox.</p>
-            </div>
-            <div className="newsletter-form">
-              <input type="email" placeholder="Enter your email" />
-              <button className="white-btn">Subscribe</button>
-            </div>
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="stories-final-section">
-          <motion.div
-            className="stories-final"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="gradient-title final-big">
-              Build the future with us.
-            </h2>
-            <p className="final-text">
-              Join NeX UP and help define the next era of immersive technology.
-            </p>
-            <div className="stories-final-actions">
-              <button className="white-btn" onClick={() => navigate("/about/career")}>
-                Explore Careers →
-              </button>
-              <button className="ghost-btn" onClick={() => navigate("/contact")}>
-                Contact Us →
-              </button>
-            </div>
-          </motion.div>
-        </section>
+      {/* Optional Footer Line */}
+      <div className="footer-line-optional">
+        Stories — Real journeys, real learning, from the NexUP ecosystem.
       </div>
 
       <Footer />
     </div>
   );
-}
+};
 
-function BreakLine() {
-  return <div className="break-line" />;
-}
+export default Stories;
