@@ -1,272 +1,194 @@
 // src/pages/Safety/Transparency.jsx
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { 
-  FiEye, FiFileText, FiActivity, 
-  FiShield, FiCheckCircle
-} from "react-icons/fi";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../../page-styles/Safety/Transparency.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- DATA --- */
-const PRINCIPLES = [
-  {
-    icon: <FiEye />,
-    title: "Radical Visibility",
-    text: "We don't hide how our systems work. From AI weighting to data storage, we default to disclosure."
-  },
-  {
-    icon: <FiFileText />,
-    title: "Plain Language",
-    text: "No legalese. We explain complex technical systems in language everyone can understand."
-  },
-  {
-    icon: <FiActivity />,
-    title: "Predictability",
-    text: "Our systems are designed to be consistent. You should never be surprised by how NeX UP behaves."
-  }
-];
-
-const ALGORITHM_DATA = [
-  { title: "Recommendation Engine", desc: "Prioritizes content based on your explicit interests and spatial engagement, not rage-bait." },
-  { title: "Safety Classifiers", desc: "AI scans 100% of public assets for harmful patterns before they render in NexWorld." },
-  { title: "Moderation Queue", desc: "Flagged content is reviewed by human experts, not just automated bots." }
-];
-
-/* --- ANIMATION VARIANTS --- */
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.8, ease: "easeOut" } 
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
-  }
-};
-
-export default function Transparency() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="transparency-page">
-      <div className="transparency-wrapper">
-        
-        {/* ================= HERO ================= */}
-        <section className="transparency-hero-section">
-          <div className="transparency-glow" />
-          <motion.div
-            className="transparency-hero-content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            <span className="hero-badge">Open Ledger Initiative</span>
-            <h1 className="gradient-title transparency-hero-title">
-              Trust Through Visibility.
-            </h1>
-            <p className="transparency-hero-sub">
-              We believe you have the right to know exactly how NeX UP works, 
-              how decisions are made, and how your data is handled.
-            </p>
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= CORE PRINCIPLES ================= */}
-        <TransparencySection>
-          <motion.div 
-            className="principles-grid"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {PRINCIPLES.map((item, idx) => (
-              <motion.div 
-                key={idx} 
-                className="principle-card glass-panel"
-                variants={fadeInUp}
-              >
-                <div className="principle-icon">{item.icon}</div>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </TransparencySection>
-
-        <BreakLine />
-
-        {/* ================= ALGORITHM EXPLAINER ================= */}
-        <TransparencySection title="Inside the Black Box">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <p className="centered-text">
-              We are demystifying the intelligent systems that power NeX UP. 
-              Here is how our core algorithms function:
-            </p>
-          </motion.div>
-          
-          <motion.div 
-            className="algo-container"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {ALGORITHM_DATA.map((algo, idx) => (
-              <motion.div 
-                key={idx} 
-                className="algo-card glass-panel-sm"
-                variants={fadeInUp}
-              >
-                <div className="algo-marker" />
-                <div className="algo-content">
-                  <h4>{algo.title}</h4>
-                  <p>{algo.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </TransparencySection>
-
-        <BreakLine />
-
-        {/* ================= DATA FLOW VISUALIZATION ================= */}
-        <TransparencySection title="Your Data Journey">
-          <motion.div 
-            className="data-journey"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            <DataStep 
-              step="01" 
-              title="Collection" 
-              text="You interact with NexWorld. Inputs (gesture, voice) are processed locally on-device whenever possible." 
-            />
-            <DataStep 
-              step="02" 
-              title="Encryption" 
-              text="Data leaving your device is encrypted (AES-256). We cannot see your raw camera feed." 
-            />
-            <DataStep 
-              step="03" 
-              title="Processing" 
-              text="Server-side processing is used only for multiplayer sync and persistence. No permanent storage of biometric data." 
-            />
-            <DataStep 
-              step="04" 
-              title="Deletion" 
-              text="Session data is wiped after use. You can request a full account wipe at any time." 
-            />
-          </motion.div>
-        </TransparencySection>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="transparency-final-section">
-          <motion.div
-            className="transparency-final"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="final-icon">
-              <FiShield />
-            </div>
-            <h2 className="gradient-title final-big">
-              Trust is earned, not claimed.
-            </h2>
-            <p className="final-text">
-              We invite you to audit our policies, ask questions, and hold us accountable.
-            </p>
-            <div className="transparency-final-actions">
-              <button className="white-btn" onClick={() => navigate("/contact")}>
-                Ask a Question
-              </button>
-              <button className="ghost-btn" onClick={() => navigate("/support/guidelines")}>
-                Community Guidelines
-              </button>
-            </div>
-          </motion.div>
-        </section>
-
-      </div>
-      <Footer />
-    </div>
-  );
-}
-
-/* ================= COMPONENTS ================= */
-
-function TransparencySection({ title, children }) {
-  return (
-    <section className="transparency-section">
-      <div className="transparency-section-inner">
-        {title && (
-          <motion.h2 
-            className="gradient-title section-title"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            // 8. Added delay to section titles
-            transition={{ duration: 0.7, delay: 0.1 }}
-            viewport={{ once: true }}
-          >
-            {title}
-          </motion.h2>
-        )}
+// Helper for structured sections
+const Section = ({ id, title, children }) => (
+    <section className="policy-section scroll-target" id={id}>
+        <h3>{title}</h3>
         {children}
-      </div>
     </section>
-  );
-}
+);
 
-function DataStep({ step, title, text }) {
-  return (
-    <motion.div 
-      className="data-step"
-      variants={fadeInUp}
-    >
-      <div className="step-marker">
-        <span className="step-num">{step}</span>
-        <div className="step-line"></div>
-      </div>
-      <div className="step-content glass-panel-sm">
-        <div className="step-header">
-          <h4>{title}</h4>
-          <FiCheckCircle className="check-icon" />
+const Transparency = () => {
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    return (
+        <div className="transparency-page">
+            <main className="transparency-main-content">
+                <div className="transparency-document">
+                    
+                    <header className="document-header">
+                        <h1>Transparency at NexUP</h1>
+                        <h2 className="subtitle">Our Commitment to Openness and Accountability</h2>
+                    </header>
+                    
+                    <p className="introduction">
+                        At NexUP, transparency is not a marketing promise — it is an operating principle.
+                    </p>
+                    <p className="statement-header">
+                        We believe users deserve to understand how our platform works, how decisions are made, and how responsibilities are handled, especially as we build AI-powered and immersive digital environments. This page explains how NexUP practices transparency across technology, policy, and governance.
+                    </p>
+
+                    
+                    {/* Why Transparency Matters */}
+                    <Section id="why-it-matters" title="Why Transparency Matters">
+                        <p>Advanced platforms influence people’s experiences, opportunities, and trust.</p>
+                        <p>Without transparency, technology can become confusing, opaque, or harmful.</p>
+                        <p>NexUP believes:</p>
+                        <ul>
+                            <li>Trust is built through clarity.</li>
+                            <li>Accountability requires openness.</li>
+                            <li>Responsible innovation depends on informed users.</li>
+                        </ul>
+                    </Section>
+
+                    {/* What We Are Transparent About */}
+                    <Section id="what-we-are-transparent-about" title="What We Are Transparent About">
+                        
+                        <h4>1. Platform Purpose & Direction</h4>
+                        <p>We clearly communicate:</p>
+                        <ul>
+                            <li>What NexUP is building.</li>
+                            <li>What stage the platform is in.</li>
+                            <li>Which features are experimental, evolving, or stable.</li>
+                        </ul>
+                        <p className="priority-note">We avoid misleading claims or exaggerated promises.</p>
+
+                        <h4>2. Data & Privacy Practices</h4>
+                        <p>We explain:</p>
+                        <ul>
+                            <li>What data we collect.</li>
+                            <li>Why it is collected.</li>
+                            <li>How it is protected.</li>
+                            <li>What we do not do with data.</li>
+                        </ul>
+                        <p className="priority-note">Privacy policies and data guides are written to be understandable, not hidden behind legal jargon.</p>
+
+                        <h4>3. AI & Automation Use</h4>
+                        <p>We disclose:</p>
+                        <ul>
+                            <li>When AI systems are involved in user experiences.</li>
+                            <li>The role of automation in platform features.</li>
+                            <li>The limits of automated decision-making.</li>
+                        </ul>
+                        <p className="priority-note">We do not present AI behavior as human or infallible.</p>
+
+                        <h4>4. Policies & Rules</h4>
+                        <p>All major policies are publicly accessible, including:</p>
+                        <ul>
+                            <li>Community Guidelines</li>
+                            <li>Privacy & Data Practices</li>
+                            <li>Cookie Policy</li>
+                            <li>Terms of Service</li>
+                        </ul>
+                        <p className="priority-note">Rules are documented so users know what is expected and what is enforced.</p>
+                    </Section>
+
+                    {/* What We Are Not Transparent About (And Why) */}
+                    <Section id="limits-of-transparency" title="What We Are Not Transparent About (And Why)">
+                        <p>To protect users and the platform, we do not publicly disclose:</p>
+                        <ul>
+                            <li>Internal security vulnerabilities.</li>
+                            <li>Sensitive infrastructure details.</li>
+                            <li>Private user data.</li>
+                            <li>Information that could enable abuse or attacks.</li>
+                        </ul>
+                        <p className="statement">Transparency must never compromise safety.</p>
+                    </Section>
+
+                    {/* How We Handle Changes */}
+                    <Section id="handling-changes" title="How We Handle Changes">
+                        
+                        <h4>Platform Updates</h4>
+                        <p>When significant changes occur:</p>
+                        <ul>
+                            <li>Policies are updated clearly.</li>
+                            <li>Material changes are communicated where appropriate.</li>
+                            <li>Historical versions may be referenced when necessary.</li>
+                        </ul>
+                        <p className="priority-note">Users are not expected to guess what has changed.</p>
+
+                        <h4>Accountability & Responsibility</h4>
+                        <p>NexUP takes responsibility for:</p>
+                        <ul>
+                            <li>Platform design choices.</li>
+                            <li>Data protection practices.</li>
+                            <li>Safety and trust decisions.</li>
+                            <li>Responding to legitimate concerns.</li>
+                        </ul>
+                        <p className="priority-note">We do not shift responsibility onto users for system-level issues.</p>
+                    </Section>
+                    
+                    {/* Feedback & Questions */}
+                    <Section id="feedback" title="Feedback & Questions">
+                        <p>Transparency is a two-way process. Users can:</p>
+                        <ul>
+                            <li>Ask questions about policies.</li>
+                            <li>Share concerns or feedback.</li>
+                            <li>Report unclear or confusing practices.</li>
+                        </ul>
+                        <p className="priority-note">Constructive feedback helps us improve clarity.</p>
+                    </Section>
+
+                    {/* Governance & Decision-Making */}
+                    <Section id="governance" title="Governance & Decision-Making">
+                        <p>While NexUP is still evolving, we aim to:</p>
+                        <ul>
+                            <li>Document major platform decisions.</li>
+                            <li>Balance innovation with responsibility.</li>
+                            <li>Make decisions that prioritize long-term trust over short-term gain.</li>
+                        </ul>
+                        <p className="priority-note">As the platform grows, governance structures will evolve transparently.</p>
+                    </Section>
+
+                    {/* Regulatory Awareness */}
+                    <Section id="regulatory" title="Regulatory Awareness">
+                        <p>NexUP monitors relevant:</p>
+                        <ul>
+                            <li>Technology regulations.</li>
+                            <li>Data protection laws.</li>
+                            <li>AI governance discussions.</li>
+                        </ul>
+                        <p className="priority-note">We adapt responsibly as legal and societal expectations change.</p>
+                    </Section>
+                    
+                    {/* Future Commitments */}
+                    <Section id="future-commitments" title="Future Commitments">
+                        <p>As NexUP expands into AI-driven and immersive environments:</p>
+                        <ul>
+                            <li>Transparency will remain a core requirement.</li>
+                            <li>New systems will include clear explanations.</li>
+                            <li>Users will be informed about meaningful changes.</li>
+                        </ul>
+                        <p className="priority-note">We believe transparency must scale alongside technology.</p>
+                    </Section>
+
+                    {/* Final Statement */}
+                    <section className="policy-section final-section" id="final-statement">
+                        <h3>Final Statement</h3>
+                        <p>Transparency is not about revealing everything — it is about revealing what matters.</p>
+                        <div className="final-message-box">
+                            <p>NexUP is committed to openness, honesty, and accountability as we build the future of digital and spatial computing.</p>
+                        </div>
+                    </section>
+                    
+                </div>
+            </main>
+            
+            {/* Footer Component with one-liner */}
+            <Footer>
+                Transparency — How NexUP builds trust through openness and accountability.
+            </Footer>
+            
         </div>
-        <p>{text}</p>
-      </div>
-    </motion.div>
-  );
-}
+    );
+};
 
-function BreakLine() {
-  return (
-    <motion.div 
-      className="break-line" 
-      initial={{ scaleX: 0, opacity: 0 }}
-      whileInView={{ scaleX: 1, opacity: 1 }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
-      viewport={{ once: true }}
-    />
-  );
-}
+export default Transparency;

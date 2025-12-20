@@ -1,261 +1,236 @@
-// src/pages/sections/Terms.jsx
-
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+// src/pages/Legal/Terms.jsx
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../../page-styles/sections/Terms.css";
-import Footer from "../../components/Footer/Footer"; // Assuming Footer is needed
+import Footer from "../../components/Footer/Footer";
+
+// Helper for structured sections
+const Section = ({ title, children }) => (
+    <section className="terms-section scroll-target">
+        <h3>{title}</h3>
+        {children}
+    </section>
+);
 
 const Terms = () => {
-  const [activeSection, setActiveSection] = useState("intro");
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
-  const sections = [
-    { id: "intro", title: "1. Introduction" },
-    { id: "eligibility", title: "2. Eligibility & Access" },
-    { id: "identity", title: "3. Nex-DNS Identity" },
-    { id: "spatial-data", title: "4. Spatial Data & Privacy" },
-    { id: "conduct", title: "5. User Conduct" },
-    { id: "assets", title: "6. Virtual Assets (NFTs)" },
-    { id: "economy", title: "7. Virtual Economy" },
-    { id: "ugc", title: "8. User Generated Content" },
-    { id: "ai", title: "9. AI & Automation" },
-    { id: "ar-safety", title: "10. AR/VR Safety" },
-    { id: "liability", title: "11. Limitation of Liability" },
-    { id: "termination", title: "12. Termination" },
-    { id: "updates", title: "13. Updates to Terms" },
-    { id: "contact", title: "14. Contact Us" },
-  ];
+    return (
+        <div className="terms-page">
+            <main className="terms-main-content">
+                <div className="terms-document">
+                    
+                    <header className="document-header">
+                        <h1>NexUP Terms of Service</h1>
+                        <h2 className="subtitle">The rules and responsibilities that govern the use of NexUP</h2>
+                    </header>
+                    
+                    {/* Acceptance of These Terms */}
+                    <Section title="Acceptance of These Terms">
+                        <p className="introduction">
+                            By accessing or using NexUP’s website, services, or platforms, you agree to be bound by these Terms of Service (“Terms”).
+                        </p>
+                        <p className="statement-header">
+                            If you do not agree with these Terms, you must not use NexUP. These Terms apply to all users, visitors, contributors, and partners interacting with NexUP.
+                        </p>
+                    </Section>
 
-  // Logic to highlight sidebar on scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-20% 0px -60% 0px" } 
-    );
+                    {/* About NexUP */}
+                    <Section title="About NexUP">
+                        <p>NexUP is a technology platform building AI-powered and immersive digital systems, including websites, tools, and future spatial computing environments.</p>
+                        <p className="priority-note">Some features may be experimental, evolving, or in early development stages.</p>
+                    </Section>
 
-    sections.forEach((section) => {
-      const element = document.getElementById(section.id);
-      if (element) observer.observe(element);
-    });
+                    {/* Eligibility to Use NexUP */}
+                    <Section title="Eligibility to Use NexUP">
+                        <p>By using NexUP, you confirm that:</p>
+                        <ul>
+                            <li>You are legally permitted to use digital services in your jurisdiction</li>
+                            <li>You will comply with all applicable laws and regulations</li>
+                            <li>You will not misuse the platform or harm others</li>
+                        </ul>
+                        <p className="priority-note">NexUP reserves the right to restrict or deny access if these conditions are violated.</p>
+                    </Section>
 
-    return () => observer.disconnect();
-  }, [sections]);
+                    {/* User Responsibilities */}
+                    <Section title="User Responsibilities">
+                        <p>You agree to:</p>
+                        <ul>
+                            <li>Use NexUP responsibly and ethically</li>
+                            <li>Follow all Community Guidelines and policies</li>
+                            <li>Provide accurate information where required</li>
+                            <li>Respect other users and platform integrity</li>
+                        </ul>
+                        <p className="statement">You are solely responsible for your actions while using NexUP.</p>
+                    </Section>
 
-  return (
-    <div className="terms-page">
-      
-      {/* HEADER */}
-      <div className="terms-header">
-        {/* 2. Hero Glow */}
-        <div className="terms-glow" />
-        
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: "easeOut" }}
-          className="header-content"
-        >
-          {/* 8. Unified Badge Style */}
-          <span className="doc-badge">LEGAL DOCUMENT // V2.4</span>
-          <h1 className="terms-title">Terms of Service</h1>
-          <p className="terms-subtitle">Last Updated: December 05, 2025</p>
-        </motion.div>
-      </div>
+                    {/* Prohibited Activities */}
+                    <Section title="Prohibited Activities">
+                        <p>You must not:</p>
+                        <ul>
+                            <li>Violate laws or regulations</li>
+                            <li>Harass, abuse, threaten, or discriminate against others</li>
+                            <li>Upload illegal, harmful, or misleading content</li>
+                            <li>Attempt unauthorized access, hacking, or system interference</li>
+                            <li>Exploit or manipulate NexUP services</li>
+                            <li>Misuse AI or automation features</li>
+                        </ul>
+                        <p className="priority-note">Violations may result in immediate action.</p>
+                    </Section>
+                    
+                    {/* Accounts & Access */}
+                    <Section title="Accounts & Access">
+                        <p>Some NexUP features may require account creation.</p>
+                        <p>You are responsible for:</p>
+                        <ul>
+                            <li>Maintaining account security</li>
+                            <li>Protecting login credentials</li>
+                            <li>All activity conducted under your account</li>
+                        </ul>
+                        <p className="priority-note">NexUP is not liable for losses caused by unauthorized account use.</p>
+                    </Section>
 
-      <div className="terms-layout">
-        
-        {/* SIDEBAR NAVIGATION */}
-        <aside className="terms-sidebar">
-          <nav>
-            <ul>
-              {sections.map((sec) => (
-                <li key={sec.id}>
-                  <a 
-                    href={`#${sec.id}`} 
-                    className={activeSection === sec.id ? "active" : ""}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const el = document.getElementById(sec.id);
-                      if (el) {
-                         // Manual offset scroll calculation
-                         const y = el.getBoundingClientRect().top + window.pageYOffset - 100;
-                         window.scrollTo({top: y, behavior: 'smooth'});
-                      }
-                      setActiveSection(sec.id);
-                    }}
-                  >
-                    {sec.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </aside>
+                    {/* Intellectual Property */}
+                    <Section title="Intellectual Property">
+                        <p>All NexUP content, branding, systems, and platform materials are owned by NexUP or its licensors.</p>
+                        <p>You may not:</p>
+                        <ul>
+                            <li>Copy, modify, or distribute NexUP content without permission</li>
+                            <li>Reverse-engineer or extract proprietary systems</li>
+                        </ul>
+                        <p className="priority-note">User-submitted content remains the responsibility of the user.</p>
+                    </Section>
+                    
+                    {/* User-Generated Content */}
+                    <Section title="User-Generated Content">
+                        <p>If you submit content to NexUP:</p>
+                        <ul>
+                            <li>You confirm you have the right to share it</li>
+                            <li>You grant NexUP permission to use it for platform operation and improvement</li>
+                            <li>NexUP may remove content that violates policies</li>
+                        </ul>
+                        <p className="priority-note">NexUP does not endorse user-generated content.</p>
+                    </Section>
 
-        {/* MAIN CONTENT */}
-        <div className="terms-content">
-          
-          <TermsSection id="intro" title="1. Introduction">
-            <p>
-              Welcome to <strong>NeXUP</strong> ("we," "our," or "us"). These Terms of Service ("Terms") govern your access to and use of the NeXUP ecosystem. By connecting your wallet or creating a Nex-DNS identity, you enter into a binding legal agreement with NeXUP.
-            </p>
-          </TermsSection>
+                    {/* AI & Automated Systems */}
+                    <Section title="AI & Automated Systems">
+                        <p>NexUP may use AI and automated systems to support platform functionality.</p>
+                        <ul>
+                            <li>AI outputs are provided “as is”</li>
+                            <li>AI systems may produce errors or limitations</li>
+                            <li>Users should not rely on AI outputs as professional or legal advice</li>
+                        </ul>
+                        <p className="priority-note">Human oversight remains important.</p>
+                    </Section>
 
-          <BreakLine />
+                    {/* Privacy & Data Protection */}
+                    <Section title="Privacy & Data Protection">
+                        <p>Your use of NexUP is subject to our **Privacy & Data Policy** and **Cookie Policy**.</p>
+                        <p className="statement">By using NexUP, you consent to data practices described in those documents.</p>
+                    </Section>
 
-          <TermsSection id="eligibility" title="2. Eligibility & Access">
-            <p>
-              <strong>2.1 Age Requirement:</strong> The Services are intended for users who are at least 13 years old.
-            </p>
-            <p>
-              <strong>2.2 Hardware:</strong> We are not responsible for performance degradation on devices that do not meet our minimum LiDAR specifications.
-            </p>
-          </TermsSection>
+                    {/* Third-Party Services */}
+                    <Section title="Third-Party Services">
+                        <p>NexUP may integrate third-party tools or services.</p>
+                        <ul>
+                            <li>NexUP is not responsible for third-party platforms</li>
+                            <li>Use of third-party services is at your own risk</li>
+                            <li>Third-party terms may apply</li>
+                        </ul>
+                    </Section>
 
-          <BreakLine />
+                    {/* Suspension & Termination */}
+                    <Section title="Suspension & Termination">
+                        <p>NexUP may suspend or terminate access if:</p>
+                        <ul>
+                            <li>These Terms are violated</li>
+                            <li>Platform integrity or safety is threatened</li>
+                            <li>Legal compliance requires action</li>
+                        </ul>
+                        <p className="priority-note">NexUP may act without prior notice when necessary.</p>
+                    </Section>
 
-          <TermsSection id="identity" title="3. Nex-DNS Identity">
-            <p>
-              <strong>3.1 Decentralized ID:</strong> Your NeXUP account is tied to your Nex-DNS. This identity is Self-Sovereign.
-            </p>
-            <p>
-              <strong>3.2 Private Key Custody:</strong> You are solely responsible for your private keys. NeXUP cannot recover your account if keys are lost.
-            </p>
-          </TermsSection>
+                    {/* Disclaimer of Warranties */}
+                    <Section title="Disclaimer of Warranties">
+                        <p>NexUP is provided “as is” and “as available.”</p>
+                        <p>We do not guarantee:</p>
+                        <ul>
+                            <li>Continuous availability</li>
+                            <li>Error-free operation</li>
+                            <li>That services will meet all expectations</li>
+                        </ul>
+                        <p className="statement">Use NexUP at your own discretion.</p>
+                    </Section>
+                    
+                    {/* Limitation of Liability */}
+                    <Section title="Limitation of Liability">
+                        <p>To the maximum extent permitted by law:</p>
+                        <ul>
+                            <li>NexUP is not liable for indirect or consequential damages</li>
+                            <li>NexUP is not responsible for user-generated content</li>
+                            <li>NexUP is not liable for losses resulting from platform use</li>
+                        </ul>
+                        <p className="priority-note">Some jurisdictions may not allow certain limitations.</p>
+                    </Section>
 
-          <BreakLine />
+                    {/* Indemnification */}
+                    <Section title="Indemnification">
+                        <p>You agree to indemnify and hold NexUP harmless from claims arising from:</p>
+                        <ul>
+                            <li>Your misuse of the platform</li>
+                            <li>Your violation of these Terms</li>
+                            <li>Your violation of laws or third-party rights</li>
+                        </ul>
+                    </Section>
 
-          <TermsSection id="spatial-data" title="4. Spatial Data & Privacy">
-            <p>
-              <strong>4.1 Scanning:</strong> To place digital objects, NeXUP processes Spatial Data (LiDAR scans) of your surroundings.
-            </p>
-            <p>
-              <strong>4.2 Processing:</strong> Data is processed locally on your device wherever possible.
-            </p>
-          </TermsSection>
+                    {/* Changes to These Terms */}
+                    <Section title="Changes to These Terms">
+                        <p>NexUP may update these Terms as the platform evolves.</p>
+                        <ul>
+                            <li>Updates will be posted on this page</li>
+                            <li>Continued use constitutes acceptance of changes</li>
+                            <li>Material changes will be communicated where reasonable</li>
+                        </ul>
+                    </Section>
 
-          <BreakLine />
+                    {/* Governing Law */}
+                    <Section title="Governing Law">
+                        <p className="statement">These Terms are governed by applicable laws based on NexUP’s operational jurisdiction, without regard to conflict-of-law principles.</p>
+                    </Section>
 
-          <TermsSection id="conduct" title="5. User Conduct">
-            <p>
-              Prohibited activities include: Digital Vandalism, Haptic Assault, Exploiting bugs, and Botting.
-            </p>
-          </TermsSection>
+                    {/* Contact Information */}
+                    <Section title="Contact Information">
+                        <p className="priority-note">For questions about these Terms, you may contact NexUP through official communication channels listed on the website.</p>
+                    </Section>
 
-          <BreakLine />
-
-          <TermsSection id="assets" title="6. Virtual Assets (NFTs)">
-            <p>
-              <strong>6.1 Ownership:</strong> You own the NFT, but NeXUP retains IP rights to the code and visual models.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="economy" title="7. Virtual Economy">
-            <p>
-              All blockchain transactions are final. NeXUP is not responsible for gas fees or market volatility.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="ugc" title="8. User Generated Content">
-            <p>
-              By uploading content, you grant NeXUP a license to host and render that content within the ecosystem.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="ai" title="9. AI & Automation">
-            <p>
-              <strong>9.1 Hallucinations:</strong> AI agents may generate incorrect data.
-            </p>
-            <p>
-              <strong>9.2 Liability:</strong> You are liable for autonomous agents you deploy using NexEngine.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="ar-safety" title="10. AR/VR Safety">
-            <p>
-              Always maintain awareness of physical surroundings. NeXUP is not liable for physical injury while using mixed reality features.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="liability" title="11. Limitation of Liability">
-            <p>
-              THE SERVICE IS PROVIDED "AS IS." NEXUP DISCLAIMS ALL WARRANTIES AND IS NOT LIABLE FOR DATA LOSS OR SYSTEM FAILURES.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="termination" title="12. Termination">
-            <p>
-              We reserve the right to suspend access to centralized services for violations of these Terms.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="updates" title="13. Updates to Terms">
-            <p>
-              We may update these Terms as the Spatial Web evolves. Continued use constitutes acceptance.
-            </p>
-          </TermsSection>
-
-          <BreakLine />
-
-          <TermsSection id="contact" title="14. Contact Us">
-            <p>
-              <strong>Legal:</strong> <a href="mailto:legal@nexup.world">legal@nexup.world</a>
-            </p>
-          </TermsSection>
-
+                    {/* Final Statement */}
+                    <section className="terms-section final-section">
+                        <h3>Final Statement</h3>
+                        <p>These Terms exist to protect:</p>
+                        <ul>
+                            <li>Users</li>
+                            <li>The NexUP platform</li>
+                            <li>The long-term vision of responsible technology</li>
+                        </ul>
+                        <div className="final-message-box">
+                            <p>By using NexUP, you agree to participate respectfully and responsibly.</p>
+                        </div>
+                    </section>
+                    
+                </div>
+            </main>
+            
+            {/* Footer Component with one-liner */}
+            <Footer>
+                Terms of Service — The rules and responsibilities that govern the use of NexUP.
+            </Footer>
+            
         </div>
-      </div>
-      
-      <Footer />
-    </div>
-  );
+    );
 };
-
-/* --- COMPONENTS --- */
-
-// 3. Glass Panel Wrapper for Sections + 5. Animated Titles
-const TermsSection = ({ id, title, children }) => (
-  <motion.section 
-    id={id}
-    className="terms-block glass-panel"
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
-    viewport={{ once: true, margin: "-50px" }}
-  >
-    <h2>{title}</h2>
-    {children}
-  </motion.section>
-);
-
-// 7. Animated Break Line
-const BreakLine = () => (
-  <motion.div 
-    className="break-line" 
-    initial={{ scaleX: 0 }}
-    whileInView={{ scaleX: 1 }}
-    transition={{ duration: 1, ease: "easeOut" }}
-    viewport={{ once: true }}
-  />
-);
 
 export default Terms;

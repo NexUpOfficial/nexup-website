@@ -1,289 +1,238 @@
 // src/pages/About/Career.jsx
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+// All specific React icon imports are removed for a cleaner, professional look.
 import "../../page-styles/About/Career.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- DATA --- */
-const BENEFITS_DATA = [
-  { title: "Remote-First", desc: "Work from anywhere. We value output over presence." },
-  { title: "Frontier Tech", desc: "Access to the latest AR/VR hardware and AI compute clusters." },
-  { title: "Creative Freedom", desc: "A culture of experimentation. Fail fast, learn faster." },
-  { title: "Ownership", desc: "Significant equity packages. You build it, you own a piece of it." },
-  { title: "Deep Work", desc: "Meeting-light days to ensure flow state for complex problem solving." },
-  { title: "Growth", desc: "Stipends for courses, conferences, and continuous learning." },
-];
+const Career = () => {
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
-const TEAMS_DATA = [
-  { title: "Engineering", desc: "High-performance spatial computation & NexNode architecture." },
-  { title: "Design", desc: "Immersive UI/UX and 3D world-building." },
-  { title: "Research", desc: "Cognitive science, AI behavior, and spatial interaction." },
-  { title: "Operations", desc: "Scaling the ecosystem and product execution." },
-];
-
-const OPEN_ROLES = [
-  { title: "Senior Frontend Engineer", dept: "Engineering", location: "Remote", type: "Full-time" },
-  { title: "AR Interaction Designer", dept: "Design", location: "Hybrid / SF", type: "Full-time" },
-  { title: "3D Environment Artist", dept: "Art", location: "Remote", type: "Contract" },
-  { title: "AI Systems Researcher", dept: "Research", location: "London", type: "Full-time" },
-  { title: "Product Strategist", dept: "Product", location: "Remote", type: "Full-time" },
-];
-
-const CULTURE_IMGS = [
-  { id: 1, label: "Hackathon" },
-  { id: 2, label: "Design Sprint" },
-  { id: 3, label: "VR Demo Day" },
-  { id: 4, label: "Team Offsite" },
-];
-
-/* --- VARIANTS --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
-export default function Career() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="career-page">
-      {/* 11. Performance Optimization - Add global transform style */}
-      <style global jsx>{`
-        * {
-          transform-style: preserve-3d;
-          backface-visibility: hidden;
-        }
-      `}</style>
-      
-      <div className="career-wrapper">
-        
-        {/* ================= HERO ================= */}
-        <section className="career-hero-section">
-          <div className="career-glow" />
-          <motion.div
-            className="career-hero-content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            <span className="hero-badge">We Are Hiring</span>
-            <h1 className="gradient-title career-big-title">
-              Build the Interface of the Future.
-            </h1>
-            <p className="career-sub">
-              Join the architects, engineers, and dreamers defining the next era of intelligent digital reality.
-            </p>
-            {/* ⭐ 9. Scroll Hint Cue */}
-            <div className="scroll-hint">↓</div>
-          </motion.div>
+    // Helper for structured sections
+    // Icon prop is removed as icons are no longer used
+    const Section = ({ id, title, children }) => (
+        <section className="policy-section scroll-target" id={id}>
+            <h3>{title}</h3>
+            {children}
         </section>
+    );
 
-        <BreakLine />
+    // Reusable Apply Button Component
+    const ApplyButton = ({ text, role }) => (
+        <Link 
+            to={`/contact#job-application`} 
+            className="apply-button"
+            state={{ role: role }} 
+        >
+            {text}
+        </Link>
+    );
 
-        {/* ================= MANIFESTO / CULTURE ================= */}
-        <CareerSection title="Why NeX UP?">
-          <div className="manifesto-grid">
-            <motion.div 
-              className="manifesto-text"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h3>More than code. Mission.</h3>
-              {/* ⭐ 8. Mobile readability improved via CSS */ }
-              <p>
-                NeX UP isn't just a tech company. It's a laboratory for the future. 
-                We are bridging the gap between physical reality and digital intelligence.
-              </p>
-              <p>
-                We don't do "busy work." We solve hard problems in spatial computing, 
-                neural interfaces, and decentralized networks. If you want to do the best work of your life, you belong here.
-              </p>
-            </motion.div>
-            <motion.div 
-              className="manifesto-visual glass-panel"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="visual-placeholder">Spatial Computing Blueprint</div>
-            </motion.div>
-          </div>
-        </CareerSection>
+    return (
+        <div className="career-page">
+            <main className="career-main-content">
+                <div className="career-document">
+                    
+                    <header className="document-header">
+                        <h1>Careers at NexUP</h1>
+                        <h2 className="subtitle">Building the Next Digital Worlds — Together</h2>
+                    </header>
+                    
+                    <p className="introduction">
+                        At NexUP, we are building more than a platform. We are designing persistent AI-powered virtual worlds, immersive systems, and spatial experiences that will define how people learn, work, create, and connect in the future.
+                    </p>
+                    <p className="statement-header">
+                        If you are driven by curiosity, responsibility, and the desire to build meaningful technology — NexUP is a place where your work can truly matter.
+                    </p>
 
-        <BreakLine />
 
-        {/* ================= BENEFITS GRID ================= */}
-        <CareerSection title="Perks & Benefits">
-          <motion.div 
-            className="benefits-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {BENEFITS_DATA.map((item, idx) => (
-              <motion.div 
-                key={idx} 
-                className="benefit-card glass-panel"
-                variants={itemVariants}
-              >
-                <div className="benefit-icon-line" />
-                <h3>{item.title}</h3>
-                <p>{item.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </CareerSection>
+                    {/* 1. Why Work at NexUP? */}
+                    <Section id="why-work" title="Why Work at NexUP?">
+                        <p>NexUP is not a traditional company. We operate at the intersection of AI, AR/VR, infrastructure, and world-scale systems.</p>
+                        <p>Working here means:</p>
+                        <ul>
+                            <li>Shaping early foundations of a long-term platform</li>
+                            <li>Solving problems that don’t yet have templates</li>
+                            <li>Building responsibly for a future that affects real people</li>
+                            <li>Growing alongside the product, not just inside a role</li>
+                        </ul>
+                    </Section>
 
-        <BreakLine />
+                    {/* 2. Our Core Values */}
+                    <Section id="core-values" title="Our Core Values">
+                        <div className="values-grid">
+                            <article>
+                                <h4>People Before Technology</h4>
+                                <p>We build systems that serve humanity, enhance creativity, and improve real lives — not extract attention or exploit behavior.</p>
+                            </article>
+                            <article>
+                                <h4>Thoughtful Curiosity</h4>
+                                <p>We accept that no one has all the answers. We stay open to learning, questioning assumptions, and improving through feedback.</p>
+                            </article>
+                            <article>
+                                <h4>Responsibility at Scale</h4>
+                                <p>AI and immersive worlds have deep impact. We approach our work with seriousness, care, and awareness of long-term consequences.</p>
+                            </article>
+                            <article>
+                                <h4>Build With Optimism</h4>
+                                <p>We believe the future can be better — and we actively work toward it. Our products should feel empowering, inspiring, and meaningful.</p>
+                            </article>
+                        </div>
+                    </Section>
 
-        {/* ================= TEAMS ================= */}
-        <CareerSection title="Find Your Team">
-          <motion.div 
-            className="teams-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {TEAMS_DATA.map((team, idx) => (
-              <motion.div 
-                key={idx} 
-                className="team-card glass-panel"
-                variants={itemVariants}
-              >
-                <h3>{team.title}</h3>
-                <p>{team.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </CareerSection>
+                    {/* 3. How We Work (Operating Principles) */}
+                    <Section id="how-we-work" title="How We Work (Operating Principles)">
+                        <div className="principles-list">
+                            <article>
+                                <h4>Find the Path Forward</h4>
+                                <p>We don’t wait for perfect conditions. We experiment, adapt, and move forward with intention. Good ideas can come from anyone.</p>
+                            </article>
+                            <article>
+                                <h4>Creativity Over Rigidity</h4>
+                                <p>We favor thoughtful solutions over strict processes. We use first-principles thinking, not bureaucracy.</p>
+                            </article>
+                            <article>
+                                <h4>Learn Fast, Improve Faster</h4>
+                                <p>We test ideas, listen carefully, and evolve quickly. Changing your mind based on evidence is a strength here.</p>
+                            </article>
+                            <article>
+                                <h4>Deep Focus, Real Impact</h4>
+                                <p>Clear priorities and ownership allow us to build things that truly matter.</p>
+                            </article>
+                        </div>
+                    </Section>
 
-        <BreakLine />
+                    {/* 4. What We’re Building */}
+                    <Section id="what-we-build" title="What We’re Building">
+                        <p>At NexUP, you may work on:</p>
+                        <ul>
+                            <li>AI-assisted world creation tools</li>
+                            <li>Virtual environments and spatial UX</li>
+                            <li>Backend systems (NexNodes) powering persistent worlds</li>
+                            <li>Search and discovery for virtual ecosystems</li>
+                            <li>Infrastructure for large-scale immersive platforms</li>
+                            <li>Ethical AI systems integrated into creative workflows</li>
+                        </ul>
+                        <p className="priority-note">This is early-stage, foundational work with long-term impact.</p>
+                    </Section>
 
-        {/* ================= OPEN ROLES (JOB TICKETS) ================= */}
-        <section className="career-section">
-          <div className="career-section-inner">
-            <h2 className="gradient-title section-title centered-title">Open Positions</h2>
+                    {/* 5. Teams & Roles (Direct link to Contact Page) */}
+                    <Section id="teams-roles" title="Teams & Roles">
+                        <div className="roles-container">
+                            
+                            <div className="role-card">
+                                <h4>Engineering</h4>
+                                <ul>
+                                    <li>Frontend (Web, VR interfaces)</li>
+                                    <li>Backend & Infrastructure</li>
+                                    <li>Real-time systems</li>
+                                    <li>AI & ML integration</li>
+                                </ul>
+                                <ApplyButton text="Apply for Engineering Roles" role="Engineering" />
+                            </div>
+
+                            <div className="role-card">
+                                <h4>Design & Experience</h4>
+                                <ul>
+                                    <li>UI / UX</li>
+                                    <li>Spatial & interaction design</li>
+                                    <li>World-building aesthetics</li>
+                                </ul>
+                                <ApplyButton text="Apply for Design Roles" role="Design" />
+                            </div>
+
+                            <div className="role-card">
+                                <h4>AI & Research</h4>
+                                <ul>
+                                    <li>Applied AI</li>
+                                    <li>Intelligent agents</li>
+                                    <li>Simulation & generative systems</li>
+                                </ul>
+                                <ApplyButton text="Apply for AI & Research Roles" role="AI & Research" />
+                            </div>
+
+                            <div className="role-card">
+                                <h4>Product & Strategy</h4>
+                                <ul>
+                                    <li>Product management</li>
+                                    <li>Platform thinking</li>
+                                    <li>Ecosystem design</li>
+                                </ul>
+                                <ApplyButton text="Apply for Product Roles" role="Product" />
+                            </div>
+                            
+                            <div className="role-card">
+                                <h4>Community & Operations</h4>
+                                <ul>
+                                    <li>Community building</li>
+                                    <li>Support systems</li>
+                                    <li>Trust & safety operations</li>
+                                </ul>
+                                <ApplyButton text="Apply for Community Roles" role="Community" />
+                            </div>
+                            
+                        </div>
+                    </Section>
+
+                    {/* 6. Benefits & Growth */}
+                    <Section id="benefits" title="Benefits & Growth">
+                        <p>While NexUP is evolving, we focus on:</p>
+                        <ul>
+                            <li>Meaningful, high-impact work</li>
+                            <li>Learning alongside cutting-edge technology</li>
+                            <li>Direct ownership and responsibility</li>
+                            <li>Transparent communication</li>
+                            <li>Growth through real contribution</li>
+                        </ul>
+                        <p className="priority-note">More formal benefits will evolve as the platform grows.</p>
+                    </Section>
+                    
+                    {/* 7. Who Should Join NexUP? */}
+                    <Section id="who-should-join" title="Who Should Join NexUP?">
+                        <p>You may belong here if you:</p>
+                        <ul>
+                            <li>Care deeply about the future of technology</li>
+                            <li>Want to build AI and virtual worlds responsibly</li>
+                            <li>Prefer long-term impact over short-term hype</li>
+                            <li>Are comfortable working in evolving environments</li>
+                            <li>Take ownership of your work</li>
+                        </ul>
+                        <p className="statement">Titles matter less than mindset and integrity.</p>
+                    </Section>
+                    
+                    {/* 8. How to Apply */}
+                    <section className="policy-section final-section" id="how-to-apply">
+                        <h3>How to Apply</h3>
+                        <p>We keep the process simple and respectful. All applications are handled via our <Link to="/contact" className="inline-link">Contact Page</Link>.</p>
+                        <ol>
+                            <li>Choose a role or team (via the buttons above)</li>
+                            <li>Share your resume or portfolio</li>
+                            <li>Tell us briefly why you want to build NexUP with us</li>
+                        </ol>
+                        <p>**Resume upload is supported** on the Job Application form.</p>
+                        <p>Your data is handled securely.</p>
+                        
+                        <div className="final-message-box">
+                            <p>NexUP is still being built — and so is our team.</p>
+                            <p>If the idea of shaping AI-powered worlds excites you, and you want to build something meaningful from the ground up — We’d love to hear from you.</p>
+                        </div>
+                    </section>
+                    
+
+                </div>
+            </main>
             
-            <motion.div 
-              className="roles-list"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              {OPEN_ROLES.map((role, idx) => (
-                <motion.div 
-                  key={idx} 
-                  className="role-ticket glass-panel"
-                  variants={itemVariants}
-                  // ⭐ 4. Role Ticket Hover
-                  whileHover={{ x: 6, backgroundColor: "rgba(255,255,255,0.06)" }}
-                  // Apply will-change
-                  style={{ willChange: 'transform, background-color' }} 
-                >
-                  <div className="role-info">
-                    <h3>{role.title}</h3>
-                    <div className="role-meta">
-                      <span className="pill">{role.dept}</span>
-                      <span className="pill">{role.location}</span>
-                      <span className="pill">{role.type}</span>
-                    </div>
-                  </div>
-                  <div className="role-action">
-                    <span>Apply Now</span>
-                    {/* ⭐ 6. Hover Ripple/Arrow */}
-                    <span className="arrow">→</span>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+            {/* Footer Component with one-liner */}
+            <Footer>
+                Careers at NexUP — Build the future of AI-powered virtual worlds.
+            </Footer>
+            
+        </div>
+    );
+};
 
-        <BreakLine />
-
-        {/* ================= LIFE AT NEX UP ================= */}
-        <CareerSection title="Life at NeX UP">
-          <motion.div 
-            className="life-grid"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            {CULTURE_IMGS.map((img) => (
-              <div key={img.id} className="life-card">
-                 <div className="life-placeholder">{img.label}</div>
-              </div>
-            ))}
-          </motion.div>
-        </CareerSection>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="career-final-section">
-          <motion.div
-            className="career-final"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="gradient-title final-big">
-              Don't see your role?
-            </h2>
-            <p className="final-text">
-              We are always looking for exceptional talent. Send us your portfolio 
-              and tell us how you can help build the future.
-            </p>
-            <button className="white-btn" onClick={() => navigate("/contact")}>
-              Get in Touch →
-            </button>
-          </motion.div>
-        </section>
-
-      </div>
-      <Footer />
-    </div>
-  );
-}
-
-/* ================= COMPONENTS ================= */
-
-function CareerSection({ title, children }) {
-  return (
-    <section className="career-section">
-      <motion.div
-        className="career-section-inner"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-50px" }}
-        // 12. Use will-change for highly animated elements
-        style={{ willChange: 'transform, opacity' }} 
-      >
-        <h2 className="gradient-title section-title">{title}</h2>
-        {children}
-      </motion.div>
-    </section>
-  );
-}
-
-function BreakLine() {
-  return <div className="break-line" />;
-}
+export default Career;

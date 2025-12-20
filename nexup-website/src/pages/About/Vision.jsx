@@ -1,470 +1,279 @@
 // src/pages/About/Vision.jsx
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import {
-    FiGlobe, FiCpu, FiTool, FiZap, FiCode, FiMap,
-    FiArrowRight, FiHardDrive, FiSearch, FiLayers,
-    FiBriefcase, FiBookOpen, FiUsers, FiShoppingCart, FiLifeBuoy, FiSlack
-} from "react-icons/fi";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../../page-styles/About/Vision.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- DATA --- */
-const CORE_CONCEPTS_DATA = [
-    {
-        icon: <FiLayers />,
-        title: "NexNodes — The Building Blocks",
-        text: "The self-contained spatial environments (rooms, buildings, worlds) that are independently owned, controlled, and form the infrastructure of NexWorld.",
-    },
-    {
-        icon: <FiHardDrive />,
-        title: "NexHousing — Digital Real Estate",
-        text: "The digital real estate system that makes spatial worlds ownable, customizable, monetizable, and creates a real digital economy.",
-    },
-    {
-        icon: <FiSearch />,
-        title: "NexSearch — Browsing the World",
-        text: "The spatial navigation system where users discover places, locate NexNodes, and enter environments directly. Search results are destinations.",
-    },
-];
+// Helper for standard descriptive sections
+const Section = ({ title, children, className = '' }) => (
+    <section className={`vision-section ${className}`}>
+        <h3>{title}</h3>
+        {children}
+    </section>
+);
 
-const PILLARS_DATA = [
-    {
-        icon: <FiCode />,
-        title: "The NexNode Standard",
-        text: "A universal, open protocol for creating, connecting, and rendering persistent 3D digital environments.",
-    },
-    {
-        icon: <FiGlobe />,
-        title: "Ubiquitous Presence",
-        text: "Seamless movement between AR, VR, and traditional screens, ensuring the experience is always consistent and accessible.",
-    },
-    {
-        icon: <FiCpu />,
-        title: "Ambient AI Integration",
-        text: "AI models are built directly into the environment, acting as contextual assistants, guides, and intelligent world agents.",
-    },
-];
+// Helper for sections requiring a visual/media placeholder
+const MediaCard = ({ title, mediaPlaceholderText, description, listItems, cardColor, reverse = false }) => (
+    <section className={`media-card-section ${reverse ? 'reverse' : ''}`} style={{ '--card-color': cardColor }}>
+        <div className="card-media-placeholder">
+            <div className="media-box">{mediaPlaceholderText}</div>
+        </div>
+        <div className="card-content">
+            <h3>{title}</h3>
+            <p>{description}</p>
+            {listItems && (
+                <ul>
+                    {listItems.map((item, index) => (
+                        <li key={index}>{item}</li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    </section>
+);
 
-const REALITIES_DATA = [
-    {
-        icon: <FiBriefcase />,
-        title: "Workspaces",
-        text: "Immersive offices, collaboration rooms, and enterprise environments designed for presence, productivity, and global teams.",
-    },
-    {
-        icon: <FiBookOpen />,
-        title: "Education Rooms",
-        text: "Virtual classrooms, labs, and training centers powered by AI tutors and high-fidelity real-world simulations.",
-    },
-    {
-        icon: <FiUsers />,
-        title: "Social Worlds",
-        text: "Events, communities, creator spaces, and shared experiences that feel alive, deeply connected, and free from platform friction.",
-    },
-    {
-        icon: <FiShoppingCart />,
-        title: "Digital Commerce",
-        text: "3D stores, services, and marketplaces where digital and physical value intersect with full spatial awareness.",
-    },
-    {
-        icon: <FiLifeBuoy />,
-        title: "Training & Simulation",
-        text: "High-fidelity environments for professional training, safety drills, and skill development in risk-free, adaptive settings.",
-    },
-    {
-        icon: <FiSlack />,
-        title: "AI-Powered Worlds",
-        text: "Intelligent environments that adapt and change based on user context, featuring dynamic AI characters and entities.",
-    },
-];
-
-const TIMELINE_DATA = [
-    {
-        year: "PHASE I: 2025 – 2026",
-        title: "The Foundation",
-        desc: "Launch of the NexNode Core Framework, establishing core spatial connectivity, and initial developer SDK.",
-    },
-    {
-        year: "PHASE II: 2026 – 2028",
-        title: "Ecosystem Expansion",
-        desc: "Beta launch of NexWorld, introduction of the NexHousing System, and large-scale integration of ambient AI agents.",
-    },
-    {
-        year: "PHASE III: 2028+",
-        title: "The Ubiquitous Layer",
-        desc: "Global availability, cross-platform interoperability, and NexUP becoming the default spatial layer of the internet.",
-    },
-];
-
-/* --- VARIANTS --- */
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.2, delayChildren: 0.1 },
-    },
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-/* ================= COMPONENT WRAPPERS ================= */
-
-function VisionSection({ label, title, children }) {
-    return (
-        <section className="vision-section column-layout">
-            <SectionIntroLabel label={label} />
-            <motion.h2
-                className="gradient-title section-title center-text"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-            >
-                {title}
-            </motion.h2>
-            {children}
-        </section>
-    );
-}
-
-function SectionIntroLabel({ label }) {
-    return (
-        <motion.div
-            className="section-intro-label"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            viewport={{ once: true }}
-        >
-            {label}
-        </motion.div>
-    );
-}
-
-function BreakLine() {
-    return <div className="break-line" />;
-}
-
-/* ================= MAIN COMPONENT ================= */
-
-export default function Vision() {
-    const navigate = useNavigate();
+const Vision = () => {
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="vision-page">
-            <div className="vision-wrapper">
-                {/* ================= HERO ================= */}
-                <section className="vision-hero-section">
-                    <div className="vision-glow" />
+            <main className="vision-main-content">
+                <div className="vision-document">
+                    
+                    <header className="document-header">
+                        <h1>Our Vision</h1>
+                        <h2 className="subtitle">Reimagining How Digital Worlds Exist</h2>
+                    </header>
+                    
+                    <p className="introduction">
+                        NexUP is building toward a future where digital spaces are no longer fragmented apps, temporary sessions, or isolated tools.
+                    </p>
+                    <p className="statement-header">
+                        We envision a **persistent, intelligent, and interconnected digital universe**—one that feels continuous, purposeful, and human-centered. This vision spans AI, immersive environments, infrastructure, discovery, and ownership—working together as a single system.
+                    </p>
 
-                    <motion.div
-                        className="vision-hero-content"
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: "easeOut" }}
-                    >
-                        <h1 className="gradient-title big-hero-title">
-                            Building the Operating System for Spatial Reality.
-                        </h1>
-                        <p className="hero-subtitle">
-                            The future of the internet is not flat screens — it is immersive,
-                            intelligent, and human-centered.
-                        </p>
-                    </motion.div>
-                </section>
+                    
+                    {/* The Core Vision of NexUP */}
+                    <Section title="The Core Vision of NexUP">
+                        <p>At its heart, NexUP exists to answer one question: What should the next generation of digital worlds feel like?</p>
+                        <p>Our answer is simple but ambitious:</p>
+                        <ul>
+                            <li>Worlds that persist, not reset</li>
+                            <li>Systems that assist, not overwhelm</li>
+                            <li>Infrastructure that is invisible but reliable</li>
+                            <li>Spaces designed for learning, creation, and meaningful interaction</li>
+                            <li>Technology that respects people, privacy, and time</li>
+                        </ul>
+                        <p className="priority-note">NexUP is not building a product. It is building a digital foundation.</p>
+                    </Section>
 
-                <BreakLine />
+                    {/* NexUP as a Unified Platform */}
+                    <Section title="NexUP as a Unified Platform">
+                        <p>NexUP is designed as one ecosystem, not multiple disconnected services.</p>
+                        <p>Every component—worlds, engines, infrastructure, housing, and search—exists to support a single, continuous experience.</p>
+                        <p className="statement">You do not “switch apps.” You move through a world.</p>
+                    </Section>
 
-                {/* ================= CONCEPT: OUR CORE VISION (MISSION) ================= */}
-                <VisionSection label="Our Mission" title="The Core Mandate">
-                    <motion.div
-                        className="concept-block"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                    >
-                        <h2 className="gradient-title section-title">What NexUP Is</h2>
-                        <div className="concept-text-group">
-                            <motion.p
-                                initial={{ opacity: 0, y: 12 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2, duration: 0.6 }}
-                                viewport={{ once: true }}
-                            >
-                                NexUP is not just an app or a single platform. It is a single,
-                                interconnected world — a persistent digital reality where people
-                                work, learn, socialize, build, trade, and simulate using AR, VR,
-                                and AI.
-                            </motion.p>
-                            <motion.p
-                                className="highlight-text"
-                                initial={{ opacity: 0, y: 12 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4, duration: 0.6 }}
-                                viewport={{ once: true }}
-                            >
-                                To become the operating system for the next generation of digital
-                                reality. Just as iOS and Windows defined their eras, NexUP defines
-                                **spatial computing**.
-                            </motion.p>
+                    {/* --- Media Card Sections Start --- */}
+
+                    {/* NexWorld: The Living Digital World */}
+                    <MediaCard
+                        title="NexWorld: The Living Digital World"
+                        mediaPlaceholderText="Video: NexWorld - Persistent Spatial Environment"
+                        description="NexWorld is the shared digital universe of NexUP. Unlike traditional virtual experiences that start and end with sessions, NexWorld is designed to be:"
+                        listItems={[
+                            "Persistent (it continues even when you leave)",
+                            "Shared (others exist and build alongside you)",
+                            "Evolving (it grows as people contribute)"
+                        ]}
+                        cardColor="#3498db" // Blue
+                    />
+                    <Section title="What Happens in NexWorld" className="sub-section">
+                        <p>Inside NexWorld, people can:</p>
+                        <ul>
+                            <li>Learn and teach</li>
+                            <li>Build and explore</li>
+                            <li>Work and collaborate</li>
+                            <li>Attend events and experiences</li>
+                            <li>Create spaces with purpose</li>
+                        </ul>
+                        <p className="priority-note">NexWorld is not a game. It is a digital place. NexWorld is designed to support real value, not just entertainment.</p>
+                    </Section>
+
+                    {/* NexHousing: Digital Spaces You Belong To */}
+                    <MediaCard
+                        title="NexHousing: Digital Spaces You Belong To"
+                        mediaPlaceholderText="Image: NexHousing - Personal Digital Presence"
+                        description="NexHousing represents the idea of persistent digital spaces. Instead of temporary chat rooms or sessions, NexHousing introduces:"
+                        listItems={[
+                            "Personal digital spaces",
+                            "Team environments",
+                            "Learning hubs",
+                            "Creative studios",
+                            "Community areas"
+                        ]}
+                        cardColor="#2ecc71" // Green
+                        reverse={true}
+                    />
+                    <Section title="Why NexHousing Matters" className="sub-section">
+                        <p>Digital presence should not disappear when you log out.</p>
+                        <p>NexHousing allows:</p>
+                        <ul>
+                            <li>Identity continuity</li>
+                            <li>Long-term projects</li>
+                            <li>Spatial memory</li>
+                            <li>A sense of belonging in digital environments</li>
+                        </ul>
+                        <p className="priority-note">It transforms digital interaction from visits into presence.</p>
+                    </Section>
+
+                    {/* NexNodes: The Invisible Infrastructure */}
+                    <MediaCard
+                        title="NexNodes: The Invisible Infrastructure"
+                        mediaPlaceholderText="Diagram: NexNodes - Backend Infrastructure Flow"
+                        description="NexNodes are the backend infrastructure that powers the NexUP ecosystem. They are responsible for:"
+                        listItems={[
+                            "Connectivity between worlds",
+                            "Data synchronization",
+                            "Persistence and stability",
+                            "Performance at scale",
+                            "Security and trust enforcement"
+                        ]}
+                        cardColor="#e74c3c" // Red
+                    />
+                    <Section title="Why Infrastructure Is Central to the Vision" className="sub-section">
+                        <p>A world is only as strong as what supports it.</p>
+                        <p>NexNodes are designed to:</p>
+                        <ul>
+                            <li>Scale responsibly</li>
+                            <li>Remain reliable over time</li>
+                            <li>Protect user data</li>
+                            <li>Enable real-time interactions</li>
+                            <li>Support future expansion without breaking the system</li>
+                        </ul>
+                        <p className="priority-note">Users may never see NexNodes—but everything depends on them. Infrastructure is treated as a first-class product, not an afterthought.</p>
+                    </Section>
+
+                    {/* NexEngine: Building Worlds with Intelligence */}
+                    <MediaCard
+                        title="NexEngine: Building Worlds with Intelligence"
+                        mediaPlaceholderText="Video: NexEngine - AI-Assisted Creation Tools"
+                        description="NexEngine is the creation layer of NexUP. It allows people to:"
+                        listItems={[
+                            "Build worlds and spaces",
+                            "Design environments",
+                            "Add logic, interaction, and behavior",
+                            "Use AI assistance to reduce complexity"
+                        ]}
+                        cardColor="#f39c12" // Orange
+                        reverse={true}
+                    />
+                    <Section title="The Role of AI in NexEngine" className="sub-section">
+                        <p>AI in NexEngine is designed to:</p>
+                        <ul>
+                            <li>Assist creativity</li>
+                            <li>Automate repetitive tasks</li>
+                            <li>Help users learn by building</li>
+                            <li>Adapt to user intent</li>
+                        </ul>
+                        <p className="priority-note">NexEngine lowers the barrier between imagination and creation. AI does not replace creators. It amplifies them.</p>
+                    </Section>
+                    
+                    {/* NexSearch: Discovery Inside a Universe */}
+                    <MediaCard
+                        title="NexSearch: Discovery Inside a Universe"
+                        mediaPlaceholderText="Image: NexSearch - Spatial Discovery Interface"
+                        description="NexSearch is not a traditional search engine. It is designed to help users:"
+                        listItems={[
+                            "Discover worlds",
+                            "Find spaces and experiences",
+                            "Navigate knowledge and environments",
+                            "Explore communities and creations"
+                        ]}
+                        cardColor="#9b59b6" // Purple
+                    />
+                    <Section title="Why NexSearch Is Essential" className="sub-section">
+                        <p>Without discovery:</p>
+                        <ul>
+                            <li>Worlds become isolated</li>
+                            <li>Knowledge becomes hidden</li>
+                            <li>Communities fragment</li>
+                        </ul>
+                        <p className="priority-note">NexSearch ensures that the ecosystem remains connected, explorable, and alive. In a large digital universe, discovery becomes as important as creation.</p>
+                    </Section>
+                    
+                    {/* --- Media Card Sections End --- */}
+
+                    {/* One Vision, Many Systems — Working Together */}
+                    <Section title="One Vision, Many Systems — Working Together">
+                        <p>Each part of NexUP serves a distinct role:</p>
+                        <ul>
+                            <li>NexWorld gives life and space</li>
+                            <li>NexHousing gives belonging</li>
+                            <li>NexNodes give stability</li>
+                            <li>NexEngine gives creation</li>
+                            <li>NexSearch gives discovery</li>
+                        </ul>
+                        <p className="statement">Together, they form a single coherent digital reality.</p>
+                    </Section>
+                    
+                    {/* Human-Centered by Design */}
+                    <Section title="Human-Centered by Design">
+                        <p>Technology should never overpower the people who use it.</p>
+                        <p>NexUP’s vision prioritizes:</p>
+                        <ul>
+                            <li>User autonomy</li>
+                            <li>Privacy and data respect</li>
+                            <li>Ethical AI usage</li>
+                            <li>Mental and social well-being</li>
+                            <li>Transparency and trust</li>
+                        </ul>
+                        <p className="priority-note">The platform is designed to grow with people, not over them.</p>
+                    </Section>
+
+                    {/* A Long-Term Vision */}
+                    <Section title="A Long-Term Vision">
+                        <p>NexUP is not chasing trends.</p>
+                        <p>This vision is built for:</p>
+                        <ul>
+                            <li>Years, not months</li>
+                            <li>Evolution, not disruption for its own sake</li>
+                            <li>Responsibility, not reckless scale</li>
+                        </ul>
+                        <p className="statement">We believe the future of digital worlds must be intentional.</p>
+                    </Section>
+
+                    {/* Looking Forward (Final Statement) */}
+                    <section className="vision-section final-section">
+                        <h3>Looking Forward</h3>
+                        <p>The digital future will not be flat.</p>
+                        <p>It will be spatial, intelligent, and deeply interconnected.</p>
+                        <p>NexUP exists to ensure that this future is:</p>
+                        <ul>
+                            <li>Open</li>
+                            <li>Meaningful</li>
+                            <li>Safe</li>
+                            <li>Creative</li>
+                            <li>Human-first</li>
+                        </ul>
+                        <div className="final-message-box">
+                            <p>This is not just a platform. It is the beginning of a new digital way of living, learning, and building.</p>
                         </div>
-                    </motion.div>
-                </VisionSection>
-                
+                    </section>
 
-                <BreakLine />
-
-                {/* ================= THE SHIFT WE BELIEVE IN ================= */}
-                <section className="vision-section column-layout text-only-section">
-                    <SectionIntroLabel label="The Paradigm Shift" />
-                    <motion.h2
-                        className="section-title center-text"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                    >
-                        The Shift We Believe In
-                    </motion.h2>
-                    <motion.div
-                        className="shift-content"
-                        initial="hidden"
-                        whileInView="visible"
-                        variants={containerVariants}
-                        viewport={{ once: true, amount: 0.2 }}
-                    >
-                        <motion.p variants={itemVariants} className="shift-text old-way">The internet today is flat. Apps live in boxes. Information is stacked, clicked, and scrolled.</motion.p>
-                        <motion.p variants={itemVariants} className="shift-text new-way">But humans don’t think in tabs — we think in space.</motion.p>
-                        <motion.blockquote variants={itemVariants} className="shift-quote glass-panel">
-                            NexUP is rebuilding the internet as a 3D, spatial, intelligent environment where interaction feels natural, immersive, and continuous.
-                        </motion.blockquote>
-                    </motion.div>
-                </section>
-
-                <BreakLine />
-
-                {/* ================= NEXWORLD - WHAT IT IS & HOW IT FEELS ================= */}
-                <section className="vision-section column-layout">
-                    <SectionIntroLabel label="The Core World" />
-                    <motion.h2 className="gradient-title section-title center-text">
-                        NexWorld — What It Is & How It Feels
-                    </motion.h2>
-
-                    <motion.div
-                        className="two-col-content-alt"
-                        initial="hidden"
-                        whileInView="visible"
-                        variants={containerVariants}
-                        viewport={{ once: true, amount: 0.2 }}
-                    >
-                        <motion.div className="two-col-item glass-panel" variants={itemVariants}>
-                            <h3 className="sub-title">What Changes</h3>
-                            <ul className="world-list">
-                                <li>Apps are no longer icons — they are places</li>
-                                <li>Data is no longer hidden — it is visible and interactive</li>
-                                <li>Navigation is no longer scrolling — it is movement</li>
-                            </ul>
-                            <p className="note-text">Inside NexWorld, users don’t “open apps”. They enter environments.</p>
-                        </motion.div>
-
-                        <motion.div className="two-col-item glass-panel" variants={itemVariants}>
-                            <h3 className="sub-title">How NexWorld Feels</h3>
-                            <ul className="world-list-bullet">
-                                <li>Apps float around you as interactive spatial panels</li>
-                                <li>Buildings represent platforms, companies, or services</li>
-                                <li>Offices, classrooms, stores, and labs exist as real locations</li>
-                                <li>AI entities guide, assist, and collaborate with you</li>
-                                <li>You move seamlessly between work, learning, and social spaces</li>
-                            </ul>
-                            <p className="note-text">This is not a simulation. It is a functional digital reality.</p>
-                        </motion.div>
-                    </motion.div>
-                </section>
-
-                <BreakLine />
-
-                {/* ================= BUILDING BLOCKS (CORE CONCEPTS) ================= */}
-                <section className="vision-section column-layout">
-                    <SectionIntroLabel label="The Infrastructure" />
-                    <motion.h2
-                        className="gradient-title section-title center-text"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                    >
-                        The Core Concepts
-                    </motion.h2>
-
-                    <motion.div
-                        className="pillars-grid"
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.2 }}
-                    >
-                        {CORE_CONCEPTS_DATA.map((item, index) => (
-                            <motion.div
-                                key={index}
-                                className="pillar-card glass-panel"
-                                variants={itemVariants}
-                            >
-                                <div className="pillar-icon-wrapper">{item.icon}</div>
-                                <h3>{item.title}</h3>
-                                <p>{item.text}</p>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </section>
-                
-
-                <BreakLine />
-
-                {/* ================= ONE WORLD. MANY REALITIES. (Grid Layout) ================= */}
-                <section className="vision-section column-layout">
-                    <SectionIntroLabel label="The Ecosystem" />
-                    <motion.h2
-                        className="gradient-title section-title center-text"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                    >
-                        One World. Many Realities.
-                    </motion.h2>
-
-                    <motion.div
-                        className="why-grid"
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.2 }}
-                    >
-                        {REALITIES_DATA.map((item, index) => (
-                            <motion.div
-                                key={index}
-                                className="why-item"
-                                variants={itemVariants}
-                            >
-                                <div className="reality-icon">{item.icon}</div>
-                                <h3>{item.title}</h3>
-                                <p>{item.text}</p>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </section>
-
-                <BreakLine />
-
-                {/* ================= ARCHITECTURAL PILLARS ================= */}
-                <VisionSection label="The Blueprint" title="Architectural Pillars">
-                    <motion.div
-                        className="pillars-grid"
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.2 }}
-                    >
-                        {PILLARS_DATA.map((pillar, index) => (
-                            <motion.div
-                                key={index}
-                                className="pillar-card glass-panel"
-                                variants={itemVariants}
-                            >
-                                <div className="pillar-icon-wrapper">{pillar.icon}</div>
-                                <h3>{pillar.title}</h3>
-                                <p>{pillar.text}</p>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </VisionSection>
-
-                <BreakLine />
-
-                {/* ================= VISUAL TIMELINE ================= */}
-                <section className="vision-section column-layout">
-                    <SectionIntroLabel label="Roadmap" />
-                    <motion.h2
-                        className="gradient-title section-title center-text"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                    >
-                        The Path to Ubiquity
-                    </motion.h2>
-
-                    <div className="timeline-container">
-                        <div className="timeline-line"></div>
-                        {TIMELINE_DATA.map((item, index) => (
-                            <motion.div
-                                key={index}
-                                className="timeline-item"
-                                initial={{ opacity: 0, x: -20, scale: 0.98 }}
-                                whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                                viewport={{ once: true, margin: "-50px" }}
-                                transition={{ delay: index * 0.2, duration: 0.6 }}
-                            >
-                                <div className="timeline-dot"></div>
-                                <div className="timeline-content glass-panel">
-                                    <span className="timeline-year">{item.year}</span>
-                                    <h4 className="timeline-title">{item.title}</h4>
-                                    <p className="timeline-desc">{item.desc}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
-                
-
-                <BreakLine />
-
-                {/* ================= FINAL CTA / VISION SUMMARY ================= */}
-                <section className="vision-final-section">
-                    <div className="final-glow-top" />
-
-                    <motion.div
-                        className="final-content"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                    >
-                        <h2 className="gradient-title final-big">
-                            This is just the beginning.
-                        </h2>
-                        <p className="final-text">
-                            Join us in shaping the future where humans and AI coexist inside
-                            shared, intelligent worlds.
-                        </p>
-
-                        <div className="final-vision-summary glass-panel">
-                            <p>
-                                What websites were to Web 1.0. <br />
-                                What apps were to mobile. <br />
-                                **NexWorld is to the spatial era.**
-                            </p>
-                        </div>
-
-                        <motion.button
-                            className="white-btn"
-                            onClick={() => navigate("/ecosystem")}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.98 }}
-                        >
-                            Explore the Ecosystem <FiArrowRight style={{ marginLeft: '10px' }} />
-                        </motion.button>
-                    </motion.div>
-                </section>
-            </div>
-
-            <Footer />
+                </div>
+            </main>
+            
+            <Footer>
+                Our Vision — Building intelligent, persistent digital worlds through NexUP.
+            </Footer>
+            
         </div>
     );
-}
+};
+
+export default Vision;

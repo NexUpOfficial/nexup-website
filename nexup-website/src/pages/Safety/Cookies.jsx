@@ -1,211 +1,76 @@
-// src/pages/Safety/Cookies.jsx
+// src/components/Modals/PolicyAcceptanceModal.jsx
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import "../../page-styles/Safety/Cookies.css";
 
-/* --- VARIANTS --- */
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
-};
+const PolicyAcceptanceModal = () => {
+    // State to control visibility. In a real app, this would be tied to user login status
+    // and a backend flag indicating if they've accepted the current version of the policies.
+    const [isVisible, setIsVisible] = useState(true);
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-};
+    const handleAccept = () => {
+        // 1. Logic to record acceptance in user preferences/database.
+        // 2. Logic to set essential cookies (or all, depending on jurisdiction).
+        
+        console.log('User has accepted all NexUP policies (Terms, Privacy, Cookies).');
+        setIsVisible(false); // Hide the modal upon acceptance
+    };
 
-const Cookies = () => {
-  // State for the checkboxes/toggles
-  const [preferences, setPreferences] = useState({
-    essential: true, // Locked (Always true)
-    performance: true,
-    ai: false,
-    marketing: false,
-  });
-
-  const [isSaved, setIsSaved] = useState(false);
-
-  // Toggle handler with future-proof haptic hint
-  const toggleCookie = (type) => {
-    if (type === "essential") return;
-    // 10. Haptic hint logic placeholder (for future AR/VR port)
-    if (navigator.vibrate) navigator.vibrate(10); 
-    
-    setPreferences((prev) => ({ ...prev, [type]: !prev[type] }));
-  };
-
-  // Save handler
-  const handleSave = (acceptAll = false) => {
-    if (navigator.vibrate) navigator.vibrate([10, 30, 10]); // Success haptic
-
-    if (acceptAll) {
-      setPreferences({
-        essential: true,
-        performance: true,
-        ai: true,
-        marketing: true,
-      });
+    if (!isVisible) {
+        return null;
     }
-    
-    // Simulate API call to save to user's Nex-DNS
-    setTimeout(() => {
-      setIsSaved(true);
-    }, 500);
-  };
 
-  return (
-    <div className="cookies-page">
-      {/* 6. Page Fade In via CSS animation class */}
-      
-      <motion.div 
-        className="cookies-header"
-        initial="hidden"
-        animate="visible"
-        variants={fadeInUp}
-      >
-        <span className="doc-badge">PRIVACY PROTOCOL // V3.0</span>
-        <h1 className="cookies-title">Data & Cookies</h1>
-      </motion.div>
+    return (
+        <div className="modal-overlay">
+            <div className="policy-modal" role="dialog" aria-modal="true" aria-labelledby="policy-acceptance-title">
+                
+                <header className="modal-header">
+                    <h2 id="policy-acceptance-title">NexUP Policy Update & Agreement</h2>
+                </header>
 
-      <motion.div 
-        className="cookies-container"
-        variants={staggerContainer}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* --- POLICY CONTENT --- */}
-        <motion.div className="cookies-text-panel" variants={fadeInUp}>
-          <section>
-            <h2>1. What Are Cookies?</h2>
-            <p>
-              Cookies are small data nodes stored on your device. NexUP uses them to synchronize your 
-              <strong> Nex-DNS identity</strong>, reduce latency in AR rendering, and maintain the continuity of your digital assets.
-            </p>
-          </section>
+                <div className="modal-body">
+                    <p className="summary-intro">
+                        To continue using the NexUP platform and our services (including AI features and immersive environments), you must read and agree to our updated foundational documents.
+                    </p>
+                    
+                    <div className="policy-list">
+                        <div className="policy-item">
+                            <h4>Terms of Service (ToS)</h4>
+                            <p>Govern your access and use of our platform, defining user rights, responsibilities, and legal conditions.</p>
+                            <Link to="/legal/terms" target="_blank" className="policy-link">Review Terms</Link>
+                        </div>
 
-          <section>
-            <h2>2. Why We Use Them</h2>
-            <p>We categorize data usage into four spatial layers:</p>
-            <ul>
-              <li><strong>Core System:</strong> Security and login.</li>
-              <li><strong>Spatial Optimization:</strong> LiDAR mapping caches and world loading.</li>
-              <li><strong>Neural Personalization:</strong> AI behavior adaptation.</li>
-              <li><strong>External Uplinks:</strong> Partner integrations.</li>
-            </ul>
-          </section>
+                        <div className="policy-item">
+                            <h4>Privacy & Data Protection Guide</h4>
+                            <p>Explains what data we collect, why, how it's protected, and outlines your rights over your personal data.</p>
+                            <Link to="/policies/privacy" target="_blank" className="policy-link">Review Privacy Guide</Link>
+                        </div>
 
-          <section>
-            <h2>3. Managing Your Data</h2>
-            <p>
-              You maintain sovereignty over your data. Use the control panel below to configure 
-              which data nodes NeXUP is allowed to access.
-            </p>
-          </section>
-        </motion.div>
+                        <div className="policy-item">
+                            <h4>Cookie Policy</h4>
+                            <p>Details our minimal and privacy-first use of cookies for functionality and non-intrusive performance analytics.</p>
+                            <Link to="/policies/cookies" target="_blank" className="policy-link">Review Cookie Policy</Link>
+                        </div>
+                    </div>
 
-        {/* --- INTERACTIVE CONTROL PANEL --- */}
-        <motion.div className="cookies-control-panel" variants={fadeInUp}>
-          {/* 1. Glow Added via CSS pseudo-element */}
-          
-          <h3>Consent Configuration</h3>
-          <p className="panel-desc">Customize your data stream preferences.</p>
+                    <p className="final-prompt">
+                        By clicking **"Accept and Continue"**, you confirm that you have read, understand, and agree to be bound by all NexUP policies listed above.
+                    </p>
+                </div>
 
-          <div className="toggles-wrapper">
-            
-            {/* TOGGLE 1: ESSENTIAL (LOCKED) */}
-            <div className="cookie-toggle-row locked">
-              <div className="toggle-info">
-                <h4>System Core (Essential)</h4>
-                <p>Required for Nex-DNS login and security. Cannot be disabled.</p>
-              </div>
-              <div className="toggle-switch active disabled">
-                 {/* Knob added for consistency */}
-                 <div className="toggle-knob" style={{ transform: "translateX(22px)" }} />
-              </div>
+                <div className="modal-footer">
+                    <button 
+                        className="btn-accept" 
+                        onClick={handleAccept}
+                    >
+                        Accept and Continue
+                    </button>
+                </div>
+
             </div>
-
-            {/* TOGGLE 2: PERFORMANCE */}
-            <div 
-              className={`cookie-toggle-row ${preferences.performance ? "active" : ""}`}
-              onClick={() => toggleCookie("performance")}
-            >
-              <div className="toggle-info">
-                <h4>Spatial Optimization</h4>
-                <p>Reduces AR latency, caches 3D assets, and speeds up world loading.</p>
-              </div>
-              <div className={`toggle-switch ${preferences.performance ? "active" : ""}`}>
-                <div className="toggle-knob" />
-              </div>
-            </div>
-
-            {/* TOGGLE 3: AI PERSONALIZATION */}
-            <div 
-              className={`cookie-toggle-row ${preferences.ai ? "active" : ""}`}
-              onClick={() => toggleCookie("ai")}
-            >
-              <div className="toggle-info">
-                <h4>Neural AI Personalization</h4>
-                <p>Allows NPCs and the world to "remember" your interactions and preferences.</p>
-              </div>
-              <div className={`toggle-switch ${preferences.ai ? "active" : ""}`}>
-                <div className="toggle-knob" />
-              </div>
-            </div>
-
-            {/* TOGGLE 4: MARKETING */}
-            <div 
-              className={`cookie-toggle-row ${preferences.marketing ? "active" : ""}`}
-              onClick={() => toggleCookie("marketing")}
-            >
-              <div className="toggle-info">
-                <h4>External Uplinks</h4>
-                <p>Allows third-party partners to display relevant assets or offers.</p>
-              </div>
-              <div className={`toggle-switch ${preferences.marketing ? "active" : ""}`}>
-                <div className="toggle-knob" />
-              </div>
-            </div>
-
-          </div>
-
-          {/* --- ACTION BUTTONS --- */}
-          <AnimatePresence mode="wait">
-            {!isSaved ? (
-              <motion.div 
-                key="actions"
-                className="action-buttons"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-              >
-                <button className="btn-secondary" onClick={() => handleSave(false)}>
-                  Save Preferences
-                </button>
-                <button className="btn-primary" onClick={() => handleSave(true)}>
-                  Accept All & Initialize
-                </button>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="success"
-                className="success-message"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-              >
-                <span className="success-icon">✓</span>
-                <span>Preferences Encrypted & Saved to NexNode.</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-        </motion.div>
-      </motion.div>
-    </div>
-  );
+        </div>
+    );
 };
 
-export default Cookies;
+export default PolicyAcceptanceModal;

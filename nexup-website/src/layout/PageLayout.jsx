@@ -9,54 +9,66 @@ export default function PageLayout({ isOpen, children }) {
   const location = useLocation();
   const pageRef = useRef(null);
 
-  // Matches the new Header height + spacing
+  // Match Header height
   const HEADER_OFFSET = 80;
 
   /* ====================================================
-     SCROLL TO TOP LOGIC
+     SCROLL TO TOP BUTTON VISIBILITY
   ==================================================== */
   useEffect(() => {
     const handleScroll = () => {
-      // Show button after scrolling 500px
       setShowTop(window.scrollY > 500);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   /* ====================================================
-     ROUTE CHANGE: RESET SCROLL
+     ROUTE CHANGE → RESET SCROLL
   ==================================================== */
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, [location.pathname]);
 
   /* ====================================================
-     MOBILE SCROLL LOCK
+     MOBILE SCROLL LOCK (SIDEBAR OPEN)
+     - Desktop: allow scroll
+     - Mobile: lock background scroll
   ==================================================== */
   useEffect(() => {
-    // Prevent background scrolling on mobile when sidebar is open
-    if (window.innerWidth <= 768 && isOpen) {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile && isOpen) {
       document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     }
-    return () => { document.body.style.overflow = "auto"; };
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
   }, [isOpen]);
 
+  /* ====================================================
+     SCROLL TO TOP ACTION
+  ==================================================== */
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <>
-      {/* GLOBAL BACKGROUNDS */}
+      {/* GLOBAL VISUAL LAYERS */}
       <div className="global-noise" />
       <div className="global-vignette" />
 
-      {/* MAIN CONTENT FRAME */}
-      <main 
+      {/* MAIN PAGE FRAME */}
+      <main
+        ref={pageRef}
         className={`page-frame ${isOpen ? "sidebar-open" : ""}`}
         style={{ marginTop: HEADER_OFFSET }}
       >
@@ -65,8 +77,8 @@ export default function PageLayout({ isOpen, children }) {
         </div>
       </main>
 
-      {/* SCROLL TO TOP FAB */}
-      <button 
+      {/* SCROLL TO TOP BUTTON */}
+      <button
         className={`scroll-fab ${showTop ? "visible" : ""}`}
         onClick={scrollToTop}
         aria-label="Scroll to top"

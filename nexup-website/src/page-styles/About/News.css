@@ -1,665 +1,345 @@
-/* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal)
-=========================================================== */
+/* src/page-styles/About/News.css */
+
+/* --- Color Palette (Modern Grayscale) --- */
+:root {
+    --color-page-bg: #ffffff;
+    --color-text-primary: #111111; /* Near Black */
+    --color-text-secondary: #555555; /* Medium Gray */
+    --color-border: #dddddd; /* Very light gray borders */
+    --color-statement-bg: #f8f8f8; /* Soft background for blocks */
+    --color-link: #000000;
+    --color-link-hover: #000000; /* Dark hover */
+    --color-link-underline: #888888; /* Subtle underline color */
+    
+    --color-accent: #111111; /* Primary accent is bold black text */
+    --color-alert: #d32f2f; /* Standard alert red */
+
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --sidebar-width: 280px; 
+    --header-height: 60px; 
+
+    /* Tag Colors (Softened Grayscale) */
+    --tag-platformupdate: #333333;
+    --tag-ecosystem: #555555;
+    --tag-tech-update: #777777; 
+    --tag-policy-update: #999999;
+    --tag-company-event: #aaaaaa;
+}
+
 .news-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  min-height: 100vh;
-  /* Scrollbar Hide */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
+    font-weight: 400; /* Standard weight */
 }
 
-.news-page::-webkit-scrollbar {
-  display: none;
+/* --------------------------------------------------
+    MAIN LAYOUT & HEADER 
+-------------------------------------------------- */
+.news-main-content {
+    margin-left: var(--sidebar-width); 
+    max-width: 1200px;
+    margin-right: auto;
+    margin-top: calc(var(--header-height) + 50px); /* More vertical space */
+    padding: 0 4%; 
 }
 
-.news-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
-  color: #f0f0f0;
+.document-header {
+    text-align: left; /* LEFT ALIGNED */
+    border-bottom: 1px solid var(--color-border);
+    padding: 10px 0 25px;
+    margin-bottom: 40px; /* Generous breathing room */
 }
 
-/* ===========================================================
-   ANIMATION KEYFRAMES
-=========================================================== */
-/* 1. Kinetic Gradient */
-@keyframes glowShift {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
+.date-line {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    font-weight: 500;
 }
 
-/* 2. Floating Glow Parallax */
-@keyframes floatGlow {
-  from { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
-  to   { transform: translate(-48%, -45%) scale(1.1); opacity: 0.9; }
+.document-header h1 {
+    font-family: var(--font-family); 
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-text-primary);
+    margin: 0;
 }
 
-/* 9. Changelog Pulse */
-@keyframes pulseMarker {
-  0% { box-shadow: 0 0 0 0 rgba(184, 169, 255, 0.4); }
-  70% { box-shadow: 0 0 0 6px rgba(184, 169, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(184, 169, 255, 0); }
+.tagline {
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin-top: 15px;
 }
 
-/* ===========================================================
-   HERO & GLOW
-=========================================================== */
-.news-hero-section {
-  min-height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
+/* --------------------------------------------------
+    GRID CONTAINER (Main Content + Sidebar)
+-------------------------------------------------- */
+.news-grid-container {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    gap: 60px; /* Increased gap for breathing room */
+    margin-bottom: 40px;
 }
 
-/* 2. & 19. Hero Glow */
-.news-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 60%);
-  /* 19. Reduced Blur */
-  filter: blur(60px);
-  opacity: 0.85;
-  z-index: 0;
-  pointer-events: none;
-  animation: floatGlow 10s ease-in-out infinite alternate;
+/* --- Shared Link Styling --- */
+.read-more, .policy-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+}
+.read-more:hover, .policy-link:hover {
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid var(--color-link-underline);
 }
 
-.news-hero-content {
-  z-index: 1;
-  max-width: 800px;
+
+/* --------------------------------------------------
+    FEATURED POST (MAIN STORY)
+-------------------------------------------------- */
+.featured-post-card {
+    background-color: var(--color-page-bg);
+    border: none;
+    padding: 0;
+    margin-bottom: 40px;
 }
 
-.hero-badge {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #b8a9ff;
-  margin-bottom: 24px;
-}
-
-.news-hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-
-.news-hero-sub {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  opacity: 0.8;
-  max-width: 650px;
-  margin: 0 auto;
-}
-
-/* ===========================================================
-   FEATURED CARD (3. Visual Hierarchy)
-=========================================================== */
-.news-featured {
-  width: 100%;
-}
-
-.featured-card {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 40px;
-  align-items: center;
-  padding: 0;
-  overflow: hidden;
-  cursor: pointer;
-  /* 20. Performance */
-  will-change: transform;
-}
-
-/* 11. Mobile Stack Animation handled in Media Query */
-
-.featured-img {
-  width: 100%;
-  height: 100%;
-  min-height: 350px;
-  background: #1a1a1a;
-  border-right: 1px solid rgba(255,255,255,0.05);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #666;
-  position: relative;
-  overflow: hidden; /* For inner shadow */
-}
-
-/* 3. Inner Shadow & Gradient */
-.img-overlay-gradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-  z-index: 1;
-}
-
-.placeholder-text {
-  z-index: 2;
-  color: rgba(255,255,255,0.4);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.featured-content {
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-}
-
-.news-meta {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 16px;
-  font-size: 0.9rem;
-}
-
-.tag-highlight {
-  color: #b8a9ff;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.date {
-  color: rgba(255,255,255,0.4);
+.featured-image-placeholder {
+    width: 100%;
+    height: 380px;
+    background-color: var(--color-statement-bg); /* Soft gray background */
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin-bottom: 30px;
 }
 
 .featured-title {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  line-height: 1.2;
-  margin-bottom: 16px;
-  color: #fff;
-  transition: color 0.3s;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 10px 0 20px;
+}
+.featured-title a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+}
+.featured-title a:hover {
+    color: var(--color-text-secondary);
 }
 
-.featured-card:hover .featured-title {
-  color: #b8a9ff;
+.featured-summary {
+    font-size: 1.15rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-weight: 400;
 }
 
-.featured-desc {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 24px;
+.post-meta {
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
 }
 
-.read-link {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: 0.3s;
+/* --------------------------------------------------
+    TRENDING/RECENT STORIES
+-------------------------------------------------- */
+.trending-section .section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
 }
 
-.read-link:hover {
-  color: #b8a9ff;
-  gap: 12px; /* Arrow slide */
-}
-
-/* ===========================================================
-   CATEGORY PILLS
-=========================================================== */
-.category-bar {
-  display: flex;
-  justify-content: center;
-}
-
-/* 12. Scroll Mask */
-.category-scroll-mask {
-  width: 100%;
-  overflow-x: auto;
-  padding: 4px;
-  /* Mask gradient for fade edges */
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.category-scroll {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  min-width: max-content; /* Ensure scrollability */
-  padding: 0 20px;
-}
-
-.category-pill {
-  position: relative;
-  padding: 10px 24px;
-  border-radius: 30px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  overflow: hidden;
-}
-
-/* 4. Hover Elevation */
-.category-pill:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(255,255,255,0.1);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.category-pill.active {
-  background: #fff;
-  border-color: #fff;
-  color: #000;
-  font-weight: 600;
-  /* Reset hover transform for active state stability */
-  transform: none; 
-  box-shadow: none;
-}
-
-/* 7. Active Line Indicator */
-.active-line {
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
-  background: #000; /* Contrast against white pill */
-  border-radius: 2px;
-}
-
-/* ===========================================================
-   NEWS BENTO GRID
-=========================================================== */
-.news-bento-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  width: 100%;
-}
-
-.card-wide {
-  grid-column: span 2;
-}
-
-@media (max-width: 800px) {
-  .card-wide { grid-column: span 1; }
-}
-
-.news-card {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-between; */ /* Changed for better layout */
-  min-height: 240px;
-  position: relative;
-  cursor: pointer;
-  /* 5. Lift Shadow already in GlassCard hover, enhanced here */
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
-}
-
-/* 5. Enhanced Card Hover */
-.news-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-  border-color: rgba(184, 169, 255, 0.3);
-}
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  font-size: 0.85rem;
-  align-items: center;
-}
-
-/* 17. Brand Colors for Tags */
-.news-tag {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.tag-purple { color: #b8a9ff; }
-.tag-teal { color: #2dd4bf; }
-.tag-orange { color: #fb923c; }
-.tag-gold { color: #fbbf24; }
-.tag-blue { color: #60a5fa; }
-
-.news-date {
-  color: rgba(255,255,255,0.4);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.news-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: #fff;
-  line-height: 1.3;
-}
-
-.news-card p {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-/* 8. Mini Visual Placeholder */
-.card-mini-visual {
-  height: 60px;
-  width: 100%;
-  margin-top: auto;
-  background: linear-gradient(90deg, rgba(255,255,255,0.03), transparent);
-  border-radius: 8px;
-}
-
-.card-hover-arrow {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: 0.3s ease;
-  color: #b8a9ff;
-  font-size: 1.2rem;
-}
-
-.news-card:hover .card-hover-arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* ===========================================================
-   CHANGELOG
-=========================================================== */
-.changelog-container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  border-left: 2px solid rgba(255,255,255,0.1);
-  padding-left: 30px;
-}
-
-.changelog-item {
-  position: relative;
-}
-
-/* 9. Glowing Pulse Marker */
-.changelog-item::before {
-  content: "";
-  position: absolute;
-  left: -37px;
-  top: 6px;
-  width: 12px;
-  height: 12px;
-  background: #0b0b0c;
-  border: 2px solid #b8a9ff;
-  border-radius: 50%;
-  animation: pulseMarker 3s infinite ease;
-}
-
-.changelog-meta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.version-badge {
-  font-family: monospace;
-  background: rgba(184, 169, 255, 0.15);
-  color: #b8a9ff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
-.log-date {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.5);
-}
-
-.changelog-content h4 {
-  font-size: 1.1rem;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.changelog-content p {
-  color: rgba(255,255,255,0.7);
-  font-size: 1rem;
-}
-
-/* ===========================================================
-   PRESS GRID
-=========================================================== */
-.press-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
-}
-
-.press-card {
-  padding: 30px;
-  text-align: left;
-  position: relative;
-}
-
-/* 18. Micro Icon */
-.press-logo {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 16px;
-  opacity: 0.6;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* 10. Quote Mark */
-.quote-mark {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 4rem;
-  line-height: 1;
-  font-family: serif;
-  color: rgba(255,255,255,0.05);
-}
-
-.press-card p {
-  font-size: 1.1rem;
-  font-style: italic;
-  color: rgba(255,255,255,0.9);
-  line-height: 1.6;
-  position: relative; z-index: 1;
-}
-
-/* ===========================================================
-   FINAL CTA
-=========================================================== */
-.news-final-section {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-}
-
-.news-final {
-  max-width: 600px;
-}
-
-.final-big {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  margin-bottom: 16px;
-}
-
-.final-text {
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 30px;
-}
-
-.newsletter-form-simple {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.newsletter-form-simple input {
-  padding: 12px 20px;
-  border-radius: 30px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #fff;
-  width: 300px;
-  transition: 0.3s;
-}
-
-.newsletter-form-simple input:focus {
-  border-color: #b8a9ff;
-  box-shadow: 0 0 15px rgba(184,169,255,0.2);
-  outline: none;
-}
-
-.press-contact-link {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.5);
-}
-
-.press-contact-link span {
-  text-decoration: underline;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.press-contact-link span:hover {
-  color: #b8a9ff;
-}
-
-/* ===========================================================
-   UTILITIES
-=========================================================== */
-/* 1. Animated Gradient Title */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-  animation: glowShift 6s ease infinite alternate;
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  /* 19. Reduced Blur */
-  backdrop-filter: blur(12px); 
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.glass-panel:hover {
-  /* 5. Lift Effect defined on specific cards, but this is base behavior */
-  border-color: rgba(184, 169, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 12px 24px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.white-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255,255,255,0.3);
-}
-
-.news-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.news-section-inner {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.section-title {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  display: inline-block;
-}
-
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-/* ===========================================================
-   MEDIA QUERIES
-=========================================================== */
-@media (max-width: 768px) {
-  /* 13. Reduced Padding */
-  .news-wrapper { padding: 60px 20px; gap: 70px; }
-  
-  /* 11. Featured Stack Animation */
-  .featured-card { 
+.trending-grid {
+    display: grid;
     grid-template-columns: 1fr; 
-    animation: fadeUp 0.6s ease;
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+    gap: 30px; 
+}
 
-  .featured-img { height: 250px; min-height: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  .featured-content { padding: 24px; }
-  
-  .newsletter-form-simple { flex-direction: column; width: 100%; }
-  .newsletter-form-simple input { width: 100%; }
-  
-  .category-scroll { justify-content: flex-start; } /* Allow left align scroll */
+.standard-post-card {
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 25px;
+    transition: padding 0.2s, background-color 0.2s;
+}
+
+.standard-post-card:hover {
+    background-color: var(--color-statement-bg);
+    padding: 10px 15px 25px;
+    margin: -10px -15px 0;
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 4px;
+}
+
+.standard-post-card .post-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.standard-post-card .post-date {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    display: block;
+    margin-top: 8px;
+}
+
+.full-archive-link {
+    text-align: left;
+    padding-top: 30px;
+    border-top: 1px solid var(--color-border);
+    margin-top: 10px;
+}
+
+/* --------------------------------------------------
+    SIDEBAR COLUMN
+-------------------------------------------------- */
+.sidebar-column {
+    padding-top: 0;
+    padding-left: 0; 
+}
+
+.sidebar-block {
+    background-color: var(--color-statement-bg);
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px; 
+    border: 1px solid var(--color-border);
+}
+
+.sidebar-block h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 10px;
+}
+
+.sidebar-block p {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+/* Policy Alert Specific Styling (High Contrast) */
+.policy-alert-block {
+    border-left: 4px solid var(--color-alert);
+    border-top: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background-color: #fffafa; /* Very light, subtle red background */
+}
+.policy-alert-header {
+    color: var(--color-alert);
+    font-weight: 700;
+}
+
+/* RSS/Email CTA Styling */
+.feed-link {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    transition: background-color 0.2s, color 0.2s;
+}
+.rss-link {
+    background-color: var(--color-text-primary);
+    color: var(--color-page-bg);
+}
+.email-link {
+    background-color: var(--color-statement-bg);
+    color: var(--color-text-primary);
+}
+.feed-link:hover {
+    background-color: var(--color-text-secondary);
+    color: var(--color-page-bg);
+}
+
+
+/* --------------------------------------------------
+    TAG STYLES (Softened Grayscale)
+-------------------------------------------------- */
+.tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-page-bg);
+    margin-bottom: 10px;
+}
+
+.tag-platformupdate { background-color: var(--tag-platformupdate); }
+.tag-ecosystem { background-color: var(--tag-ecosystem); }
+.tag-tech-update { background-color: var(--tag-tech-update); }
+.tag-policy-update { background-color: var(--tag-policy-update); }
+.tag-company-event { background-color: var(--tag-company-event); }
+
+
+/* --------------------------------------------------
+    FINAL NOTE
+-------------------------------------------------- */
+.final-note {
+    text-align: center;
+    padding: 40px 0 50px;
+    border-top: 1px solid var(--color-border);
+}
+
+.final-note p {
+    font-style: italic;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+}
+
+
+/* --------------------------------------------------
+    RESPONSIVENESS 
+-------------------------------------------------- */
+@media (max-width: 900px) {
+    .news-main-content {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+        margin-top: calc(var(--header-height) + 20px);
+        padding: 0 3%;
+    }
+
+    .document-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .news-grid-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .featured-image-placeholder {
+        height: 250px;
+    }
+    
+    .featured-title {
+        font-size: 1.8rem;
+    }
 }

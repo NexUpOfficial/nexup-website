@@ -1,398 +1,165 @@
 // src/pages/About/Company.jsx
-
-import React, { useState, useRef, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { FiGlobe, FiCode, FiCpu, FiHome, FiSearch, FiCheck } from "react-icons/fi";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../../page-styles/About/Company.css";
 import Footer from "../../components/Footer/Footer";
 
-/* --- ANIMATION VARIANTS (Existing) --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-// 20. Reusable GlassCard Component (Kept for context, unchanged)
-function GlassCard({ title, text, icon, className = "", children }) {
-  return (
-    <motion.div 
-      className={`glass-card-hover ${className}`}
-      variants={itemVariants}
-      style={{ willChange: 'transform, opacity' }} 
-    >
-      <div className="card-header-icon-wrapper">
-        {icon && <span className="card-icon">{icon}</span>}
+// Helper for structured sections
+const Section = ({ id, title, children }) => (
+    <section className="policy-section scroll-target" id={id}>
         <h3>{title}</h3>
-      </div>
-      <p>{text}</p>
-      {children}
-    </motion.div>
-  );
-}
-
-// 6. Stats Bar Animation Logic (Kept for context, unchanged)
-function AnimatedStat({ label, value, index }) {
-  const [currentValue, setCurrentValue] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-  
-  useEffect(() => {
-    if (!isInView) return;
-    
-    const targetValue = parseFloat(value);
-    const isInfinity = value === "∞";
-    const duration = 1200;
-    let startTimestamp;
-
-    const animateCount = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = timestamp - startTimestamp;
-      const step = progress / duration;
-      
-      if (step < 1) {
-        setCurrentValue(Math.min(Math.floor(step * targetValue), targetValue));
-        requestAnimationFrame(animateCount);
-      } else {
-        setCurrentValue(targetValue);
-      }
-    };
-    
-    if (!isInfinity) {
-      requestAnimationFrame(animateCount);
-    }
-  }, [isInView, value]);
-
-  const displayValue = value === "∞" ? "∞" : (label === "Founded" ? value : currentValue + (label === "Global Nodes" ? '+' : ''));
-
-  return (
-    <motion.div 
-      ref={ref}
-      key={index} 
-      className="stat-item"
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      style={{ willChange: 'transform, opacity' }}
-    >
-      <span className="stat-value">{displayValue}</span>
-      <span className="stat-label">{label}</span>
-    </motion.div>
-  );
-}
-
-// --- DATA CONSTANTS (Kept for context) ---
-const ECOSYSTEM_DATA = [
-  { title: "NexWorld", text: "An immersive world engine that powers 3D environments, spatial AR, and interactive digital ecosystems.", icon: <FiGlobe /> },
-  { title: "NexNode", text: "A network of intelligent nodes connecting data, users, and environments into one coherent digital universe.", icon: <FiCpu /> },
-  { title: "NexEngine", text: "The computation and intelligence core that processes context, behavior, and environmental signals in real time.", icon: <FiCode /> },
-  { title: "NexHousing", text: "Spatial tools and systems for next-generation living, architecture, and digital property experiences.", icon: <FiHome /> },
-  { title: "NexSearch", text: "A search layer for spatial and immersive contexts — enabling discovery inside 3D worlds and AR overlays.", icon: <FiSearch /> },
-];
-const VALUES_DATA = [
-  { title: "Integrity", text: "We design technology with transparency, respect, and responsibility — putting people and trust at the center.", icon: <FiCheck /> },
-  { title: "Innovation", text: "We experiment relentlessly, embracing new ideas and models that push beyond what exists today.", icon: <FiCheck /> },
-  { title: "Humanity", text: "Every system we build is meant to amplify human capability, making creativity and exploration easier.", icon: <FiCheck /> },
-];
-const ROADMAP_DATA = [
-  { year: "2025 – 2026", desc: "Foundation of NexNode, early spatial frameworks, and ecosystem architecture." },
-  { year: "2026 – 2027", desc: "Early-access NexWorld environments, NexHousing pilots, and developer tooling." },
-  { year: "2027 – 2030", desc: "Persistent digital worlds, global-scale spatial experiences, and fully realized NeX UP ecosystem." },
-];
-const STATS_DATA = [
-  { label: "Founded", value: "2025" },
-  { label: "Core Platforms", value: "5" },
-  { label: "Global Nodes", value: "12+" },
-  { label: "Vision", value: "∞" },
-];
-// --- END DATA CONSTANTS ---
-
-
-export default function Company() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="company-page">
-      {/* 11. Performance Optimization - Add global transform style */}
-      <style global jsx>{`
-        * {
-          transform-style: preserve-3d;
-          backface-visibility: hidden;
-        }
-      `}</style>
-      
-      <div className="company-wrapper">
-        
-        {/* ================= HERO ================= */}
-        <section className="company-hero-section">
-          <motion.div
-            className="company-hero"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            <h1 className="gradient-title company-hero-title">
-              NeX UP — Building the Future of Intelligent Digital Reality.
-            </h1>
-            <p className="company-hero-sub">
-              A company dedicated to creating immersive, intelligent environments
-              where digital systems feel natural, intuitive, and deeply human.
-            </p>
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= STATS BAR (NEW) ================= */}
-        <div className="stats-container">
-          {/* ⭐ 6. Animated Stats Bar */}
-          {STATS_DATA.map((stat, index) => (
-            <AnimatedStat key={index} {...stat} index={index} />
-          ))}
-        </div>
-
-        {/* ================= CEO SECTION ================= */}
-        <CompanySection title="From Our Founder & CEO" className="ceo-section-alt">
-          <div className="company-ceo-layout">
-            <motion.div
-              className="company-ceo-image-wrapper"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7 }}
-              viewport={{ once: true }}
-              style={{ willChange: 'transform, opacity' }}
-            >
-              <div className="company-ceo-image placeholder-img">
-                <span className="placeholder-text"></span>
-                <div className="ceo-ambient-glow" />
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="company-ceo-text"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              style={{ willChange: 'transform, opacity' }}
-            >
-              <h3 className="company-ceo-name">Jothish Gandham</h3>
-              <p className="company-ceo-role">Founder</p>
-              <div className="company-ceo-quote">
-                “NeX UP exists to push the boundaries of what digital reality
-                can be. We’re not just building products — we’re building the
-                foundation for how people will live, work, and create inside
-                intelligent environments.”
-              </div>
-            </motion.div>
-          </div>
-        </CompanySection>
-
-        <BreakLine />
-
-        {/* ================= OUR STORY ================= */}
-        <CompanySection title="Our Story">
-          <div className="text-block-centered">
-            <p className="company-text">
-              NeX UP was created with a single belief: that the future of
-              technology won’t live inside flat screens, but inside intelligent
-              environments that understand space, context, and human intention.
-            </p>
-            <p className="company-text">
-              From early experiments with immersive AR/VR worlds to the design
-              of spatial intelligence systems, NeX UP evolved into a platform
-              that connects people, spaces, and information in one unified
-              ecosystem.
-            </p>
-          </div>
-        </CompanySection>
-
-        {/* ================= MISSION & VISION ================= */}
-        <section className="company-section">
-          <div className="company-section-inner company-mission-vision">
-            <motion.div 
-              className="mission-card glass-panel"
-              initial={{ x: -30, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              style={{ willChange: 'transform, opacity' }}
-            >
-              <h2 className="gradient-title section-title-small">Our Mission</h2>
-              <p className="company-text-small">
-                To bridge the gap between physical and digital worlds by
-                building intelligent systems that understand context, space, and
-                human behavior.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              className="vision-card glass-panel"
-              initial={{ x: 30, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              style={{ willChange: 'transform, opacity' }}
-            >
-              <h2 className="gradient-title section-title-small">Our Vision</h2>
-              <p className="company-text-small">
-                A world where intelligence becomes ambient, environments adapt
-                to us seamlessly, and people move through digital spaces
-                naturally.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= ECOSYSTEM (Staggered Grid) ================= */}
-        <CompanySection title="The NeX UP Ecosystem">
-          <p className="company-text centered-intro">
-            NeX UP is a connected ecosystem designed to power the next era of
-            spatial computing and intelligent environments.
-          </p>
-          
-          <motion.div
-            className="ecosystem-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            {ECOSYSTEM_DATA.map((item, idx) => (
-              <GlassCard 
-                key={idx} 
-                title={item.title} 
-                text={item.text} 
-                icon={item.icon}
-                index={idx}
-              />
-            ))}
-          </motion.div>
-        </CompanySection>
-
-        <BreakLine />
-
-        {/* ================= VALUES ================= */}
-        <CompanySection title="What We Stand For">
-          <motion.div 
-            className="values-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {VALUES_DATA.map((val, idx) => (
-              <GlassCard 
-                key={idx} 
-                title={val.title} 
-                text={val.text} 
-                icon={val.icon || <FiCheck />}
-                index={idx}
-              />
-            ))}
-          </motion.div>
-        </CompanySection>
-
-        <BreakLine />
-
-        {/* ================= ROADMAP ================= */}
-        <CompanySection title="Our Roadmap">
-          <div className="roadmap-container">
-            {ROADMAP_DATA.map((item, idx) => (
-              <motion.div 
-                key={idx} 
-                className="roadmap-item"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.2 }}
-                viewport={{ once: true }}
-                style={{ willChange: 'transform, opacity' }}
-              >
-                <div className="roadmap-marker"></div>
-                <div className="roadmap-content">
-                  <span className="roadmap-year">{item.year}</span>
-                  <p className="roadmap-desc">{item.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </CompanySection>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="company-final-section">
-          <motion.div
-            className="company-final"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            style={{ willChange: 'transform, opacity' }}
-          >
-            <h2 className="gradient-title final-big">
-              Collaborate with NeX UP
-            </h2>
-            <p className="final-text">
-              Whether you’re a creator, company, or builder of future systems,
-              we’d love to connect and explore what we can build together.
-            </p>
-            <div className="company-final-actions">
-              <button className="white-btn" onClick={() => navigate("/contact")}>
-                Contact Us →
-              </button>
-              <button className="ghost-btn" onClick={() => navigate("/about/career")}>
-                Explore Careers →
-              </button>
-            </div>
-          </motion.div>
-        </section>
-      </div>
-
-      <Footer />
-    </div>
-  );
-}
-
-/* --- SUB-COMPONENTS --- */
-function CompanySection({ title, children, className = "" }) {
-  return (
-    <section className={`company-section ${className}`}>
-      <motion.div
-        className="company-section-inner"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-50px" }}
-        style={{ willChange: 'transform, opacity' }} 
-      >
-        <h2 className="gradient-title section-title">{title}</h2>
         {children}
-      </motion.div>
     </section>
-  );
-}
+);
 
-// ⭐ 5. Horizontal Expanding BreakLine Component
-function BreakLine() {
-  return (
-    <motion.div 
-      className="break-line" 
-      initial={{ scaleX: 0, opacity: 0 }}
-      whileInView={{ scaleX: 1, opacity: 1 }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
-      viewport={{ once: true }}
-      style={{ transformOrigin: 'center' }}
-    />
-  );
-}
+const Company = () => {
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    return (
+        <div className="company-page">
+            <main className="company-main-content">
+                <div className="company-document">
+                    
+                    {/* NEW: Minimal "Company" Text Bar */}
+                    <div className="top-title-bar">
+                        <p>Company</p>
+                    </div>
+                    
+                    <header className="document-header">
+                        <h1>About NexUP</h1>
+                        <h2 className="subtitle">The Foundation for the Next Digital Worlds</h2>
+                    </header>
+                    
+                    <p className="introduction">
+                        NexUP is a technology company building a long-term spatial computing platform that blends AI, immersive environments, and digital infrastructure into a unified ecosystem.
+                    </p>
+                    <p className="statement-header">
+                        We are focused on creating systems that allow people to build, explore, learn, and collaborate inside persistent digital worlds — responsibly and at scale. NexUP is not a short-term product.
+                    </p>
+
+
+                    {/* 1. What We Do */}
+                    <Section id="what-we-do" title="What We Do">
+                        <p>NexUP designs and develops technologies across:</p>
+                        <ul>
+                            <li>AI-powered creation tools</li>
+                            <li>Virtual and spatial environments</li>
+                            <li>Platform infrastructure for persistent worlds</li>
+                            <li>Search and discovery inside digital ecosystems</li>
+                            <li>Systems that support learning, work, and community interaction</li>
+                        </ul>
+                        <p className="priority-note">Everything we build is designed to work together as one connected ecosystem, not isolated products.</p>
+                    </Section>
+
+                    {/* 2. Our Mission */}
+                    <Section id="our-mission" title="Our Mission">
+                        <p>To build a responsible, human-centered spatial computing platform that empowers people to create, connect, and grow in digital worlds.</p>
+                        <p className="statement">We aim to make advanced technology useful, accessible, and meaningful — not overwhelming or exploitative.</p>
+                    </Section>
+
+                    {/* 3. Our Vision */}
+                    <Section id="our-vision" title="Our Vision">
+                        <p>We envision a future where:</p>
+                        <ul>
+                            <li>Digital spaces feel natural and empowering</li>
+                            <li>AI supports creativity instead of replacing it</li>
+                            <li>Virtual worlds are persistent, interoperable, and purposeful</li>
+                            <li>Technology respects human values and societal impact</li>
+                        </ul>
+                        <p className="priority-note">NexUP exists to help shape that future — thoughtfully and responsibly.</p>
+                    </Section>
+
+                    {/* 4. How We Think */}
+                    <Section id="how-we-think" title="How We Think (Our Core Beliefs)">
+                        <p>Our approach is guided by a few core beliefs:</p>
+                        <div className="beliefs-list">
+                            <article>
+                                <h4>Long-term over short-term</h4>
+                                <p>We build with years in mind, not trends.</p>
+                            </article>
+                            <article>
+                                <h4>Responsibility over speed</h4>
+                                <p>Moving fast matters, but building right matters more.</p>
+                            </article>
+                            <article>
+                                <h4>Clarity over complexity</h4>
+                                <p>Technology should explain itself.</p>
+                            </article>
+                            <article>
+                                <h4>People before platforms</h4>
+                                <p>Human well-being always comes first.</p>
+                            </article>
+                        </div>
+                    </Section>
+                    
+                    {/* 5. The NexUP Ecosystem */}
+                    <Section id="ecosystem" title="The NexUP Ecosystem (The Platform)">
+                        <p>NexUP is composed of multiple interconnected systems:</p>
+                        <ul>
+                            <li>**NexWorld** — shared digital and spatial environments</li>
+                            <li>**NexEngine** — tools to build and publish worlds</li>
+                            <li>**NexNodes** — backend infrastructure powering the platform</li>
+                            <li>**NexHousing** — persistent digital spaces and structures</li>
+                            <li>**NexSearch** — discovery and navigation across the ecosystem</li>
+                        </ul>
+                        <p className="statement">Together, these form a single evolving platform.</p>
+                    </Section>
+
+                    {/* 6. Our Stage */}
+                    <Section id="our-stage" title="Our Stage">
+                        <p>NexUP is actively evolving.</p>
+                        <p>Some systems are in early development, others are being refined, and new ideas are continuously explored. We believe in building openly, learning fast, and improving continuously.</p>
+                        <p className="priority-note">Progress is intentional, not rushed.</p>
+                    </Section>
+
+                    {/* 7. Trust & Responsibility */}
+                    <Section id="trust-responsibility" title="Trust & Responsibility (Our Commitment)">
+                        <p>Trust is foundational to NexUP. We are committed to:</p>
+                        <ul>
+                            <li>Privacy-first design</li>
+                            <li>Ethical use of AI</li>
+                            <li>Transparent communication</li>
+                            <li>Safe and respectful digital spaces</li>
+                        </ul>
+                        <p className="priority-note">These principles influence every technical and business decision we make.</p>
+                    </Section>
+
+                    {/* 8. Who We Build For */}
+                    <Section id="who-we-build-for" title="Who We Build For (Target Audience)">
+                        <p>NexUP is built for:</p>
+                        <ul>
+                            <li>Learners and educators</li>
+                            <li>Developers and creators</li>
+                            <li>Communities and organizations</li>
+                            <li>Future builders of digital worlds</li>
+                        </ul>
+                        <p className="statement">Anyone who believes technology can be both powerful and responsible.</p>
+                    </Section>
+                    
+                    {/* 9. Looking Ahead */}
+                    <section className="policy-section final-section" id="looking-ahead">
+                        <h3>Looking Ahead</h3>
+                        <p>The future of computing will be immersive, intelligent, and interconnected.</p>
+                        <div className="final-message-box">
+                            <p>NexUP is building toward that future — carefully, openly, and with purpose.</p>
+                        </div>
+                    </section>
+                    
+
+                </div>
+            </main>
+            
+            {/* Footer Component with one-liner */}
+            <Footer>
+                Company — Learn about NexUP, our mission, and the future we are building.
+            </Footer>
+            
+        </div>
+    );
+};
+
+export default Company;

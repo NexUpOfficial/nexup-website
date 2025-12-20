@@ -1,5 +1,5 @@
 /* ===========================================================
-   GLOBAL & LAYOUT
+    GLOBAL & LAYOUT
 =========================================================== */
 .login-page {
   width: 100%; min-height: 100vh; background: #050505;
@@ -9,6 +9,7 @@
 }
 .login-page::after {
   content: ""; position: absolute; inset: 0;
+  /* FRACTAL NOISE EFFECT */
   background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
   opacity: 0.4; pointer-events: none; z-index: 1;
 }
@@ -27,43 +28,7 @@
 .login-content-wrapper { position: relative; z-index: 2; width: 100%; max-width: 1100px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
 
 /* ===========================================================
-   AI GREETING & SKIP BUTTON
-=========================================================== */
-.ai-greeting-screen {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle, #0d0d0f 0%, #000 80%);
-  z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff;
-}
-.ai-text { font-family: monospace; font-size: 1.5rem; color: #b8a9ff; margin-bottom: 20px; text-align: center; padding: 0 20px; }
-.typing-effect {
-  white-space: nowrap; overflow: hidden; border-right: 2px solid #b8a9ff;
-  animation: typing 2s steps(30, end), blink-caret .75s step-end infinite; width: 0; animation-fill-mode: forwards;
-}
-@keyframes typing { from { width: 0 } to { width: 100% } }
-@keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #b8a9ff; } }
-.loader-line { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
-.loader-line::after {
-  content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 50%;
-  background: #b8a9ff; animation: loadingScan 1s ease-in-out infinite;
-}
-@keyframes loadingScan { 0% { left: -50%; } 100% { left: 100%; } }
-
-/* ⭐ SKIP BUTTON (Mobile Friendly) */
-.skip-btn {
-  position: absolute; bottom: 40px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
-  padding: 10px 20px; border-radius: 30px;
-  font-family: monospace; font-size: 0.85rem;
-  cursor: pointer; transition: 0.3s;
-  backdrop-filter: blur(5px);
-}
-.skip-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
-.skip-btn .desktop-hint { opacity: 0.5; margin-left: 5px; }
-
-/* ===========================================================
-   LEFT SIDE
+    LEFT SIDE
 =========================================================== */
 .login-text-side { padding-right: 40px; }
 .glass-text-panel {
@@ -86,7 +51,7 @@
 .check-icon { color: #b8a9ff; }
 
 /* ===========================================================
-   RIGHT SIDE (Auth Card)
+    RIGHT SIDE (Auth Card)
 =========================================================== */
 .login-card-side { display: flex; justify-content: center; perspective: 1000px; }
 .tilt-container { transform-style: preserve-3d; }
@@ -94,12 +59,7 @@
   position: relative; padding: 1px; border-radius: 24px; background: transparent; overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
-.neon-border-box::before {
-  content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-  background: conic-gradient(transparent, transparent, transparent, #b8a9ff);
-  animation: rotateBorder 4s linear infinite; z-index: 0;
-}
-@keyframes rotateBorder { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
 .auth-card {
   position: relative; background: rgba(15, 15, 15, 0.9); border-radius: 23px; padding: 32px;
   z-index: 1; backdrop-filter: blur(20px); overflow: hidden; transition: box-shadow 0.3s ease;
@@ -279,5 +239,4 @@
   .login-content-wrapper { grid-template-columns: 1fr; gap: 40px; }
   .login-text-side { text-align: center; padding-right: 0; }
   .glass-text-panel { padding: 30px; }
-  .skip-btn .desktop-hint { display: none; } /* Hide ESC hint on mobile */
 }

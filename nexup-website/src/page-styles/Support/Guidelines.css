@@ -1,463 +1,290 @@
-/* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal + 1. Grid Background)
-=========================================================== */
+/* src/page-styles/Support/Guidelines.css */
+
+/* --- Color Palette (OpenAI/Dark Mode Inspired - ONLY Black/White/Grays) --- */
+:root {
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #999999; 
+    --color-border: #333333; 
+    --color-statement-bg: #1a1a1a;
+    --color-link-hover: #cccccc;
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .guidelines-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  min-height: 100vh;
-  
-  /* Scrollbar Hide */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
-  
-  /* 1. Soft Grid Pattern */
-  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
 }
 
-.guidelines-page::-webkit-scrollbar {
-  display: none;
+/* --------------------------------------------------
+    MAIN CONTENT ALIGNMENT (Centered)
+-------------------------------------------------- */
+.guidelines-main-content {
+    max-width: 900px;
+    margin: 100px auto 80px; /* Reduced vertical margin */
+    padding: 0 5%; 
 }
 
-.guidelines-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
-  color: #f0f0f0;
+.guidelines-document {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* REDUCED SPACE: From 50px to 30px */
+    line-height: 1.6; /* Slight reduction from 1.7 */
+    font-size: 1rem; /* Slight reduction from 1.05rem */
 }
 
-/* ===========================================================
-   HERO SECTION
-=========================================================== */
-.guidelines-hero-section {
-  min-height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
+/* Scroll target for anchor links */
+.scroll-target {
+    scroll-margin-top: 60px; /* Reduced margin */
 }
 
-/* 2. Enhanced Hero Glow */
-.guidelines-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 65%);
-  filter: blur(90px);
-  z-index: 0;
-  pointer-events: none;
+/* --------------------------------------------------
+    HEADER & INTRO
+-------------------------------------------------- */
+.document-header {
+    text-align: center;
+    margin-bottom: 30px; /* Reduced margin */
 }
 
-.guidelines-hero-content {
-  z-index: 1;
-  max-width: 800px;
+.document-header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem); /* Reduced max size */
+    font-weight: 800;
+    margin-bottom: 8px;
 }
 
-/* Meta Badge */
-.doc-meta-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-family: monospace;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 24px;
+.subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem); /* Reduced max size */
+    font-weight: 400;
+    color: var(--color-text-secondary);
 }
 
-.meta-divider {
-  color: #b8a9ff;
+.introduction {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.7;
+    padding: 0 10px;
+    text-align: center;
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
 }
 
-.guidelines-hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.15;
-  margin-bottom: 20px;
+.statement-header {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding: 10px 10px 30px; /* Reduced padding */
+    border-bottom: 1px solid var(--color-border);
 }
 
-.guidelines-hero-sub {
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  opacity: 0.8;
-  max-width: 650px;
-  margin: 0 auto;
+
+/* --------------------------------------------------
+    1. QUICK RULES SUMMARY
+-------------------------------------------------- */
+.quick-rules-summary {
+    background-color: var(--color-statement-bg);
+    padding: 30px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    margin-bottom: 30px;
 }
 
-/* ===========================================================
-   PREAMBLE (Why this matters)
-=========================================================== */
-.preamble-card {
-  text-align: center;
-  padding: 50px;
-  border: 1px solid rgba(184, 169, 255, 0.15); /* Subtle purple tint */
+.quick-rules-summary h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 5px;
 }
 
-.preamble-title {
-  font-size: 1.8rem;
-  margin-bottom: 16px;
-  background: linear-gradient(90deg, #fff, #b8a9ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.quick-intro {
+    text-align: center;
+    color: var(--color-text-secondary);
+    margin-bottom: 25px;
 }
 
-.preamble-text {
-  font-size: 1.2rem;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.85);
-  max-width: 800px;
-  margin: 0 auto;
+.quick-rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 
-/* ===========================================================
-   PRINCIPLES GRID (3. Hover Shift)
-=========================================================== */
-.principles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+.rule-item {
+    border: 1px solid var(--color-border);
+    padding: 15px;
+    border-radius: 6px;
 }
 
-.principle-card {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  /* 3. Smooth Transitions */
-  transition: transform 0.3s ease, border-color 0.3s;
+.rule-item h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 10px;
 }
 
-/* 3. Hover Lift */
-.principle-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(184,169,255,0.3);
+.rule-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
 }
 
-.principle-icon {
-  font-size: 1.8rem;
-  color: #b8a9ff;
-  margin-bottom: 16px;
-  padding: 10px;
-  background: rgba(184, 169, 255, 0.1);
-  border-radius: 12px;
+.rule-item li {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 5px;
+    padding-left: 0;
+}
+.rule-item li::before {
+    content: '-';
+    color: var(--color-text-primary);
+    font-weight: bold;
+    display: inline-block;
+    width: 0.5em;
+    margin-left: -0.5em;
 }
 
-.principle-card h3 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: #fff;
+.zero-tolerance h4 {
+    color: #ff3333;
+}
+.zero-tolerance {
+    grid-column: 1 / -1; /* Span full width */
+    text-align: center;
+    background-color: #220000;
+    border-color: #ff3333;
 }
 
-.principle-card p {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.6;
+.enforcement-summary {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--color-border);
+    text-align: center;
 }
 
-/* ===========================================================
-   BEHAVIOR MATRIX (4. & 5. Interactions)
-=========================================================== */
-.matrix-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
+.enforcement-summary h4 {
+    color: #ffcc00; /* Warning yellow */
+    font-size: 1rem;
+    margin-top: 0;
 }
 
-.matrix-col {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  /* 4. Matrix Transition */
-  transition: transform 0.3s ease, background 0.3s;
+.quick-final-note {
+    text-align: center;
 }
 
-/* 4. Matrix Hover Feedback */
-.matrix-col:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.05);
+/* --------------------------------------------------
+    POLICY SECTIONS (Content Blocks)
+-------------------------------------------------- */
+.policy-section {
+    padding-top: 25px; /* Reduced from 30px */
 }
 
-/* Header Styling */
-.matrix-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+.policy-section h3 {
+    font-size: 1.6rem; /* Reduced from 1.7rem */
+    font-weight: 700;
+    margin-bottom: 20px; /* Reduced from 25px */
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
 }
 
-.matrix-header h3 {
-  font-size: 1.3rem;
-  color: #fff;
+.policy-section .section-icon {
+    margin-right: 10px; /* Reduced from 12px */
+    font-size: 1.2em;
 }
 
-.icon-check { color: #4ade80; font-size: 1.4rem; transition: 0.3s ease; }
-.icon-x { color: #f87171; font-size: 1.4rem; transition: 0.3s ease; }
-
-/* 5. Icon Scale on Hover */
-.matrix-col:hover .matrix-header svg {
-  transform: scale(1.15);
+.policy-section h4 {
+    font-size: 1.2rem; /* Reduced from 1.3rem */
+    font-weight: 600;
+    margin-top: 25px; 
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
 }
 
-/* Allowed Column adjustments */
-.allowed-col {
-  border-top: 3px solid #4ade80;
+.policy-section p {
+    margin-bottom: 12px; /* Reduced from 15px */
+    color: var(--color-text-secondary);
 }
 
-/* Prohibited Column adjustments */
-.prohibited-col {
-  border-top: 3px solid #f87171;
+/* Lists */
+.policy-section ul {
+    margin-top: 10px; /* Reduced from 15px */
 }
 
-.matrix-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.policy-section li {
+    padding-left: 20px; /* Reduced from 25px */
+    margin-bottom: 8px; /* Reduced from 12px */
+    font-size: 0.95rem; /* Reduced from 1rem */
 }
 
-.matrix-list li {
-  font-size: 1.05rem;
-  color: rgba(255,255,255,0.8);
-  display: flex;
-  align-items: flex-start;
+/* Special Emphasis Text */
+.statement {
+    font-size: 1.05rem; /* Reduced from 1.1rem */
+    font-weight: 500;
+    margin-top: 20px; /* Reduced from 30px */
+    padding: 15px 20px;
+    border-left: 3px solid var(--color-text-primary);
+    background-color: var(--color-statement-bg);
+    color: var(--color-text-primary);
 }
 
-.matrix-list li::before {
-  content: "•";
-  color: rgba(255,255,255,0.3);
-  margin-right: 10px;
+.priority-note {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-top: 15px; /* Reduced from 20px */
 }
 
-/* ===========================================================
-   PROTOCOL LIST (6. Glow Marker)
-=========================================================== */
-.protocol-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* Allowed/Not Allowed Blocks */
+.allowed-content, .not-allowed-content {
+    padding: 10px 0; /* Reduced vertical padding */
+    border-bottom: 1px dashed var(--color-border);
 }
 
-.protocol-item {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 24px;
-  cursor: default;
+/* Final Section */
+.final-section {
+    padding-bottom: 30px; /* Reduced from 50px */
 }
 
-.protocol-marker {
-  width: 4px;
-  height: 40px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 4px;
-  transition: 0.3s;
+.final-message {
+    font-size: 1.1rem; /* Reduced from 1.2rem */
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-top: 20px; /* Reduced from 30px */
 }
 
-/* 6. Marker Animation & Glow */
-.protocol-item:hover .protocol-marker {
-  background: #b8a9ff;
-  height: 50px;
-  box-shadow: 0 0 12px rgba(184,169,255,0.4);
-}
-
-.protocol-content h3 {
-  font-size: 1.2rem;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.protocol-content p {
-  color: rgba(255,255,255,0.7);
-  font-size: 0.95rem;
-}
-
-/* ===========================================================
-   ENFORCEMENT BANNER (7. Backdrop Blur)
-=========================================================== */
-.enforcement-banner {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  padding: 30px;
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid rgba(184, 169, 255, 0.2);
-  /* 7. Premium Blur */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.enforcement-icon {
-  font-size: 2rem;
-  color: #fbbf24; /* Warning Amber */
-  padding: 16px;
-  background: rgba(251, 191, 36, 0.1);
-  border-radius: 50%;
-}
-
-.enforcement-content {
-  flex: 1;
-}
-
-.enforcement-content h3 {
-  font-size: 1.3rem;
-  margin-bottom: 6px;
-  color: #fff;
-}
-
-.enforcement-content p {
-  color: rgba(255,255,255,0.75);
-  line-height: 1.5;
-}
-
-.report-btn {
-  padding: 10px 20px;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #e8e8e8;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.report-btn:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: #fff;
-}
-
-/* ===========================================================
-   FINAL CTA (10. Button Glow)
-=========================================================== */
-.guidelines-final-section {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-}
-
-.guidelines-final {
-  max-width: 700px;
-}
-
-.final-big {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 16px;
-}
-
-.final-text {
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 30px;
-}
-
-.guidelines-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-/* ===========================================================
-   UTILITIES
-=========================================================== */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 12px 28px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-/* 10. Final CTA Glow */
-.white-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(184,169,255,0.25);
-}
-
-.ghost-btn {
-  background: transparent;
-  color: #fff;
-  padding: 12px 28px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: 0.3s;
-}
-
-/* 10. Final CTA Glow */
-.ghost-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 12px rgba(184,169,255,0.25);
-}
-
-/* 9. Increased Spacing */
-.guidelines-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 50px;
-}
-
-.guidelines-section-inner {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.section-title {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  display: inline-block;
-}
-
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-/* ===========================================================
-   MEDIA QUERIES
-=========================================================== */
+/* --------------------------------------------------
+    RESPONSIVENESS
+-------------------------------------------------- */
 @media (max-width: 768px) {
-  .guidelines-wrapper { padding: 60px 20px; gap: 70px; }
-  .matrix-grid { grid-template-columns: 1fr; }
-  .preamble-card { padding: 30px 20px; }
-  .enforcement-banner { flex-direction: column; text-align: center; gap: 20px; }
-  .enforcement-icon { padding: 12px; }
+    .guidelines-main-content {
+        padding: 0 3%;
+        margin: 60px auto 40px;
+    }
+
+    .document-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .guidelines-document {
+        gap: 30px;
+    }
+    
+    .policy-section h3 {
+        font-size: 1.4rem;
+    }
+    
+    .quick-rules-summary {
+        padding: 20px 15px;
+    }
+    .quick-rules-grid {
+        grid-template-columns: 1fr;
+    }
+    .zero-tolerance {
+        margin-top: 10px;
+    }
+    
+    .statement {
+        padding: 15px;
+        font-size: 0.95rem;
+    }
 }

@@ -1,405 +1,221 @@
-/* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal + 1. Grid Background)
-=========================================================== */
+/* src/page-styles/Safety/Transparency.css */
+
+/* --- Color Palette (Consistent Dark Mode) --- */
+:root {
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #aaaaaa; 
+    --color-border: #333333; 
+    --color-statement-bg: #1a1a1a;
+    --color-link-hover: #cccccc;
+    --sidebar-width: 280px; 
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --header-height: 60px; 
+}
+
 .transparency-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  min-height: 100vh;
-  /* Scrollbar Hide */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
-  
-  /* 1. Background Grid Pattern */
-  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
 }
 
-.transparency-page::-webkit-scrollbar {
-  display: none;
+/* --------------------------------------------------
+    MAIN CONTENT ALIGNMENT (Centering for Sidebar Layout)
+-------------------------------------------------- */
+.transparency-main-content {
+    /* 1. Ensure the content starts past the fixed sidebar */
+    margin-left: var(--sidebar-width); 
+    
+    /* 2. Set max width for readability */
+    max-width: 900px;
+    
+    /* 3. Center the max-width content horizontally in the remaining space */
+    margin-right: auto;
+    
+    /* Vertical positioning for content below the main page header */
+    margin-top: calc(var(--header-height) + 40px);
+
+    padding: 0 5%; 
 }
 
-.transparency-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 120px;
-  color: #f0f0f0;
+.transparency-document {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+    line-height: 1.6;
+    font-size: 1rem; 
 }
 
-/* ===========================================================
-   HERO
-=========================================================== */
-.transparency-hero-section {
-  min-height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
+/* Scroll target for header links */
+.scroll-target {
+    scroll-margin-top: 60px; 
 }
 
-/* 2. Hero Glow Improvement */
-.transparency-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.08) 0%, transparent 60%);
-  filter: blur(90px);
-  z-index: 0;
-  pointer-events: none;
+
+/* --------------------------------------------------
+    HEADER & INTRO 
+-------------------------------------------------- */
+.document-header {
+    text-align: center;
+    margin-top: 0; 
+    margin-bottom: 30px; 
 }
 
-.transparency-hero-content {
-  z-index: 1;
-  max-width: 800px;
+.document-header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 8px;
 }
 
-.hero-badge {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #b8a9ff;
-  margin-bottom: 24px;
+.subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-weight: 400;
+    color: var(--color-text-secondary);
 }
 
-.transparency-hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.15;
-  margin-bottom: 20px;
+.introduction {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.7;
+    padding: 0 10px;
+    text-align: center;
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
 }
 
-.transparency-hero-sub {
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  opacity: 0.8;
-  max-width: 650px;
-  margin: 0 auto;
+.statement-header {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding: 10px 10px 30px; 
+    border-bottom: 1px solid var(--color-border);
 }
 
-/* ===========================================================
-   PRINCIPLES GRID (9. Ambient Hover + 10. Spacing)
-=========================================================== */
-.principles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  margin-top: 20px; /* 10. Spacing */
+
+/* --------------------------------------------------
+    POLICY SECTIONS (Content Blocks)
+-------------------------------------------------- */
+.policy-section {
+    padding-top: 25px;
 }
 
-.principle-card {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+.policy-section h3 {
+    font-size: 1.6rem; 
+    font-weight: 700;
+    margin-bottom: 20px; 
+    color: var(--color-text-primary);
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 10px;
 }
 
-/* 9. Ambient Hover Effect */
-.principle-card:hover {
-  background: rgba(255,255,255,0.04);
-  transform: translateY(-6px);
-  border-color: rgba(184,169,255,0.3);
+.policy-section h4 {
+    font-size: 1.2rem; 
+    font-weight: 600;
+    margin-top: 15px; 
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
 }
 
-.principle-icon {
-  font-size: 2rem;
-  color: #b8a9ff;
-  margin-bottom: 20px;
-  padding: 12px;
-  background: rgba(184, 169, 255, 0.1);
-  border-radius: 12px;
+.policy-section p {
+    margin-bottom: 12px; 
+    color: var(--color-text-secondary);
 }
 
-.principle-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: #fff;
+/* Lists */
+.policy-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px; 
 }
 
-.principle-card p {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
+.policy-section li {
+    position: relative;
+    padding-left: 20px; 
+    margin-bottom: 8px; 
+    color: var(--color-text-primary);
+    font-size: 0.95rem; 
 }
 
-/* ===========================================================
-   ALGORITHM EXPLAINER (4. Marker Line + 10. Spacing)
-=========================================================== */
-.centered-text {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 40px auto;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.75);
+.policy-section li::before {
+    content: '•'; 
+    color: var(--color-text-secondary);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
 }
 
-.algo-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 10px; /* 10. Spacing */
+.priority-note {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-top: 15px; 
 }
 
-.algo-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 24px;
-  transition: transform 0.3s ease;
+/* Statement Box */
+.statement {
+    font-size: 1.05rem; 
+    font-weight: 500;
+    margin-top: 20px; 
+    padding: 15px 20px;
+    border-left: 3px solid var(--color-text-primary);
+    background-color: var(--color-statement-bg);
+    color: var(--color-text-primary);
 }
 
-/* 4. Glowing Marker Line */
-.algo-marker {
-  width: 4px;
-  height: 100%;
-  min-height: 40px;
-  background: linear-gradient(#b8a9ff, #ffffff);
-  border-radius: 4px;
-  box-shadow: 0 0 16px rgba(184,169,255,0.45);
+
+/* --------------------------------------------------
+    FINAL SECTION
+-------------------------------------------------- */
+.final-section {
+    padding-bottom: 30px; 
 }
 
-.algo-content h4 {
-  font-size: 1.2rem;
-  color: #fff;
-  margin-bottom: 4px;
+.final-message-box {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid var(--color-text-primary);
+    border-radius: 6px;
+    background-color: var(--color-statement-bg);
 }
 
-.algo-content p {
-  color: rgba(255, 255, 255, 0.7);
+.final-message-box p {
+    color: var(--color-text-primary);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 0;
 }
 
-/* ===========================================================
-   DATA JOURNEY (5. Active Animation + 6. Badge + 7. Glow Line)
-=========================================================== */
-.data-journey {
-  display: flex;
-  flex-direction: column;
-  gap: 0; /* Connected items */
-}
 
-.data-step {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 30px;
-}
+/* --------------------------------------------------
+    RESPONSIVENESS (Mobile: Sidebar hidden, full width content)
+-------------------------------------------------- */
+@media (max-width: 900px) {
+    /* On mobile, revert to full width and simple centering */
+    .transparency-main-content {
+        margin-left: auto; /* Remove sidebar offset */
+        margin-right: auto;
+        max-width: 100%;
+        margin-top: calc(var(--header-height) + 20px); /* Adjust top margin */
+        padding: 0 3%;
+    }
 
-.step-marker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .document-header {
+        margin-top: 0; 
+    }
 
-/* 6. Step Number Badge */
-.step-num {
-  font-family: monospace;
-  color: #b8a9ff;
-  font-weight: 700;
-  margin-bottom: 10px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: rgba(184,169,255,0.15);
-  font-size: 0.9rem;
-}
+    .document-header h1 {
+        font-size: 2.2rem;
+    }
 
-/* 7. Vertical Connecting Glow Line */
-.step-line {
-  flex: 1;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    rgba(184,169,255,0.1),
-    rgba(184,169,255,0.4),
-    rgba(184,169,255,0.1)
-  );
-  min-height: 60px;
-}
-
-/* Hide line on last item */
-.data-step:last-child .step-line {
-  display: none;
-}
-
-.step-content {
-  padding: 24px;
-  margin-bottom: 24px;
-  transition: border-color 0.3s ease, background 0.3s ease;
-}
-
-/* 5. Active Ping Animation on Hover */
-.data-step:hover .step-content {
-  border-color: rgba(184,169,255,0.3);
-  background: rgba(255,255,255,0.04);
-}
-
-.step-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-.check-icon {
-  color: #4ade80;
-  opacity: 0.6;
-}
-
-.step-content h4 {
-  color: #fff;
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-.step-content p {
-  color: rgba(255,255,255,0.7);
-  font-size: 0.95rem;
-}
-
-/* ===========================================================
-   FINAL CTA
-=========================================================== */
-.transparency-final-section {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-}
-
-.transparency-final {
-  max-width: 700px;
-}
-
-.final-icon {
-  font-size: 3rem;
-  color: #b8a9ff;
-  margin-bottom: 20px;
-}
-
-.final-big {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 16px;
-}
-
-.final-text {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 30px;
-}
-
-.transparency-final-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-/* ===========================================================
-   UTILITIES
-=========================================================== */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.glass-panel:hover {
-  border-color: rgba(184, 169, 255, 0.3);
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.glass-panel-sm {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-}
-
-/* 3. Small Card Hover */
-.glass-panel-sm:hover {
-  transform: translateY(-4px);
-  border-color: rgba(184,169,255,0.25);
-  background: rgba(255,255,255,0.04);
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 12px 28px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.white-btn:hover {
-  transform: scale(1.05);
-}
-
-.ghost-btn {
-  background: transparent;
-  color: #fff;
-  padding: 12px 28px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.ghost-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.transparency-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.transparency-section-inner {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.section-title {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  display: inline-block;
-}
-
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-/* ===========================================================
-   MEDIA QUERIES
-=========================================================== */
-@media (max-width: 768px) {
-  .transparency-wrapper { padding: 60px 20px; gap: 80px; }
-  .data-step { grid-template-columns: 40px 1fr; }
+    .transparency-document {
+        gap: 25px;
+    }
+    
+    .policy-section h3 {
+        font-size: 1.4rem;
+        padding-bottom: 8px;
+    }
 }
