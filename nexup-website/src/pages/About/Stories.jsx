@@ -173,5 +173,4 @@ const StoriesPage = () => {
     </div>
   );
 };
-
-export default Stories;
+ export default StoriesPage;

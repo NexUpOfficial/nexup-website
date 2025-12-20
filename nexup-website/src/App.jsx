@@ -27,7 +27,7 @@ import NexSearch from "./pages/Ecosystem/NexSearch";
 import About from "./pages/About/About";
 import Vision from "./pages/About/Vision";
 import Team from "./pages/About/Team";
-import Stories from "./pages/About/Stories";
+import StoriesPage from "./pages/About/Stories";
 import Company from "./pages/About/Company";
 import Career from "./pages/About/Career";
 import News from "./pages/About/News";
@@ -110,7 +110,7 @@ function AnimatedRoutesWrapper() {
           <Route index element={<About />} />
           <Route path="vision" element={<Vision />} />
           <Route path="team" element={<Team />} />
-          <Route path="stories" element={<Stories />} />
+          <Route path="stories" element={<StoriesPage />} />
           <Route path="company" element={<Company />} />
           <Route path="career" element={<Career />} />
           <Route path="news" element={<News />} />
