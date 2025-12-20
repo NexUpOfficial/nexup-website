@@ -6,24 +6,77 @@ import "./styles/Header.css";
  * STATIC CONFIGURATION
  * ==================================================== */
 const TITLE_MAP = {
+  /* =========================
+     Home
+  ========================= */
   "/": "NexUP",
+
+  /* =========================
+     Ecosystem
+  ========================= */
   "/ecosystem": "Ecosystem",
   "/ecosystem/nexworld": "NexWorld",
   "/ecosystem/nexnodes": "NexNodes",
   "/ecosystem/nexengine": "NexEngine",
   "/ecosystem/nexhousing": "NexHousing",
-  "/ecosystem/nexsearch": "NexSearch Engine",
-  "/about": "About Us",
+  "/ecosystem/nexsearch": "NexSearch",
+
+  /* =========================
+     About
+  ========================= */
+  "/about": "About NexUP",
   "/about/vision": "Vision",
   "/about/team": "Team",
-  "/contact": "Contact",
+  "/about/stories": "Stories",
+  "/about/company": "Company",
+  "/about/career": "Careers",
+  "/about/news": "News",
+
+  /* =========================
+     Support
+  ========================= */
+  "/support": "Support",
+  "/support/guidelines": "Guidelines",
+  "/support/help": "Help & Support",
+
+  /* =========================
+     Safety
+  ========================= */
+  "/safety": "Safety",
+  "/safety/approach": "Safety Approach",
+  "/safety/privacy": "Privacy Policy",
+  "/safety/trust": "Trust",
+  "/safety/transparency": "Transparency",
+  "/safety/cookies": "Cookies Policy",
+
+  /* =========================
+     Account
+  ========================= */
+  "/dns": "DNS",
+
+  /* =========================
+     Auth
+  ========================= */
   "/login": "Login",
+
+  /* =========================
+     Contact & Feedback
+  ========================= */
+  "/contact": "Contact Us",
+  "/feedback": "Feedback",
+
+  /* =========================
+     Search
+  ========================= */
   "/search": "Search",
-  "support/help": "Help" ,
-  "/support/guidelines":"Guidelines" ,
-  "/support/help":"Help" ,
-  "safety/privacy":"Privacy" ,
+
+  /* =========================
+     Sections
+  ========================= */
+  "/sections/roadmap": "Roadmap",
+  "/sections/terms": "Terms & Conditions",
 };
+
 
 // Check for mobile size outside the component (or in a separate hook)
 // Using a simple window check here for consistency with original code
