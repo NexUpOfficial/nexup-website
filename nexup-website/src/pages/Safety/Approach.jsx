@@ -1,6 +1,6 @@
 // src/pages/Safety/Approach.jsx
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import "../../page-styles/Safety/Approach.css";
 import Footer from "../../components/Footer/Footer";
 
@@ -19,13 +19,38 @@ const Approach = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    // Function to handle "Go Back" action
+    const handleGoBack = () => {
+        // Use browser history go back, since we don't know the exact previous route
+        window.history.back();
+    };
+
     return (
         <div className="approach-page">
             <main className="approach-main-content">
+                
+                {/* *** REVISED PAGE INDICATOR WITH BACK ARROW AND TOOLTIP *** */}
+                <div className="page-indicator-container">
+                    {/* Back Arrow Link with Tooltip */}
+                    <Link 
+                        to="#" 
+                        onClick={handleGoBack} 
+                        className="back-arrow"
+                        aria-label="Go Back"
+                        data-tooltip="Go Back" // Custom attribute for CSS tooltip
+                    >
+                        {/* Left arrow Unicode character */}
+                        &#x2190; 
+                    </Link>
+                    
+                    {/* Page Indicator Text */}
+                    <div className="page-indicator">
+                        <p>Approach</p>
+                    </div>
+                </div>
+                
                 <div className="approach-document">
                     
-                    {/* The top-title-bar is removed as requested */}
-
                     <header className="document-header">
                         <h1>How We Build at NexUP</h1>
                         <h2 className="subtitle">Operating Framework for Responsible Spatial Computing</h2>
@@ -39,7 +64,7 @@ const Approach = () => {
                     </p>
 
                     
-                    {/* Core Principles */}
+                    {/* Core Principles (Sections omitted for brevity, unchanged) */}
                     <Section id="long-term" title="Build for the Long Term">
                         <p>We design NexUP with years in mind, not short-term trends.</p>
                         <ul>
@@ -60,6 +85,7 @@ const Approach = () => {
                         <p className="priority-note">Progress without responsibility is not progress.</p>
                     </Section>
 
+                    {/* ... (Remaining Sections and Footer unchanged) ... */}
                     <Section id="human-centered" title="Human-Centered Design">
                         <p>Technology should feel understandable, empowering, and respectful.</p>
                         <ul>

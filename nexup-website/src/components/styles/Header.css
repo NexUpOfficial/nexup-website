@@ -38,9 +38,7 @@
   height: 100%;
   /* Sleek Dark Glass Base */
   background-color: rgba(3, 3, 4, 0.65); 
-  backdrop-filter: blur(18px); 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  
+  backdrop-filter: blur(18px);   
   transition: all 0.3s ease-in-out;
   pointer-events: none; 
   z-index: -2;
@@ -68,7 +66,7 @@
 /* Active State when Scrolled */
 .header-v-os.scrolled .header-backdrop {
   background-color: rgba(3, 3, 4, 0.85); /* Slightly darker when scrolled */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12); /* More visible border */
+
 }
 
 .header-v-os.scrolled .header-gradient {
@@ -106,6 +104,8 @@
   white-space: nowrap;
   user-select: none;
   transition: all 0.3s ease;
+  margin-left: 10px;
+  letter-spacing: -0.5px;
 }
 
 .header-title:hover {
@@ -118,7 +118,7 @@
 }
 
 .header-title.big-title {
-  font-size: 24px; 
+  font-size: 27px; 
   color: #fff;
 }
 
@@ -149,6 +149,11 @@
   color: inherit;
   transition: all 0.2s ease-out;
   outline: none;
+}
+
+.search-btn{
+  height: 17px;
+  width: 17px;
 }
 
 /* --- CLEAN ICON BUTTONS (Back, Search, Sidebar) --- */
@@ -195,55 +200,36 @@
 }
 
 
-/* --- PRIMARY ACTION BUTTON (Login) --- */
+/* --- OPENAI STYLE BLACK PILL BUTTON --- */
 .login-btn {
   height: 36px;
-  padding: 0 16px;
+  padding: 0 18px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  background-color: #2563eb; /* Deep system blue */
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-
+  background: #333;   /* pure black */
   color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
 
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 60px;   /* fully curved edges */
+
+  font-size: 0.85rem;
+  font-weight: 500;
 
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.15s ease;
+  transition: background-color 0.2s ease;
 }
 
-/* Hover — brighter, not gray */
+/* Hover — subtle, OpenAI-like */
 .login-btn:hover {
-  background-color: #3b82f6; /* Lighter blue */
-  box-shadow:
-    0 4px 10px rgba(37, 99, 235, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transform: translateY(-1px);
+  background: #333;
 }
 
-/* Active — pressed, still blue */
-.login-btn:active {
-  background-color: #1e40af; /* Deeper blue */
-  box-shadow:
-    inset 0 2px 6px rgba(0, 0, 0, 0.4);
-  transform: translateY(0);
-}
-
-/* Focus — system-level accessibility */
+/* Focus — clean accessibility */
 .login-btn:focus-visible {
-  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline: 2px solid rgba(255, 255, 255, 0.35);
   outline-offset: 2px;
 }
 
@@ -262,8 +248,8 @@
 
 .icon-wrapper {
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 /* Base icon */
@@ -272,6 +258,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  top: 2px;
+  left: 5px;
 
   stroke: currentColor;
   stroke-width: 2;
@@ -333,7 +321,7 @@
   transform: translateX(-50%) translateY(5px); 
   animation: tooltip-fade-in 0.3s forwards;
   pointer-events: none;
-  z-index: 1001;
+  z-index: 99999;
 }
 
 @keyframes tooltip-fade-in {

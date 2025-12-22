@@ -1,4 +1,4 @@
-/* src/page-styles/sections/Terms.css */
+/* src/page-styles/sections/Terms.css - FINAL ALIGNMENT: CENTERED, NO BORDERS, HIGH BREATHING SPACE */
 
 /* --- Color Palette (Consistent Dark Mode) --- */
 :root {
@@ -8,7 +8,7 @@
     --color-border: #333333; 
     --color-statement-bg: #1a1a1a;
     --color-link-hover: #cccccc;
-    --sidebar-width: 280px; 
+    /* Removed --sidebar-width usage for centered layout */
     --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --header-height: 60px; 
 }
@@ -21,21 +21,20 @@
 }
 
 /* --------------------------------------------------
-    MAIN CONTENT ALIGNMENT (Centering for Sidebar Layout)
+    MAIN CONTENT ALIGNMENT (Centered)
 -------------------------------------------------- */
 .terms-main-content {
-    /* 1. Ensure the content starts past the fixed sidebar */
-    margin-left: var(--sidebar-width); 
-    
-    /* 2. Set max width for readability */
-    max-width: 900px;
-    
-    /* 3. Center the max-width content horizontally in the remaining space */
+    /* Center the content on the screen */
+    margin-left: auto; 
     margin-right: auto;
     
+    /* Set max width for readability */
+    max-width: 900px;
+    
     /* Vertical positioning for content below the main page header */
-    margin-top: calc(var(--header-height) + 40px);
+    margin-top: calc(var(--header-height) + 15px);
 
+    /* Add horizontal padding for smaller screens */
     padding: 0 5%; 
 }
 
@@ -43,7 +42,7 @@
     display: flex;
     flex-direction: column;
     gap: 30px; 
-    line-height: 1.6;
+    line-height: 1.6; /* High Breathing Space */
     font-size: 1rem; 
 }
 
@@ -54,11 +53,112 @@
 
 
 /* --------------------------------------------------
+    *** PAGE INDICATOR & BACK ARROW STYLES ***
+-------------------------------------------------- */
+
+.page-indicator-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px; 
+    position: relative; 
+    /* Adjust top margin to pull the indicator up */
+    margin-top: calc(var(--header-height) - 15px); 
+}
+
+/* Back Arrow Link RESET */
+.terms-main-content a.back-arrow {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    background-image: none !important;
+    color: var(--color-text-secondary);
+}
+
+.back-arrow {
+    position: absolute;
+    left: 0; /* Align to the content's left edge */
+    top: 50%;
+    transform: translateY(-50%);
+
+    font-size: 1.1rem;
+    font-weight: 700;
+
+    /* HARD RESET */
+    text-decoration: none;
+    border: none;
+    background: none;
+    padding: 6px;
+    cursor: pointer;
+    opacity: 0.85;
+    line-height: 1;
+
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.back-arrow:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+}
+
+/* Tooltip Styles (Consistent) */
+.back-arrow::before[data-tooltip],
+.back-arrow::after[data-tooltip] {
+    position: absolute;
+    top: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.back-arrow::before[data-tooltip] {
+    content: attr(data-tooltip);
+    left: calc(100% + 10px);
+    transform: translateY(-50%) translateX(-5px);
+    padding: 5px 10px;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.back-arrow::after[data-tooltip] {
+    content: "";
+    left: calc(100% + 4px);
+    transform: translateY(-50%) translateX(-5px);
+    border: 6px solid transparent;
+    border-right-color: #333;
+}
+
+.back-arrow:hover::before[data-tooltip],
+.back-arrow:hover::after[data-tooltip] {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* Page Indicator Text */
+.page-indicator {
+    text-align: center;
+    padding: 0;
+}
+
+.page-indicator p {
+    font-size: 0.7rem; 
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0; 
+    border-bottom: none !important; 
+}
+
+
+/* --------------------------------------------------
     HEADER & INTRO 
 -------------------------------------------------- */
 .document-header {
     text-align: center;
-    margin-top: 0; 
+    margin-top: 20px; 
     margin-bottom: 30px; 
 }
 
@@ -90,7 +190,7 @@
     color: var(--color-text-secondary);
     text-align: center;
     padding: 10px 10px 30px; 
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: none; /* REMOVED BORDER */
 }
 
 
@@ -106,7 +206,7 @@
     font-weight: 700;
     margin-bottom: 20px; 
     color: var(--color-text-primary);
-    border-bottom: 1px dashed var(--color-border);
+    border-bottom: none; /* REMOVED DASHED BORDER */
     padding-bottom: 10px;
 }
 
@@ -115,7 +215,7 @@
     color: var(--color-text-secondary);
 }
 
-/* Lists */
+/* Lists - Simpler, no bullet, relying on spacing/indentation */
 .terms-section ul {
     list-style: none;
     padding-left: 0;
@@ -124,19 +224,15 @@
 
 .terms-section li {
     position: relative;
-    padding-left: 20px; 
+    padding-left: 0; 
+    margin-left: 15px; /* Added indentation for list items */
     margin-bottom: 8px; 
     color: var(--color-text-primary);
     font-size: 0.95rem; 
 }
 
 .terms-section li::before {
-    content: '•'; 
-    color: var(--color-text-secondary);
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
+    content: none; /* REMOVED BULLET */
 }
 
 .priority-note {
@@ -146,13 +242,13 @@
     margin-top: 15px; 
 }
 
-/* Statement Box */
+/* Statement Box (Retained the left border for distinction) */
 .statement {
     font-size: 1.05rem; 
     font-weight: 500;
     margin-top: 20px; 
     padding: 15px 20px;
-    border-left: 3px solid var(--color-text-primary);
+    border-left: 3px solid var(--color-text-primary); /* Retained subtle distinction */
     background-color: var(--color-statement-bg);
     color: var(--color-text-primary);
 }
@@ -168,9 +264,11 @@
 .final-message-box {
     margin-top: 25px;
     padding: 20px;
-    border: 1px solid var(--color-text-primary);
-    border-radius: 6px;
+    border: none; /* REMOVED BORDER */
     background-color: var(--color-statement-bg);
+    /* Retaining left border for distinction, like the .statement box */
+    border-left: 3px solid var(--color-text-primary); 
+    border-radius: 0; 
 }
 
 .final-message-box p {
@@ -182,16 +280,21 @@
 
 
 /* --------------------------------------------------
-    RESPONSIVENESS (Mobile: Sidebar hidden, full width content)
+    RESPONSIVENESS 
 -------------------------------------------------- */
 @media (max-width: 900px) {
-    /* On mobile, revert to full width and simple centering */
     .terms-main-content {
-        margin-left: auto; /* Remove sidebar offset */
+        margin-left: auto; 
         margin-right: auto;
         max-width: 100%;
-        margin-top: calc(var(--header-height) + 20px); /* Adjust top margin */
+        margin-top: calc(var(--header-height) + 20px); 
         padding: 0 3%;
+    }
+    
+    /* Adjust arrow position on smaller screens to match padding (if the arrow was here) */
+    /* Since we're adding the arrow to the content, we need to adjust its mobile position too */
+    .back-arrow {
+        left: 3%; 
     }
 
     .document-header {

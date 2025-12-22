@@ -10,9 +10,36 @@ const Trust = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    // Function to handle "Go Back" action
+    const handleGoBack = () => {
+        // Use browser history go back, since we don't know the exact previous route
+        window.history.back();
+    };
+
     return (
         <div className="trust-page">
             <main className="trust-main-content">
+                
+                {/* *** PAGE INDICATOR WITH BACK ARROW *** */}
+                <div className="page-indicator-container">
+                    {/* Back Arrow Link with Tooltip */}
+                    <Link 
+                        to="#" 
+                        onClick={handleGoBack} 
+                        className="back-arrow"
+                        aria-label="Go Back"
+                        data-tooltip="Go Back" // Custom attribute for CSS tooltip
+                    >
+                        {/* Left arrow Unicode character */}
+                        &#x2190; 
+                    </Link>
+                    
+                    {/* Page Indicator Text - Changed to 'Trust' */}
+                    <div className="page-indicator">
+                        <p>Trust</p>
+                    </div>
+                </div>
+                
                 <div className="trust-document">
                     
                     <header className="document-header">
@@ -130,7 +157,7 @@ const Trust = () => {
                         </p>
                     </section>
 
-                    <section className="policy-contact">
+                    <section className="policy-section policy-contact">
                         <h3>Contact & Trust Concerns</h3>
                         <p>
                             If you have questions, concerns, or suggestions related to trust, safety, or platform integrity, we encourage you to reach out through our official communication channels.
@@ -139,7 +166,7 @@ const Trust = () => {
                             Your voice matters.
                         </p>
                         <Link to="/feedback" className="feedback-button-link">
-                           Submit Feedback
+                            Submit Feedback
                         </Link>
                     </section>
 

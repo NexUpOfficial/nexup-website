@@ -1,0 +1,10 @@
+/* src/index.css */
+:root {
+  --bg-color: #000;
+  --text-color: #e0e0e0;
+  --accent-color: #b8a9ff;
+  --sidebar-width: 173px;
+  --nx-black: #000;
+  --nx-text-primary: #e0e0e0;
+  --header-height: 60px;
+}

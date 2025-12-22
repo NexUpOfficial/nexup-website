@@ -1,9 +1,9 @@
 // src/pages/FeedbackForm.jsx
 import React, { useState, useEffect } from "react";
-import { FiCheckCircle, FiLock, FiRepeat, FiPhone } from 'react-icons/fi';
+// Removed: import { FiCheckCircle, FiLock, FiRepeat, FiPhone } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import "../page-styles/Feedback/FeedbackForm.css";
-import Footer from "../components/Footer/Footer"; // Assuming a Footer component exists
+import Footer from "../components/Footer/Footer";
 
 // --- Configuration Data ---
 const MIN_CONTENT_LENGTH = 10;
@@ -125,7 +125,8 @@ const FeedbackForm = () => {
 
                 {isSubmitted && (
                     <div className="submission-success">
-                        <FiCheckCircle className="success-icon" />
+                        {/* Removed icon, using text checkmark */}
+                        <span className="success-icon-text">✓</span> 
                         <p>Feedback received! Thank you for helping us improve NexUP.</p>
                     </div>
                 )}
@@ -267,14 +268,16 @@ const FeedbackForm = () => {
                 <div className="contact-queries-section">
                     <p>Have an urgent query or need immediate assistance?</p>
                     <Link to="/contact" className="contact-button-link">
-                        <FiPhone /> Contact Support
+                        {/* Removed FiPhone icon */}
+                        Contact Support
                     </Link>
                 </div>
 
 
                 {/* Trust & Privacy Assurance */}
                 <div className="trust-assurance-section">
-                    <h3><FiLock className="section-icon" /> Privacy & Trust</h3>
+                    {/* Removed FiLock icon */}
+                    <h3>Privacy & Trust</h3>
                     <ul>
                         <li>Feedback data is never sold or misused</li>
                         <li>Messages are reviewed only by NexUP team</li>
@@ -287,7 +290,8 @@ const FeedbackForm = () => {
 
                 {/* Follow-Up & Community Message */}
                 <div className="follow-up-section">
-                    <h3><FiRepeat className="section-icon" /> What Happens After You Submit?</h3>
+                    {/* Removed FiRepeat icon */}
+                    <h3>What Happens After You Submit?</h3>
                     <ul>
                         <li>Feedback is reviewed internally</li>
                         <li>Relevant teams are notified</li>

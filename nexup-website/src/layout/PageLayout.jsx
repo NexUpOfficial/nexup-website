@@ -10,7 +10,7 @@ export default function PageLayout({ isOpen, children }) {
   const pageRef = useRef(null);
 
   // Match Header height
-  const HEADER_OFFSET = 80;
+  const HEADER_OFFSET = 60;
 
   /* ====================================================
      SCROLL TO TOP BUTTON VISIBILITY

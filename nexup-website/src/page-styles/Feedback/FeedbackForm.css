@@ -1,4 +1,4 @@
-/* src/page-styles/Feedback/FeedbackForm.css */
+/* src/page-styles/Feedback/FeedbackForm.css - FINAL ALIGNMENT: CENTERED, NO ICONS, NO BORDERS */
 
 /* --- Strict Black & White Palette --- */
 :root {
@@ -11,7 +11,7 @@
     --color-button-text: #000000;
     --color-placeholder: #555555;
     --color-focus-ring: #ffffff;
-    --color-success-bg: #333333;
+    --color-success-bg: #1a1a1a; /* Darker background for success message */
     --color-validation-text: #999999;
     --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -54,7 +54,7 @@
 .introduction-section {
     margin-bottom: 40px;
     padding: 0 20px;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: none; /* REMOVED BORDER */
     padding-bottom: 30px;
 }
 
@@ -67,19 +67,22 @@
 .submission-success {
     background-color: var(--color-success-bg);
     color: var(--color-text-primary);
-    padding: 15px;
+    padding: 15px 20px;
     border-radius: 4px;
     margin-bottom: 30px;
     font-weight: 500;
     display: flex;
     align-items: center;
     animation: fadeIn 0.3s ease-in;
+    font-size: 1.05rem;
 }
 
-.submission-success .success-icon {
+.submission-success .success-icon-text {
     margin-right: 10px;
-    font-size: 1.2rem;
-    color: var(--color-text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00ff88; /* Subtle green for success checkmark */
+    line-height: 1;
 }
 
 @keyframes fadeIn {
@@ -105,14 +108,14 @@
     display: block;
     margin-bottom: 10px;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.95rem; /* Slightly increased label size */
     color: var(--color-text-secondary);
 }
 
 .form-group label span {
-  color: var(--color-text-primary);
-  margin-left: 4px;
-  font-size: 1.1rem;
+    color: var(--color-text-primary);
+    margin-left: 4px;
+    font-size: 1.1rem;
 }
 
 .form-row {
@@ -127,23 +130,23 @@
 
 /* Contact Fieldset */
 .contact-fieldset {
-    border: 1px solid var(--color-border);
-    padding: 20px;
-    border-radius: 6px;
+    border: none; /* REMOVED BORDER */
+    padding: 0; /* REMOVED PADDING */
     margin-top: 10px;
     margin-bottom: 40px; 
 }
 
 .contact-fieldset legend {
     color: var(--color-text-secondary);
-    padding: 0 10px;
+    padding: 0;
     font-size: 0.9rem;
     font-weight: 500;
+    margin-bottom: 10px; /* Separating legend from inputs */
 }
 
 /* Vertical spacing for Email input */
 .email-group {
-    margin-top: 20px; 
+    margin-top: 25px; 
 }
 
 .visually-hidden {
@@ -246,7 +249,7 @@
 .contact-queries-section {
     padding: 40px 20px;
     text-align: center;
-    border-top: 1px solid var(--color-border);
+    border-top: none; /* REMOVED BORDER */
     margin-top: 40px;
 }
 
@@ -256,8 +259,7 @@
 }
 
 .contact-button-link {
-    display: inline-flex;
-    align-items: center;
+    display: inline-block; /* Changed from flex to block/inline-block */
     padding: 12px 25px;
     background-color: var(--color-page-bg);
     color: var(--color-text-primary);
@@ -266,10 +268,6 @@
     font-weight: 500;
     border-radius: 6px;
     transition: all 0.2s;
-}
-
-.contact-button-link svg {
-    margin-right: 8px;
 }
 
 .contact-button-link:hover {
@@ -284,7 +282,7 @@
 .trust-assurance-section,
 .follow-up-section {
     padding: 40px 20px 0;
-    border-top: 1px solid var(--color-border);
+    border-top: none; /* REMOVED BORDER */
     margin-top: 60px;
 }
 
@@ -292,15 +290,11 @@
 .follow-up-section h3 {
     font-size: 1.4rem;
     font-weight: 600;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
+    margin-bottom: 25px; /* Increased bottom margin for better separation */
+    display: block; /* Changed from flex to block */
 }
 
-.section-icon {
-    margin-right: 8px;
-    font-size: 1.2em;
-}
+/* Removed .section-icon as it's no longer used */
 
 .trust-assurance-section ul,
 .follow-up-section ul {
@@ -312,29 +306,27 @@
 .trust-assurance-section li,
 .follow-up-section li {
     position: relative;
-    padding-left: 20px;
-    margin-bottom: 8px;
+    padding-left: 0; /* REMOVED PADDING */
+    margin-bottom: 12px; /* Increased margin for line separation */
     color: var(--color-text-secondary);
     font-size: 0.95rem;
 }
 
 .trust-assurance-section li::before,
 .follow-up-section li::before {
-    content: ''; 
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    background-color: var(--color-text-primary);
-    border-radius: 50%;
-    margin-right: 10px;
-    position: absolute;
-    left: 0;
-    top: 5px;
+    content: none; /* REMOVED DOTS/BULLETS */
 }
 
 .trust-assurance-section p {
     font-style: italic;
     font-size: 0.9rem;
+    color: var(--color-text-primary);
+    margin-top: 20px;
+}
+
+.community-message {
+    margin-top: 20px; 
+    font-size: 0.95rem;
     color: var(--color-text-primary);
 }
 
@@ -363,7 +355,7 @@
     }
     
     .contact-fieldset {
-        padding: 15px;
+        padding: 0; /* Reduced padding further */
         margin-left: 0;
         margin-right: 0;
     }
