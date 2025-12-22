@@ -8,9 +8,8 @@
     --color-border: #333333; 
     --color-statement-bg: #1a1a1a;
     --color-link-hover: #cccccc;
-    --sidebar-width: 280px; 
     --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --header-height: 60px; /* Assuming the fixed page header height */
+    --header-height: 60px; 
 }
 
 .approach-page {
@@ -21,22 +20,21 @@
 }
 
 /* --------------------------------------------------
-    MAIN CONTENT ALIGNMENT (Centering Fix)
+    MAIN CONTENT ALIGNMENT (Centered & Responsive)
 -------------------------------------------------- */
 .approach-main-content {
-    /* 1. Ensure the content starts past the fixed sidebar */
-    margin-left: var(--sidebar-width); 
+    /* Center the content on the screen */
+    margin-left: auto !important; 
+    margin-right: auto !important;
     
-    /* 2. Set max width for readability */
-    max-width: 900px;
+    /* Set max width for readability */
+    max-width: 900px !important;
     
-    /* 3. Center the max-width content horizontally in the remaining space */
-    margin-right: auto;
-    
-    /* Vertical positioning for content below the main page header */
-    margin-top: calc(var(--header-height) + 40px); /* Pushes content down past main fixed header (60px) + some space (40px) */
+    /* Vertical positioning: Adjusted for overall layout */
+    margin-top: calc(var(--header-height) + 30px) !important; 
 
-    padding: 0 5%; 
+    /* Add horizontal padding for smaller screens */
+    padding: 0 5% !important; 
 }
 
 .approach-document {
@@ -47,173 +45,138 @@
     font-size: 1rem; 
 }
 
-/* Scroll target for header links */
-.scroll-target {
-    scroll-margin-top: 60px; 
-}
-
 /* --------------------------------------------------
-    TOP TITLE BAR (REMOVED - CSS cleanup)
-    The .top-title-bar styles are now removed.
+    *** REVISED PAGE INDICATOR STYLES ***
 -------------------------------------------------- */
 
+.page-indicator-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the whole block (arrow + text) */
+    margin-bottom: 40px; 
+    position: relative; /* Needed for absolute positioning of arrow */
+}
+
+/* Arrow Styling (Small and subtle) */
+.back-arrow {
+    position: absolute;
+    left: 0; /* Align it to the far left edge of the main content area */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    font-size: 1.1rem; /* Small arrow size */
+    font-weight: 700;
+    color: var(--color-text-secondary); /* Subtle color */
+    text-decoration: none;
+    line-height: 1;
+
+    transition: color 0.2s;
+    padding: 5px; /* Increase hit area */
+    cursor: pointer;
+    /* This makes the arrow itself slightly less visible initially, making the text clearer */
+    opacity: 0.8; 
+}
+
+.back-arrow:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+}
+
+/* Tooltip Styles - HIDDEN BY DEFAULT */
+.back-arrow::before,
+.back-arrow::after {
+    --arrow-size: 6px;
+    --tooltip-color: #333333;
+    
+    position: absolute;
+    top: 50%;
+    
+    /* Key change: Initial state is hidden */
+    opacity: 0;
+    pointer-events: none; /* Ensure tooltip doesn't interfere with mouse events */
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+/* Tooltip Box */
+.back-arrow::before {
+    content: attr(data-tooltip);
+    left: calc(100% + var(--arrow-size) + 5px); /* Position 5px right of the arrow */
+    transform: translateY(-50%) translateX(-5px); /* Start slightly left, smooth into place */
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: var(--tooltip-color);
+    color: var(--color-text-primary);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+/* Tooltip Arrow */
+.back-arrow::after {
+    content: '';
+    border: var(--arrow-size) solid transparent;
+    border-right-color: var(--tooltip-color);
+    left: calc(100% + 5px); 
+    transform: translateY(-50%) translateX(-5px); /* Match text start position */
+}
+
+/* Tooltip VISIBLE on HOVER */
+.back-arrow:hover::before,
+.back-arrow:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0); /* Move to final position */
+}
+
+/* Page Indicator Text */
+.page-indicator {
+    text-align: center;
+    padding: 0;
+}
+
+.page-indicator p {
+    font-size: 0.7rem; 
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0; 
+    border-bottom: none !important; 
+}
+
 
 /* --------------------------------------------------
-    HEADER & INTRO (Aligned under fixed elements)
+    HEADER & INTRO (All borders removed)
 -------------------------------------------------- */
 .document-header {
     text-align: center;
-    /* Removed extra top margin as top-title-bar is gone */
-    margin-top: 0; 
     margin-bottom: 30px; 
 }
 
-.document-header h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-.subtitle {
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-    font-weight: 400;
-    color: var(--color-text-secondary);
-}
-
-.introduction {
-    font-size: 1.1rem;
-    font-weight: 500;
-    line-height: 1.7;
-    padding: 0 10px;
-    text-align: center;
-    color: var(--color-text-primary);
-    margin-bottom: 5px;
-}
-
 .statement-header {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    text-align: center;
+    border-bottom: none !important; 
     padding: 10px 10px 30px; 
-    border-bottom: 1px solid var(--color-border);
 }
 
 
 /* --------------------------------------------------
-    POLICY SECTIONS (Content Blocks)
+    POLICY SECTIONS (No borders, No bullets)
 -------------------------------------------------- */
-.policy-section {
-    padding-top: 25px;
-}
-
 .policy-section h3 {
-    font-size: 1.6rem; 
-    font-weight: 700;
-    margin-bottom: 20px; 
-    color: var(--color-text-primary);
-    border-bottom: 1px dashed var(--color-border);
+    border-bottom: none !important; 
     padding-bottom: 10px;
 }
 
-.policy-section p {
-    margin-bottom: 12px; 
-    color: var(--color-text-secondary);
-}
-
-/* Lists */
-.policy-section ul {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 10px; 
-}
-
-.policy-section li {
-    position: relative;
-    padding-left: 20px; 
-    margin-bottom: 8px; 
-    color: var(--color-text-primary);
-    font-size: 0.95rem; 
-}
-
-.policy-section li::before {
-    content: '•'; 
-    color: var(--color-text-secondary);
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-}
-
-.priority-note {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--color-text-primary);
-    margin-top: 15px; 
-}
-
-/* Statement Box */
-.statement {
-    font-size: 1.05rem; 
-    font-weight: 500;
-    margin-top: 20px; 
-    padding: 15px 20px;
-    border-left: 3px solid var(--color-text-primary);
-    background-color: var(--color-statement-bg);
-    color: var(--color-text-primary);
-}
-
-
 /* --------------------------------------------------
-    FINAL SECTION
--------------------------------------------------- */
-.final-section {
-    padding-bottom: 30px; 
-}
-
-.final-message-box {
-    margin-top: 25px;
-    padding: 20px;
-    border: 1px solid var(--color-text-primary);
-    border-radius: 6px;
-    background-color: var(--color-statement-bg);
-}
-
-.final-message-box p {
-    color: var(--color-text-primary);
-    font-size: 1.05rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-
-/* --------------------------------------------------
-    RESPONSIVENESS (Mobile: Sidebar hidden, full width content)
+    RESPONSIVENESS 
 -------------------------------------------------- */
 @media (max-width: 900px) {
-    /* On mobile, revert to full width and simple centering */
     .approach-main-content {
-        margin-left: auto; /* Remove sidebar offset */
-        margin-right: auto;
-        max-width: 100%;
-        margin-top: calc(var(--header-height) + 20px); /* Adjust top margin */
-        padding: 0 3%;
+        max-width: 100% !important;
+        margin-top: calc(var(--header-height) + 20px) !important; 
+        padding: 0 3% !important;
     }
 
-    .document-header {
-        margin-top: 0; 
-    }
-
-    .document-header h1 {
-        font-size: 2.2rem;
-    }
-
-    .approach-document {
-        gap: 25px;
-    }
-    
-    .policy-section h3 {
-        font-size: 1.4rem;
-        padding-bottom: 8px;
+    /* Adjust arrow position on smaller screens to match padding */
+    .back-arrow {
+        left: 3%; 
     }
 }

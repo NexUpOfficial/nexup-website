@@ -1,221 +1,227 @@
-/* src/page-styles/Safety/Privacy.css */
+/* src/page-styles/Safety/Privacy.css - FINAL CORRECTED VERSION */
 
-/* --- Color Palette (Consistent Dark Mode) --- */
-:root {
-    --color-page-bg: #000000;
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #aaaaaa; 
-    --color-border: #333333; 
-    --color-statement-bg: #1a1a1a;
-    --color-link-hover: #cccccc;
-    --sidebar-width: 280px; 
-    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --header-height: 60px; /* Assuming the fixed page header height */
-}
+/* * NOTE: All CSS variables (--color-page-bg, --color-text-primary, 
+* --header-height, etc.) are assumed to be defined in your global index.css.
+*/
+
 
 .privacy-page {
-    background-color: var(--color-page-bg);
-    min-height: 100vh;
-    color: var(--color-text-primary);
-    font-family: var(--font-family);
+	background-color: var(--color-page-bg);
+	min-height: 100vh;
+	color: var(--color-text-primary);
+	/* Removed font-family to respect global typography */
 }
 
 /* --------------------------------------------------
-    MAIN CONTENT ALIGNMENT (Centering for Sidebar Layout)
+	MAIN CONTENT ALIGNMENT (Centered, NO vertical offset)
 -------------------------------------------------- */
 .privacy-main-content {
-    /* 1. Ensure the content starts past the fixed sidebar */
-    margin-left: var(--sidebar-width); 
-    
-    /* 2. Set max width for readability */
-    max-width: 900px;
-    
-    /* 3. Center the max-width content horizontally in the remaining space */
-    margin-right: auto;
-    
-    /* Vertical positioning for content below the main page header */
-    margin-top: calc(var(--header-height) + 40px); /* Adjust based on fixed header height */
+	/* Center the content on the screen */
+	margin-left: auto;
+	margin-right: auto;
+	
+	/* Set max width for readability */
+	max-width: 900px;
+	
+	/* FIX: Removed margin-top calculation to prevent header offset bug */
+	margin-top: 0;	
 
-    padding: 0 5%; 
+	/* Add horizontal padding for smaller screens */
+	padding: 0 5%;
 }
 
 .privacy-document {
-    display: flex;
-    flex-direction: column;
-    gap: 30px; 
-    line-height: 1.6;
-    font-size: 1rem; 
+	display: flex;
+	flex-direction: column;
+	gap: 30px;	
+	/* Removed generic font-size/line-height to use global typography */
 }
 
-/* Scroll target for header links */
-.scroll-target {
-    scroll-margin-top: 60px; 
+/* --------------------------------------------------
+	*** PAGE INDICATOR STYLES ***
+-------------------------------------------------- */
+
+.page-indicator-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 40px;	
+	position: relative;
+}
+
+/* Arrow Styling (Small and subtle) */
+.back-arrow {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--color-text-secondary);	
+	text-decoration: none;
+	line-height: 1;
+
+	transition: color 0.2s;
+	padding: 5px;
+	cursor: pointer;
+	opacity: 0.8;	
+}
+
+.back-arrow:hover {
+	color: var(--color-text-primary);
+	opacity: 1;
+}
+
+/* Tooltip Styles */
+.back-arrow::before,
+.back-arrow::after {
+	--arrow-size: 6px;
+	--tooltip-color: #333333;
+	position: absolute;
+	top: 50%;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s, transform 0.2s;
+}
+
+.back-arrow::before {
+	content: attr(data-tooltip);
+	left: calc(100% + var(--arrow-size) + 5px);
+	transform: translateY(-50%) translateX(-5px);
+	padding: 5px 10px;
+	border-radius: 4px;
+	background-color: var(--tooltip-color);
+	color: white; /* Ensure text is visible on dark tooltip background */
+	font-size: 0.8rem;
+	white-space: nowrap;
+}
+
+.back-arrow::after {
+	content: '';
+	border: var(--arrow-size) solid transparent;
+	border-right-color: var(--tooltip-color);
+	left: calc(100% + 5px);	
+	transform: translateY(-50%) translateX(-5px);
+}
+
+.back-arrow:hover::before,
+.back-arrow:hover::after {
+	opacity: 1;
+	transform: translateY(-50%) translateX(0);
+}
+
+/* Page Indicator Text */
+.page-indicator {
+	text-align: center;
+	padding: 0;
+}
+
+.page-indicator p {
+	font-size: 0.7rem;	
+	font-weight: 400;
+	color: var(--color-text-secondary);
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin: 0;	
+	border-bottom: none;
 }
 
 
 /* --------------------------------------------------
-    HEADER & INTRO 
+	HEADER & INTRO (All borders removed)
 -------------------------------------------------- */
 .document-header {
-    text-align: center;
-    margin-top: 0; 
-    margin-bottom: 30px; 
-}
-
-.document-header h1 {
-    font-size: clamp(2.2rem, 4vw, 3rem); /* Slightly smaller for the long title */
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-.subtitle {
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-    font-weight: 400;
-    color: var(--color-text-secondary);
-}
-
-.introduction {
-    font-size: 1.1rem;
-    font-weight: 500;
-    line-height: 1.7;
-    padding: 0 10px;
-    text-align: center;
-    color: var(--color-text-primary);
-    margin-bottom: 5px;
+	text-align: center;
+	margin-bottom: 30px;	
 }
 
 .statement-header {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    text-align: center;
-    padding: 10px 10px 30px; 
-    border-bottom: 1px solid var(--color-border);
+	border-bottom: none;
+	padding: 10px 10px 30px;	
 }
 
 
 /* --------------------------------------------------
-    POLICY SECTIONS (Content Blocks)
+	POLICY SECTIONS & TYPOGRAPHY
 -------------------------------------------------- */
 .policy-section {
-    padding-top: 25px;
+	padding-top: 25px;
+	border-top: none;
 }
 
 .policy-section h3 {
-    font-size: 1.6rem; 
-    font-weight: 700;
-    margin-bottom: 20px; 
-    color: var(--color-text-primary);
-    border-bottom: 1px dashed var(--color-border);
-    padding-bottom: 10px;
+	font-size: 1.6rem;	
+	font-weight: 700;
+	margin-bottom: 20px;	
+	color: var(--color-text-primary);
+	border-bottom: none;
+	padding-bottom: 10px;
 }
 
 .policy-section h4 {
-    font-size: 1.2rem; 
-    font-weight: 600;
-    margin-top: 15px; 
-    margin-bottom: 8px;
-    color: var(--color-text-primary);
+	font-size: 1.2rem;
+	font-weight: 600;
+	color: var(--color-text-primary);
+	margin-top: 15px;	
+	margin-bottom: 8px;
 }
 
-.policy-section p {
-    margin-bottom: 12px; 
-    color: var(--color-text-secondary);
+/* Links: Selective !important fix for global conflicts */
+.privacy-main-content a {
+	color: var(--color-text-primary) !important;
+}
+.privacy-main-content a:hover {
+	color: var(--color-link-hover) !important;
 }
 
-/* Lists */
+/* Lists - No bullets, no extra padding */
 .policy-section ul {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 10px; 
+	list-style: none;
+	padding-left: 0;
+	margin-top: 10px;
 }
 
 .policy-section li {
-    position: relative;
-    padding-left: 20px; 
-    margin-bottom: 8px; 
-    color: var(--color-text-primary);
-    font-size: 0.95rem; 
+	padding-left: 0;
+	margin-bottom: 8px;
+	color: var(--color-text-primary);
 }
 
 .policy-section li::before {
-    content: '•'; 
-    color: var(--color-text-secondary);
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
+	content: none;
 }
 
-.priority-note {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--color-text-primary);
-    margin-top: 15px; 
-}
 
 /* Statement Box */
 .statement {
-    font-size: 1.05rem; 
-    font-weight: 500;
-    margin-top: 20px; 
-    padding: 15px 20px;
-    border-left: 3px solid var(--color-text-primary);
-    background-color: var(--color-statement-bg);
-    color: var(--color-text-primary);
+	font-size: 1.05rem;	
+	font-weight: 500;
+	margin-top: 20px;	
+	padding: 15px 20px;
+	border-left: 3px solid var(--color-text-primary);	
+	background-color: var(--color-statement-bg);
+	color: var(--color-text-primary);
+	border-top: none;
+	border-bottom: none;
 }
 
 
 /* --------------------------------------------------
-    FINAL SECTION
--------------------------------------------------- */
-.final-section {
-    padding-bottom: 30px; 
-}
-
-.final-message-box {
-    margin-top: 25px;
-    padding: 20px;
-    border: 1px solid var(--color-text-primary);
-    border-radius: 6px;
-    background-color: var(--color-statement-bg);
-}
-
-.final-message-box p {
-    color: var(--color-text-primary);
-    font-size: 1.05rem;
-    font-weight: 500;
-    margin-bottom: 0;
-}
-
-
-/* --------------------------------------------------
-    RESPONSIVENESS (Mobile: Sidebar hidden, full width content)
+	RESPONSIVENESS	
 -------------------------------------------------- */
 @media (max-width: 900px) {
-    /* On mobile, revert to full width and simple centering */
-    .privacy-main-content {
-        margin-left: auto; /* Remove sidebar offset */
-        margin-right: auto;
-        max-width: 100%;
-        margin-top: calc(var(--header-height) + 20px); /* Adjust top margin */
-        padding: 0 3%;
-    }
+	.privacy-main-content {
+		max-width: 100%;
+		
+		/* Removed vertical margin fix: use 0 as PageLayout handles it */
+		margin-top: 0;	
+		
+		padding: 0 3%;
+	}
 
-    .document-header {
-        margin-top: 0; 
-    }
-
-    .document-header h1 {
-        font-size: 1.8rem;
-    }
-
-    .privacy-document {
-        gap: 25px;
-    }
-    
-    .policy-section h3 {
-        font-size: 1.4rem;
-        padding-bottom: 8px;
-    }
+	/* Adjust arrow position on smaller screens to match padding */
+	.back-arrow {
+		left: 3%;	
+	}
 }

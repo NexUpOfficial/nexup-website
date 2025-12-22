@@ -2,10 +2,10 @@
    GLOBAL RESET & BASICS
 =========================================================== */
 :root {
-  --bg-color: #050505;
+  --bg-color: #000;
   --text-color: #e0e0e0;
   --accent-color: #b8a9ff;
-  --sidebar-width: 260px;
+  --sidebar-width: 173px;
   --transition-speed: 0.4s;
   --transition-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }

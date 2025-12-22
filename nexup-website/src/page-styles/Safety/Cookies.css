@@ -1,156 +1,284 @@
-/* src/components/Modals/PolicyAcceptanceModal.css */
+/* src/page-styles/Safety/Cookies.css - FINAL STYLE ALIGNMENT */
 
-/* --- Variables --- */
+/* --- Color Palette (Consistent Dark Mode) --- */
 :root {
-    --modal-bg: #111111;
-    --modal-text: #ffffff;
-    --modal-border: #333333;
-    --accept-btn-bg: #ffffff;
-    --accept-btn-text: #000000;
-    --link-color: #aaaaaa;
-    --font-family: 'Inter', sans-serif;
+    --color-page-bg: #000000;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #aaaaaa; 
+    --color-border: #333333; 
+    --color-statement-bg: #1a1a1a;
+    --color-link-hover: #cccccc;
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Added font-family */
+    --header-height: 60px; 
+}
+
+.nx-cookie-page {
+    background-color: var(--color-page-bg);
+    min-height: 100vh;
+    color: var(--color-text-primary);
+    font-family: var(--font-family); /* Applied font family */
 }
 
 /* --------------------------------------------------
-    Modal Overlay (Covers the whole screen)
+    MAIN CONTENT ALIGNMENT (Centered)
 -------------------------------------------------- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8); /* Dark, transparent background */
+.nx-cookie-main-content {
+    /* Center the content on the screen */
+    margin-left: auto;
+    margin-right: auto;
+    
+    /* Set max width for readability */
+    max-width: 900px;
+    
+    /* Vertical offset to space content from the very top of the window */
+    margin-top: calc(var(--header-height) + 15px); 
+
+    /* Add horizontal padding for smaller screens */
+    padding: 0 5%;
+}
+
+/* --- DOCUMENT BODY TYPOGRAPHY & SPACING --- */
+.nx-cookies-document {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 30px; 
+    line-height: 1.6; /* Applied Line Spacing */
+    font-size: 1rem; 
+}
+
+/* --------------------------------------------------
+    *** PAGE INDICATOR STYLES ***
+-------------------------------------------------- */
+
+.nx-page-indicator-container {
+    display: flex;
     align-items: center;
-    z-index: 9999; /* Ensure it's on top of everything */
-    font-family: var(--font-family);
+    justify-content: center;
+    margin-bottom: 40px; 
+    position: relative;
+    margin-top: calc(var(--header-height) - 15px);
 }
+
+/* -------------------------------
+    BACK ARROW – CLEAN VERSION
+-------------------------------- */
+
+.nx-cookie-main-content a.nx-back-arrow {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    background-image: none !important;
+}
+
+.nx-back-arrow {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+
+    /* HARD RESET */
+    text-decoration: none;
+    border: none;
+    border-bottom: none;
+    box-shadow: none;
+    outline: none;
+    list-style: none;
+
+    background: none;
+    padding: 6px;
+    cursor: pointer;
+    opacity: 0.85;
+    line-height: 1;
+
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.nx-back-arrow:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+    text-decoration: none;
+    border: none;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+.nx-back-arrow:focus,
+.nx-back-arrow:active {
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+.nx-back-arrow::before,
+.nx-back-arrow::after {
+    content: none !important; 
+}
+
+
+/* -------------------------------
+    TOOLTIP
+-------------------------------- */
+
+.nx-back-arrow::before[data-tooltip],
+.nx-back-arrow::after[data-tooltip] {
+    position: absolute;
+    top: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nx-back-arrow::before[data-tooltip] {
+    content: attr(data-tooltip);
+    left: calc(100% + 10px);
+    transform: translateY(-50%) translateX(-5px);
+
+    padding: 5px 10px;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.nx-back-arrow::after[data-tooltip] {
+    content: "";
+    left: calc(100% + 4px);
+    transform: translateY(-50%) translateX(-5px);
+
+    border: 6px solid transparent;
+    border-right-color: #333;
+}
+
+.nx-back-arrow:hover::before[data-tooltip],
+.nx-back-arrow:hover::after[data-tooltip] {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+
+/* Page Indicator Text */
+.nx-page-indicator {
+    text-align: center;
+    padding: 0;
+}
+
+.nx-page-indicator p {
+    font-size: 0.7rem; 
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px; /* Applied letter spacing */
+    margin: 0; 
+    border-bottom: none;
+}
+
 
 /* --------------------------------------------------
-    Modal Container (The popup itself)
+    HEADER & INTRO 
 -------------------------------------------------- */
-.policy-modal {
-    width: 90%;
-    max-width: 600px;
-    background-color: var(--modal-bg);
-    color: var(--modal-text);
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh; /* Prevents modal from overflowing small screens */
-    overflow-y: auto; /* Allows scrolling if content is too long */
+.nx-document-header {
+    text-align: center;
+    margin-bottom: 30px; 
 }
 
-.modal-header {
-    padding: 20px 30px 15px;
-    border-bottom: 1px solid var(--modal-border);
+.nx-statement-header {
+    border-bottom: none;
+    padding: 10px 10px 30px; 
 }
 
-.modal-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
+
+/* --------------------------------------------------
+    POLICY SECTIONS & TYPOGRAPHY
+-------------------------------------------------- */
+.nx-policy-section {
+    padding-top: 25px;
+    border-top: none;
+}
+
+/* Removed numbering from H3 in JSX, maintaining style here */
+.nx-policy-section h3 {
+    font-size: 1.6rem; 
     font-weight: 700;
+    margin-bottom: 20px; 
+    color: var(--color-text-primary);
+    border-bottom: none;
+    padding-bottom: 10px;
 }
 
-.modal-body {
-    padding: 20px 30px;
-    line-height: 1.6;
-    flex-grow: 1;
-}
-
-.summary-intro {
-    font-size: 1rem;
-    color: var(--link-color);
-    margin-bottom: 25px;
-}
-
-/* Policy List Sections */
-.policy-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-    padding-left: 5px;
-}
-
-.policy-item {
-    border-left: 3px solid var(--modal-border);
-    padding-left: 15px;
-}
-
-.policy-item h4 {
-    margin: 0 0 5px;
-    font-size: 1.1rem;
+/* H4 (Sub-sections) - Used for 'Strictly Necessary Cookies' etc. */
+.nx-policy-section h4 {
+    font-size: 1.2rem;
     font-weight: 600;
+    color: var(--color-text-primary);
+    margin-top: 25px; /* Increased top margin for separation */
+    margin-bottom: 8px;
 }
 
-.policy-item p {
-    margin: 0 0 8px;
-    font-size: 0.9rem;
-    color: var(--link-color);
-}
-
-.policy-link {
-    color: var(--modal-text);
-    font-size: 0.9rem;
+/* Links: Selective !important fix for global conflicts */
+.nx-cookie-main-content a {
+    color: var(--color-text-primary) !important;
     text-decoration: underline;
-    transition: color 0.2s;
+}
+.nx-cookie-main-content a:not(.nx-back-arrow):hover {
+    color: var(--color-link-hover) !important;
 }
 
-.policy-link:hover {
-    color: var(--link-color);
+/* Lists - No bullets, no extra padding */
+.nx-policy-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
 }
 
-.final-prompt {
+.nx-policy-section li {
+    padding-left: 0;
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+}
+
+.nx-policy-section li::before {
+    content: none;
+}
+
+
+/* Statement Box */
+.nx-statement {
+    font-size: 1.05rem; 
     font-weight: 500;
-    font-size: 1rem;
-    border-top: 1px solid var(--modal-border);
-    padding-top: 15px;
-    margin-top: 15px;
+    margin-top: 20px; 
+    padding: 15px 20px;
+    border-left: 3px solid var(--color-text-primary); 
+    background-color: var(--color-statement-bg);
+    color: var(--color-text-primary);
+    border-top: none;
+    border-bottom: none;
 }
 
-/* Modal Footer and Button */
-.modal-footer {
-    padding: 20px 30px;
-    border-top: 1px solid var(--modal-border);
-    text-align: right;
-    flex-shrink: 0;
+/* Footer style */
+.final-message-box {
+    margin-top: 20px;
+    padding: 15px 20px;
+    background-color: var(--color-statement-bg);
+    border-left: 3px solid var(--color-text-primary);
+    text-align: center;
 }
 
-.btn-accept {
-    padding: 12px 25px;
-    font-size: 1rem;
-    font-weight: 700;
-    background-color: var(--accept-btn-bg);
-    color: var(--accept-btn-text);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
 
-.btn-accept:hover {
-    background-color: #cccccc;
-}
+/* --------------------------------------------------
+    RESPONSIVENESS  
+-------------------------------------------------- */
+@media (max-width: 900px) {
+    .nx-cookie-main-content {
+        max-width: 100%;
+        padding: 0 3%;
+    }
 
-/* Mobile Adjustments */
-@media (max-width: 500px) {
-    .policy-modal {
-        max-width: 95%;
-    }
-    .modal-header h2 {
-        font-size: 1.3rem;
-    }
-    .modal-header, .modal-body, .modal-footer {
-        padding: 15px 20px;
-    }
-    .modal-footer {
-        text-align: center;
-    }
-    .btn-accept {
-        width: 100%;
+    /* Adjust arrow position on smaller screens to match padding */
+    .nx-back-arrow {
+        left: 3%; 
     }
 }

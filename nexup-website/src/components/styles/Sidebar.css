@@ -1,219 +1,136 @@
-/* VARIABLES for easier color adjustments */
-:root {
-  /* Colors for the VisionOS-like 'glass' look */
-  --sidebar-bg-color: rgba(255, 255, 255, 0.05);
-  --sidebar-border-color: rgba(255, 255, 255, 0.1);
-  --active-bg-color: rgba(255, 255, 255, 0.2);
-  --active-text-color: #ffffff;
-  --default-text-color: rgba(255, 255, 255, 0.8);
-  --header-label-color: rgba(255, 255, 255, 0.4);
-  --blur-radius: 20px;
-  --nav-item-radius: 12px;
-  --sidebar-width: 260px;
-}
-
-/* --------------------------------------------------
-   BASE CONTAINER & GLASSMORPHISM
--------------------------------------------------- */
+/* ================= ROOT ================= */
 .sidebar-container {
   position: fixed;
   left: 0;
-  width: var(--sidebar-width);
-  z-index: 1001;
-  /* Use a springy transition for VisionOS feel */
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  transform: translateX(calc(var(--sidebar-width) * -1));
-  padding: 10px;
-  box-sizing: border-box;
-
-  /* FIX: prevent invisible sidebar blocking clicks */
-  pointer-events: none;
+  background: #000;
+  width: var(--sidebar-width, 173px);
+  color: #fff;
+  z-index: 999999;
+  transform: translateX(-100%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 
 .sidebar-container.is-open {
   transform: translateX(0);
-  pointer-events: auto;
 }
 
-/* --------------------------------------------------
-   GLASS BACKDROP
--------------------------------------------------- */
+/* ================= BACKDROP ================= */
+/* Kept minimal for structure, fully black */
 .sidebar-backdrop {
   position: absolute;
   inset: 0;
-  background-color: var(--sidebar-bg-color);
-  backdrop-filter: blur(var(--blur-radius));
-  border: 1px solid var(--sidebar-border-color);
-  border-radius: 18px;
-  box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    0 1px 10px rgba(0, 0, 0, 0.2),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  z-index: 0;
+  background: #000;
 }
 
-/* Optional noise */
-.noise-overlay {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.01) 1%, transparent 1%);
-  background-size: 3px 3px;
-  opacity: 0.8;
-  pointer-events: none;
-  border-radius: 18px;
-}
-
-/* --------------------------------------------------
-   SCROLL AREA
--------------------------------------------------- */
+/* ================= SCROLL AREA ================= */
 .sidebar-scroll-area {
   position: relative;
   height: 100%;
   overflow-y: auto;
-  /* Add padding to account for custom scrollbar width */
-  padding-right: 5px; 
   z-index: 1;
 }
 
-/* Custom Scrollbar Styles (for Webkit browsers) */
+/* Hide scrollbar (optional but clean) */
 .sidebar-scroll-area::-webkit-scrollbar {
-  width: 6px;
-}
-.sidebar-scroll-area::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-}
-.sidebar-scroll-area::-webkit-scrollbar-track {
-  background: transparent;
+  width: 0;
 }
 
-/* --------------------------------------------------
-   CONTENT STRUCTURE
--------------------------------------------------- */
+/* ================= CONTENT ================= */
 .sidebar-content {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding-bottom: 20px;
+  padding: 16px;
 }
 
-.section-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+/* Center items vertically */
+.center-vertical {
+  height: 100%;
+  justify-content: center;
+  gap: 10px;
 }
 
-.section-header-label {
-  color: var(--header-label-color);
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 8px 10px 4px;
-}
-
-/* --------------------------------------------------
-   NAV LINKS & ACCORDION
--------------------------------------------------- */
-.nav-link,
-.accordion-trigger {
+/* ================= LINKS ================= */
+.nav-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
-  border-radius: var(--nav-item-radius);
-  color: var(--default-text-color);
-  text-decoration: none;
+  padding: 10px 12px;
+  font-size: 13.5px;
   font-weight: 500;
-  font-size: 14px;
-  transition: all 0.2s ease-in-out;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background 0.25s ease;
 }
 
-.nav-link.sub-link {
-  padding-left: 20px;
-  font-size: 13px;
-  border-radius: 8px;
+.nav-link:hover {
+  background: #111;
 }
 
-.nav-link:hover,
-.accordion-trigger:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
+/* Active state (NO border, NO glow) */
 .nav-link.active {
-  background-color: var(--active-bg-color);
-  color: var(--active-text-color);
-  font-weight: 600;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  background: #111;
 }
 
-/* --------------------------------------------------
-   ACCORDION
--------------------------------------------------- */
-.chevron {
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid var(--default-text-color);
-  transition: transform 0.2s ease;
+/* ================= SUB LINKS ================= */
+.sub-link {
+  padding: 9px 14px;
+  font-size: 12.5px;
+  opacity: 0.95;
 }
 
-.accordion-trigger.open .chevron {
-  transform: rotate(180deg);
-  border-top-color: var(--active-text-color);
-}
-
-.accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
-}
-
-.accordion-content.expanded {
-  /* Set a large enough value to accommodate all children */
-  max-height: 500px;
-}
-
-.accordion-inner {
-  padding: 5px 0;
+/* ================= HOVER GROUP ================= */
+.hover-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
-/* --------------------------------------------------
-   FOOTER
--------------------------------------------------- */
-.sidebar-footer {
+/* Trigger row */
+.hover-trigger {
+  user-select: none;
+}
+
+/* ================= CHEVRON ================= */
+.chevron {
+  opacity: 0;
+  font-size: 13px;
+  font-weight: 700;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+/* Chevron appears ONLY on hover */
+.hover-group:hover .chevron {
+  opacity: 0.4;
+  transform: translateX(0);
+}
+
+/* ================= SUBMENU ================= */
+.hover-submenu {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 10px;
-  color: var(--header-label-color);
-  padding: 20px 10px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  flex-direction: column;
+  margin-left: 10px;
+
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateX(12px);
+  gap: 7px; 
+
+  transition:
+    max-height 0.75s ease,
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.status-dot {
-  width: 6px;
-  height: 6px;
-  background-color: #38c172;
-  border-radius: 50%;
-  box-shadow: 0 0 5px #38c172;
+/* Open submenu on hover */
+.hover-group:hover .hover-submenu {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateX(0);
 }
 
-/* --------------------------------------------------
-   MOBILE BEHAVIOR
--------------------------------------------------- */
-@media (max-width: 768px) {
-  .sidebar-container {
-    /* Slide out completely */
-    transform: translateX(-100%);
-  }
-
-  .sidebar-container.is-open {
-    transform: translateX(0);
-  }
-}

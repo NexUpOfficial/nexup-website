@@ -1,4 +1,5 @@
-// src/pages/Legal/Terms.jsx
+// src/pages/Legal/Terms.jsx - UPDATED WITH BACK ARROW, INDICATOR, AND CLEAN LAYOUT
+
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../page-styles/sections/Terms.css";
@@ -19,9 +20,36 @@ const Terms = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    // Function to handle "Go Back" action
+    const handleGoBack = () => {
+        window.history.back();
+    };
+
     return (
         <div className="terms-page">
             <main className="terms-main-content">
+                
+                {/* *** PAGE INDICATOR WITH BACK ARROW *** */}
+                <div className="page-indicator-container">
+                    {/* Back Arrow Link with Tooltip */}
+                    <Link 
+                        to="#" 
+                        onClick={handleGoBack} 
+                        className="back-arrow"
+                        aria-label="Go Back"
+                        data-tooltip="Go Back" // Tooltip trigger
+                    >
+                        {/* Left arrow Unicode character */}
+                        &#x2190; 
+                    </Link>
+                    
+                    {/* Page Indicator Text (Corrected) */}
+                    <div className="page-indicator">
+                        <p>Terms of Service</p>
+                    </div>
+                </div>
+                {/* *** END INDICATOR *** */}
+
                 <div className="terms-document">
                     
                     <header className="document-header">

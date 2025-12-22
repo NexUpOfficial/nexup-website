@@ -1,4 +1,5 @@
-// src/pages/Safety/Transparency.jsx
+// src/pages/Safety/Transparency.jsx - FINAL ALIGNMENT: CENTERED CONTENT & CORRECT INDICATOR
+
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../page-styles/Safety/Transparency.css";
@@ -19,9 +20,36 @@ const Transparency = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    // Function to handle "Go Back" action
+    const handleGoBack = () => {
+        window.history.back();
+    };
+
+
     return (
         <div className="transparency-page">
             <main className="transparency-main-content">
+                
+                {/* *** PAGE INDICATOR WITH BACK ARROW *** */}
+                <div className="page-indicator-container">
+                    {/* Back Arrow Link with Tooltip */}
+                    <Link 
+                        to="#" 
+                        onClick={handleGoBack} 
+                        className="back-arrow"
+                        aria-label="Go Back"
+                        data-tooltip="Go Back" // Tooltip trigger
+                    >
+                        {/* Left arrow Unicode character */}
+                        &#x2190; 
+                    </Link>
+                    
+                    {/* Page Indicator Text (Corrected) */}
+                    <div className="page-indicator">
+                        <p>Transparency Policy</p>
+                    </div>
+                </div>
+
                 <div className="transparency-document">
                     
                     <header className="document-header">
@@ -52,7 +80,7 @@ const Transparency = () => {
                     {/* What We Are Transparent About */}
                     <Section id="what-we-are-transparent-about" title="What We Are Transparent About">
                         
-                        <h4>1. Platform Purpose & Direction</h4>
+                        <h4>Platform Purpose & Direction</h4>
                         <p>We clearly communicate:</p>
                         <ul>
                             <li>What NexUP is building.</li>
@@ -61,7 +89,7 @@ const Transparency = () => {
                         </ul>
                         <p className="priority-note">We avoid misleading claims or exaggerated promises.</p>
 
-                        <h4>2. Data & Privacy Practices</h4>
+                        <h4>Data & Privacy Practices</h4>
                         <p>We explain:</p>
                         <ul>
                             <li>What data we collect.</li>
@@ -71,7 +99,7 @@ const Transparency = () => {
                         </ul>
                         <p className="priority-note">Privacy policies and data guides are written to be understandable, not hidden behind legal jargon.</p>
 
-                        <h4>3. AI & Automation Use</h4>
+                        <h4>AI & Automation Use</h4>
                         <p>We disclose:</p>
                         <ul>
                             <li>When AI systems are involved in user experiences.</li>
@@ -80,7 +108,7 @@ const Transparency = () => {
                         </ul>
                         <p className="priority-note">We do not present AI behavior as human or infallible.</p>
 
-                        <h4>4. Policies & Rules</h4>
+                        <h4>Policies & Rules</h4>
                         <p>All major policies are publicly accessible, including:</p>
                         <ul>
                             <li>Community Guidelines</li>
@@ -142,7 +170,7 @@ const Transparency = () => {
                         <p>While NexUP is still evolving, we aim to:</p>
                         <ul>
                             <li>Document major platform decisions.</li>
-                            <li>Balance innovation with responsibility.</li>
+                            <li>Balance innovation with responsibility. </li>
                             <li>Make decisions that prioritize long-term trust over short-term gain.</li>
                         </ul>
                         <p className="priority-note">As the platform grows, governance structures will evolve transparently.</p>

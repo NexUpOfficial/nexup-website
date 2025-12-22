@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
+
 import Loader from "./components/TopLoader/Loader";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";

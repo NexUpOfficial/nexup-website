@@ -1,14 +1,15 @@
-/* src/page-styles/Safety/Trust.css (STRICT BLACK & WHITE) */
+/* src/page-styles/Safety/Trust.css */
 
-/* --- Color Palette (OpenAI/Dark Mode Inspired - ONLY Black/White/Grays) --- */
+/* --- Color Palette (Consistent Dark Mode) --- */
 :root {
     --color-page-bg: #000000;
     --color-text-primary: #ffffff;
-    --color-text-secondary: #999999; /* Light gray for secondary text */
-    --color-border: #333333; /* Dark gray for separators */
+    --color-text-secondary: #999999; 
+    --color-border: #333333; 
     --color-button-bg: #ffffff;
     --color-button-text: #000000;
     --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --header-height: 60px; /* Assuming fixed page header height */
 }
 
 .trust-page {
@@ -19,105 +20,191 @@
 }
 
 /* --------------------------------------------------
-    MAIN CONTENT ALIGNMENT (Centered)
+    MAIN CONTENT ALIGNMENT (Centered & Responsive)
 -------------------------------------------------- */
 .trust-main-content {
     /* Centering content and setting max width for document readability */
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 100px 5% 80px; 
+    max-width: 900px !important;
+    margin-left: auto !important; 
+    margin-right: auto !important;
+    
+    /* Vertical positioning: Adjusted for overall layout and new indicator */
+    margin-top: calc(var(--header-height) + 30px) !important; 
+
+    /* Horizontal padding */
+    padding: 0 5% 80px !important; 
 }
 
 .trust-document {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 30px; /* Slightly reduced gap for better flow */
     line-height: 1.7;
     font-size: 1.05rem;
 }
+
+/* --------------------------------------------------
+    *** PAGE INDICATOR & BACK ARROW ***
+-------------------------------------------------- */
+
+.page-indicator-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the whole block (arrow + text) */
+    margin-bottom: 40px; 
+    position: relative; /* Needed for absolute positioning of arrow */
+}
+
+/* Arrow Styling (Small and subtle) */
+.back-arrow {
+    position: absolute;
+    left: 0; /* Align it to the far left edge of the main content area */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    font-size: 1.1rem; /* Small arrow size */
+    font-weight: 700;
+    color: var(--color-text-secondary); /* Subtle color */
+    text-decoration: none;
+    line-height: 1;
+
+    transition: color 0.2s;
+    padding: 5px; /* Increase hit area */
+    cursor: pointer;
+    opacity: 0.8; 
+}
+
+.back-arrow:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+}
+
+/* Tooltip Styles - HIDDEN BY DEFAULT */
+.back-arrow::before,
+.back-arrow::after {
+    --arrow-size: 6px;
+    --tooltip-color: #333333;
+    
+    position: absolute;
+    top: 50%;
+    
+    opacity: 0;
+    pointer-events: none; 
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+/* Tooltip Box */
+.back-arrow::before {
+    content: attr(data-tooltip);
+    left: calc(100% + var(--arrow-size) + 5px); 
+    transform: translateY(-50%) translateX(-5px); 
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: var(--tooltip-color);
+    color: var(--color-text-primary);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+/* Tooltip Arrow */
+.back-arrow::after {
+    content: '';
+    border: var(--arrow-size) solid transparent;
+    border-right-color: var(--tooltip-color);
+    left: calc(100% + 5px); 
+    transform: translateY(-50%) translateX(-5px); 
+}
+
+/* Tooltip VISIBLE on HOVER */
+.back-arrow:hover::before,
+.back-arrow:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0); 
+}
+
+/* Page Indicator Text */
+.page-indicator {
+    text-align: center;
+    padding: 0;
+}
+
+.page-indicator p {
+    font-size: 0.7rem; /* *** REQUESTED FONT SIZE *** */
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0; 
+    border-bottom: none !important; 
+}
+
 
 /* --------------------------------------------------
     HEADER & INTRO
 -------------------------------------------------- */
 .document-header {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px; /* Reduced margin */
 }
 
-.title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 800;
-    margin-bottom: 5px;
-}
-
-.subtitle {
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
-    font-weight: 400;
-    color: var(--color-text-secondary);
-}
-
+/* Aggressively removing border from the intro section */
 .introduction {
     font-size: 1.15rem;
     font-weight: 500;
     line-height: 1.8;
-    padding: 0 20px;
+    padding: 0 20px 20px;
     text-align: center;
     color: var(--color-text-primary);
+    border-bottom: none !important;
 }
 
+
 /* --------------------------------------------------
-    POLICY SECTIONS
+    POLICY SECTIONS (No Separators, No Bullets)
 -------------------------------------------------- */
 .policy-section {
-    padding: 30px 0;
-    /* Subtle horizontal line separator */
-    border-top: 1px solid var(--color-border);
+    padding: 20px 0; /* Reduced padding */
+    /* REMOVED: Subtle horizontal line separator */
+    border-top: none !important;
 }
 
 .policy-section h3 {
     font-size: 1.7rem;
     font-weight: 700;
     margin-bottom: 15px;
-    color: var(--color-text-primary); /* Primary text color for heading */
-}
-
-.policy-section p {
-    margin-bottom: 15px;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
+    /* Ensure no line under the heading */
+    border-bottom: none !important;
 }
 
 .policy-section ul {
-    list-style: none;
-    padding-left: 0;
+    list-style: none !important;
+    padding-left: 0 !important;
     margin-top: 15px;
 }
 
 .policy-section ul li {
-    position: relative;
-    padding-left: 25px;
+    /* REMOVED: padding-left used for bullets */
+    padding-left: 0 !important; 
     margin-bottom: 10px;
     color: var(--color-text-primary);
 }
 
-/* Custom bullet point styling (black and white only) */
+/* REMOVED: Custom bullet point styling */
 .policy-section ul li::before {
-    content: '•'; 
-    color: var(--color-text-primary); /* Use pure white bullet */
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
+    content: none !important; 
 }
 
 /* --------------------------------------------------
-    FINAL STATEMENTS & CONTACT
+    FINAL STATEMENTS & CONTACT (Borders removed/maintained as requested)
 -------------------------------------------------- */
 .final-promise .final-statement {
     font-size: 1.25rem;
     font-weight: 600;
     text-align: center;
     padding: 20px 0;
-    border-top: 1px dashed var(--color-border);
+    /* REMOVED: Dashed border above final statement */
+    border-top: none !important;
     margin-top: 20px;
     color: var(--color-text-primary);
 }
@@ -125,76 +212,23 @@
 .policy-contact {
     padding-top: 30px;
     text-align: center;
+    /* Ensuring no section break border here either */
+    border-top: none !important;
 }
 
-.policy-contact h3 {
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
-}
-
-.contact-callout {
-    font-size: 1.2rem;
-    font-style: italic;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    margin-top: 15px;
-}
-
-/* Feedback Button Link Style (Black and White) */
-.feedback-button-link {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 12px 28px;
-    
-    background-color: var(--color-button-bg); /* White background */
-    color: var(--color-button-text); /* Black text */
-    
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 6px;
-    border: 1px solid var(--color-button-bg);
-    transition: all 0.2s ease-in-out;
-}
-
-.feedback-button-link:hover {
-    /* Hover: Invert colors for high contrast feedback */
-    background-color: transparent; 
-    color: var(--color-text-primary);
-    border-color: var(--color-text-primary);
-}
 
 /* --------------------------------------------------
     RESPONSIVENESS
 -------------------------------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .trust-main-content {
-        padding-top: 60px;
-        padding-bottom: 40px;
+        max-width: 100% !important;
+        margin-top: calc(var(--header-height) + 20px) !important; 
+        padding: 0 3% 40px !important; /* Adjusted padding and bottom space */
     }
 
-    .document-header {
-        margin-bottom: 30px;
-    }
-
-    .title {
-        font-size: 2.5rem;
-    }
-
-    .subtitle {
-        font-size: 1.1rem;
-    }
-
-    .introduction {
-        font-size: 1rem;
-        padding: 0;
-    }
-    
-    .policy-section h3 {
-        font-size: 1.4rem;
-    }
-
-    .trust-document {
-        gap: 30px;
+    /* Adjust arrow position on smaller screens to match padding */
+    .back-arrow {
+        left: 3%; 
     }
 }
