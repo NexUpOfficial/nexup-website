@@ -11,6 +11,7 @@ import PageLayout from "./layout/PageLayout";
 import ScrollToTop from "./components/ScrollToTop";
 import RefreshPage from "./hooks/refresh/RefreshPage";
 
+
 import "./App.css";
 
 /* Pages */
@@ -57,6 +58,7 @@ import DNS from "./pages/Account/DNS";
 /* Sections */
 import Roadmap from "./pages/sections/Roadmap";
 import Terms from "./pages/sections/Terms";
+import ScrollRestoration from "./layout/ScrollRestoration";
 
 /* ============================================================
    Global Scroll Override — Fixes all pages
@@ -197,21 +199,30 @@ export default function App() {
       {/* Reset scroll on route */}
       <ScrollToTop />
 
-      {/* 🔽 ONLY THIS PROP IS CHANGED */}
-      <Sidebar isOpen={isOpen} onClose={setSidebarState} />
+<Header
+  isOpen={isOpen}
+  toggleSidebar={toggleSidebar}
+/>
 
-      {/* EXISTING – UNCHANGED */}
-      <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
+<Sidebar
+  isOpen={isOpen}
+  onClose={closeSidebar}   // ✅ must be THIS
+/>
+<ScrollRestoration />
 
-      <PageLayout isOpen={isOpen}>
-        <RefreshPage
-          isSidebarOpen={isOpen}
-          onOpenSidebar={toggleSidebar}
-          onCloseSidebar={closeSidebar}
-        />
+<PageLayout
+  isOpen={isOpen}
+  onCloseSidebar={closeSidebar}   // ✅ ADD THIS LINE
+>
+  <RefreshPage
+    isSidebarOpen={isOpen}
+    onOpenSidebar={toggleSidebar}
+    onCloseSidebar={closeSidebar}
+  />
 
-        <AnimatedRoutesWrapper />
-      </PageLayout>
+  <AnimatedRoutesWrapper />
+</PageLayout>
+
     </>
   );
 }
