@@ -72,7 +72,6 @@ const TabContent = React.memo(
     const ActiveComponent = COMPONENT_MAP[activeTab];
 
     return (
-      // The key is now passed to the component container below to trigger AnimatePresence
       <motion.div
         key={activeTab} // Unique key for AnimatePresence
         className="about-content"
