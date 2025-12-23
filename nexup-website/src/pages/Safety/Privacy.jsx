@@ -1,263 +1,194 @@
-// src/pages/Safety/Privacy.jsx
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import "../../page-styles/Safety/Privacy.css"; // Ensure correct CSS link
-import Footer from "../../components/Footer/Footer";
+import SystemDocLayout from "../../layout/SystemDocLayout";
 
-// Helper for structured sections (titles will no longer include numbers)
-const Section = ({ id, title, children }) => (
-    <section className="policy-section scroll-target" id={id}>
-        <h3>{title}</h3>
-        {children}
-    </section>
-);
+const privacyDataSections = [
+  {
+    number: "01",
+    title: "Privacy as a Structural Principle",
+    content: (
+      <>
+        <p>
+          Privacy in NexUP is not treated as a feature or a preference.
+        </p>
+        <p>
+          It is treated as a structural principle embedded into
+          system design and data flow.
+        </p>
+      </>
+    ),
+  },
 
-const Privacy = () => {
-    
-    // Ensure page scrolls to top on initial load
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+  {
+    number: "02",
+    title: "Purpose-Bound Data Collection",
+    content: (
+      <>
+        <p>
+          NexUP collects data only for defined,
+          system-required purposes.
+        </p>
+        <p>
+          Data collection is limited to what is necessary
+          for operation, safety, and reliability.
+        </p>
+      </>
+    ),
+  },
 
-    // Function to handle "Go Back" action
-    const handleGoBack = () => {
-        window.history.back();
-    };
+  {
+    number: "03",
+    title: "Data Minimization",
+    content: (
+      <>
+        <p>
+          The system is designed to minimize data collection
+          wherever possible.
+        </p>
+        <p>
+          Absence of data is preferred
+          over retention without clear purpose.
+        </p>
+      </>
+    ),
+  },
 
-    return (
-        <div className="privacy-page">
-            <main className="privacy-main-content">
-                
-                {/* *** PAGE INDICATOR WITH BACK ARROW *** */}
-                <div className="page-indicator-container">
-                    {/* Back Arrow Link with Tooltip */}
-                    <Link 
-                        to="#" 
-                        onClick={handleGoBack} 
-                        className="back-arrow"
-                        aria-label="Go Back"
-                        data-tooltip="Go Back" // Custom attribute for CSS tooltip
-                    >
-                        {/* Left arrow Unicode character */}
-                        &#x2190; 
-                    </Link>
-                    
-                    {/* Page Indicator Text - Changed to 'Privacy' */}
-                    <div className="page-indicator">
-                        <p>Privacy</p>
-                    </div>
-                </div>
-                
-                <div className="privacy-document">
-                    
-                    <header className="document-header">
-                        <h1>NexUP Privacy & Data Protection Guide</h1>
-                        <h2 className="subtitle">Our Commitment to Privacy and Trust</h2>
-                    </header>
-                    
-                    <p className="introduction">
-                        At NexUP, privacy is a core design principle, not a feature added later.
-                    </p>
-                    <p className="statement-header">
-                        We recognize that building AI-powered and immersive digital environments requires deep responsibility in how user data is handled, protected, and respected. This document explains what data we collect, why we collect it, how it is used, and how it is protected — transparently and honestly.
-                    </p>
+  {
+    number: "04",
+    title: "Separation of Identity and Activity",
+    content: (
+      <>
+        <p>
+          Identity information and activity data
+          are handled as distinct system domains.
+        </p>
+        <p>
+          This separation reduces correlation,
+          unintended exposure, and misuse.
+        </p>
+      </>
+    ),
+  },
 
-                    
-                    {/* 1. Scope of This Guide (REMOVED NUMBER) */}
-                    <Section id="scope" title="Scope of This Guide">
-                        <p>This Privacy & Data Guide applies to:</p>
-                        <ul>
-                            <li>The NexUP website</li>
-                            <li>User accounts and profiles</li>
-                            <li>Feedback, contact, and job application submissions</li>
-                            <li>Future NexUP platforms, including AI systems and immersive environments</li>
-                            <li>Any services, tools, or experiences provided under NexUP</li>
-                        </ul>
-                        <p className="priority-note">By using NexUP, users agree to the practices described here.</p>
-                    </Section>
+  {
+    number: "05",
+    title: "User Control and Visibility",
+    content: (
+      <>
+        <p>
+          Users are provided visibility into
+          relevant data associated with their participation.
+        </p>
+        <p>
+          Where feasible, users can control,
+          limit, or remove certain data.
+        </p>
+      </>
+    ),
+  },
 
-                    {/* 2. Core Privacy Principles (REMOVED NUMBER) */}
-                    <Section id="principles" title="Core Privacy Principles">
-                        <p>All data practices at NexUP follow these principles:</p>
-                        <ul>
-                            <li>Minimal collection — collect only what is necessary</li>
-                            <li>Purpose limitation — use data only for clear, defined reasons</li>
-                            <li>User control — respect consent and choice</li>
-                            <li>Security by design — protect data at every layer</li>
-                            <li>Transparency — no hidden data usage</li>
-                        </ul>
-                        <p className="priority-note">Privacy decisions are reviewed continuously as the platform evolves.</p>
-                    </Section>
+  {
+    number: "06",
+    title: "Retention Boundaries",
+    content: (
+      <>
+        <p>
+          Data within NexUP is retained
+          only for defined durations.
+        </p>
+        <p>
+          Retention policies are aligned
+          with operational need and legal requirements.
+        </p>
+      </>
+    ),
+  },
 
-                    {/* 3. Types of Data We May Collect (REMOVED NUMBER) */}
-                    <Section id="data-collected" title="Types of Data We May Collect">
-                        <h4>A. Information You Provide Directly</h4>
-                        <ul>
-                            <li>Name and email address (when provided)</li>
-                            <li>Contact messages and feedback</li>
-                            <li>Job application details and resumes</li>
-                            <li>Optional profile information</li>
-                        </ul>
-                        <p>Providing this information is voluntary unless required for a specific service.</p>
+  {
+    number: "07",
+    title: "Data Access Constraints",
+    content: (
+      <>
+        <p>
+          Access to data is restricted
+          through role-based and system-level controls.
+        </p>
+        <p>
+          No component or operator
+          has unrestricted access by default.
+        </p>
+      </>
+    ),
+  },
 
-                        <h4>B. Technical & Usage Data</h4>
-                        <ul>
-                            <li>Device and browser information</li>
-                            <li>Pages visited and basic usage patterns</li>
-                            <li>Error logs and performance metrics</li>
-                        </ul>
-                        <p>This data helps improve reliability, performance, and user experience.</p>
+  {
+    number: "08",
+    title: "Third-Party and External Data",
+    content: (
+      <>
+        <p>
+          NexUP limits sharing of data
+          with external parties.
+        </p>
+        <p>
+          Where third-party services are involved,
+          data exchange is purpose-bound
+          and contractually constrained.
+        </p>
+      </>
+    ),
+  },
 
-                        <h4>C. Future Platform Data (Planned)</h4>
-                        <p>As NexUP expands into AI and spatial environments:</p>
-                        <ul>
-                            <li>Interaction data within virtual spaces</li>
-                            <li>AI-assisted creation inputs</li>
-                            <li>System performance signals</li>
-                            
-                        </ul>
-                        <p className="priority-note">This data will always follow the same privacy principles outlined here.</p>
-                    </Section>
+  {
+    number: "09",
+    title: "Privacy-Sensitive System Changes",
+    content: (
+      <>
+        <p>
+          Changes that affect data handling,
+          visibility, or privacy assumptions
+          are treated as significant system events.
+        </p>
+        <p>
+          Such changes are documented
+          and disclosed appropriately.
+        </p>
+      </>
+    ),
+  },
 
-                    {/* 4. What We Do NOT Collect (REMOVED NUMBER) */}
-                    <Section id="data-not-collected" title="What We Do NOT Collect">
-                        <p>To be explicit, NexUP does not:</p>
-                        <ul>
-                            <li>Sell personal data</li>
-                            <li>Track users across unrelated platforms</li>
-                            <li>Collect unnecessary sensitive personal data</li>
-                            <li>Use hidden surveillance techniques</li>
-                            <li>Profile users for manipulation or exploitation</li>
-                        </ul>
-                        <p className="priority-note">If a feature requires sensitive data in the future, it will be clearly disclosed.</p>
-                    </Section>
+  {
+    number: "10",
+    title: "Privacy as an Ongoing Discipline",
+    content: (
+      <>
+        <p>
+          Privacy is not static.
+        </p>
+        <p>
+          It evolves alongside the system,
+          informed by usage patterns,
+          risk assessment, and review.
+        </p>
+        <p>
+          Privacy decisions are treated
+          as architectural decisions.
+        </p>
+      </>
+    ),
+  },
+];
 
-                    {/* 5. How We Use Data (REMOVED NUMBER) */}
-                    <Section id="data-use" title="How We Use Data">
-                        <p>User data may be used to:</p>
-                        <ul>
-                            <li>Operate and maintain NexUP services</li>
-                            <li>Respond to inquiries and applications</li>
-                            <li>Improve product performance and usability</li>
-                            <li>Ensure security and prevent abuse</li>
-                            <li>Comply with legal obligations</li>
-                        </ul>
-                        <p className="statement">Data is never used for deceptive, exploitative, or unethical purposes.</p>
-                    </Section>
 
-                    {/* 6. AI, Automation & Data Use (REMOVED NUMBER) */}
-                    <Section id="ai-data" title="AI, Automation & Data Use">
-                        <p>NexUP uses AI responsibly.</p>
-                        <ul>
-                            <li>AI systems are designed to assist users, not manipulate them.</li>
-                            <li>User data is not used to train AI models without proper safeguards.</li>
-                            <li>Automated decisions that significantly affect users are avoided or clearly explained.</li>
-                        </ul>
-                        <p className="priority-note">Human oversight remains a core requirement.</p>
-                    </Section>
-
-                    {/* 7. Data Storage & Security (REMOVED NUMBER) */}
-                    <Section id="storage-security" title="Data Storage & Security">
-                        <p>We take data security seriously.</p>
-                        <ul>
-                            <li>Secure storage systems</li>
-                            <li>Access controls and role-based permissions</li>
-                            <li>Encryption where appropriate</li>
-                            <li>Regular security reviews and updates</li>
-                        </ul>
-                        <p className="priority-note">While no system is risk-free, we actively work to minimize threats and respond responsibly to incidents.</p>
-                    </Section>
-
-                    {/* 8. Data Retention Policy (REMOVED NUMBER) */}
-                    <Section id="retention" title="Data Retention Policy">
-                        <p>Data is kept only as long as necessary</p>
-                        <ul>
-                            <li>Job application data is retained for recruitment purposes only.</li>
-                            <li>Feedback and contact data is retained to improve services.</li>
-                            <li>Inactive or outdated data may be securely deleted.</li>
-                        </ul>
-                        <p className="priority-note">Retention periods may evolve but will always follow minimal-data principles.</p>
-                    </Section>
-
-                    {/* 9. User Rights & Control (REMOVED NUMBER) */}
-                    <Section id="user-rights" title="User Rights & Control">
-                        <p>Users have the right to:</p>
-                        <ul>
-                            <li>Request access to their data</li>
-                            <li>Request correction of inaccurate information</li>
-                            <li>Request deletion of their data (where applicable)</li>
-                            <li>Withdraw consent for optional data usage</li>
-                        </ul>
-                        <p className="statement">Requests can be made through official NexUP contact channels.</p>
-                    </Section>
-
-                    {/* 10. Cookies & Tracking Technologies (REMOVED NUMBER) */}
-                    <Section id="cookies" title="Cookies & Tracking Technologies">
-                        <p>NexUP uses limited cookies where necessary</p>
-                        <ul>
-                            <li>Cookies support basic functionality and performance.</li>
-                            <li>No aggressive or cross-site tracking cookies are used.</li>
-                        </ul>
-                        <p className="priority-note">Detailed cookie behavior may be explained separately if required.</p>
-                    </Section>
-                    
-                    {/* 11. Third-Party Services (REMOVED NUMBER) */}
-                    <Section id="third-party" title="Third-Party Services">
-                        <p>NexUP may use trusted third-party services for:</p>
-                        <ul>
-                            <li>Hosting</li>
-                            <li>Analytics</li>
-                            <li>Email communication</li>
-                            <li>Security monitoring</li>
-                        </ul>
-                        <p className="priority-note">These providers are selected carefully and are expected to meet strong privacy standards.</p>
-                    </Section>
-                    
-                    {/* 12. Legal Compliance (REMOVED NUMBER) */}
-                    <Section id="legal-compliance" title="Legal Compliance">
-                        <p>NexUP aims to comply with applicable data protection laws, including:</p>
-                        <ul>
-                            <li>Local data protection regulations</li>
-                            <li>International privacy standards (where applicable)</li>
-                        </ul>
-                        <p className="priority-note">As laws evolve, NexUP will adapt its practices responsibly.</p>
-                    </Section>
-
-                    {/* 13. Children & Minors (REMOVED NUMBER) */}
-                    <Section id="minors" title="Children & Minors">
-                        <p>NexUP does not knowingly collect personal data from minors without appropriate safeguards.</p>
-                        <p className="priority-note">If such data is discovered, it will be handled or removed responsibly.</p>
-                    </Section>
-
-                    {/* 14. Policy Updates (REMOVED NUMBER) */}
-                    <Section id="policy-updates" title="Policy Updates">
-                        <p>This guide may be updated as NexUP evolves</p>
-                        <ul>
-                            <li>Significant changes will be communicated clearly.</li>
-                            <li>Continued use of NexUP implies acceptance of updated practices.</li>
-                        </ul>
-                        <p className="priority-note">Transparency remains a priority.</p>
-                    </Section>
-
-                    {/* 15. Final Statement (REMOVED NUMBER) */}
-                    <section className="policy-section final-section" id="final-statement">
-                        <h3>Final Statement</h3>
-                        <p>Privacy is foundational to trust.</p>
-                        <div className="final-message-box">
-                            <p>NexUP is committed to building technology that respects people, protects data, and earns confidence over time. If something feels unclear, we believe that clarity is our responsibility — not yours.</p>
-                        </div>
-                    </section>
-                    
-
-                </div>
-            </main>
-            
-            {/* Footer Component with one-liner */}
-            <Footer>
-                Privacy & Data — How NexUP protects your information responsibly.
-            </Footer>
-        </div>
-    );
-};
-
-export default Privacy;
+export default function PrivacyData() {
+  return (
+    <SystemDocLayout
+      indicator="Data Responsibility · Privacy"
+      title="PRIVACY & DATA"
+      intro="Privacy in NexUP is enforced through data minimization, separation of concerns, and explicit system boundaries."
+      sections={privacyDataSections}
+      anchorSections={["01", "03", "05", "07", "09"]}
+      defaultOpen="01"
+      closing="Privacy is not asserted. It is enforced by design."
+      cta={null}   // Privacy pages should not push action
+    />
+  );
+}
