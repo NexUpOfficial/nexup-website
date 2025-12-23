@@ -2,10 +2,11 @@
 import { useEffect, useState, useRef } from "react";
 import "./refresh.css";
 
-const REFRESH_THRESHOLD = 100;    // Pull down distance to trigger refresh
-const SWIPE_THRESHOLD = 100;      // Horizontal distance to trigger sidebar
-const VELOCITY_THRESHOLD = 0.5;   // Speed check
-const MAX_PULL = 200;             // Visual max pull distance
+// Tweak these constants for the "long pull" effect
+const REFRESH_THRESHOLD = 120;     // Increased pull distance to make it a "long pull"
+const SWIPE_THRESHOLD = 100;      
+const VELOCITY_THRESHOLD = 0.5;   // Velocity check is kept for general reference but will be ignored for vertical refresh
+const MAX_PULL = 200;              
 
 function vibrate(ms = 30) {
   if (navigator.vibrate) navigator.vibrate(ms);
@@ -41,7 +42,6 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
       startYRef.current = touch.clientY;
       pullStartTimeRef.current = performance.now();
       
-      // Reset axis locks
       isVerticalRef.current = false;
       isHorizontalRef.current = false;
     };
@@ -59,7 +59,6 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
       const absY = Math.abs(diffY);
 
       // --- 1. AXIS LOCKING LOGIC ---
-      // Determine user intent early (after 10px movement)
       if (!isVerticalRef.current && !isHorizontalRef.current) {
         if (absY > absX && absY > 10) {
           isVerticalRef.current = true;
@@ -68,24 +67,21 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
         }
       }
 
-      // --- 2. VERTICAL LOGIC (Refresh Only) ---
-      // Only allowed if we are at the top of the page AND dragging down AND sidebar is closed
+      // --- 2. VERTICAL LOGIC (Pull-to-Refresh) ---
       if (isVerticalRef.current && !isSidebarOpen && window.scrollY === 0 && diffY > 0) {
-        e.preventDefault(); // Stop native scrolling
+        e.preventDefault(); 
         
         setMode("pulling");
-        const eased = Math.pow(diffY, 0.8); // Resistance effect
+        const eased = Math.pow(diffY, 0.8); 
         updatePullY(Math.min(eased, MAX_PULL));
       }
 
-      // --- 3. HORIZONTAL LOGIC (Sidebar Only) ---
+      // --- 3. HORIZONTAL LOGIC (Sidebar) ---
       if (isHorizontalRef.current) {
         // Prevent horizontal scrolling of page/carousels if we are detecting sidebar swipe
         if (!isSidebarOpen && diffX > 0) { 
-           // Trying to open (Left -> Right)
            e.preventDefault(); 
         } else if (isSidebarOpen && diffX < 0) {
-           // Trying to close (Right -> Left)
            e.preventDefault();
         }
       }
@@ -101,17 +97,17 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
       const diffX = endX - startXRef.current;
       const diffY = endY - startYRef.current;
       
-      // Calculate Velocity
       const timeElapsed = performance.now() - pullStartTimeRef.current;
       const velocityY = Math.abs(diffY) / timeElapsed;
-      const velocityX = Math.abs(diffX) / timeElapsed;
+      // const velocityX = Math.abs(diffX) / timeElapsed; // Not used in this final logic
 
       // --- HANDLE REFRESH (Vertical) ---
       if (isVerticalRef.current && !isSidebarOpen && window.scrollY === 0 && diffY > 0) {
+        
+        // **KEY CHANGE: ONLY refresh if the pull distance exceeds the threshold**
         const meetsThreshold = diffY > REFRESH_THRESHOLD;
-        const meetsVelocity = velocityY > VELOCITY_THRESHOLD;
 
-        if (meetsThreshold || (diffY > 50 && meetsVelocity)) {
+        if (meetsThreshold) {
           triggerRefresh();
         } else {
           snapBack();
@@ -136,11 +132,15 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
       if (!refreshing) {
         isVerticalRef.current = false;
         isHorizontalRef.current = false;
+        // Important: Reset visual state if we didn't trigger refresh
+        if (mode === "pulling") {
+            setMode("idle");
+        }
       }
     };
 
     window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false }); // Non-passive to block scroll
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd);
 
     return () => {
@@ -149,7 +149,7 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
       window.removeEventListener("touchend", onTouchEnd);
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
-  }, [refreshing, isSidebarOpen, onOpenSidebar, onCloseSidebar]);
+  }, [refreshing, isSidebarOpen, onOpenSidebar, onCloseSidebar, mode]);
 
   const snapBack = () => {
     setMode("idle");
@@ -161,35 +161,45 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
     setRefreshing(true);
     vibrate(50);
 
+    // Snap the icon to the threshold height visually
+    updatePullY(REFRESH_THRESHOLD);
+
     // Simulate Refresh
     setTimeout(() => {
-      window.location.reload();
+      // In a real application, you would call your data fetching logic here.
+      // After fetching, you would setRefreshing(false) and snapBack().
+      // For this example, we reload the page:
+      window.location.reload(); 
     }, 800);
   };
 
   // Visual Arrow Logic
   const progress = Math.min(pullY / REFRESH_THRESHOLD, 1);
-  const rotation = progress * 180 + (progress > 0.9 ? Math.sin(progress * Math.PI) * 20 : 0);
-  const blurStrength = Math.min(Math.abs(pullY) / 140, 0.6); 
+  // Simple rotation for the arrow inside the ring
+  const rotation = progress * 180;
+  
+  // The refresh indicator should only appear when actually pulling (diffY > 0)
+  const isPullingDown = pullY > 0 && isVerticalRef.current;
+  
+  // If we are refreshing, we always show it, otherwise only if actively pulling down
+  const showIndicator = mode === "refreshing" || isPullingDown;
 
   return (
     <>
       {/* Blur overlay */}
+      {/* We only show the blur when pulling down, and base opacity on how far the user has pulled */}
       <div
-        className={`refresh-blur-overlay ${
-          mode === "pulling" || mode === "refreshing" ? "visible" : ""
-        }`}
-        style={{ opacity: blurStrength }}
+        className={`refresh-blur-overlay ${mode === "pulling" || mode === "refreshing" ? "visible" : ""}`}
+        // The blur effect should be subtle, maxing out quickly
+        style={{ opacity: pullY / 200 }} 
       />
 
       {/* Arrow shell */}
       <div
-        className={`refresh-arrow-shell ${
-          mode === "refreshing" ? "refreshing" : ""
-        }`}
+        className={`refresh-arrow-shell ${mode === "refreshing" ? "refreshing" : ""}`}
         style={{
-          // Hide if strictly horizontal swipe to reduce clutter, ONLY show on vertical pull
-          opacity: isVerticalRef.current || mode === "refreshing" ? 1 : 0,
+          // Only show the indicator when pulling down or refreshing
+          opacity: showIndicator ? 1 : 0,
           transform: `translateY(${pullY * 0.4}px)`
         }}
       >
@@ -199,20 +209,17 @@ export default function RefreshPage({ onOpenSidebar, onCloseSidebar, isSidebarOp
             <circle className="refresh-loader-head" cx="20" cy="20" r="14" />
           </svg>
         ) : (
-          <>
-            <div className="refresh-sparkle-dust" /> 
-            <svg
-              className="refresh-arrow-svg"
-              viewBox="0 0 40 40"
-              style={{
-                transform: `rotate(${rotation}deg)`
-              }}
-            >
-              <circle cx="20" cy="20" r="14" className="refresh-arrow-circle" />
-              <path d="M20 10 L20 22" className="refresh-arrow-stem" />
-              <path d="M15 18 L20 23 L25 18" className="refresh-arrow-head" />
-            </svg>
-          </>
+          <svg
+            className="refresh-arrow-svg"
+            viewBox="0 0 40 40"
+            style={{
+              transform: `rotate(${rotation}deg)`
+            }}
+          >
+            <circle cx="20" cy="20" r="14" className="refresh-arrow-circle" />
+            <path d="M20 10 L20 22" className="refresh-arrow-stem" />
+            <path d="M15 18 L20 23 L25 18" className="refresh-arrow-head" />
+          </svg>
         )}
       </div>
     </>

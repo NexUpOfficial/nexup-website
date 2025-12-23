@@ -1,152 +1,119 @@
-/* ================================
-   Blur overlay while pulling
-================================ */
+/* ==============================================
+ * REFRESH PAGE STYLES
+ * ============================================== */
+
+/* --- 1. BLUR OVERLAY --- */
 .refresh-blur-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2); /* Subtle dimming */
+  backdrop-filter: blur(0px); /* Base filter */
+  z-index: 999; 
+  pointer-events: none; /* Allows clicks/taps to pass through */
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease; 
-  z-index: 9000;
+  transition: opacity 0.3s ease;
 }
 
-/* ================================
-   Arrow + loader shell
-================================ */
+.refresh-blur-overlay.visible {
+    /* The opacity is controlled by the JS `pullY / 200` for smooth fade */
+    backdrop-filter: blur(5px); /* Apply blur instantly when active */
+}
+
+/* --- 2. ARROW SHELL CONTAINER --- */
 .refresh-arrow-shell {
   position: fixed;
-  top: 18px;
+  top: 0;
   left: 50%;
-  transition:
-    transform 0.35s cubic-bezier(0.17, 0.67, 0.3, 1.4),
-    opacity 0.2s ease,
-    background 0.25s ease;
-   
   transform: translateX(-50%) translateY(0);
-  z-index: 9500;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  z-index: 1000;
+  
+  /* Initial visual state */
   width: 40px;
   height: 40px;
-  border-radius: 999px;
-
-  background: rgba(15, 23, 42, 0.86);
-  border: 1px solid rgba(184, 169, 255, 0.5); 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-  opacity: 0; /* Hidden by default until JS logic shows it */
+  opacity: 0;
+  
+  /* Smooth transitions for the snap back and opacity */
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.2s ease;
 }
 
-/* Only show when visible class present via JS */
-.refresh-blur-overlay.visible ~ .refresh-arrow-shell {
-  opacity: 1;
-}
+/* --- 3. PULLING ARROW (Default State) --- */
 
-.refresh-arrow-shell.refreshing {
-  background: rgba(184, 169, 255, 0.95);
-  box-shadow: 0 0 20px rgba(184, 169, 255, 0.6);
-  opacity: 1 !important;
-}
-
-/* ================================
-   Custom SVG Arrow
-================================ */
 .refresh-arrow-svg {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.25s cubic-bezier(0.17, 0.67, 0.3, 1.4); 
+  width: 100%;
+  height: 100%;
+  transition: transform 0.1s linear; /* Quick rotation transition */
 }
 
+/* The circle forming the shell */
 .refresh-arrow-circle {
-  fill: none;
-  stroke: rgba(184, 169, 255, 0.4);
-  stroke-width: 1.5;
+  fill: rgba(255, 255, 255, 0.1); /* Subtle white fill for the glass effect */
+  stroke: rgba(255, 255, 255, 0.3); /* Light border */
+  stroke-width: 1px;
+  /* Add subtle inner shadow for depth (pure CSS glassmorphism) */
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
 }
 
-.refresh-arrow-stem, .refresh-arrow-head {
-  stroke: #ffffff; 
-  stroke-width: 1.8;
-  stroke-linecap: round;
-}
-
+/* Arrow inside the circle */
+.refresh-arrow-stem,
 .refresh-arrow-head {
+  fill: none;
+  stroke: #ffffff; /* White arrow */
+  stroke-width: 2.5;
+  stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* ================================
-   Circular Loader
-================================ */
+
+/* --- 4. REFRESHING LOADER (Spinner) --- */
+
+/* The shell container during refresh mode */
+.refresh-arrow-shell.refreshing {
+  /* No visual pull translation, it locks at the top */
+  transform: translateX(-50%) translateY(30px); 
+  transition: transform 0.2s ease;
+}
+
 .refresh-loader-svg {
-  width: 24px;
-  height: 24px;
-  transform-origin: center;
+  width: 100%;
+  height: 100%;
+  animation: rotate 1.5s linear infinite;
 }
 
 .refresh-loader-track {
   fill: none;
-  stroke: rgba(184, 169, 255, 0.35);
+  stroke: rgba(255, 255, 255, 0.1); /* Faint gray track */
   stroke-width: 3;
 }
 
 .refresh-loader-head {
   fill: none;
-  stroke: #f9fafb;
+  stroke: #ffffff; /* White moving line */
   stroke-width: 3;
   stroke-linecap: round;
-  stroke-dasharray: 40 88;
+  /* Key properties for making it look like a spinner */
+  stroke-dasharray: 80, 200; 
   stroke-dashoffset: 0;
-  animation: refresh-spin 1.2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite; 
+  animation: dash 1.5s ease-in-out infinite;
 }
 
-@keyframes refresh-spin {
-  0% { transform: rotate(0deg); stroke-dashoffset: 40; }
-  50% { transform: rotate(180deg); stroke-dashoffset: 128; }
-  100% { transform: rotate(360deg); stroke-dashoffset: 40; }
+/* Keyframe Animations */
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-/* ================================
-   Sparkle Effect
-================================ */
-.refresh-sparkle-dust {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-  box-shadow: 
-    0 0 8px 3px rgba(255, 255, 255, 0.4),
-    20px -20px 0 0 rgba(184, 169, 255, 0.2),
-    -15px 15px 0 0 rgba(255, 255, 255, 0.2);
-  opacity: 0;
-  animation: sparkle-burst 0.8s ease-out;
-  pointer-events: none;
-}
-
-.refresh-arrow-shell.refreshing .refresh-sparkle-dust {
-  opacity: 1;
-  animation: sparkle-burst 0.8s ease-out;
-}
-
-@keyframes sparkle-burst {
-  0% { transform: scale(0.5); opacity: 1; }
-  100% { transform: scale(2); opacity: 0; }
-}
-
-/* ================================
-   Hide completely on Desktop
-================================ */
-@media (min-width: 901px) {
-  .refresh-blur-overlay,
-  .refresh-arrow-shell {
-    display: none;
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  50% {
+    stroke-dashoffset: 50;
+  }
+  100% {
+    stroke-dashoffset: 200;
   }
 }

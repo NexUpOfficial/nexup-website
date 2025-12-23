@@ -1,87 +1,50 @@
-// src/layout/PageLayout.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { FiArrowUp } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
 import "./PageLayout.css";
 
-export default function PageLayout({ isOpen, children }) {
+export default function PageLayout({
+  isOpen,
+  onCloseSidebar,
+  children
+}) {
   const [showTop, setShowTop] = useState(false);
   const location = useLocation();
-  const pageRef = useRef(null);
 
-  // Match Header height
-  const HEADER_OFFSET = 60;
-
-  /* ====================================================
-     SCROLL TO TOP BUTTON VISIBILITY
-  ==================================================== */
+  /* Scroll-to-top visibility */
   useEffect(() => {
-    const handleScroll = () => {
-      setShowTop(window.scrollY > 500);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setShowTop(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* ====================================================
-     ROUTE CHANGE → RESET SCROLL
-  ==================================================== */
+  /* Route change */
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "auto" });
+    window.scrollTo(0, 0);
+    if (isOpen) onCloseSidebar();
   }, [location.pathname]);
 
-  /* ====================================================
-     MOBILE SCROLL LOCK (SIDEBAR OPEN)
-     - Desktop: allow scroll
-     - Mobile: lock background scroll
-  ==================================================== */
+  /* Mobile scroll lock ONLY */
   useEffect(() => {
-    const isMobile = window.innerWidth <= 768;
-
-    if (isMobile && isOpen) {
+    if (window.innerWidth <= 768 && isOpen) {
       document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none";
     } else {
       document.body.style.overflow = "";
-      document.body.style.touchAction = "";
     }
-
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-    };
+    return () => (document.body.style.overflow = "");
   }, [isOpen]);
-
-  /* ====================================================
-     SCROLL TO TOP ACTION
-  ==================================================== */
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <>
-      {/* GLOBAL VISUAL LAYERS */}
-      <div className="global-noise" />
-      <div className="global-vignette" />
-
-      {/* MAIN PAGE FRAME */}
-      <main
-        ref={pageRef}
-        className={`page-frame ${isOpen ? "sidebar-open" : ""}`}
-        style={{ marginTop: HEADER_OFFSET }}
-      >
+      <main className={`page-frame ${isOpen ? "sidebar-open" : ""}`}>
         <div className="page-content">
           {children}
         </div>
       </main>
 
-      {/* SCROLL TO TOP BUTTON */}
       <button
         className={`scroll-fab ${showTop ? "visible" : ""}`}
-        onClick={scrollToTop}
-        aria-label="Scroll to top"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <FiArrowUp />
       </button>
