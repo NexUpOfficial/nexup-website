@@ -1,465 +1,318 @@
-import { useRef, useState } from "react";
-import { 
-  motion, 
-  useScroll, 
-  useTransform, 
-  useMotionTemplate, 
-  useMotionValue, 
-  useSpring 
-} from "framer-motion";
-import { Link } from "react-router-dom";
+import React, { useRef, useEffect, useState } from 'react';
 import "../page-styles/Home.css";
-import Footer from "../components/Footer/Footer";
+// Assuming a Footer component and its path
+import Footer from "../components/Footer/Footer"; 
 
-/* =======================================
-   ANIMATION VARIANTS
-======================================= */
-
-const pageRevealVariants = {
-  hidden: { opacity: 0, scale: 0.98, filter: "blur(10px)" },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    filter: "blur(0px)",
-    transition: { duration: 1.2, ease: [0.25, 1, 0.5, 1] }
-  }
+// Video Links (Locked & Final)
+const VIDEO_LINKS = {
+    hero: "https://res.cloudinary.com/dgzikn7nn/video/upload/Futuristic_City_AR_VR_Fly_Through_wxzn65.mp4",
+    nexWorld: "https://res.cloudinary.com/dgzikn7nn/video/upload/NexWorld_Futuristic_Drone_Flythrough_f4pwmj.mp4",
+    nexNodes: "https://res.cloudinary.com/dgzikn7nn/video/upload/v1764942791/NexNodes_Energy_Network_Animation_ufdjqs.mp4",
+    nexEngine: "https://res.cloudinary.com/dgzikn7nn/video/upload/v1765124047/NexEngine_Activation_Powering_NexWorld_afukbv.mp4",
+    nexHousing: "https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4",
+    nexSearch: "https://res.cloudinary.com/dgzikn7nn/video/upload/v1765029785/NexSearch_AI_Cinematic_Showcase_fl7dwk.mp4",
 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-  },
+// Component for the Ecosystem Card with Lazy-Loading and Play/Pause control
+const EcosystemCard = ({ title, microLabel, videoUrl, text, ctaText, ctaClass, routePath }) => {
+    const videoRef = useRef(null);
+    const cardRef = useRef(null);
+    const [shouldLoad, setShouldLoad] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setShouldLoad(true);
+                    setIsPlaying(true);
+                } else {
+                    setIsPlaying(false);
+                }
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5,
+            }
+        );
+
+        if (cardRef.current) {
+            observer.observe(cardRef.current);
+        }
+
+        return () => {
+            if (cardRef.current) {
+                observer.unobserve(cardRef.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        const videoElement = videoRef.current;
+        if (!videoElement) return;
+
+        if (isPlaying) {
+            videoElement.play().catch(error => console.log("Video play failed:", error));
+        } else {
+            videoElement.pause();
+        }
+    }, [isPlaying, shouldLoad]);
+
+    return (
+        <div ref={cardRef} className="ecosystem__card">
+            <div className="card__video-container">
+                {shouldLoad ? (
+                    <video 
+                        ref={videoRef} 
+                        className="card__video" 
+                        src={videoUrl} 
+                        muted 
+                        loop 
+                        playsInline
+                        preload="metadata"
+                    >
+                        {/* Fallback source could be added here */}
+                    </video>
+                ) : (
+                    // Placeholder until loaded
+                    <div className="card__video" style={{backgroundColor: '#111', height: '100%'}}></div>
+                )}
+            </div>
+            <div className="card__content">
+                <span className="card__micro-label">{microLabel}</span>
+                <h3 className="card__title">{title}</h3>
+                <p className="card__text text--secondary">{text}</p>
+                {/* Linked to routePath */}
+                <a href={routePath} className={`cta ${ctaClass}`}>{ctaText} →</a>
+            </div>
+        </div>
+    );
 };
 
-const itemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 50, damping: 20 },
-  },
+const Home = () => {
+    return (
+        <div className="home">
+
+            {/* 1. HERO — WORLD ENTRY (FINAL OS DASHBOARD LAYOUT) */}
+            <section className="section-hero">
+                {/* LEFT PANEL: TEXT & CTA (Solid Black Background) */}
+                <div className="hero__panel-left">
+                    <span className="hero__badge">NEXUP OS // SPATIAL COMPUTING</span>
+                    <h1 className="hero__title">NEXUP</h1>
+                    <h2 className="hero__subtitle">The Spatial Operating System</h2>
+                    
+                    {/* Updated Short Description */}
+                    <p className="hero__supporting-line text--subtle">
+                        A unified system for building, living, and operating inside persistent digital worlds.
+                    </p>
+                    
+                    <div className="hero__cta-group">
+                        {/* CTA: Enter NexWorld -> /ecosystem/nexworld */}
+                        <a href="/ecosystem/nexworld" className="cta cta-primary">Enter NexWorld →</a>
+                        {/* CTA: How NexUP Works -> /architecture */}
+                        <a href="/architecture" className="cta cta-secondary">How NexUP Works</a>
+                    </div>
+                </div>
+
+                {/* RIGHT PANEL: VIDEO PREVIEW (No Overlay/Blur) */}
+                <div className="hero__panel-right">
+                    <div className="hero__video-container">
+                        <video 
+                            className="hero__video" 
+                            src={VIDEO_LINKS.hero} 
+                            autoPlay 
+                            muted 
+                            loop 
+                            playsInline
+                        ></video>
+                    </div>
+                </div>
+            </section>
+
+            {/* 2. CONTEXT STRIP — POWERING THE PLATFORM */}
+            <section className="section-context">
+                <div className="context__list">
+                    <span>UNREAL ENGINE 5</span>
+                    <span>•</span>
+                    <span>UNITY</span>
+                    <span>•</span>
+                    <span>WEBXR</span>
+                    <span>•</span>
+                    <span>NVIDIA OMNIVERSE</span>
+                    <span>•</span>
+                    <span>SOLANA</span>
+                    <span>•</span>
+                    <span>AI</span>
+                </div>
+            </section>
+
+            {/* 3. THE SHIFT & 4. MINI MANIFESTO */}
+            <section className="section-shift">
+                {/* 3. THE SHIFT */}
+                <div className="shift__content">
+                    <h2 className="shift__title">The World Is No Longer Flat.</h2>
+                    <div className="shift__text">
+                        <p className="text--secondary">For decades, digital experiences have been confined to screens, applications, and isolated platforms. But reality is changing.</p>
+                        <p className="text--secondary">Persistent worlds, spatial interfaces, and intelligent systems are redefining how humans interact with technology.</p>
+                    </div>
+                    <p className="shift__transition-line">NexUP is built for this shift.</p>
+                    {/* CTA: Read the Manifesto -> /about/vision */}
+                    <a href="/about/vision" className="cta cta-secondary">Read the Manifesto →</a>
+                </div>
+
+                {/* 4. MINI MANIFESTO */}
+                <div className="section-manifesto">
+                    <h3 className="manifesto__statement">
+                        We are building a world where intelligence and immersion exist as one continuous reality.
+                    </h3>
+                    <p className="manifesto__supporting-line text--secondary">
+                        No dashboards. No disconnected apps. Just living systems that respond, adapt, and evolve.
+                    </p>
+                </div>
+            </section>
+
+            {/* 5. HOW NEXUP WORKS — SYSTEM FLOW */}
+            <section className="section-flow">
+                <span className="section__label">ARCHITECTURE</span>
+                <h2 className="section__title">How NexUP Operates</h2>
+                
+                {/*  */}
+                <div className="flow__diagram">
+                    <div className="flow__step">Physical Reality</div>
+                    <div className="flow__arrow">↓</div>
+                    <div className="flow__step">NexNodes — Distributed AI & Compute Infrastructure</div>
+                    <div className="flow__arrow">↓</div>
+                    <div className="flow__step">NexEngine — Real-Time Simulation & World Logic</div>
+                    <div className="flow__arrow">↓</div>
+                    <div className="flow__step">NexWorld — Persistent Spatial Experiences</div>
+                </div>
+
+                <p className="flow__supporting-line text--subtle">
+                    Every layer functions together as a single operating system, not separate products.
+                </p>
+                {/* CTA: View Full Architecture -> /architecture */}
+                <a href="/architecture" className="cta cta-secondary">View Full Architecture →</a>
+            </section>
+
+            {/* 6. ECOSYSTEM — ONE WORLD, MULTIPLE LAYERS */}
+            <section className="section-ecosystem section--dark">
+                <h2 className="section__title">One World. Multiple Layers.</h2>
+
+                <div className="ecosystem__grid">
+                    <EcosystemCard
+                        title="NexWorld"
+                        microLabel="EXPERIENCE"
+                        videoUrl={VIDEO_LINKS.nexWorld}
+                        text="The immersive layer where users live, explore, and interact inside persistent digital environments."
+                        ctaText="Explore NexWorld"
+                        ctaClass="cta-secondary"
+                        routePath="/ecosystem/nexworld"
+                    />
+                    <EcosystemCard
+                        title="NexNodes"
+                        microLabel="INFRASTRUCTURE"
+                        videoUrl={VIDEO_LINKS.nexNodes}
+                        text="The decentralized intelligence network powering computation, AI reasoning, and real-time synchronization across the world."
+                        ctaText="Discover NexNodes"
+                        ctaClass="cta-secondary"
+                        routePath="/ecosystem/nexnodes"
+                    />
+                    <EcosystemCard
+                        title="NexEngine"
+                        microLabel="CREATION"
+                        videoUrl={VIDEO_LINKS.nexEngine}
+                        text="The creation and simulation layer where physics, AI behavior, and world logic are built and executed."
+                        ctaText="Open NexEngine"
+                        ctaClass="cta-secondary"
+                        routePath="/ecosystem/nexengine"
+                    />
+                    <EcosystemCard
+                        title="NexHousing"
+                        microLabel="LIVING"
+                        videoUrl={VIDEO_LINKS.nexHousing}
+                        text="Spatial living environments blending digital ownership, real-world infrastructure, and augmented reality."
+                        ctaText="View NexHousing"
+                        ctaClass="cta-secondary"
+                        routePath="/ecosystem/nexhousing"
+                    />
+                    <EcosystemCard
+                        title="NexSearch"
+                        microLabel="DISCOVERY"
+                        videoUrl={VIDEO_LINKS.nexSearch}
+                        text="A reality-first search system that allows users to query physical and digital spaces instantly."
+                        ctaText="Use NexSearch"
+                        ctaClass="cta-secondary"
+                        routePath="/ecosystem/nexsearch"
+                    />
+                </div>
+            </section>
+
+            {/* 7. USE-CASE SNAPSHOTS */}
+            <section className="section-use-cases">
+                <h2 className="section__title">Built for Every Layer of Society</h2>
+
+                <div className="use-cases__grid">
+                    <div className="use-case__pill">
+                        <h4 className="use-case__role">Developers</h4>
+                        <p className="use-case__description">Build intelligent worlds, simulations, and spatial applications.</p>
+                    </div>
+                    <div className="use-case__pill">
+                        <h4 className="use-case__role">Creators</h4>
+                        <p className="use-case__description">Design immersive experiences without traditional boundaries.</p>
+                    </div>
+                    <div className="use-case__pill">
+                        <h4 className="use-case__role">Enterprises</h4>
+                        <p className="use-case__description">Train, simulate, and operate inside real-time digital twins.</p>
+                    </div>
+                    <div className="use-case__pill">
+                        <h4 className="use-case__role">Citizens</h4>
+                        <p className="use-case__description">Live, explore, and own spaces inside persistent digital worlds.</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* 8. MID-PAGE CTA — CHOOSE YOUR PATH */}
+            <section className="section-mid-cta section--dark">
+                <h2 className="mid-cta__title">Choose How You Enter NexUP</h2>
+                <p className="mid-cta__helper">Different paths for different builders.</p>
+                <div className="mid-cta__options">
+                    {/* CTA: Build on NexUP -> /ecosystem/nexengine */}
+                    <a href="/ecosystem/nexengine" className="mid-cta__option-cta cta-primary">Build on NexUP →</a>
+                    {/* CTA: Explore NexWorld -> /ecosystem/nexworld */}
+                    <a href="/ecosystem/nexworld" className="mid-cta__option-cta cta-secondary">Explore NexWorld →</a>
+                    {/* CTA: Partner with NexUP -> /contact */}
+                    <a href="/contact" className="mid-cta__option-cta cta-secondary">Partner with NexUP →</a>
+                </div>
+            </section>
+
+            {/* 9. FUTURE DIRECTION */}
+            <section className="section-future">
+                <h2 className="section__title">Where NexUP Is Going</h2>
+                <p className="future__text text--secondary">
+                    NexUP is designed for a future where cities are augmented, worlds are persistent, and intelligence is embedded into reality itself.
+                </p>
+                <div className="future__pillars">
+                    <span className="future__pillar">AR-DRIVEN CITIES</span>
+                    <span className="future__pillar">PERSISTENT DIGITAL WORLDS</span>
+                    <span className="future__pillar">AI-NATIVE ENVIRONMENTS</span>
+                </div>
+                {/* CTA: View Roadmap -> /sections/roadmap */}
+                <a href="/sections/roadmap" className="cta cta-primary">View Roadmap →</a>
+            </section>
+
+            {/* 10. FINAL IDENTITY STATEMENT */}
+            <section className="section-final">
+                <h2 className="final__statement">
+                    NexUP is not a platform.<br />
+                    It is an operating system for <span>reality</span>.
+                </h2>
+            </section>
+
+            {/* FOOTER */}
+            <Footer />
+        </div>
+    );
 };
 
-/* =======================================
-   COMPONENT: SCROLL INDICATOR
-======================================= */
-function ScrollIndicator() {
-  return (
-    <motion.div 
-      className="scroll-indicator"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.5, duration: 1 }}
-      aria-hidden="true"
-    >
-      <div className="mouse-icon">
-        <div className="wheel"></div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* =======================================
-   COMPONENT: PARTNERS / TECH STACK
-======================================= */
-function PartnersStrip() {
-  const partners = ["Unreal Engine 5", "Unity", "WebXR", "NVIDIA Omniverse", "React Three Fiber", "Solana"];
-  
-  return (
-    <div className="partners-strip">
-      <div className="partners-track">
-        {[...partners, ...partners, ...partners].map((partner, index) => (
-          <span key={index} className="partner-item">{partner}</span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* =======================================
-   COMPONENT: SPOTLIGHT CARD
-======================================= */
-function SpotlightCard({ children, className = "", to }) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const [isHovered, setHovered] = useState(false);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
-  return (
-    <Link
-      to={to}
-      className={`bento-card ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      aria-label={`Explore ${to.split('/').pop()}`}
-    >
-      <motion.div
-        className="spotlight-overlay"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              500px circle at ${mouseX}px ${mouseY}px,
-              rgba(184, 169, 255, 0.10),
-              transparent 80%
-            )
-          `,
-        }}
-      />
-      <div className={`glass-streak ${isHovered ? 'animate' : ''}`} />
-      <div className="card-main-content">{children}</div>
-      <motion.div 
-        className="card-explore-wrapper"
-        initial={{ opacity: 0.6, x: 0 }}
-        animate={{ opacity: isHovered ? 1 : 0.6, x: isHovered ? 5 : 0 }}
-      >
-        <span className="explore-text">Explore</span>
-        <span className="explore-arrow">&rarr;</span>
-      </motion.div>
-    </Link>
-  );
-}
-
-/* =======================================
-   MAIN PAGE COMPONENT
-======================================= */
-export default function Home() {
-  const scrollRef = useRef(null);
-  const mouseX = useSpring(0, { stiffness: 30, damping: 15 });
-  const mouseY = useSpring(0, { stiffness: 30, damping: 15 });
-
-  function handleHeroMouseMove(e) {
-    const { clientX, clientY, currentTarget } = e;
-    const { width, height } = currentTarget.getBoundingClientRect();
-    const xPct = (clientX / width) - 0.5;
-    const yPct = (clientY / height) - 0.5;
-    mouseX.set(xPct * 20);
-    mouseY.set(yPct * 20);
-  }
-
-  const { scrollYProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start start", "end start"],
-  });
-
-  const yHero = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacityHero = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scaleHeroScroll = useTransform(scrollYProgress, [0, 1], [1, 1.05]); 
-
-  return (
-    <div className="home-container" ref={scrollRef}>
-      
-      <div className="brand-watermark">NEXUP // OS</div>
-
-      {/* =====================================================
-           1. WORLD ENTRY / SYSTEM ACCESS
-      ====================================================== */}
-      <section 
-        className="hero-fullscreen-wrapper" 
-        onMouseMove={handleHeroMouseMove}
-      >
-        <motion.div 
-          className="video-background-wrapper"
-          style={{ scale: scaleHeroScroll }}
-          variants={pageRevealVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="video-background">
-            {/* UPDATED: Added fetchpriority for faster loading */}
-            <video
-              poster="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
-              src="https://res.cloudinary.com/dgzikn7nn/video/upload/Futuristic_City_AR_VR_Fly_Through_wxzn65.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              fetchPriority="high" 
-              className="bg-video"
-              aria-hidden="true"
-            />
-            <div className="video-overlay" />
-            <div className="video-vignette" />
-            <div className="spatial-grid-overlay" />
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="hero-content-layer"
-          style={{ y: yHero, opacity: opacityHero }}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1, ease: "easeOut" }}
-        >
-          <motion.div 
-            className="hero-badge"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            NEXUP OS // v2.0-spatial
-          </motion.div>
-          
-          <motion.h1 
-            className="home-title"
-            style={{ x: mouseX, y: mouseY }}
-          >
-            NEXUP PLATFORM
-
-          </motion.h1>
-
-          <p className="home-subtitle">
-            Establishing Neural Link: Confirming Spatial Integrity...
-          </p>
-
-          {/* Removed .hero-benefits section for a cleaner, system-focused look */}
-
-          <div className="home-buttons">
-            <Link to="/ecosystem" className="primary-btn" aria-label="Launch NeX OS">
-              <span>Launch NeX OS</span>
-              <span className="icon-arrow" aria-hidden="true">&rarr;</span>
-            </Link>
-            <Link to="/about/vision" className="secondary-btn">
-               Our Vision
-            </Link>
-          </div>
-
-          <ScrollIndicator />
-        </motion.div>
-      </section>
-
-      <PartnersStrip />
-
-      {/* =====================================================
-           2. MANIFESTO
-      ====================================================== */}
-      <div className="content-flow">
-        <section className="section manifesto-section">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={containerVariants}
-          >
-            <motion.h2 className="manifesto-text" variants={itemVariants}>
-              We are building a world where <span className="animated-underline">intelligence</span> and <span className="animated-underline">immersion</span> merge.
-            </motion.h2>
-            
-            <motion.p className="manifesto-sub" variants={itemVariants}>
-              No longer just screens. NexUP enables a fluid interaction between physical
-              and virtual environments, powered by a decentralized neural backbone.
-            </motion.p>
-
-            <motion.div variants={itemVariants} className="manifesto-actions">
-              <Link to="/about" className="glass-link">
-                Read the Manifesto &rarr;
-              </Link>
-            </motion.div>
-
-          </motion.div>
-        </section>
-
-        {/* =====================================================
-           3. HOW IT WORKS
-        ====================================================== */}
-        <section className="section how-it-works-section">
-           <motion.div 
-             className="section-header"
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-           >
-              <h3 className="small-label">Architecture</h3>
-              <h2>How NeX UP Works</h2>
-           </motion.div>
-
-           <div className="steps-grid">
-              <div className="step-card">
-                 <div className="step-number">01</div>
-                 <h3>Connect</h3>
-                 <p>Link your physical space to the NexNodes network instantly via our SDK.</p>
-              </div>
-              <div className="step-card">
-                 <div className="step-number">02</div>
-                 <h3>Compute</h3>
-                 <p>Offload physics and AI processing to the decentralized grid.</p>
-              </div>
-              <div className="step-card">
-                 <div className="step-number">03</div>
-                 <h3>Immerse</h3>
-                 <p>Experience low-latency AR overlays rendered directly to your optics.</p>
-              </div>
-           </div>
-        </section>
-
-        {/* =====================================================
-             4. ECOSYSTEM BENTO GRID
-        ====================================================== */}
-        <section className="section bento-section">
-          <motion.div 
-            className="section-header"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="small-label">The Platform</h3>
-            <h2>The NeX UP Ecosystem</h2>
-          </motion.div>
-
-          <motion.div
-            className="bento-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <motion.div variants={itemVariants} className="grid-span-large">
-              <SpotlightCard to="/ecosystem/nexworld" className="card-large">
-                <div className="card-bg-video-wrapper">
-                  <video 
-                    className="card-bg-video" 
-                    autoPlay loop muted playsInline preload="none"
-                    poster="https://images.unsplash.com/photo-1535295972055-1c762f4483e5?q=80&w=1000&auto=format&fit=crop"
-                    src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexWorld_Futuristic_Drone_Flythrough_f4pwmj.mp4" 
-                  />
-                  <div className="card-video-overlay" />
-                </div>
-                <div className="card-text-content">
-                  <h3 className="card-title">NexWorld <div className="hover-line"></div></h3>
-                  <p>The immersive engine powering digital cities and shared 3D realities.</p>
-                </div>
-              </SpotlightCard>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="grid-span-tall">
-               <SpotlightCard to="/ecosystem/nexnodes" className="card-tall">
-                  <div className="card-bg-video-wrapper">
-                    <video 
-                      className="card-bg-video" 
-                      autoPlay loop muted playsInline preload="none"
-                      poster="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop"
-                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1764942791/NexNodes_Energy_Network_Animation_ufdjqs.mp4" 
-                    />
-                    <div className="card-video-overlay overlay-darker" />
-                  </div>
-                  <div className="card-text-content">
-                    <h3 className="card-title">NexNodes <div className="hover-line"></div></h3>
-                    <p>Decentralized intelligence network.</p>
-                  </div>
-               </SpotlightCard>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="grid-span-wide">
-              <SpotlightCard to="/ecosystem/nexengine" className="card-wide">
-                 <div className="card-bg-video-wrapper">
-                    <video 
-                      className="card-bg-video" 
-                      autoPlay loop muted playsInline preload="none"
-                      poster="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000&auto=format&fit=crop"
-                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765124047/NexEngine_Activation_Powering_NexWorld_afukbv.mp4" 
-                    />
-                    <div className="card-video-overlay" />
-                  </div>
-                  <div className="card-text-content">
-                    <h3 className="card-title">NexEngine <div className="hover-line"></div></h3>
-                    <p>Real-time physics and AI computation layer.</p>
-                  </div>
-              </SpotlightCard>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <SpotlightCard to="/ecosystem/nexhousing">
-                  <div className="card-bg-video-wrapper">
-                    <video 
-                      className="card-bg-video" 
-                      autoPlay loop muted playsInline preload="none"
-                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/NexHousing_Futuristic_Smart_Living_District_pwwu48.mp4"
-                    />
-                    <div className="card-video-overlay" />
-                  </div>
-                  <div className="card-text-content">
-                    <h3 className="card-title">NexHousing <div className="hover-line"></div></h3>
-                    <p>AR-powered living spaces.</p>
-                  </div>
-              </SpotlightCard>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <SpotlightCard to="/ecosystem/nexsearch">
-                  <div className="card-bg-video-wrapper">
-                    <video 
-                      className="card-bg-video" 
-                      autoPlay loop muted playsInline preload="none"
-                      src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765029785/NexSearch_AI_Cinematic_Showcase_fl7dwk.mp4" 
-                    />
-                    <div className="card-video-overlay" />
-                  </div>
-                  <div className="card-text-content">
-                    <h3 className="card-title">Search <div className="hover-line"></div></h3>
-                    <p>Query the physical world.</p>
-                  </div>
-              </SpotlightCard>
-            </motion.div>
-
-          </motion.div>
-        </section>
-
-        {/* =====================================================
-           5. MID-PAGE CTA
-        ====================================================== */}
-        <section className="mid-page-cta">
-           <div className="cta-content">
-              <h2>Ready to build the future?</h2>
-              <p>Join thousands of developers building on the Spatial OS.</p>
-              <div className="cta-buttons">
-                 <Link to="/signup" className="primary-btn">Get Started &rarr;</Link>
-                 <Link to="/contact" className="secondary-btn">Contact Sales</Link>
-              </div>
-           </div>
-        </section>
-
-        {/* =====================================================
-             6. FUTURE STATEMENT
-        ====================================================== */}
-        <section className="section future-section-immersive">
-          <div className="aurora-container">
-            <div className="grid-bg"></div>
-            <div className="aurora-blob blob-1" />
-            <div className="aurora-blob blob-2" />
-            <div className="aurora-blob blob-3" />
-            <div className="aurora-glass" />
-
-            <motion.div 
-              className="future-content"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="future-title">
-                The Future is <span className="adaptive-text">Adaptive.</span>
-              </h2>
-              <p className="future-desc">
-                Digital reality is no longer static. It learns, reacts, and evolves with you.
-                <br />Powered by real-time neural networks.
-              </p>
-              <Link to="/sections/roadmap" className="roadmap-btn-glass">
-                View Full Roadmap
-              </Link>
-            </motion.div>
-          </div>
-        </section>
-
-        <Footer />
-      </div>
-    </div>
-  );
-}
+export default Home;

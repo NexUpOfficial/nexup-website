@@ -4,7 +4,7 @@
     GLOBAL VARIABLES
 ========================================================= */
 :root {
-  --footer-bg: #050505;
+  --footer-bg: #000000;
   --footer-text: rgba(255, 255, 255, 0.65);
   --footer-heading: #b8a9ff; /* Neon Purple/Blue for headings */
   --footer-hover: #ffffff;
@@ -25,7 +25,6 @@
   margin-top: auto;
   overflow: hidden;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Top Neon Glow Line */
@@ -73,7 +72,6 @@
     grid-template-columns: 2fr 1fr; 
     gap: 40px;
     padding-bottom: 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     margin-bottom: 40px;
 }
 

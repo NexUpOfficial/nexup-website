@@ -1,505 +1,772 @@
-/* ============================================
-    GLOBAL & ROOT VARIABLES
-============================================ */
+/*
+|--------------------------------------------------------------------------
+| COLOR PALETTE & VARIABLES
+|--------------------------------------------------------------------------
+| Strict adherence to the provided palette.
+*/
 :root {
-    --neon-purple: #b8a9ff;
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-bg: rgba(10, 10, 12, 0.7);
-    --bg-black: #030304; 
-    --text-primary: #ededed;
-    --text-secondary: #a1a1aa;
-    
-    --font-main: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --section-spacing: 120px;
+    /* Background */
+    --color-primary-bg: #000000; /* Pure Black */
+    --color-secondary-dark: #050505; /* Section separation */
+
+    /* Text */
+    --color-primary-text: #FFFFFF; /* Pure White */
+    --color-secondary-text: #B3B3B3; /* Muted white */
+    --color-subtle-text: #8A8A8A;
+
+    /* Accent (Very Limited) */
+    --color-neon-accent: #B8A9FF;
+
+    /* Hierarchy & Focus */
+    --shadow-neon-focus: 0 0 10px rgba(184, 169, 255, 0.4);
+    /* NEW: Specific box shadow requested for videos/visuals */
+    --shadow-visual-neon: 0 6px 20px rgba(184, 169, 255, 0.12);
 }
 
-body {
-    font-family: var(--font-main);
-    background: var(--bg-black);
-    -webkit-font-smoothing: antialiased;
-}
-
-.home-container {
-    width: 100%;
-    background: var(--bg-black);
-    color: var(--text-primary);
+/*
+|--------------------------------------------------------------------------
+| BASE STYLES & RESETS
+|--------------------------------------------------------------------------
+*/
+.home {
+    background-color: var(--color-primary-bg);
+    color: var(--color-primary-text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
     overflow-x: hidden;
-    min-height: 100vh;
+    /* Box sizing for easy layout calculations */
+    box-sizing: border-box; 
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+img, video {
+    max-width: 100%;
+    display: block;
+}
+a {
+    text-decoration: none;
+}
+ul {
+    list-style: none;
+}
+button, input, textarea {
+    font-family: inherit;
+    outline: none;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| TYPOGRAPHY & TEXT UTILITIES
+|--------------------------------------------------------------------------
+*/
+.text--secondary {
+    color: var(--color-secondary-text);
+}
+
+.text--subtle {
+    color: var(--color-subtle-text);
+}
+
+.section__title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.section__label {
+    color: var(--color-neon-accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/*
+|--------------------------------------------------------------------------
+| BUTTON & CTA STYLES
+|--------------------------------------------------------------------------
+*/
+
+.cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s, border-color 0.3s;
+    color: var(--color-primary-text);
+}
+
+/* Primary CTA style - Neon Underline */
+.cta-primary {
+    color: var(--color-primary-text);
+    border-bottom: 2px solid var(--color-neon-accent);
+}
+
+.cta-primary:hover {
+    color: var(--color-neon-accent);
+    filter: brightness(1.2);
+    border-bottom-color: var(--color-neon-accent); /* Keep underline when hovering */
+}
+
+/* Secondary CTA style - Muted White Underline */
+.cta-secondary {
+    color: var(--color-secondary-text);
+    border-bottom: 2px solid var(--color-subtle-text);
+}
+
+.cta-secondary:hover {
+    color: var(--color-primary-text);
+    border-bottom-color: var(--color-primary-text);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| LAYOUT & CONTAINERS
+|--------------------------------------------------------------------------
+*/
+section {
+    padding: 8rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    transition: padding 0.3s;
+}
+
+.section--dark {
+    background-color: var(--color-secondary-dark);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 1. HERO — WORLD ENTRY (FINAL OS DASHBOARD LAYOUT)
+|--------------------------------------------------------------------------
+*/
+.section-hero {
+    min-height: 65vh; 
+    max-height: 800px;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    max-width: 1400px;
+}
+
+.hero__panel-left {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Adjust padding to align text correctly with the max-width and section padding */
+    padding: 5rem 5% 5rem 5%; 
+    background-color: var(--color-primary-bg);
+    z-index: 10;
+}
+
+.hero__panel-right {
+    flex: 1; 
+    overflow: hidden;
     position: relative;
-}
-
-.home-container::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.5)"/%3E%3C/svg%3E');
-    opacity: 0.03;
-    mix-blend-mode: overlay;
-    z-index: 999;
-}
-
-.brand-watermark {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    font-family: monospace;
-    font-size: 10px;
-    color: rgba(255,255,255,0.15);
-    z-index: 50;
-    pointer-events: none;
-    letter-spacing: 2px;
-}
-
-/* ============================================
-    1. WORLD ENTRY / SYSTEM ACCESS
-============================================ */
-.hero-fullscreen-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    min-height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--color-secondary-dark);
+    /* Ensure the right panel respects the max-width and flows well */
+    padding: 2rem; /* Add padding for spacing around the video container */
+}
+
+.hero__video-container {
+    width: 100%;
+    height: 100%;
+    position: relative; /* Changed from absolute for better stacking on mobile */
+    /* top: 0; left: 0; - Removed for relative positioning */
+    /* NEW: Apply the requested border-radius and box-shadow to the container */
+    border-radius: 16px;
+    box-shadow: var(--shadow-visual-neon);
+    /* Maintain aspect ratio or max height */
+    max-height: 600px; /* Limit height */
+}
+
+.hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* NEW: Ensure video fits inside the new 16px border-radius */
+    border-radius: 16px;
+}
+
+/* Text Content Styling */
+.hero__badge {
+    color: var(--color-neon-accent);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.hero__title {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.hero__subtitle {
+    font-size: 2.25rem;
+    font-weight: 300;
+    color: var(--color-secondary-text);
+    margin-bottom: 1.5rem;
+}
+
+.hero__supporting-line {
+    font-size: 1.1rem;
+    color: var(--color-subtle-text);
+    max-width: 400px;
+    line-height: 1.4;
+    margin-bottom: 2.5rem;
+}
+
+.hero__cta-group {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+/*
+|--------------------------------------------------------------------------
+| 2. CONTEXT STRIP
+|--------------------------------------------------------------------------
+*/
+.section-context {
+    padding: 1rem 5%;
+    text-align: center;
+    background-color: var(--color-secondary-dark);
+    /* Removed redundant border-top/bottom as the color is the same */
+    margin-top: 150px; /* Spacing from the hero */
+}
+
+.context__list {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-subtle-text);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/*
+|--------------------------------------------------------------------------
+| 3. THE SHIFT & 4. MINI MANIFESTO
+|--------------------------------------------------------------------------
+*/
+.section-shift {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.shift__content {
+    grid-column: span 6;
+    background-color: var(--color-secondary-dark);
+    padding: 3rem; /* Increased padding for visual balance */
+    border-radius: 4px; /* Added slight border-radius */
+}
+
+.shift__title {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    max-width: 600px;
+}
+
+.shift__text p {
+    font-size: 1.25rem;
+    color: var(--color-secondary-text);
+    margin-bottom: 1.5rem;
+}
+
+.shift__transition-line {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-neon-accent);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-manifesto {
+    grid-column: 7 / span 5;
+    background-color: var(--color-primary-bg);
+    border: 1px solid var(--color-secondary-dark);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 4px; /* Added slight border-radius */
+}
+
+.manifesto__statement {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+}
+
+.manifesto__supporting-line {
+    font-size: 1.1rem;
+    color: var(--color-secondary-text);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 5. HOW NEXUP WORKS — SYSTEM FLOW (Architecture)
+|--------------------------------------------------------------------------
+*/
+.section-flow {
+    text-align: center;
+}
+
+.flow__diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 4rem 0;
+}
+
+.flow__step {
+    padding: 1.25rem 2.5rem; /* Adjusted padding */
+    background-color: var(--color-secondary-dark);
+    border-radius: 8px; /* Slightly larger radius */
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary-text);
+    position: relative;
+    text-align: center;
+    min-width: 300px; 
+    transition: transform 0.3s ease;
+}
+
+.flow__step:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-neon-focus);
+}
+
+.flow__arrow {
+    font-size: 2rem;
+    color: var(--color-neon-accent);
+    margin: 0.5rem 0;
+}
+
+.flow__supporting-line {
+    font-size: 1.1rem;
+    color: var(--color-subtle-text);
+    max-width: 800px;
+    margin: 2rem auto 3rem;
+}
+
+/*
+|--------------------------------------------------------------------------
+| 6. ECOSYSTEM — ONE WORLD, MULTIPLE LAYERS (3-2 Flex Layout)
+|--------------------------------------------------------------------------
+*/
+.section-ecosystem {
+    background-color: var(--color-secondary-dark);
+    text-align: center;
+    padding-bottom: 10rem; /* Increased bottom padding */
+}
+
+.ecosystem__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center items on the row */
+    gap: 2rem; 
+    margin-top: 3rem;
+    padding: 0; /* Removed redundant 5% padding as section handles it */
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ecosystem__card {
+    /* Base width for 3 cards, allowing for 2rem gap */
+    width: calc((100% - 4rem) / 3); 
+    min-width: 300px; 
+    
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    background-color: var(--color-primary-bg);
+    padding: 0;
+    /* NEW: Apply the requested border-radius */
+    border-radius: 16px;
+    border: 1px solid var(--color-secondary-dark);
+    /* NEW: Apply the requested box-shadow to the card */
+    box-shadow: var(--shadow-visual-neon); 
+    transition: all 0.3s ease;
     overflow: hidden;
+    cursor: pointer;
 }
 
-.video-background-wrapper { position: absolute; inset: 0; z-index: 0; }
-.bg-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; }
-.video-overlay { position: absolute; inset: 0; background: rgba(3, 3, 4, 0.35); }
-.video-vignette { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 40%, var(--bg-black) 100%); }
-
-.spatial-grid-overlay {
-    position: absolute; inset: 0;
-    background-size: 50px 50px;
-    background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-    pointer-events: none;
+.ecosystem__card:hover {
+    border-color: var(--color-neon-accent);
+    box-shadow: var(--shadow-neon-focus);
+    transform: translateY(-5px);
 }
 
-.hero-content-layer {
-    position: relative; z-index: 10;
-    text-align: center; max-width: 1000px; padding: 0 24px;
+.card__video-container {
+    height: 200px;
+    overflow: hidden;
+    /* NEW: Ensure container respects the top border-radius */
+    border-top-left-radius: 16px; 
+    border-top-right-radius: 16px; 
+    transition: transform 0.3s ease;
 }
 
-.hero-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 100px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(8px);
-    font-size: 0.75rem; letter-spacing: 0.05em;
-    color: var(--neon-purple); margin-bottom: 20px; font-weight: 500;
+.ecosystem__card:hover .card__video-container {
+    transform: scale(1.05);
 }
 
-.home-title {
-  font-size: clamp(3rem, 7vw, 6rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
-  margin-bottom: 24px;
-  text-transform: uppercase;
-
-  /* Gradient text */
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-
-  font-weight: 700;
-}
-
-
-/* REMOVED: .text-depth class as the title is now one line */
-
-.home-subtitle {
-    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
-    /* UPDATED: Changed color to neon-purple for system status feel */
-    color: var(--neon-purple); 
-    max-width: 600px; margin: 0 auto 40px auto;
-    line-height: 1.8; 
-    font-weight: 500;
-    text-shadow: 0 0 5px rgba(184, 169, 255, 0.2);
-}
-
-/* REMOVED: .hero-benefits and .benefit-pill styling as the section was removed in JSX */
-
-.home-buttons {
-    display: flex; justify-content: center; gap: 24px;
-}
-
-a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--neon-purple);
-    outline-offset: 4px;
-}
-
-.primary-btn {
-  padding: 14px 34px;
-  height: 48px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  background-color: #2563eb; /* System blue */
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-
-  box-shadow:
-    0 8px 20px rgba(37, 99, 235, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-/* Hover — confident lift */
-.primary-btn:hover {
-  background-color: #3b82f6;
-  transform: translateY(-2px);
-  box-shadow:
-    0 14px 28px rgba(37, 99, 235, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-
-/* Active — pressed, still blue */
-.primary-btn:active {
-  background-color: #1e40af;
-  transform: translateY(0);
-  box-shadow:
-    inset 0 4px 10px rgba(0, 0, 0, 0.45);
-}
-
-/* Focus — accessibility */
-.primary-btn:focus-visible {
-  outline: 2px solid rgba(59, 130, 246, 0.6);
-  outline-offset: 3px;
-}
-
-
-.secondary-btn {
-  height: 48px;
-  padding: 0 28px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(14px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.15s ease;
-}
-
-/* Hover — subtle glass lift */
-.secondary-btn:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-/* Active — pressed glass */
-.secondary-btn:active {
-  background-color: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: translateY(0);
-}
-
-/* Focus — accessibility */
-.secondary-btn:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.35);
-  outline-offset: 3px;
-}
-
-
-.scroll-indicator {
-  position: absolute;
-  bottom: -150px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.scroll-indicator:hover {
-  opacity: 1;
-}
-
-/* Mouse shell */
-.mouse-icon {
-  width: 26px;
-  height: 40px;
-
-  display: flex;
-  justify-content: center;
-  padding-top: 7px;
-
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(10px) saturate(160%);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 6px 16px rgba(0, 0, 0, 0.35);
-}
-
-/* Wheel */
-.wheel {
-  width: 3px;
-  height: 7px;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.95),
-    rgba(255, 255, 255, 0.4)
-  );
-
-  border-radius: 3px;
-
-  animation: scrollWheel 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-/* Motion feels calm & spatial */
-@keyframes scrollWheel {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: translateY(14px);
-    opacity: 0;
-  }
-}
-
-
-/* ============================================
-    2. TECH PARTNERS STRIP
-============================================ */
-.partners-strip {
-    width: 100%; overflow: hidden; background: #000;
-    border-bottom: 1px solid var(--glass-border);
-    padding: 20px 0; position: relative; z-index: 10;
-}
-.partners-track {
-    display: flex; gap: 60px; width: max-content;
-    animation: scrollTicker 30s linear infinite;
-}
-.partner-item {
-    font-family: monospace; color: var(--text-secondary);
-    text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
-    white-space: nowrap; opacity: 0.6;
-}
-@keyframes scrollTicker { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
-
-/* ============================================
-    3. CONTENT SECTIONS
-============================================ */
-.content-flow {
-    position: relative; z-index: 10; background: var(--bg-black);
-    padding-bottom: 80px; box-shadow: 0 -80px 100px var(--bg-black);
-}
-.section { padding: 0 24px; max-width: 1200px; margin: 0 auto; margin-bottom: var(--section-spacing); }
-
-/* Manifesto */
-.manifesto-section { padding-top: 80px; }
-.manifesto-text {
-    font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.2; font-weight: 400;
-    /* UPDATED: Increased contrast from 0.4 to 0.55 */
-    color: rgba(255,255,255,0.55); 
-    max-width: 900px;
-}
-.manifesto-text span { color: #fff; }
-.animated-underline { position: relative; display: inline-block; }
-.animated-underline::after {
-    content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px;
-    background: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple);
-    transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.manifesto-section:hover .animated-underline::after { width: 100%; }
-.manifesto-sub {
-    margin-top: 32px; font-size: 1.15rem; color: rgba(255,255,255,0.6);
-    max-width: 540px; line-height: 1.7; border-left: 3px solid var(--neon-purple);
-    padding-left: 24px;
-}
-
-.glass-link {
-    color: var(--neon-purple);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
+.card__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: opacity 0.3s;
-    display: inline-block;
-    margin-top: 32px;
-}
-.glass-link:hover { opacity: 0.8; }
-
-/* HOW IT WORKS */
-.how-it-works-section .section-header { margin-bottom: 60px; text-align: center; }
-.steps-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
-}
-.step-card {
-    background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
-    padding: 40px 30px; border-radius: 16px; position: relative;
-    transition: transform 0.3s;
-}
-.step-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.04); }
-.step-number {
-    font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05);
-    position: absolute; top: 20px; right: 20px;
-}
-.step-card h3 { font-size: 1.5rem; margin-bottom: 12px; color: #fff; }
-.step-card p { font-size: 1rem; color: var(--text-secondary); line-height: 1.5; }
-
-/* BENTO GRID */
-.section-header { margin-bottom: 60px; }
-.small-label {
-    font-family: monospace; color: var(--neon-purple); font-size: 0.8rem;
-    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; display: block;
-}
-.section-header h2 { font-size: 2.5rem; font-weight: 600; letter-spacing: -0.02em;  }
-
-.bento-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: minmax(280px, auto); gap: 28px;
-}
-.grid-span-large { grid-column: span 2; grid-row: span 2; }
-.grid-span-tall { grid-row: span 2; }
-.grid-span-wide { grid-column: span 2; }
-
-/* BENTO CARD */
-.bento-card {
-    position: relative; height: 100%; width: 100%;
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    border-radius: 16px; padding: 24px; text-decoration: none; color: #fff;
-    display: flex; flex-direction: column; overflow: hidden; transition: all 0.4s ease;
-}
-.bento-card:hover { border-color: rgba(184, 169, 255, 0.3); }
-
-.glass-streak {
-    position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-    transform: skewX(-20deg); pointer-events: none; z-index: 2;
-}
-.glass-streak.animate { animation: shine 0.8s forwards; }
-@keyframes shine { 0% { left: -100%; } 100% { left: 200%; } }
-
-.card-bg-video-wrapper { position: absolute; inset: 0; z-index: 0; border-radius: 16px; overflow: hidden; }
-.card-bg-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; transition: transform 0.6s ease-out; }
-.bento-card:hover .card-bg-video { transform: scale(1.05); }
-
-.card-video-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%); }
-.overlay-darker { background: rgba(0,0,0,0.6); }
-
-.card-text-content { position: relative; z-index: 5; margin-top: auto; }
-.card-title { font-size: 1.4rem; font-weight: 500; margin-bottom: 8px; display: inline-block; position: relative; }
-.hover-line { height: 1px; width: 0%; background: #fff; transition: width 0.3s ease; margin-top: 4px; }
-.bento-card:hover .hover-line { width: 40px; }
-.bento-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.4; margin: 0; }
-
-.card-explore-wrapper {
-    position: absolute; top: 24px; right: 24px; display: flex; align-items: center; gap: 6px; z-index: 5;
-}
-.explore-text { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-
-/* MID PAGE CTA */
-.mid-page-cta {
-    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
-    padding: 100px 24px; text-align: center; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);
-    margin-bottom: var(--section-spacing);
-}
-.cta-content h2 { font-size: 2.5rem; margin-bottom: 16px; }
-.cta-content p { color: var(--text-secondary); margin-bottom: 32px; font-size: 1.1rem; }
-.cta-buttons { display: flex; justify-content: center; gap: 20px; }
-
-/* FUTURE SECTION */
-.future-section-immersive { padding: 0 24px 100px 24px; display: flex; justify-content: center; }
-.aurora-container {
-    position: relative; width: 100%; max-width: 1000px; height: 450px;
-    background: #050505; border-radius: 24px; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    text-align: center; border: 1px solid rgba(255, 255, 255, 0.06);
-}
-.grid-bg {
-    position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px; z-index: 0;
-}
-.aurora-blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.4; }
-.blob-1 { width: 300px; height: 300px; background: #3b2c94; top: -50px; left: 10%; }
-.blob-2 { width: 400px; height: 400px; background: #5b4aa8; bottom: -100px; right: 10%; }
-.blob-3 { width: 200px; height: 200px; background: #7c3aed; top: 40%; left: 40%; }
-.aurora-glass { position: absolute; inset: 0; background: rgba(5, 5, 5, 0.4); backdrop-filter: blur(40px); z-index: 1; }
-.future-content { position: relative; z-index: 5; padding: 0 20px; }
-.future-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; margin-bottom: 24px; letter-spacing: -0.02em; }
-.adaptive-text { color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
-.roadmap-btn-glass {
-    display: inline-block; padding: 14px 32px; background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; text-decoration: none;
-    border-radius: 100px; font-weight: 500; transition: all 0.3s; backdrop-filter: blur(10px);
-    margin-top: 32px;
-}
-.roadmap-btn-glass:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.02); }
-
-/* ============================================
-    RESPONSIVE
-============================================ */
-@media (max-width: 1024px) {
-    .bento-grid { grid-template-columns: repeat(2, 1fr); }
-    .grid-span-large { grid-column: span 2; grid-row: auto; }
-    .grid-span-tall { grid-row: auto; }
-    .steps-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 768px) {
-    .hero-fullscreen-wrapper { height: 80vh; }
-    /* UPDATED: Added 30px horizontal padding for spacing */
-    .hero-content-layer { padding: 0 30px; } 
+.card__content {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
 
-    .home-buttons { flex-direction: column; width: 100%; gap: 16px; }
-    .primary-btn, .secondary-btn { width: 100%; justify-content: center; }
-    .hero-badge { margin-bottom: 16px; order: -1; }
-    .bento-grid { grid-template-columns: 1fr; gap: 24px; }
-    .grid-span-wide, .grid-span-large { grid-column: span 1; }
-    .manifesto-sub { border-left-width: 2px; padding-left: 16px; font-size: 1rem; }
-    .aurora-container { height: auto; padding: 80px 20px; }
-    .cta-buttons { flex-direction: column; }
+.card__micro-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-neon-accent);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.card__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+}
+
+.card__text {
+    color: var(--color-secondary-text);
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+}
+
+.ecosystem__card:hover .card__text {
+    color: var(--color-primary-text);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| 7. USE-CASE SNAPSHOTS
+|--------------------------------------------------------------------------
+*/
+.section-use-cases {
+    text-align: center;
+}
+
+.use-cases__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem; /* Increased gap slightly */
+    margin-top: 3rem;
+}
+
+.use-case__pill {
+    padding: 1.5rem 2rem;
+    background-color: var(--color-secondary-dark);
+    border-radius: 8px; /* Larger border radius */
+    flex: 1 1 200px;
+    max-width: 300px;
+    text-align: left;
+    border-left: 4px solid transparent; /* Thicker border-left */
+    transition: border-left-color 0.3s, transform 0.3s;
+}
+
+.use-case__pill:hover {
+    border-left-color: var(--color-neon-accent);
+    transform: translateX(5px);
+}
+
+.use-case__role {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--color-neon-accent);
+}
+
+.use-case__description {
+    color: var(--color-secondary-text);
+    font-size: 0.95rem;
+}
+
+/*
+|--------------------------------------------------------------------------
+| 8. MID-PAGE CTA
+|--------------------------------------------------------------------------
+*/
+.section-mid-cta {
+    text-align: center;
+    padding: 6rem 5%;
+    background-color: var(--color-secondary-dark);
+}
+
+.mid-cta__title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.mid-cta__helper {
+    font-size: 1.1rem;
+    color: var(--color-subtle-text);
+    margin-bottom: 3rem;
+}
+
+.mid-cta__options {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.mid-cta__option-cta {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/*
+|--------------------------------------------------------------------------
+| 9. FUTURE DIRECTION
+|--------------------------------------------------------------------------
+*/
+.section-future {
+    text-align: center;
+}
+
+.future__text {
+    font-size: 1.25rem;
+    color: var(--color-secondary-text);
+    max-width: 800px;
+    margin: 0 auto 3rem;
+}
+
+.future__pillars {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: center;
+    gap: 1.5rem; /* Reduced gap for smaller screens */
+    margin-bottom: 3rem;
+}
+
+.future__pillar {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-primary-text);
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-secondary-dark);
+    border-radius: 50px;
+    border: 1px solid var(--color-neon-accent);
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.future__pillar:hover {
+    background-color: rgba(184, 169, 255, 0.1);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 10. FINAL IDENTITY STATEMENT
+|--------------------------------------------------------------------------
+*/
+.section-final {
+    padding: 10rem 5%;
+    text-align: center;
+    background-color: var(--color-primary-bg);
+}
+
+.final__statement {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--color-primary-text);
+}
+
+.final__statement span {
+    color: var(--color-neon-accent);
+    /* Subtle neon shadow for the accent text */
+    text-shadow: 0 0 5px rgba(184, 169, 255, 0.4); 
+}
+
+/*
+|--------------------------------------------------------------------------
+| MEDIA QUERIES (Responsiveness)
+|--------------------------------------------------------------------------
+*/
+@media (max-width: 1200px) {
+    /* Ecosystem drops to 2 cards per row */
+    .ecosystem__grid {
+        justify-content: space-around;
+    }
+    .ecosystem__card {
+        width: calc((100% - 2rem) / 2);
+    }
+}
+
+@media (max-width: 1023px) {
+    /* HERO: Tablet/Desktop transition point: switch to stacked layout */
+    .section-hero {
+        flex-direction: column;
+        min-height: 70vh;
+        max-height: none;
+        padding: 0;
+    }
+
+    .hero__panel-left {
+        flex: none;
+        padding: 4rem 5% 2rem 5%;
+    }
+
+    .hero__panel-right {
+        flex: none;
+        height: 350px; /* Increased height for better video view */
+        background-color: var(--color-primary-bg); /* Match background */
+        padding: 0; /* Remove padding here, use it on the container */
+    }
+
+    .hero__video-container {
+        position: relative; 
+        margin: 0 5%;
+        width: 90%;
+        height: 100%; /* Fill the 350px parent height */
+    }
+    
+    .hero__video {
+        /* Ensure video fills the container and maintains radius */
+        object-fit: cover;
+    }
+
+    section {
+        padding: 9rem 5%;
+    }
+    .section-shift {
+        grid-template-columns: 1fr;
+    }
+    .shift__content, .section-manifesto {
+        grid-column: span 1;
+    }
+    .shift__title {
+        font-size: 3.5rem;
+    }
+    .hero__title {
+        font-size: 3.5rem;
+    }
+    .hero__subtitle {
+        font-size: 1.75rem;
+    }
+    .manifesto__statement {
+        font-size: 2rem;
+    }
+    .mid-cta__options {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .final__statement {
+        font-size: 3rem;
+    }
+    .ecosystem__card {
+        width: calc((100% - 2rem) / 2); /* Keep 2-column layout */
+    }
+}
+
+@media (max-width: 600px) {
+    section {
+        padding: 7rem 5%;
+    }
+    .section__title {
+        font-size: 2rem;
+    }
+    .hero__panel-left {
+        padding: 3rem 5% 1.5rem 5%;
+    }
+    .hero__title {
+        font-size: 2.5rem;
+    }
+    .hero__subtitle {
+        font-size: 1.25rem;
+    }
+    .hero__supporting-line {
+        font-size: 1rem;
+    }
+    .hero__cta-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .section-context {
+        margin-top: 50px; /* Reduced margin */
+    }
+    .context__list {
+        flex-wrap: wrap;
+        gap: 0.75rem 1rem; /* Adjusted gap */
+        justify-content: flex-start;
+    }
+    .shift__content {
+        padding: 1.5rem;
+    }
+    .shift__title {
+        font-size: 2rem;
+    }
+    .shift__text p {
+        font-size: 1rem;
+    }
+    .section-manifesto {
+        padding: 2rem;
+    }
+    .manifesto__statement {
+        font-size: 1.5rem;
+    }
+    /* Ecosystem stacks vertically */
+    .ecosystem__card {
+        width: 100%;
+        min-width: auto;
+    }
+    .ecosystem__grid {
+        gap: 1.5rem; /* Adjusted gap */
+    } 
+    .final__statement {
+        font-size: 2rem;
+    }
+    .flow__step {
+        min-width: 90%;
+        padding: 1rem;
+    }
+    .future__pillars {
+        gap: 1rem;
+    }
+    .future__pillar {
+        font-size: 0.9rem;
+    }
 }

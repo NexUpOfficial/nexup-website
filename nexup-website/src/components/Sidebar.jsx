@@ -1,9 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./styles/Sidebar.css";
+// --- Import React Icons ---
+import { FaGithub, FaYoutube, FaLinkedinIn } from "react-icons/fa";
+import { AiFillInstagram } from "react-icons/ai";
+import { FaXTwitter } from "react-icons/fa6"; 
+import { IoMdClose } from "react-icons/io"; // Close Icon
 
-function Sidebar({ isOpen }) {
+function Sidebar({ isOpen, onClose }) {
   const sidebarRef = useRef(null);
+
+  // State to manage which submenu is currently open on mobile
+  // Note: Using an object here allows for multiple menus to potentially be open,
+  // but the current toggleMenu logic ensures only one is open at a time (accordion style).
+  const [openMenu, setOpenMenu] = useState({}); 
+
+  // Function to handle opening/closing submenus
+  const toggleMenu = (menuName) => {
+    // If the same menu is clicked, close it. Otherwise, open it and close others.
+    setOpenMenu(prev => ({
+      [menuName]: !prev[menuName] 
+    }));
+  };
 
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld" },
@@ -22,66 +40,153 @@ function Sidebar({ isOpen }) {
     { label: "News", to: "/about/news" },
   ];
 
-  const renderLink = (to, label, isSub = false) => (
+  const socialItems = [
+    { label: "GitHub", to: "https://github.com/nex", icon: <FaGithub /> },
+    { label: "X", to: "https://x.com/nex", icon: <FaXTwitter /> },
+    { label: "LinkedIn", to: "https://linkedin.com/company/nex", icon: <FaLinkedinIn /> },
+    { label: "Instagram", to: "https://instagram.com/nex", icon: <AiFillInstagram /> },
+    { label: "YouTube", to: "https://youtube.com/nex", icon: <FaYoutube /> }
+  ];
+
+  const renderLink = (to, label, isSub = false, isMobileBtn = false) => {
+    // Determine if the link should close the sidebar. 
+    // We remove onClose from mobile footer elements for snappier performance.
+    const clickHandler = isMobileBtn ? undefined : onClose; 
+
+    return (
+      <NavLink
+        key={to}
+        to={to}
+        onClick={clickHandler} // <-- Only close if it's not a mobile footer button
+        className={({ isActive }) =>
+          `${isMobileBtn ? "mobile-login-btn" : "nav-link"} ${isSub ? "sub-link" : ""} ${isActive ? "active" : ""}`
+        }
+      >
+        {label}
+        {/* Only add chevron for specific links */}
+        {(!isMobileBtn && (label === "Support" || label === "Contact" || label === "Login" || label === "Search")) && <span className="chevron">{">"}</span>}
+      </NavLink>
+    );
+  };
+
+  const renderSearchLink = () => (
     <NavLink
-      key={to}
-      to={to}
+      key="/search"
+      to="/search"
+      onClick={onClose}
+      // Removed search-link class which was tied to the icon styling
       className={({ isActive }) =>
-        `nav-link ${isSub ? "sub-link" : ""} ${isActive ? "active" : ""}`
+        `nav-link ${isActive ? "active" : ""}`
       }
     >
-      {label}
+      <span>Search</span>
+      {/* Search Icon removed here */}
+      <span className="chevron">{">"}</span> {/* Keeping the chevron as a separator */}
     </NavLink>
   );
+
+
+  const renderSocialLink = (item) => (
+    <a
+      key={item.label}
+      href={item.to}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="social-link"
+      // Removed onClick={onClose} for immediate link transition
+      aria-label={item.label}
+    >
+      {item.icon}
+    </a>
+  );
+
+  // Function to render menus that require mobile click-to-open logic
+  const renderSubMenu = (menuName, label, items) => {
+    const isOpenClass = openMenu[menuName] ? "is-open" : "";
+    
+    return (
+      <div key={menuName} className={`hover-group ${isOpenClass}`}> 
+        <div 
+          className="nav-link hover-trigger"
+          onClick={() => toggleMenu(menuName)} // <-- TOGGLE ON CLICK/TAP
+          role="button"
+          tabIndex={0} // Make div keyboard accessible
+          aria-expanded={!!openMenu[menuName]}
+        >
+          {label} <span className="chevron">{">"}</span>
+        </div>
+        
+        {/* The is-open class is picked up by the CSS to trigger the transition */}
+        <div className={`hover-submenu ${isOpenClass}`}> 
+          {items.map(item =>
+            renderLink(item.to, item.label, true)
+          )}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <aside
       ref={sidebarRef}
       className={`sidebar-container ${isOpen ? "is-open" : ""}`}
-      style={{
-        top: "60px",
-        height: "calc(100vh - 60px)",
-      }}
+    style={{
+  top: window.innerWidth > 768 ? "60px" : "0",
+  height: window.innerWidth > 768
+    ? "calc(100vh - 60px)"
+    : "100vh",
+}}
+
       role="navigation"
       aria-label="Primary navigation"
     >
-      {/* Background (pure black via CSS) */}
-      <div className="sidebar-backdrop" />
+      {/* Background (pure black via CSS) - Click closes menu */}
+      <div className="sidebar-backdrop" onClick={onClose} />
 
       <nav className="sidebar-scroll-area">
+        {/* CLOSE BUTTON (Now inside scroll area, positioned absolutely for mobile) */}
+        <button className="close-btn" onClick={onClose} aria-label="Close menu">
+          <IoMdClose /> 
+        </button>
+        {/* END CLOSE BUTTON */}
+
         <div className="sidebar-content center-vertical">
+          {/* NEW: SEARCH LINK */}
+          <div className="hover-group standalone">
+              {renderSearchLink()}
+          </div>
 
           {/* ECOSYSTEM */}
-          <div className="hover-group">
-            <div className="nav-link hover-trigger">
-              Ecosystem <span className="chevron">{">"}</span>
-            </div>
-            <div className="hover-submenu">
-              {ecosystemItems.map(item =>
-                renderLink(item.to, item.label, true)
-              )}
-            </div>
-          </div>
+          {renderSubMenu("ecosystem", "Ecosystem", ecosystemItems)}
 
           {/* ABOUT */}
-          <div className="hover-group">
-            <div className="nav-link hover-trigger">
-              About <span className="chevron">{">"}</span>
-            </div>
-            <div className="hover-submenu">
-              {aboutItems.map(item =>
-                renderLink(item.to, item.label, true)
-              )}
-            </div>
+          {renderSubMenu("about", "About", aboutItems)}
+
+          {/* STANDALONE LINKS */}
+          <div className="hover-group standalone">
+              {renderLink("/support/help", "Support")}
+          </div>
+          <div className="hover-group standalone">
+              {renderLink("/contact", "Contact")}
           </div>
 
-          {/* SUPPORT */}
-          {renderLink("/support/help", "Support")}
-          {renderLink("/contact", "Contact")}
-          {renderLink("/login", "Login")}
+          {/* LOGIN (For Desktop View) */}
+          <div className="hover-group standalone desktop-only-login">
+              {renderLink("/login", "Login")}
+          </div>
 
         </div>
       </nav>
+      
+      {/* MOBILE LOGIN BUTTON / FOOTER */}
+      <div className="sidebar-footer">
+          {/* Social Links */}
+          <div className="social-links-group">
+              {socialItems.map(renderSocialLink)}
+          </div>
+          {/* Login Button - onClick={onClose} removed in renderLink for speed */}
+          {renderLink("/login", "Login", false, true)} 
+      </div>
     </aside>
   );
 }
