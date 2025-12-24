@@ -13,7 +13,6 @@ const Career = () => {
     }, []);
 
     // Helper for structured sections
-    // Icon prop is removed as icons are no longer used
     const Section = ({ id, title, children }) => (
         <section className="policy-section scroll-target" id={id}>
             <h3>{title}</h3>
@@ -38,8 +37,13 @@ const Career = () => {
                 <div className="career-document">
                     
                     <header className="document-header">
+                        {/* 2. Quiet System Signal */}
+                        <p className="page-indicator-text">
+                            Organization · Careers
+                        </p>
                         <h1>Careers at NexUP</h1>
-                        <h2 className="subtitle">Building the Next Digital Worlds — Together</h2>
+                        {/* 1. Tone Calibration: Reduced "Startup Energy" */}
+                        <h2 className="subtitle">Building persistent digital worlds.</h2>
                     </header>
                     
                     <p className="introduction">
@@ -78,7 +82,8 @@ const Career = () => {
                                 <p>AI and immersive worlds have deep impact. We approach our work with seriousness, care, and awareness of long-term consequences.</p>
                             </article>
                             <article>
-                                <h4>Build With Optimism</h4>
+                                {/* Refined "Build With Intent" */}
+                                <h4>Build With Intent</h4>
                                 <p>We believe the future can be better — and we actively work toward it. Our products should feel empowering, inspiring, and meaningful.</p>
                             </article>
                         </div>
@@ -104,6 +109,10 @@ const Career = () => {
                                 <p>Clear priorities and ownership allow us to build things that truly matter.</p>
                             </article>
                         </div>
+                        {/* Constraint Sentence */}
+                        <p className="priority-note">
+                            Autonomy at NexUP comes with responsibility for system-level outcomes.
+                        </p>
                     </Section>
 
                     {/* 4. What We’re Building */}
@@ -122,6 +131,10 @@ const Career = () => {
 
                     {/* 5. Teams & Roles (Direct link to Contact Page) */}
                     <Section id="teams-roles" title="Teams & Roles">
+                        {/* Framing line before the grid */}
+                        <p className="priority-note">
+                            Roles evolve as the platform evolves. Titles describe focus, not limits.
+                        </p>
                         <div className="roles-container">
                             
                             <div className="role-card">
@@ -213,22 +226,24 @@ const Career = () => {
                             <li>Share your resume or portfolio</li>
                             <li>Tell us briefly why you want to build NexUP with us</li>
                         </ol>
-                        <p>**Resume upload is supported** on the Job Application form.</p>
+                        {/* 1. Remove Markdown Inside JSX */}
+                        <p><strong>Resume upload is supported</strong> on the Job Application form.</p>
                         <p>Your data is handled securely.</p>
                         
                         <div className="final-message-box">
                             <p>NexUP is still being built — and so is our team.</p>
-                            <p>If the idea of shaping AI-powered worlds excites you, and you want to build something meaningful from the ground up — We’d love to hear from you.</p>
+                            {/* Refined closing line */}
+                            <p>If the idea of shaping AI-powered worlds excites you, and you want to build something meaningful from the ground up — We welcome thoughtful applications.</p>
                         </div>
                     </section>
                     
-
                 </div>
             </main>
             
             {/* Footer Component with one-liner */}
             <Footer>
-                Careers at NexUP — Build the future of AI-powered virtual worlds.
+                {/* 2. Footer Line (Optional Tone Alignment) */}
+                Careers at NexUP — Building long-term spatial systems.
             </Footer>
             
         </div>

@@ -1,299 +1,355 @@
-/* src/page-styles/About/Career.css */
+/*
+ * CAREER PAGE STYLES - FINAL POLISH
+ * Theme: Dark, Structural, Professional. Aligns with Contact/System aesthetic.
+ */
 
-/* --- Color Palette (Consistent Dark Mode) --- */
-:root {
-    --color-page-bg: #000000;
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #999999; 
-    --color-border: #333333; 
-    --color-statement-bg: #1a1a1a;
-    --color-link-hover: #cccccc;
-    --color-apply-button-bg: #ffffff;
-    --color-apply-button-text: #000000;
-    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
+/* --- Root Page Container & Main Layout --- */
 .career-page {
-    background-color: var(--color-page-bg);
+    background-color: #000000;
+    color: #ffffff;
     min-height: 100vh;
-    color: var(--color-text-primary);
-    font-family: var(--font-family);
+    padding-bottom: 50px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-/* --------------------------------------------------
-    MAIN CONTENT ALIGNMENT
--------------------------------------------------- */
 .career-main-content {
-    max-width: 900px;
-    margin: 100px auto 80px; 
-    padding: 0 5%; 
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .career-document {
-    display: flex;
-    flex-direction: column;
-    gap: 30px; 
-    line-height: 1.6;
-    font-size: 1rem; 
+    max-width: 720px;
+    width: 100%;
+    padding: 5vh 20px 0; /* Align with Contact page padding */
+    box-sizing: border-box;
+    text-align: left; 
 }
 
-/* Scroll target */
-.scroll-target {
-    scroll-margin-top: 60px; 
-}
 
-/* --------------------------------------------------
-    HEADER & INTRO
--------------------------------------------------- */
+/* --- 1. Document Header & Introduction --- */
 .document-header {
-    text-align: center;
-    margin-bottom: 30px; 
+    margin-top: 2rem;
+    margin-bottom: 3rem;
 }
 
+/* Quiet System Signal */
+.page-indicator-text {
+    font-size: 0.85rem;
+    color: #444444;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Reduced font weight for editorial feel */
 .document-header h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 800;
-    margin-bottom: 8px;
+    font-size: 2.8rem;
+    font-weight: 350; 
+    letter-spacing: -0.05em;
+    margin: 0 0 0.5rem 0;
 }
 
 .subtitle {
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-    font-weight: 400;
-    color: var(--color-text-secondary);
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: #999999;
 }
 
 .introduction {
     font-size: 1.1rem;
-    font-weight: 500;
     line-height: 1.7;
-    padding: 0 10px;
-    text-align: center;
-    color: var(--color-text-primary);
-    margin-bottom: 5px;
+    margin-bottom: 2rem;
+    opacity: 0.9;
 }
 
 .statement-header {
-    font-style: italic;
+    font-size: 1.2rem;
     font-weight: 500;
-    color: var(--color-text-secondary);
-    text-align: center;
-    padding: 10px 10px 30px; 
-    border-bottom: 1px solid var(--color-border);
+    line-height: 1.6;
+    margin-bottom: 4rem;
+    padding-left: 10px;
+    border-left: 3px solid #666666; 
 }
 
-
-/* --------------------------------------------------
-    POLICY SECTIONS (Content Blocks)
--------------------------------------------------- */
+/* --- 2. Reusable Section Styling --- */
 .policy-section {
-    padding-top: 25px;
+    padding: 40px 0;
+    border-top: 1px solid #333333;
+    line-height: 1.6;
 }
 
 .policy-section h3 {
-    font-size: 1.6rem; 
-    font-weight: 700;
-    margin-bottom: 20px; 
-    color: var(--color-text-primary);
-    /* Icon spacing removed */
-    border-bottom: 1px dashed var(--color-border);
-    padding-bottom: 10px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
 }
 
-/* Removed .section-icon CSS */
-
-.policy-section h4 {
-    font-size: 1.2rem; 
-    font-weight: 600;
-    margin-top: 15px; 
-    margin-bottom: 8px;
-    color: var(--color-text-primary);
-    /* Icon alignment removed */
+.policy-section p, .policy-section li {
+    font-size: 1rem;
+    color: #cccccc;
+    margin-bottom: 1rem;
 }
 
-/* Removed .policy-section h4 svg CSS */
-
-.policy-section p {
-    margin-bottom: 12px; 
-    color: var(--color-text-secondary);
-}
-
-/* Lists */
 .policy-section ul {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 10px; 
+    list-style: disc;
+    padding-left: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .policy-section li {
-    position: relative;
-    padding-left: 20px; 
-    margin-bottom: 8px; 
-    color: var(--color-text-primary);
-    font-size: 0.95rem; 
+    margin-bottom: 8px;
 }
 
-.policy-section li::before {
-    content: '•'; 
-    color: var(--color-text-secondary);
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
+.scroll-target {
+    padding-top: 50px; 
+    margin-top: -50px;
+}
+
+.priority-note, .statement {
+    font-style: italic;
+    color: #888888;
+    display: block;
+    margin-top: 15px;
 }
 
 .inline-link {
-    color: var(--color-text-primary);
-    text-decoration: underline;
-    transition: color 0.2s;
+    color: #ffffff;
+    text-decoration: none;
+    border-bottom: 1px solid #444444;
+    transition: border-bottom-color 0.3s ease;
 }
+
 .inline-link:hover {
-    color: var(--color-link-hover);
-}
-
-.priority-note {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--color-text-primary);
-    margin-top: 15px; 
-}
-
-/* Statement Box */
-.statement {
-    font-size: 1.05rem; 
-    font-weight: 500;
-    margin-top: 20px; 
-    padding: 15px 20px;
-    border-left: 3px solid var(--color-text-primary);
-    background-color: var(--color-statement-bg);
-    color: var(--color-text-primary);
+    border-bottom-color: #ffffff;
 }
 
 
-/* --------------------------------------------------
-    2. CORE VALUES GRID
--------------------------------------------------- */
+/* --- 3. Core Values Grid --- */
 .values-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
     margin-top: 20px;
 }
 
 .values-grid article {
-    border: 1px solid var(--color-border);
+    background-color: #0a0a0a;
     padding: 20px;
-    border-radius: 6px;
-}
-.values-grid article p {
-    font-size: 0.95rem;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
 }
 
-
-/* --------------------------------------------------
-    5. TEAMS & ROLES
--------------------------------------------------- */
-.roles-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-top: 20px;
-}
-
-.role-card {
-    background-color: var(--color-statement-bg);
-    padding: 25px;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-}
-
-.role-card ul {
-    margin-bottom: 20px;
-    flex-grow: 1;
-}
-
-.role-card h4 {
-    border-bottom: 1px dashed var(--color-border);
-    padding-bottom: 10px;
+.values-grid h4 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-top: 0;
     margin-bottom: 10px;
 }
 
-/* Apply Button (Flow to Contact Page) */
-.apply-button {
-    text-decoration: none;
-    padding: 12px 20px;
-    background-color: var(--color-apply-button-bg);
-    color: var(--color-apply-button-text);
-    border-radius: 4px;
-    font-weight: 600;
-    text-align: center;
-    margin-top: auto; 
-    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+.values-grid p {
     font-size: 0.95rem;
-}
-
-/* Removed arrow icon styles */
-
-.apply-button:hover {
-    background-color: var(--color-text-secondary);
-    color: var(--color-text-primary);
-}
-
-
-/* --------------------------------------------------
-    FINAL SECTION
--------------------------------------------------- */
-.final-section {
-    padding-bottom: 30px; 
-}
-
-.final-message-box {
-    margin-top: 25px;
-    padding: 20px;
-    border: 1px solid var(--color-text-primary);
-    border-radius: 6px;
-    background-color: var(--color-statement-bg);
-}
-
-.final-message-box p {
-    color: var(--color-text-primary);
-    font-size: 1.05rem;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-.final-message-box p:last-child {
+    color: #999999;
+    line-height: 1.5;
     margin-bottom: 0;
 }
 
-/* --------------------------------------------------
-    RESPONSIVENESS
--------------------------------------------------- */
+
+/* --- 4. Operating Principles --- */
+.principles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.principles-list article {
+    border-left: 4px solid #333333;
+    padding-left: 20px;
+}
+
+.principles-list h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.principles-list p {
+    font-size: 0.95rem;
+    color: #aaaaaa;
+    margin-bottom: 0;
+}
+
+
+/* --- 5. Teams & Roles Cards --- */
+.roles-container {
+    /* Base grid: Two columns for larger screens */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+    /* FIX: Ensure the container doesn't overflow horizontally */
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 70px;
+}
+
+.role-card {
+    background-color: #111111;
+    border: 1px solid #222222;
+    padding: 25px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.role-card h4 {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.role-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 25px;
+}
+
+.role-card li {
+    font-size: 0.95rem;
+    color: #b3b3b3;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.role-card li::before {
+    content: "—";
+    color: #666666;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+/* Apply Button */
+.apply-button {
+    display: block;
+    text-align: center;
+    padding: 12px 15px;
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: auto;
+    border: 1px solid #ffffff;
+}
+
+.apply-button:hover {
+    background-color: #cccccc;
+    transform: translateY(-1px);
+}
+
+
+/* --- 6. Final Section (How to Apply) --- */
+.final-section ol {
+    list-style: decimal;
+    padding-left: 20px;
+    margin-bottom: 2rem;
+}
+
+.final-section li {
+    font-size: 1rem;
+    color: #cccccc;
+    margin-bottom: 10px;
+}
+
+.final-section p {
+    margin-top: 10px;
+}
+
+.final-message-box {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+}
+
+.final-message-box p {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #ffffff;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+
+/* --- Media Queries for Mobile Responsiveness --- */
 @media (max-width: 768px) {
-    .career-main-content {
-        padding: 0 3%;
-        margin: 60px auto 40px;
+    .career-document {
+        padding: 5vh 15px 0;
     }
 
     .document-header h1 {
         font-size: 2.2rem;
     }
 
-    .career-document {
-        gap: 25px;
+    .subtitle {
+        font-size: 1.2rem;
     }
     
+    .introduction {
+        font-size: 1rem;
+    }
+    
+    .statement-header {
+        font-size: 1.1rem;
+        border-left-width: 2px;
+    }
+
     .policy-section h3 {
-        font-size: 1.4rem;
-        padding-bottom: 8px;
+        font-size: 1.3rem;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* FIX: Force roles-container to a single column on mobile */
+    .roles-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
-    .values-grid, .roles-container {
-        grid-template-columns: 1fr;
+    .role-card {
+        padding: 20px;
     }
     
     .apply-button {
-        padding: 14px;
-        font-size: 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Added small intermediate breakpoint to prevent potential awkward single card width */
+@media (min-width: 600px) and (max-width: 719px) {
+    .roles-container {
+         /* Keep it single column or allow two small columns if feasible */
+         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
 }

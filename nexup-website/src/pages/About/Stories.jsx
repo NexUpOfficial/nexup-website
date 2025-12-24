@@ -1,176 +1,123 @@
-import React from 'react';
-// Assuming the provided CSS file exists in the specified path
+// src/pages/About/Stories.jsx
+
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../../page-styles/About/Stories.css'; 
 import Footer from '../../components/Footer/Footer';
 
-// Component for a reusable section block
-const StorySection = ({ title, children }) => (
-  <section className="story-section">
-    <h3 className="section-title">{title}</h3>
-    {children}
-  </section>
+// Mock Data for Story Entries (Newest first, Chronological)
+const storyEntries = [
+    {
+        id: 1,
+        date: "December 15, 2025",
+        category: "Architecture",
+        title: "The Constraint of Time: Why We Chose Scene Persistence over Eventual Consistency",
+        subtitle: "Designing long-term state synchronization for spatial environments.",
+        body: (
+            <>
+                <p>The fundamental challenge in building a global spatial platform is managing state across disparate devices and environments. We faced a critical architectural choice: prioritize eventual consistency (simpler scaling) or enforce scene persistence (guaranteed causality).</p>
+                <p>We chose the latter. Eventual consistency, common in feed-based social platforms, breaks down when dealing with spatial causality—if an object is moved in AR, it must stay moved for all users immediately, regardless of network lag, or the environment becomes unreliable.</p>
+                <p>This decision introduced complex trade-offs, requiring us to manage a global, canonical state that prioritizes transactional integrity over maximum read throughput. This is less efficient but fundamentally more honest to the promise of a shared digital reality.</p>
+            </>
+        )
+    },
+    {
+        id: 2,
+        date: "November 1, 2025",
+        category: "Reflections",
+        title: "Building the Operating System, Not the Application",
+        subtitle: "The philosophical separation between foundational systems and user experiences.",
+        body: (
+            <>
+                <p>We often refer to NexUP as an "operating system for digital reality." This is a guiding constraint, not a marketing term. An OS does not tell you what to do; it provides reliable primitives for applications to run on.</p>
+                <p>In practice, this means our focus is strictly on low-level infrastructure: spatial meshing, data pipelines, anchoring, and execution. We intentionally avoid building default consumer applications that might compete with the creativity of developers we seek to empower.</p>
+                <p>One major lesson learned during the early prototype phase was the danger of scope creep: every time we added a user-facing feature, we compromised the stability of the underlying system. The current discipline—systems first, platform always—is non-negotiable.</p>
+            </>
+        )
+    },
+    {
+        id: 3,
+        date: "September 10, 2025",
+        category: "Systems",
+        title: "From Pixels to Points: Designing the NexNodes Decentralization Model",
+        subtitle: "A retrospective on the shift from centralized compute to localized spatial rendering.",
+        body: (
+            <>
+                <p>The initial concept relied heavily on centralized cloud rendering, typical of many early cloud gaming and VR services. The latency inherent to this model proved unacceptable for mixed-reality environments where response time is critical for physical safety and immersion.</p>
+                <p>The solution was the "NexNodes" model: local execution layers that process and render scene data near the user. This requires robust, decentralized synchronization, but it pushes rendering cycles to the edge, drastically reducing perceived latency.</p>
+                <p>The consequence is a heavier dependency on high-quality network synchronization, but it frees us from the impossible constraint of achieving sub-20ms round-trip latency globally for all users.</p>
+            </>
+        )
+    },
+];
+
+const StoryEntry = ({ date, category, title, subtitle, body }) => (
+    <article className="story-entry">
+        <div className="entry-header">
+            <span className="entry-date">{date}</span>
+            {/* Rule 9: Categories are informational, not visually differentiated */}
+            {category && <span className="entry-category">{category}</span>} 
+        </div>
+        <h2 className="entry-title">{title}</h2>
+        {subtitle && <p className="entry-subtitle">{subtitle}</p>}
+        
+        {/* The body acts as the main text column */}
+        <div className="entry-body">{body}</div>
+        
+        {/* Optional divider before final reflection/closing */}
+        <div className="entry-divider"></div>
+        
+        <Link to={`/stories/${title.toLowerCase().replace(/\s/g, '-')}`} className="read-more-link">
+            Read Full Story 
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" className="arrow-icon">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </Link>
+    </article>
 );
 
-const StoriesPage = () => {
-  return (
-    // The main container uses a dark-themed class for the OpenAI-inspired look
-    <div className="stories-page-container">
-      <header className="stories-header">
-        <h1 className="page-main-title">Stories</h1>
-        <p className="page-subtitle">Real Experiences from the NexUP Journey</p>
-      </header>
 
-      <main className="stories-content">
-        <p className="intro-paragraph">
-          The NexUP Stories page is a space for human narratives — stories of building, learning, experimenting, and growing alongside the NexUP ecosystem.
-          These stories reflect the process, not just the outcomes.
-        </p>
+const Stories = () => {
+    
+    // Ensure page scrolls to top on initial load
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
-        <StorySection title="Purpose of the Stories Page">
-          <p>Stories exist to:</p>
-          <ul className="story-list">
-            <li>Share real journeys behind the platform</li>
-            <li>Highlight people, not just technology</li>
-            <li>Capture lessons learned along the way</li>
-            <li>Show how NexUP is evolving through experience</li>
-            <li>Inspire thoughtful engagement, not hype</li>
-          </ul>
-          <p className="note-emphasis">This page values **authenticity** over perfection.</p>
-        </StorySection>
+    return (
+        <div className="nx-page stories-page">
+            <main className="nx-main-content">
+                <div className="stories-document">
+                    
+                    {/* Header Section (Rule 12) */}
+                    <header className="document-header">
+                        <span className="indicator-text">Perspectives · Stories</span>
+                        <h1>NEXUP STORIES</h1>
+                        <p className="intro-text">
+                            Stories provide context, reasoning, and reflections behind the NexUP platform.
+                        </p>
+                    </header>
 
-        <StorySection title="What You’ll Find Here">
-          {/* --- Builder Stories --- */}
-          <h4 className="subsection-title">Builder Stories</h4>
-          <p>Experiences from people who are:</p>
-          <ul className="story-list">
-            <li>Designing systems</li>
-            <li>Writing code</li>
-            <li>Creating worlds</li>
-            <li>Solving hard problems</li>
-            <li>Learning through iteration</li>
-          </ul>
-          <p className="detail-text">These stories focus on **how** things are built, not just **what** is built.</p>
-
-          {/* --- Creator & Explorer Stories --- */}
-          <h4 className="subsection-title">Creator & Explorer Stories</h4>
-          <p>Stories from users, creators, or early contributors who:</p>
-          <ul className="story-list">
-            <li>Experiment with NexUP tools</li>
-            <li>Explore NexWorld concepts</li>
-            <li>Build digital spaces or ideas</li>
-            <li>Learn new ways of working and thinking</li>
-          </ul>
-          <p className="detail-text">These reflect discovery and creativity.</p>
-
-          {/* --- Learning & Growth Stories --- */}
-          <h4 className="subsection-title">Learning & Growth Stories</h4>
-          <p>Narratives about:</p>
-          <ul className="story-list">
-            <li>Mistakes and lessons</li>
-            <li>Challenges faced during development</li>
-            <li>Decisions that shaped the platform</li>
-            <li>Changes in thinking over time</li>
-          </ul>
-          <p className="detail-text">Growth is rarely linear — these stories reflect that **honestly**.</p>
-
-          {/* --- Community Stories --- */}
-          <h4 className="subsection-title">Community Stories</h4>
-          <p>Stories highlighting:</p>
-          <ul className="story-list">
-            <li>Collaboration</li>
-            <li>Shared problem-solving</li>
-            <li>Community discussions</li>
-            <li>Collective learning moments</li>
-          </ul>
-          <p className="detail-text">They show NexUP as a **shared effort**, not a closed system.</p>
-        </StorySection>
-
-        <StorySection title="What Stories Are Not">
-          <p>To keep this page meaningful, Stories are not:</p>
-          <ul className="story-list list-negative">
-            <li>Marketing testimonials</li>
-            <li>Promotional success claims</li>
-            <li>Sales-driven narratives</li>
-            <li>Announcements or press releases</li>
-            <li>Pure opinion pieces without experience</li>
-          </ul>
-          <p className="note-emphasis">Stories must be **grounded in real experience**.</p>
-        </StorySection>
-
-        <StorySection title="Story Tone & Style">
-          <p>All stories on NexUP follow these principles:</p>
-          <ul className="story-list">
-            <li>**Honest** and reflective</li>
-            <li>Written in **clear, human language**</li>
-            <li>Focused on **learning and insight**</li>
-            <li>Respectful of privacy and context</li>
-            <li>Free from exaggeration or hype</li>
-          </ul>
-          <p className="detail-text">Uncertainty and questions are welcome.</p>
-        </StorySection>
-
-        <StorySection title="Who Can Share Stories">
-          <p>Stories may come from:</p>
-          <ul className="story-list">
-            <li>NexUP team members</li>
-            <li>Builders and developers</li>
-            <li>Designers and researchers</li>
-            <li>Early users or contributors</li>
-            <li>Collaborators aligned with NexUP values</li>
-          </ul>
-          <p className="detail-text">Not every story needs to be public — only those that add value and clarity.</p>
-        </StorySection>
-
-        <StorySection title="Review & Responsibility">
-          <p>To maintain trust:</p>
-          <ul className="story-list">
-            <li>Stories are reviewed before publishing</li>
-            <li>Sensitive details are handled carefully</li>
-            <li>Personal data is protected</li>
-            <li>Misleading or harmful content is not published</li>
-          </ul>
-          <p className="detail-text">Storytelling is treated as a **responsibility**.</p>
-        </StorySection>
-        
-        <StorySection title="How Stories Support the Vision">
-          <p>Stories help NexUP by:</p>
-          <ul className="story-list">
-            <li>Making abstract ideas concrete</li>
-            <li>Showing the human side of technology</li>
-            <li>Building trust through transparency</li>
-            <li>Preserving institutional memory</li>
-            <li>Encouraging thoughtful participation</li>
-          </ul>
-          <p className="detail-text">They act as a **living archive** of the journey.</p>
-        </StorySection>
-
-        <StorySection title="Future Direction">
-          <p>As NexUP grows, the Stories page may expand to include:</p>
-          <ul className="story-list">
-            <li>Long-form narratives</li>
-            <li>Visual or spatial storytelling</li>
-            <li>In-world stories from NexWorld</li>
-            <li>Reflections on major milestones</li>
-            <li>Curated story collections</li>
-          </ul>
-          <p className="detail-text">The format may evolve, but the purpose remains the same.</p>
-        </StorySection>
-
-        <div className="final-note-block">
-          <p>
-            Technology shapes the future — but stories remind us **why** and **for whom** we build.
-            The NexUP Stories page exists to capture those moments honestly, thoughtfully, and responsibly.
-          </p>
+                    {/* Stories Archive (Rule 7: Chronological Order) */}
+                    <section className="stories-archive">
+                        {storyEntries.map(entry => (
+                            <StoryEntry key={entry.id} {...entry} />
+                        ))}
+                    </section>
+                    
+                    {/* Closing Principle (Rule 11) */}
+                    <section className="closing-principle-section">
+                        <p className="closing-statement">
+                            Stories document how NexUP thinks, not how it markets.
+                        </p>
+                    </section>
+                </div>
+            </main>
+            
+            <Footer /> {/* Rule C: Footer remains neutral */}
+            
         </div>
-      </main>
-
-      {/* Optional Footer Line */}
-      <div className="footer-line-optional">
-        Stories — Real journeys, real learning, from the NexUP ecosystem.
-      </div>
-
-      <Footer />
-    </div>
-  );
+    );
 };
- export default StoriesPage;
+
+export default Stories;

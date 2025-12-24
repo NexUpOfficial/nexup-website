@@ -1,242 +1,292 @@
-/* ===========================================================
-    GLOBAL & LAYOUT
-=========================================================== */
-.login-page {
-  width: 100%; min-height: 100vh; background: #050505;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden; font-family: 'Inter', sans-serif;
-  transition: background 0.5s ease;
-}
-.login-page::after {
-  content: ""; position: absolute; inset: 0;
-  /* FRACTAL NOISE EFFECT */
-  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
-  opacity: 0.4; pointer-events: none; z-index: 1;
-}
-.cyber-grid {
-  position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-  background-image: linear-gradient(rgba(184, 169, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(184, 169, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px; transform: perspective(500px) rotateX(60deg);
-  animation: gridMove 20s linear infinite; z-index: 0; pointer-events: none; transition: filter 0.5s ease;
-}
-.login-page.typing-mode .cyber-grid { filter: blur(3px); }
-@keyframes gridMove { 0% { transform: perspective(500px) rotateX(60deg) rotateZ(0deg) translateY(0); } 100% { transform: perspective(500px) rotateX(60deg) rotateZ(1deg) translateY(60px); } }
-.particle-container { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-.particle { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
-.login-glow-top { position: absolute; top: -20%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(184, 169, 255, 0.1) 0%, transparent 60%); filter: blur(100px); z-index: 0; }
-.login-glow-bottom { position: absolute; bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(119, 56, 255, 0.08) 0%, transparent 60%); filter: blur(100px); z-index: 0; }
-.login-content-wrapper { position: relative; z-index: 2; width: 100%; max-width: 1100px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+/*
+ * LOGIN PAGE STYLES - FINAL INFRASTRUCTURE DESIGN
+ * Core Design: Calm, Minimal, Centered, Infrastructural.
+ * Colors: #000000, #FFFFFF, Muted Gray. No accents.
+ */
 
-/* ===========================================================
-    LEFT SIDE
-=========================================================== */
-.login-text-side { padding-right: 40px; }
-.glass-text-panel {
-  background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(5px); padding: 40px; border-radius: 24px;
-}
-.brand-pill {
-  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px; font-size: 0.85rem; color: #b8a9ff; margin-bottom: 24px;
-}
-.dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
-.dot.pulse { animation: pulseDot 2s infinite; }
-@keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); } }
-.login-title { font-size: clamp(2.5rem, 4vw, 4rem); line-height: 1.1; font-weight: 800; color: #fff; margin-bottom: 20px; }
-.gradient-text { background: linear-gradient(90deg, #b8a9ff, #ffffff); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.login-sub { font-size: 1.1rem; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 450px; margin-bottom: 40px; }
-.login-features { display: flex; flex-direction: column; gap: 14px; }
-.feature-item { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.85); font-size: 1rem; }
-.check-icon { color: #b8a9ff; }
-
-/* ===========================================================
-    RIGHT SIDE (Auth Card)
-=========================================================== */
-.login-card-side { display: flex; justify-content: center; perspective: 1000px; }
-.tilt-container { transform-style: preserve-3d; }
-.neon-border-box {
-  position: relative; padding: 1px; border-radius: 24px; background: transparent; overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+:root {
+    --color-bg-dark: #000000;
+    --color-text-light: #ffffff;
+    --color-text-muted: #666666;
+    --color-border-default: #333333;
+    --color-border-active: #888888;
+    --color-error: #ff4d4d;
 }
 
-.auth-card {
-  position: relative; background: rgba(15, 15, 15, 0.9); border-radius: 23px; padding: 32px;
-  z-index: 1; backdrop-filter: blur(20px); overflow: hidden; transition: box-shadow 0.3s ease;
+/* --- 1. OVERALL PAGE LAYOUT (Single Focus) --- */
+
+.login-page-infrastructure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--color-bg-dark);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--color-text-light);
+    overflow: hidden; 
 }
-.card-active-glow { box-shadow: 0 0 25px rgba(184,169,255,0.15); }
-.card-brand-logo {
-    position: absolute; top: 20px; left: 24px; font-family: monospace; font-size: 0.8rem;
-    color: rgba(255,255,255,0.3); letter-spacing: 2px;
+
+/* --- 2. LOGIN PANEL (The Core Object) --- */
+
+.login-panel {
+    width: 100%;
+    max-width: 440px; 
+    background-color: var(--color-bg-dark);
+    padding: 40px 30px;
+    border: 1px solid var(--color-border-default);
+    box-sizing: border-box;
+    text-align: center;
 }
-.holo-sheen {
-  position: absolute; top: 0; left: -100%; width: 200%; height: 100%;
-  background: linear-gradient(75deg, transparent 20%, rgba(184,169,255,0.15) 50%, transparent 80%);
-  animation: sheenMove 4s ease-in-out infinite; pointer-events: none; z-index: 0;
+
+/* --- 3. CONTENT HIERARCHY --- */
+
+.system-indicator {
+    font-size: 0.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-text-muted);
+    margin: 0 0 20px 0;
 }
-@keyframes sheenMove { 0% { left: -100%; } 100% { left: 100%; } }
-.avatar-scanner {
-  width: 60px; height: 60px; margin: 0 auto 20px auto; border-radius: 50%;
-  background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
-  position: relative; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; z-index: 2;
+
+.identity-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: var(--color-text-light);
 }
-.avatar-icon { font-size: 1.5rem; color: #666; transition: 0.3s; position: relative; z-index: 2; }
-.avatar-scanner::after {
-  content: ""; position: absolute; width: 100%; height: 100%; border-radius: 50%;
-  background: rgba(184,169,255,0.2); opacity: 0; z-index: 1;
+
+.context-line {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    margin: 0 0 35px 0;
 }
-.avatar-scanner.scanning::after { animation: avatarPing 4s infinite; }
-@keyframes avatarPing { 0% { transform: scale(0.8); opacity: 0.2; } 50% { transform: scale(1.4); opacity: 0; } 100% { transform: scale(0.8); opacity: 0; } }
-.avatar-scanner.scanning { border-color: #b8a9ff; box-shadow: 0 0 15px rgba(184, 169, 255, 0.3); }
-.avatar-scanner.scanning .avatar-icon { color: #fff; }
-.scan-line {
-  position: absolute; width: 100%; height: 2px; background: #b8a9ff; top: 0; left: 0;
-  opacity: 0; box-shadow: 0 0 10px #b8a9ff; z-index: 3;
+
+.error-message {
+    background: rgba(255, 77, 77, 0.05);
+    color: var(--color-error);
+    border: 1px solid rgba(255, 77, 77, 0.2);
+    padding: 10px;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+    text-align: left;
 }
-.avatar-scanner.scanning .scan-line { opacity: 1; animation: scanAvatar 2s ease-in-out infinite; }
-@keyframes scanAvatar { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
-.auth-tabs {
-  display: flex; background: rgba(255,255,255,0.03); padding: 4px; border-radius: 12px;
-  margin-bottom: 24px; position: relative; z-index: 2;
+
+
+/* --- 4. INPUT DESIGN (Terminal Fields) --- */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    /* Removed bottom margin as the form is followed by the divider */
 }
-.tab-btn {
-  flex: 1; padding: 10px; border: none; background: transparent; color: rgba(255,255,255,0.6);
-  font-size: 0.95rem; border-radius: 8px; cursor: pointer; transition: 0.3s;
+
+.input-field {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
-.tab-btn.active { background: rgba(255,255,255,0.1); color: #fff; font-weight: 600; }
-.auth-header { text-align: center; margin-bottom: 24px; position: relative; z-index: 2; }
-.auth-header h2 { font-size: 1.6rem; margin-bottom: 8px; color: #fff; }
-.auth-header p { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
-.social-login-grid {
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; position: relative; z-index: 2;
+
+.input-field label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-light);
 }
-.social-btn {
-  display: flex; align-items: center; justify-content: center; padding: 12px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px; color: #fff; cursor: pointer; transition: 0.3s; font-size: 1.1rem;
+
+.input-field input {
+    width: 100%;
+    padding: 12px 10px;
+    background: var(--color-bg-dark);
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-light);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+    border-radius: 0;
 }
-.social-btn:hover {
-  transform: translateY(-3px) scale(1.05); background: rgba(255,255,255,0.15);
-  border-color: rgba(184,169,255,0.6); color: #b8a9ff; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+
+.input-field input:focus {
+    border-color: var(--color-border-active);
 }
+
+.input-field input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* --- 5. PRIMARY ACTION (Permission Check) --- */
+
+.primary-action-btn {
+    width: 100%;
+    padding: 12px 10px;
+    background-color: var(--color-text-light);
+    color: var(--color-bg-dark);
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    margin-top: 15px; 
+    border-radius: 0;
+}
+
+.primary-action-btn:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+.primary-action-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.loading-state {
+    display: inline-block;
+    color: var(--color-bg-dark);
+}
+
+/* --- Federated Identity Access Styles (Rule 13) --- */
+
+/* Divider (Thin line, muted gray) */
 .auth-divider {
-  display: flex; align-items: center; margin-bottom: 24px; color: rgba(255,255,255,0.4);
-  font-size: 0.8rem; position: relative; z-index: 2;
+    text-align: center;
+    margin: 30px 0 25px; /* Added spacing */
+    position: relative;
+    font-size: 0.8rem;
+    color: #666666;
 }
-.auth-divider::before, .auth-divider::after {
-  content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(184,169,255,0.3), transparent);
+.auth-divider span {
+    background: var(--color-bg-dark);
+    padding: 0 10px;
+    position: relative;
+    z-index: 1;
 }
-.auth-divider span { padding: 0 12px; }
-.error-banner {
-    background: rgba(255, 59, 48, 0.1); border: 1px solid rgba(255, 59, 48, 0.3); color: #ff3b30;
-    padding: 10px; border-radius: 8px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
-}
-.auth-form { display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 2; }
-.input-group { position: relative; overflow: hidden; border-radius: 10px; margin-bottom: 12px; }
-.input-icon {
-  position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-size: 1.1rem; z-index: 2; transition: 0.3s;
-}
-.input-group:focus-within .input-icon { color: #b8a9ff; }
-.password-toggle {
-    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-    background: transparent; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1.1rem; z-index: 3; transition: 0.2s;
-}
-.password-toggle:hover { color: #fff; }
-.auth-form input {
-  width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-  padding: 14px 40px 14px 44px; border-radius: 10px; color: #fff; font-size: 1rem; transition: 0.3s; position: relative; z-index: 1;
-}
-.auth-form input:focus { outline: none; background: rgba(0,0,0,0.5); border-color: transparent; }
-.input-border-glow {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  border-radius: 10px; border: 1px solid transparent; pointer-events: none; z-index: 0; transition: 0.3s;
-}
-.input-group:focus-within .input-border-glow {
-  border-color: #b8a9ff; box-shadow: 0 0 15px rgba(184, 169, 255, 0.2) inset, 0 0 5px rgba(184, 169, 255, 0.5);
-}
-.input-group.success .input-border-glow { border-color: #4ade80; box-shadow: 0 0 10px rgba(74,222,128,0.3) inset; }
-.input-group.success .input-icon { color: #4ade80; }
-
-/* ⭐ FORM ACTIONS & CUSTOM CHECKBOX */
-.form-actions {
-  display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-top: 4px;
-  flex-wrap: wrap; gap: 12px; /* Allows wrapping on tiny screens, but keeps them separated */
+.auth-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--color-border-default);
+    z-index: 0;
 }
 
-/* Container for checkbox + text */
-.checkbox-container {
-  display: flex; align-items: center; gap: 10px; cursor: pointer;
-  color: rgba(255,255,255,0.7); position: relative;
-  user-select: none;
+/* Section Title (Quiet, Neutral) */
+.federated-access-title {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0 0 20px 0;
 }
 
-/* Hide default browser checkbox */
-.checkbox-container input {
-  position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;
+/* Provider List (Vertical, subtle border, text-first) */
+.federated-providers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
 }
 
-/* Custom Neon Box */
-.custom-checkmark {
-  height: 18px; width: 18px;
-  background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 4px; transition: all 0.2s ease; position: relative;
+.provider-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: var(--color-bg-dark);
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-light);
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    border-radius: 0;
 }
 
-/* Checkbox Hover */
-.checkbox-container:hover .custom-checkmark {
-  border-color: #b8a9ff;
+.provider-btn:hover:not(:disabled) {
+    /* Rule: border brightens slightly, background remains black */
+    border-color: var(--color-border-active);
+    background: rgba(255, 255, 255, 0.03); /* Extremely subtle dark background */
 }
 
-/* Checkbox Checked State */
-.checkbox-container input:checked ~ .custom-checkmark {
-  background-color: #b8a9ff; border-color: #b8a9ff;
-  box-shadow: 0 0 10px rgba(184, 169, 255, 0.4);
+.provider-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-/* Checkmark Tick (Hidden by default) */
-.custom-checkmark::after {
-  content: ""; position: absolute; display: none;
-  left: 5px; top: 1px; width: 5px; height: 10px;
-  border: solid black; border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+.provider-name {
+    flex-grow: 1;
+    text-align: left;
 }
 
-/* Show Tick when Checked */
-.checkbox-container input:checked ~ .custom-checkmark::after {
-  display: block;
+.provider-icon {
+    /* Rule: Monochrome icons */
+    font-size: 1.2rem;
+    color: var(--color-text-light); 
+    transition: color 0.2s ease;
 }
 
-/* ⭐ PREVENT TEXT BREAKING */
-.checkbox-text {
-  white-space: nowrap;
+/* --- 6. SECONDARY ACTIONS (Extremely Quiet) --- */
+
+.secondary-actions {
+    margin-top: 0; /* Adjusted since federated section provides space */
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
-.forgot-link { color: #b8a9ff; cursor: pointer; transition: 0.2s; white-space: nowrap; }
-.forgot-link:hover { text-decoration: underline; text-shadow: 0 0 8px rgba(184, 169, 255, 0.5); }
+.action-link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
 
-.glow-trail-btn {
-  position: relative; width: 100%; padding: 14px; background: #0f0f0f;
-  border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff;
-  font-size: 1.05rem; font-weight: 600; cursor: pointer; overflow: hidden;
-  margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; z-index: 2;
+.action-link:hover {
+    color: var(--color-text-light); 
 }
-.glow-trail-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-.spinner { animation: spin 1s linear infinite; }
-@keyframes spin { 100% { transform: rotate(360deg); } }
-.glow-effect {
-  position: absolute; top: 0; left: 0; width: 150px; height: 150px;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.4) 0%, transparent 70%);
-  transform: translate(-50%, -50%); pointer-events: none; mix-blend-mode: overlay;
-  transition: transform 0.1s ease-out;
-}
-.auth-footer {
-  margin-top: 24px; text-align: center; font-size: 0.8rem;
-  color: rgba(255,255,255,0.5); position: relative; z-index: 2;
-}
-.auth-footer .link { color: #b8a9ff; cursor: pointer; }
 
-@media (max-width: 900px) {
-  .login-content-wrapper { grid-template-columns: 1fr; gap: 40px; }
-  .login-text-side { text-align: center; padding-right: 0; }
-  .glass-text-panel { padding: 30px; }
+.separator {
+    color: var(--color-border-default);
+    font-size: 0.8rem;
+}
+
+
+/* --- 7. FOOTER SIGNAL (Boring/Trustworthy) --- */
+
+.system-footer-signal {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: #444444;
+    margin-top: 40px; 
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border-default);
+}
+
+/* --- 9. RESPONSIVE BEHAVIOR --- */
+
+@media (max-width: 500px) {
+    .login-panel {
+        margin: 20px;
+        padding: 30px 20px;
+        border-left: none; 
+        border-right: none;
+    }
+    .identity-title {
+        font-size: 1.8rem;
+    }
+    .context-line {
+        font-size: 0.9rem;
+    }
+    .system-footer-signal {
+        text-align: left;
+    }
 }

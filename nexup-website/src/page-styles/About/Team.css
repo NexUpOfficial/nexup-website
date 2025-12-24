@@ -1,288 +1,227 @@
-/* src/page-styles/About/Team.css */
+/*
+ * TEAM PAGE STYLES - FINAL SYSTEM UI LOCKDOWN
+ * Color System: #000000 (Background), #ffffff (Primary), #cccccc (Secondary), #333333 / #444444 (Muted/Borders)
+ */
 
-/* --- Color Palette (Consistent Dark Mode) --- */
-:root {
-    --color-page-bg: #000000;
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #aaaaaa; 
-    --color-border: #333333; 
-    --color-statement-bg: #1a1a1a;
-    --color-link-hover: #cccccc;
-    --sidebar-width: 280px; 
-    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --header-height: 60px; 
-
-    /* CTA Colors */
-    --cta-bg-color: #ffffff;
-    --cta-text-color: #000000;
-    --cta-hover-bg: #cccccc;
-}
-
+/* --- 1. Root Page Container & Main Layout --- */
 .team-page {
-    background-color: var(--color-page-bg);
+    background-color: #000000;
+    color: #ffffff;
     min-height: 100vh;
-    color: var(--color-text-primary);
-    font-family: var(--font-family);
+    padding-bottom: 50px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* --------------------------------------------------
-    MAIN CONTENT ALIGNMENT 
--------------------------------------------------- */
 .team-main-content {
-    margin-left: var(--sidebar-width); 
-    max-width: 1100px;
-    margin-right: auto;
-    margin-top: calc(var(--header-height) + 40px);
-    padding: 0 5%; 
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .team-document {
-    display: flex;
-    flex-direction: column;
-    gap: 30px; 
-    line-height: 1.6;
-    font-size: 1rem; 
+    max-width: 720px;
+    width: 100%;
+    padding: 5vh 20px 0;
+    box-sizing: border-box;
+    text-align: left; 
 }
 
-/* --------------------------------------------------
-    STANDARD SECTIONS
--------------------------------------------------- */
+
+/* --- 2. Header & Introduction --- */
+.document-header {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.document-header h1 {
+    font-size: 2.8rem;
+    font-weight: 350; 
+    letter-spacing: -0.05em;
+    margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: #999999;
+}
+
+.introduction {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.statement-header {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 4rem;
+    padding-left: 10px;
+    border-left: 3px solid #666666; 
+}
+
+
+/* --- 3. Standard Section Styling --- */
 .team-section {
-    padding-top: 15px;
-    padding-bottom: 5px;
+    padding: 40px 0;
+    border-top: 1px solid #333333; /* Muted Border */
+    line-height: 1.6;
 }
 
 .team-section h3 {
-    font-size: 1.6rem; 
-    font-weight: 700;
-    margin-bottom: 20px; 
-    color: var(--color-text-primary);
-    border-bottom: 1px dashed var(--color-border);
-    padding-bottom: 10px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
 }
 
 .team-section p {
-    margin-bottom: 12px; 
-    color: var(--color-text-secondary);
+    font-size: 1rem;
+    color: #cccccc;
+    margin-bottom: 1rem;
 }
 
-.priority-note {
+/* --- LIST FIX: Standard disc/dot bullets --- */
+.team-section ul {
+    list-style: disc; /* Use standard black dot */
+    padding-left: 20px; 
+    margin-bottom: 1.5rem;
+}
+
+.team-section li {
+    font-size: 1rem;
+    color: #cccccc;
+    margin-bottom: 8px;
+    padding-left: 0; 
+    position: static; 
+}
+
+.team-section li::before {
+    content: none; 
+}
+
+
+/* --- Utility Styles (Muted/Accent) --- */
+.priority-note, .statement {
     font-style: italic;
-    font-weight: 500;
-    color: var(--color-text-primary);
-    margin-top: 15px; 
+    color: #888888;
+    display: block;
+    margin-top: 15px;
 }
 
-.statement {
-    font-size: 1.05rem; 
-    font-weight: 500;
-    margin-top: 20px; 
-    padding: 15px 20px;
-    border-left: 3px solid var(--color-text-primary);
-    background-color: var(--color-statement-bg);
-    color: var(--color-text-primary);
+.inline-link {
+    color: #ffffff; /* Accent color */
+    text-decoration: none;
+    border-bottom: 1px solid #444444;
+    transition: border-bottom-color 0.3s ease;
 }
 
-
-/* --------------------------------------------------
-    LEADERSHIP BIOS SECTION
--------------------------------------------------- */
-.leadership-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 20px;
+.inline-link:hover {
+    border-bottom-color: #ffffff;
 }
 
-.leader-bio-card {
-    background-color: var(--color-statement-bg);
-    padding: 20px;
-    border-radius: 8px;
-    border-top: 4px solid var(--leader-color);
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.leader-photo-placeholder {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: var(--leader-color);
-    color: var(--color-page-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: 700;
-    flex-shrink: 0; /* Prevents shrinking */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-}
-
-.leader-info h4 {
-    margin: 0;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--leader-color);
-}
-
-.leader-title {
-    margin: 4px 0 10px;
-    font-size: 0.95rem;
-    color: var(--color-text-secondary);
-    font-style: italic;
-}
-
-.leader-bio-text {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 0;
-}
-
-
-/* --------------------------------------------------
-    TEAM BLOCKS CONTAINER (Culture & Structure)
--------------------------------------------------- */
-.team-blocks-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 25px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.team-block {
-    background-color: var(--color-statement-bg); 
-    border: 1px solid var(--color-border);
-    padding: 20px;
-    border-radius: 8px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-top: 5px solid var(--block-color); 
-}
-
-.team-block:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 10px var(--block-color);
-}
-
-.block-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    background-color: var(--block-color);
-}
-
-.team-block h4 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--block-color);
-    margin: 0 0 10px;
-}
-
-.team-block p {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 0;
-}
-
-
-/* --------------------------------------------------
-    JOIN THE TEAM CTA SECTION
--------------------------------------------------- */
+/* --- 4. CTA Section - High Visual Weight (Restored) --- */
 .join-team-cta {
-    background-color: var(--color-statement-bg);
-    border: 1px solid var(--color-border);
-    padding: 40px;
-    border-radius: 8px;
+    border-top: 1px solid #333333;
+    padding: 60px 0;
     text-align: center;
-    margin: 40px 0;
 }
 
 .join-team-cta h3 {
-    font-size: 2rem;
-    color: var(--color-text-primary);
-    margin-bottom: 15px;
-    border-bottom: none;
-    padding-bottom: 0;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: #ffffff;
 }
 
 .join-team-cta p {
-    font-size: 1.1rem;
-    color: var(--color-text-secondary);
-    max-width: 700px;
-    margin: 0 auto 30px;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    font-size: 1.05rem;
+    color: #aaaaaa;
+}
+
+.cta-buttons-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
 }
 
 .cta-button {
     display: inline-block;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    font-weight: 700;
+    padding: 14px 25px;
     text-decoration: none;
-    background-color: var(--cta-bg-color);
-    color: var(--cta-text-color);
+    font-weight: 600;
     border-radius: 4px;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    min-width: 150px;
 }
 
-.cta-button:hover {
-    background-color: var(--cta-hover-bg);
+/* Primary Button: White fill, black text */
+.cta-button.primary {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
+}
+
+.cta-button.primary:hover {
+    background-color: #cccccc;
+    transform: translateY(-1px);
+}
+
+/* Secondary Button: Transparent/Black fill, White text (Inverse) */
+.cta-button.secondary {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #444444; 
+}
+
+.cta-button.secondary:hover {
+    background-color: #111111;
+    border-color: #ffffff;
+    transform: translateY(-1px);
 }
 
 
-/* --------------------------------------------------
-    RESPONSIVENESS 
--------------------------------------------------- */
-@media (max-width: 900px) {
-    .team-main-content {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 100%;
-        margin-top: calc(var(--header-height) + 20px);
-        padding: 0 3%;
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .team-document {
+        padding: 5vh 15px 0;
     }
 
     .document-header h1 {
         font-size: 2.2rem;
     }
     
-    .leadership-grid {
-        grid-template-columns: 1fr;
+    .team-section h3 {
+        font-size: 1.3rem;
     }
 
-    .leader-bio-card {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
+    .team-section p, .team-section li {
+        font-size: 0.95rem;
     }
 
-    .leader-photo-placeholder {
-        margin-bottom: 10px;
-    }
-
-    .leader-info {
-        text-align: center;
-    }
-
-    .team-blocks-container {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 15px;
-    }
-    
     .join-team-cta {
-        padding: 30px 15px;
+        padding: 40px 0;
     }
 
-    .join-team-cta h3 {
-        font-size: 1.6rem;
+    .cta-buttons-group {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px;
     }
 
-    .join-team-cta p {
+    .cta-button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 15px;
         font-size: 1rem;
     }
 }

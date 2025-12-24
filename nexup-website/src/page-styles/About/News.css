@@ -1,345 +1,180 @@
-/* src/page-styles/About/News.css */
+/*
+ * NEWS PAGE STYLES - System Log Aesthetic (Factual, Restrained)
+ * Color System: #000000 (Background), #ffffff (Primary), #cccccc (Secondary), #333333 (Muted/Borders)
+ */
 
-/* --- Color Palette (Modern Grayscale) --- */
-:root {
-    --color-page-bg: #ffffff;
-    --color-text-primary: #111111; /* Near Black */
-    --color-text-secondary: #555555; /* Medium Gray */
-    --color-border: #dddddd; /* Very light gray borders */
-    --color-statement-bg: #f8f8f8; /* Soft background for blocks */
-    --color-link: #000000;
-    --color-link-hover: #000000; /* Dark hover */
-    --color-link-underline: #888888; /* Subtle underline color */
-    
-    --color-accent: #111111; /* Primary accent is bold black text */
-    --color-alert: #d32f2f; /* Standard alert red */
-
-    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --sidebar-width: 280px; 
-    --header-height: 60px; 
-
-    /* Tag Colors (Softened Grayscale) */
-    --tag-platformupdate: #333333;
-    --tag-ecosystem: #555555;
-    --tag-tech-update: #777777; 
-    --tag-policy-update: #999999;
-    --tag-company-event: #aaaaaa;
-}
-
-.news-page {
-    background-color: var(--color-page-bg);
+/* --- 1. Root Page Container & Main Layout --- */
+.nx-page.news-page {
+    background-color: #000000;
+    color: #ffffff;
     min-height: 100vh;
-    color: var(--color-text-primary);
-    font-family: var(--font-family);
-    font-weight: 400; /* Standard weight */
+    padding-bottom: 50px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* --------------------------------------------------
-    MAIN LAYOUT & HEADER 
--------------------------------------------------- */
-.news-main-content {
-    margin-left: var(--sidebar-width); 
-    max-width: 1200px;
-    margin-right: auto;
-    margin-top: calc(var(--header-height) + 50px); /* More vertical space */
-    padding: 0 4%; 
+.nx-main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
+.news-document {
+    max-width: 720px; /* Standard Document Width */
+    width: 100%;
+    padding: 5vh 20px 0;
+    box-sizing: border-box;
+    text-align: left; 
+}
+
+
+/* --- 2. Header & Introduction --- */
 .document-header {
-    text-align: left; /* LEFT ALIGNED */
-    border-bottom: 1px solid var(--color-border);
-    padding: 10px 0 25px;
-    margin-bottom: 40px; /* Generous breathing room */
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1a1a1a;
 }
 
-.date-line {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
+.indicator-text {
+    font-size: 0.85rem;
     font-weight: 500;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 10px;
 }
 
 .document-header h1 {
-    font-family: var(--font-family); 
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
-    line-height: 1;
-    color: var(--color-text-primary);
+    font-size: 2.8rem;
+    font-weight: 350; 
+    letter-spacing: -0.05em;
+    margin: 0 0 0.5rem 0;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #999999;
+}
+
+
+/* --- 3. News Archive --- */
+.news-archive {
+    display: flex;
+    flex-direction: column;
+}
+
+.news-entry {
+    padding: 40px 0;
+    border-bottom: 1px solid #333333; /* Separator for entries */
+}
+
+/* --- Entry Header (Date & Category) --- */
+.entry-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.entry-date {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #666666; /* Calm, muted date */
+}
+
+.entry-category {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    /* Improvement A: Standard monochrome style for all categories */
+    background-color: transparent; 
+    border: 1px solid #444444; 
+    color: #cccccc;
+}
+
+/* --- Entry Title & Body --- */
+.entry-title {
+    font-size: 1.6rem;
+    font-weight: 450; /* Improvement B: Calmer font-weight */
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+    color: #ffffff;
+}
+
+.entry-body p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #cccccc;
+    margin-bottom: 1rem;
+}
+
+.more-info {
+    margin-top: 20px;
+    font-style: italic;
+    color: #999999 !important;
+}
+
+.inline-link {
+    color: #ffffff; 
+    text-decoration: none;
+    border-bottom: 1px solid #444444;
+    transition: border-bottom-color 0.3s ease;
+}
+
+.inline-link:hover {
+    border-bottom-color: #ffffff;
+}
+
+
+/* --- 4. Closing Principle Section --- */
+.closing-principle-section {
+    padding: 60px 0;
+    border-top: 1px solid #333333; 
+    text-align: center;
+}
+
+.closing-statement {
+    font-size: 1rem;
+    color: #666666;
+    font-style: italic;
     margin: 0;
 }
 
-.tagline {
-    font-size: clamp(1rem, 1.8vw, 1.3rem);
-    font-weight: 400;
-    color: var(--color-text-secondary);
-    margin-top: 15px;
-}
 
-/* --------------------------------------------------
-    GRID CONTAINER (Main Content + Sidebar)
--------------------------------------------------- */
-.news-grid-container {
-    display: grid;
-    grid-template-columns: 2.5fr 1fr;
-    gap: 60px; /* Increased gap for breathing room */
-    margin-bottom: 40px;
-}
-
-/* --- Shared Link Styling --- */
-.read-more, .policy-link {
-    color: var(--color-text-primary);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: all 0.2s;
-    padding-bottom: 2px;
-    border-bottom: 1px solid transparent;
-}
-.read-more:hover, .policy-link:hover {
-    color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-link-underline);
-}
-
-
-/* --------------------------------------------------
-    FEATURED POST (MAIN STORY)
--------------------------------------------------- */
-.featured-post-card {
-    background-color: var(--color-page-bg);
-    border: none;
-    padding: 0;
-    margin-bottom: 40px;
-}
-
-.featured-image-placeholder {
-    width: 100%;
-    height: 380px;
-    background-color: var(--color-statement-bg); /* Soft gray background */
-    border-radius: 6px;
-    border: 1px solid var(--color-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-secondary);
-    font-style: italic;
-    margin-bottom: 30px;
-}
-
-.featured-title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 600;
-    line-height: 1.2;
-    margin: 10px 0 20px;
-}
-.featured-title a {
-    color: var(--color-text-primary);
-    text-decoration: none;
-}
-.featured-title a:hover {
-    color: var(--color-text-secondary);
-}
-
-.featured-summary {
-    font-size: 1.15rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin-bottom: 30px;
-    font-weight: 400;
-}
-
-.post-meta {
-    padding-top: 20px;
-    border-top: 1px solid var(--color-border);
-}
-
-/* --------------------------------------------------
-    TRENDING/RECENT STORIES
--------------------------------------------------- */
-.trending-section .section-title {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 15px;
-    margin-bottom: 30px;
-}
-
-.trending-grid {
-    display: grid;
-    grid-template-columns: 1fr; 
-    gap: 30px; 
-}
-
-.standard-post-card {
-    border-bottom: 1px dashed var(--color-border);
-    padding-bottom: 25px;
-    transition: padding 0.2s, background-color 0.2s;
-}
-
-.standard-post-card:hover {
-    background-color: var(--color-statement-bg);
-    padding: 10px 15px 25px;
-    margin: -10px -15px 0;
-    border-bottom: 1px solid var(--color-border);
-    border-radius: 4px;
-}
-
-.standard-post-card .post-title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin: 8px 0;
-    line-height: 1.4;
-}
-
-.standard-post-card .post-date {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    display: block;
-    margin-top: 8px;
-}
-
-.full-archive-link {
-    text-align: left;
-    padding-top: 30px;
-    border-top: 1px solid var(--color-border);
-    margin-top: 10px;
-}
-
-/* --------------------------------------------------
-    SIDEBAR COLUMN
--------------------------------------------------- */
-.sidebar-column {
-    padding-top: 0;
-    padding-left: 0; 
-}
-
-.sidebar-block {
-    background-color: var(--color-statement-bg);
-    padding: 25px;
-    border-radius: 8px;
-    margin-bottom: 30px; 
-    border: 1px solid var(--color-border);
-}
-
-.sidebar-block h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: var(--color-text-primary);
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 10px;
-}
-
-.sidebar-block p {
-    font-size: 0.95rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-    margin-bottom: 18px;
-}
-
-/* Policy Alert Specific Styling (High Contrast) */
-.policy-alert-block {
-    border-left: 4px solid var(--color-alert);
-    border-top: 1px solid var(--color-border);
-    border-right: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-    background-color: #fffafa; /* Very light, subtle red background */
-}
-.policy-alert-header {
-    color: var(--color-alert);
-    font-weight: 700;
-}
-
-/* RSS/Email CTA Styling */
-.feed-link {
-    display: block;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    border: 1px solid var(--color-border);
-    transition: background-color 0.2s, color 0.2s;
-}
-.rss-link {
-    background-color: var(--color-text-primary);
-    color: var(--color-page-bg);
-}
-.email-link {
-    background-color: var(--color-statement-bg);
-    color: var(--color-text-primary);
-}
-.feed-link:hover {
-    background-color: var(--color-text-secondary);
-    color: var(--color-page-bg);
-}
-
-
-/* --------------------------------------------------
-    TAG STYLES (Softened Grayscale)
--------------------------------------------------- */
-.tag {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px; /* Pill shape */
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--color-page-bg);
-    margin-bottom: 10px;
-}
-
-.tag-platformupdate { background-color: var(--tag-platformupdate); }
-.tag-ecosystem { background-color: var(--tag-ecosystem); }
-.tag-tech-update { background-color: var(--tag-tech-update); }
-.tag-policy-update { background-color: var(--tag-policy-update); }
-.tag-company-event { background-color: var(--tag-company-event); }
-
-
-/* --------------------------------------------------
-    FINAL NOTE
--------------------------------------------------- */
-.final-note {
-    text-align: center;
-    padding: 40px 0 50px;
-    border-top: 1px solid var(--color-border);
-}
-
-.final-note p {
-    font-style: italic;
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-}
-
-
-/* --------------------------------------------------
-    RESPONSIVENESS 
--------------------------------------------------- */
-@media (max-width: 900px) {
-    .news-main-content {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 100%;
-        margin-top: calc(var(--header-height) + 20px);
-        padding: 0 3%;
+/* --- 5. Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .news-document {
+        padding: 5vh 15px 0;
     }
 
     .document-header h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
-    
-    .news-grid-container {
-        grid-template-columns: 1fr;
-        gap: 30px;
+
+    .intro-text {
+        font-size: 1rem;
     }
-    
-    .featured-image-placeholder {
-        height: 250px;
+
+    .news-entry {
+        padding: 30px 0;
     }
-    
-    .featured-title {
-        font-size: 1.8rem;
+
+    .entry-title {
+        font-size: 1.3rem;
+    }
+
+    .entry-body p {
+        font-size: 0.95rem;
     }
 }

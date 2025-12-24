@@ -1,304 +1,137 @@
-// src/pages/Account/DNS.jsx
-import React, { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { 
-  FiShield, FiSmartphone, FiMonitor, FiCpu, 
-  FiActivity, FiLock, FiTerminal, FiKey, FiGlobe 
-} from "react-icons/fi";
+import React from 'react';
+// Assuming the path to your required DNS CSS (DNS.css content will be handled separately if requested)
 import "../../page-styles/Account/DNS.css";
-import Footer from "../../components/Footer/Footer";
+// Assuming the path to your reusable Footer component
+import Footer from "../../components/Footer/Footer"; 
 
-/* --- DATA --- */
-const IDENTITY_NODES = [
-  { 
-    icon: <FiKey />, 
-    title: "Primary Anchor", 
-    status: "Active", 
-    desc: "Root identity verified via biometric hash." 
-  },
-  { 
-    icon: <FiShield />, 
-    title: "Backup Protocol", 
-    status: "Standby", 
-    desc: "Recovery phrase stored in cold storage." 
-  },
-  { 
-    icon: <FiGlobe />, 
-    title: "Spatial ID", 
-    status: "Beta", 
-    desc: "Location-based trust signal (San Francisco)." 
-  }
-];
+// --- Component Definition ---
 
-const TRUSTED_DEVICES = [
-  {
-    id: 1,
-    name: "NeX Vision Pro",
-    type: "Headset",
-    icon: <FiCpu />,
-    lastActive: "Now",
-    location: "Hyderabad, IN",
-    status: "Trusted",
-    statusType: "trusted" // 3. Category Color Logic
-  },
-  {
-    id: 2,
-    name: "MacBook Pro M3",
-    type: "Workstation",
-    icon: <FiMonitor />,
-    lastActive: "2 hours ago",
-    location: "Hyderabad, IN",
-    status: "Trusted",
-    statusType: "trusted"
-  },
-  {
-    id: 3,
-    name: "iPhone 16",
-    type: "Mobile",
-    icon: <FiSmartphone />,
-    lastActive: "1 day ago",
-    location: "Mumbai, IN",
-    status: "Expiring Soon",
-    statusType: "expiring"
-  }
-];
-
-const SECURITY_LOGS = [
-  { time: "10:42 AM", event: "Login Attempt", status: "Success", ip: "192.168.1.1" },
-  { time: "09:15 AM", event: "Key Rotation", status: "Completed", ip: "System" },
-  { time: "Yesterday", event: "New Device Added", status: "Verified", ip: "10.0.0.42" },
-];
-
-/* --- VARIANTS --- */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { 
-    opacity: 1, 
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 } 
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-export default function DNS() {
-  const navigate = useNavigate();
-  const terminalRef = useRef(null);
-
-  // 6. Auto-scroll Terminal
-  useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
-  }, []);
-
-  return (
-    <div className="dns-page">
-      <div className="dns-wrapper">
-        
-        {/* ================= HERO DASHBOARD ================= */}
-        <section className="dns-hero-section">
-          {/* 2. Kinetic Glow */}
-          <div className="dns-glow" />
-          
-          <motion.div
-            className="dns-hero-content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          >
-            <div className="security-badge">
-              {/* 1. Smoother Pulse */}
-              <span className="dot pulse"></span> System Secure
-            </div>
-            <h1 className="gradient-title dns-title">
-              Distributed NeX Security.
-            </h1>
-            <p className="dns-sub">
-              Manage your decentralized identity anchors, trusted devices, and spatial verification keys.
-            </p>
-
-            {/* 12. Security Score Meter */}
-            <div className="security-score-container">
-              <div className="score-label">
-                <span>Security Score</span>
-                <span className="score-val">94/100</span>
-              </div>
-              <div className="security-score-bar">
-                <motion.div 
-                  className="score-fill" 
-                  initial={{ width: 0 }}
-                  animate={{ width: "94%" }}
-                  transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-                />
-              </div>
-            </div>
-
-          </motion.div>
-        </section>
-
-        <BreakLine />
-
-        {/* ================= IDENTITY NODES ================= */}
-        <DNSSection title="Identity Anchors">
-          <motion.div 
-            className="node-grid"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {IDENTITY_NODES.map((node, idx) => (
-              <motion.div 
-                key={idx} 
-                className="node-card glass-panel"
-                variants={itemVariants}
-              >
-                <div className="node-header">
-                  {/* 4. Hover Glow on Icon */}
-                  <div className="node-icon">{node.icon}</div>
-                  {/* 5. Animated Blinking Status */}
-                  <span className={`node-status ${node.status.toLowerCase()}`}>{node.status}</span>
-                </div>
-                <h3>{node.title}</h3>
-                <p>{node.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </DNSSection>
-
-        <BreakLine />
-
-        {/* ================= DEVICE MANAGER ================= */}
-        <DNSSection title="Active Sessions & Devices">
-          <div className="device-list">
-            {TRUSTED_DEVICES.map((device, idx) => (
-              <motion.div 
-                key={device.id} 
-                // 3. Category Color Coding via class
-                className={`device-row glass-panel-sm ${device.statusType}`}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                // 11. Motion Delay Stagger
-                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                viewport={{ once: true }}
-              >
-                <div className="device-left">
-                  <div className="device-icon-box">{device.icon}</div>
-                  <div className="device-info">
-                    <h4>{device.name}</h4>
-                    <span className="device-meta">{device.type} • {device.location}</span>
-                  </div>
-                </div>
-                <div className="device-right">
-                  <span className="last-active">{device.lastActive}</span>
-                  {/* 9. Revoke Glow */}
-                  <button className="revoke-btn">Revoke</button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </DNSSection>
-
-        <BreakLine />
-
-        {/* ================= SECURITY LOGS & DEVELOPER ================= */}
-        <div className="split-section">
-          
-          {/* Security Logs */}
-          <div className="split-col">
-            <h2 className="gradient-title section-title-sm">Security Log</h2>
-            <div className="log-terminal glass-panel" ref={terminalRef}>
-              {SECURITY_LOGS.map((log, i) => (
-                <div key={i} className="log-entry">
-                  <span className="log-time">[{log.time}]</span>
-                  {/* 7. Highlight IP */}
-                  <span className="log-event">
-                    {log.event} <span className="ip-addr">({log.ip})</span>
-                  </span>
-                  <span className="log-status success">{log.status}</span>
-                </div>
-              ))}
-              {/* 8. Animated Cursor */}
-              <div className="log-cursor">_</div>
-            </div>
-          </div>
-
-          {/* Developer API */}
-          <div className="split-col">
-            <h2 className="gradient-title section-title-sm">Developer API</h2>
-            <div className="api-card glass-panel">
-              <div className="api-header">
-                <FiTerminal /> <span>DNS Endpoint</span>
-              </div>
-              <p className="api-desc">
-                Programmatic access to identity verification and session management.
-              </p>
-              {/* 10. Micro-interactions on Hover */}
-              <div className="code-block">
-                <code>GET /api/v2/dns/anchors</code>
-              </div>
-              <button className="ghost-btn-sm">View Documentation</button>
-            </div>
-          </div>
-
-        </div>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="dns-final-section">
-          <motion.div
-            className="dns-final glass-panel"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="final-icon"><FiLock /></div>
-            <h2>Secure your digital reality.</h2>
-            <p>
-              Enable 2-Factor Authentication and spatial verification to maximize your security score.
-            </p>
-            <div className="final-actions">
-              <button className="white-btn" onClick={() => navigate("/settings/security")}>
-                Configure 2FA
-              </button>
-              <button className="ghost-btn" onClick={() => navigate("/contact")}>
-                Report Breach
-              </button>
-            </div>
-          </motion.div>
-        </section>
-
-      </div>
-      <Footer />
+// A simple utility component for displaying key/value pairs in the system style.
+const SystemDetail = ({ label, value }) => (
+    <div className="system-detail">
+        <span className="system-detail__label">{label}</span>
+        <span className="system-detail__value">{value}</span>
     </div>
-  );
-}
+);
 
-/* ================= COMPONENTS ================= */
+const DNS = () => {
+    return (
+        <div className="dns-status-page">
+            <header className="dns-header">
+                {/* 5. Page Metadata */}
+                <span className="dns-header__indicator">Infrastructure • DNS</span>
+                <h1 className="dns-header__title">NEXUP DNS STATUS</h1>
+                <p className="dns-header__intro">
+                    This page documents the current and planned state of NexUP’s domain name system and routing infrastructure.
+                </p>
+            </header>
 
-function DNSSection({ title, children }) {
-  return (
-    <section className="dns-section">
-      <motion.div
-        className="dns-section-inner"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <h2 className="gradient-title section-title">{title}</h2>
-        {children}
-      </motion.div>
-    </section>
-  );
-}
+            <main className="dns-main-content">
+                {/* Section 01 — What This Page Represents */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">01. Document Purpose</h2>
+                    <p className="dns-section__text">
+                        This page exists to communicate the state of NexUP’s DNS and routing systems. It reflects both current operational status and forward-looking infrastructure intent.
+                    </p>
+                    <p className="dns-section__note">
+                        This document acts as a technical trust anchor and will not display real-time metrics until public services are launched.
+                    </p>
+                </section>
 
-function BreakLine() {
-  return <div className="break-line" />;
-}
+                {/* Section 02 — Current DNS Status */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">02. Current DNS Status</h2>
+                    <div className="status-box">
+                        <p className="status-box__text">
+                            NexUP’s public DNS infrastructure is currently in a foundational configuration. External availability is limited while internal systems are being validated.
+                        </p>
+                        {/* Status badge (text-only, using system-text color) */}
+                        <div className="status-box__badge">
+                            Status: <span className="status-box__state">Foundational / Not Public</span>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Section 03 — Domains Covered */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">03. Domains Covered</h2>
+                    <p className="dns-section__text">
+                        The following domains are part of NexUP’s DNS planning and configuration:
+                    </p>
+                    <ul className="domain-list">
+                        <li className="domain-list__item">nexup.com</li>
+                        <li className="domain-list__item domain-list__item--planned">api.nexup.com <span className="domain-list__status">(Planned)</span></li>
+                        <li className="domain-list__item domain-list__item--planned">status.nexup.com <span className="domain-list__status">(Planned)</span></li>
+                        <li className="domain-list__item domain-list__item--planned">auth.nexup.com <span className="domain-list__status">(Planned)</span></li>
+                    </ul>
+                </section>
+
+                {/* Section 04 — Routing Philosophy */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">04. Routing Philosophy</h2>
+                    <blockquote className="dns-blockquote">
+                        NexUP’s DNS architecture is designed with long-term resilience in mind. Routing decisions prioritize correctness, predictability, and fault isolation over aggressive latency optimization in early phases.
+                    </blockquote>
+                </section>
+
+                {/* Section 05 — Reliability & Redundancy (Future Intent) */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">05. Reliability & Redundancy (Future Intent)</h2>
+                    <p className="dns-section__text">
+                        Future DNS infrastructure will incorporate redundancy, multi-region resolution, and controlled failover mechanisms.
+                    </p>
+                    <p className="dns-section__text dns-section__text--critical">
+                        Note: These systems are currently internally configured and are not yet publicly active.
+                    </p>
+                </section>
+
+                {/* Section 06 — Monitoring & Visibility */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">06. Monitoring & Visibility</h2>
+                    <p className="dns-section__text">
+                        DNS behavior is monitored internally during the foundational phase. Public status indicators and telemetry data will be introduced once external availability begins.
+                    </p>
+                </section>
+
+                {/* Section 07 — Incident Disclosure Policy */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">07. Incident Disclosure Policy</h2>
+                    <p className="dns-section__text">
+                        DNS-related incidents that impact public availability will be disclosed on this page once the platform is publicly accessible and enters the Operational phase.
+                    </p>
+                </section>
+
+                {/* Section 08 — Security & Integrity */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">08. Security & Integrity</h2>
+                    <p className="dns-section__text">
+                        DNS integrity is treated as a core security concern. Controls are designed to prevent unauthorized record changes and unintended propagation across global networks.
+                    </p>
+                </section>
+
+                {/* Section 09 — Future Public Status */}
+                <section className="dns-section">
+                    <h2 className="dns-section__title">09. Future Public Status</h2>
+                    <p className="dns-section__text">
+                        This page will evolve into a real-time status surface with detailed operational metrics once NexUP systems are exposed to public traffic.
+                    </p>
+                </section>
+
+                {/* Section 10 — Closing System Signal */}
+                <section className="dns-section dns-section--closing">
+                    <p className="dns-closing-statement">
+                        This document reflects the current state of NexUP’s infrastructure.
+                    </p>
+                    <div className="dns-closing-metadata">
+                        <SystemDetail label="Version" value="0.1" />
+                        <SystemDetail label="Status" value="Foundational" />
+                    </div>
+                </section>
+            </main>
+
+            <Footer />
+        </div>
+    );
+};
+
+export default DNS;

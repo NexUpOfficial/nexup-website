@@ -1,583 +1,307 @@
-/* ===========================================================
-   PAGE WRAPPER (Scrollbar Removal)
-=========================================================== */
-.dns-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #0b0b0c 0%, #0f0f11 100%);
-  min-height: 100vh;
-  /* Hide Scrollbar */
-  scrollbar-width: none; 
-  -ms-overflow-style: none;
-}
-
-.dns-page::-webkit-scrollbar {
-  display: none;
-}
-
-.dns-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 80px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
-  color: #f0f0f0;
-}
-
-/* ===========================================================
-   ANIMATION KEYFRAMES
-=========================================================== */
-/* 1. Smoother Pulse */
-@keyframes pulse-green {
-  0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
-  50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
-  100% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
-}
-
-/* 2. Kinetic Glow Drift */
-@keyframes floatGlow {
-  from { transform: translate(-48%, -52%) scale(1); }
-  to { transform: translate(-52%, -48%) scale(1.08); }
-}
-
-/* 5. Active Status Blink */
-@keyframes activeBlink {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; text-shadow: 0 0 8px currentColor; }
-}
-
-/* ===========================================================
-   HERO DASHBOARD
-=========================================================== */
-.dns-hero-section {
-  min-height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  text-align: center;
-}
-
-/* 2. Kinetic Glow Background */
-.dns-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
-  background: radial-gradient(circle, rgba(184, 169, 255, 0.05) 0%, transparent 60%);
-  filter: blur(90px);
-  z-index: 0;
-  pointer-events: none;
-  animation: floatGlow 14s ease-in-out infinite alternate;
-}
-
-.dns-hero-content {
-  z-index: 1;
-  max-width: 800px;
-}
-
-.security-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 20px;
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.2);
-  color: #4ade80;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 24px;
-}
-
-.pulse {
-  width: 8px;
-  height: 8px;
-  background: #4ade80;
-  border-radius: 50%;
-  animation: pulse-green 3s infinite ease-in-out; /* 1. Updated duration/easing */
-}
-
-.dns-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-
-.dns-sub {
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  opacity: 0.8;
-  max-width: 650px;
-  margin: 0 auto 40px auto;
-}
-
-/* 12. Security Score Meter */
-.security-score-container {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: left;
-}
-
-.score-label {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 500;
-}
-
-.score-val {
-  color: #4ade80;
-  font-family: monospace;
-}
-
-.security-score-bar {
-  width: 100%;
-  height: 8px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.1);
-  overflow: hidden;
-}
-
-.score-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4ade80, #b8ffa9);
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
-}
-
-/* ===========================================================
-   IDENTITY NODES
-=========================================================== */
-.node-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-.node-card {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-}
-
-.node-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
-}
-
-.node-icon {
-  font-size: 1.8rem;
-  color: #b8a9ff;
-  padding: 12px;
-  background: rgba(184, 169, 255, 0.1);
-  border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* 4. Hover Glow on Icons */
-.node-icon:hover {
-  box-shadow: 0 0 20px rgba(184,169,255,0.3);
-  transform: scale(1.05);
-}
-
-.node-status {
-  font-size: 0.8rem;
-  padding: 4px 10px;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* 5. Active Blink Animation */
-.node-status.active { 
-  background: rgba(74, 222, 128, 0.1); 
-  color: #4ade80; 
-  border: 1px solid rgba(74, 222, 128, 0.2); 
-  animation: activeBlink 2.5s infinite ease-in-out;
-}
-.node-status.standby { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.2); }
-.node-status.beta { background: rgba(96, 165, 250, 0.1); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.2); }
-
-.node-card h3 {
-  font-size: 1.3rem;
-  color: #fff;
-  margin-bottom: 8px;
-}
-
-.node-card p {
-  color: rgba(255,255,255,0.7);
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-/* ===========================================================
-   DEVICE LIST (3. Color Coding)
-=========================================================== */
-.device-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.device-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 24px;
-  transition: 0.3s ease;
-  border-left: 4px solid transparent; /* Base border */
-}
-
-/* 3. Color Coding */
-.device-row.trusted { border-left-color: #4ade80; }
-.device-row.expiring { border-left-color: #fbbf24; }
-.device-row.danger { border-left-color: #f87171; }
-
-.device-row:hover {
-  transform: translateX(5px);
-  background: rgba(255,255,255,0.05);
-}
-
-/* 14. Mobile Divider (Default fallback, handled in media query for stack) */
-@media (max-width: 768px) {
-    .device-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
-}
-
-.device-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.device-icon-box {
-  font-size: 1.5rem;
-  color: #fff;
-  opacity: 0.8;
-}
-
-.device-info h4 {
-  font-size: 1.1rem;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.device-meta {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.5);
-}
-
-.device-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.last-active {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.5);
-  font-family: monospace;
-}
-
-.revoke-btn {
-  background: transparent;
-  border: 1px solid rgba(248, 113, 113, 0.3);
-  color: #f87171;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-/* 9. Revoke Button Glow */
-.revoke-btn:hover {
-  background: rgba(248, 113, 113, 0.1);
-  box-shadow: 0 0 12px rgba(248,113,113,0.4);
-}
-
-/* ===========================================================
-   SPLIT SECTION (LOGS & API)
-=========================================================== */
-.split-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
-.section-title-sm {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  display: block;
-}
-
-/* Log Terminal */
-.log-terminal {
-  padding: 24px;
-  background: #0d0d0d;
-  font-family: 'Courier New', monospace;
-  height: 250px;
-  overflow-y: auto;
-  border: 1px solid rgba(255,255,255,0.1);
-  /* Scrollbar style for terminal */
-  scrollbar-width: thin;
-  scrollbar-color: #333 #0d0d0d;
-}
-
-.log-entry {
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  display: flex;
-  gap: 10px;
-  justify-content: space-between; /* Better spacing for flex */
-}
-
-.log-time { color: #666; min-width: 80px; }
-.log-event { color: #fff; flex: 1; }
-
-/* 7. Highlight IP */
-.ip-addr {
-  color: #60a5fa;
-  font-family: monospace;
-  margin-left: 6px;
-}
-
-.log-status.success { color: #4ade80; text-align: right; }
-
-/* 8. Animated Cursor */
-.log-cursor {
-  animation: blink 0.7s steps(1) infinite;
-  color: #b8a9ff;
-  display: inline-block;
-}
-
-@keyframes blink { 50% { opacity: 0; } }
-
-/* API Card */
-.api-card {
-  padding: 30px;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.api-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.1rem;
-  color: #b8a9ff;
-}
-
-.api-desc {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.7);
-}
-
-.code-block {
-  background: rgba(0,0,0,0.3);
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: #4ade80;
-  transition: 0.3s ease;
-}
-
-/* 10. API Micro-Interaction */
-.api-card:hover .code-block {
-  border-color: rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.05);
-}
-
-.ghost-btn-sm {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  align-self: flex-start;
-  transition: 0.3s;
-}
-
-.ghost-btn-sm:hover {
-  border-color: #fff;
-  background: rgba(255,255,255,0.05);
-}
-
-/* ===========================================================
-   FINAL CTA (15. Glow Upgrade)
-=========================================================== */
-.dns-final-section {
-  display: flex;
-  justify-content: center;
-}
-
-.dns-final {
-  width: 100%;
-  max-width: 700px;
-  padding: 40px;
-  text-align: center;
-  position: relative;
-  overflow: hidden; /* Clip the pseudo-element glow */
-}
-
-/* 15. CTA Background Glow */
-.dns-final::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(184,169,255,0.08), transparent 70%);
-  opacity: 0;
-  transition: 0.4s;
-  pointer-events: none;
-}
-
-.dns-final:hover::before {
-  opacity: 1;
-}
-
-.final-icon {
-  font-size: 2.5rem;
-  color: #b8a9ff;
-  margin-bottom: 16px;
-  position: relative; z-index: 1;
-}
-
-.dns-final h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: #fff;
-  position: relative; z-index: 1;
-}
-
-.dns-final p {
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 30px;
-  position: relative; z-index: 1;
-}
-
-.final-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  position: relative; z-index: 1;
-}
-
-/* ===========================================================
-   UTILITIES
-=========================================================== */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.glass-panel:hover {
-  border-color: rgba(184, 169, 255, 0.3);
-  background: rgba(255, 255, 255, 0.04);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.glass-panel-sm {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-}
-
-.white-btn {
-  background: #fff;
-  color: #000;
-  padding: 12px 28px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.white-btn:hover {
-  transform: scale(1.05);
-}
-
-.ghost-btn {
-  background: transparent;
-  color: #fff;
-  padding: 12px 28px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.ghost-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
+/*
+|--------------------------------------------------------------------------
+| DNS STATUS PAGE STYLES (Account/DNS.css)
+|--------------------------------------------------------------------------
+| Architecture: Adapts the single-column, centered, stacked layout principles
+| from the provided approach CSS, but strictly adheres to the DNS style guide
+| (no neon, engineering memo tone, specific color palette).
+*/
+
+/*
+|--------------------------------------------------------------------------
+| COLOR PALETTE (Strict Adherence to DNS Guide)
+|--------------------------------------------------------------------------
+*/
+:root {
+    --dns-color-bg: #000000; /* Background */
+    --dns-color-text-primary: #ffffff; /* Primary text */
+    --dns-color-text-secondary: #cccccc; /* Secondary text */
+    --dns-color-text-muted: #999999; /* Status text & subtle elements */
+    --dns-color-border-muted: #333333; /* Muted / borders */
+    --dns-color-section-bg: #050505; /* Subtle section lift/background for blocks */
+}
+
+/*
+|--------------------------------------------------------------------------
+| BASE & LAYOUT (Adopted from Approach structure)
+|--------------------------------------------------------------------------
+*/
+.dns-status-page {
+    background-color: var(--dns-color-bg);
+    color: var(--dns-color-text-primary);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 10vh 20px 0; /* Add top padding similar to approach page */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.dns-main-content {
+    max-width: 900px; /* Max width for content column */
+    width: 100%;
+    text-align: left;
+    padding: 0 5%;
+}
+
+/*
+|--------------------------------------------------------------------------
+| HEADER (DNS Tone)
+|--------------------------------------------------------------------------
+*/
+.dns-header {
+    width: 100%;
+    max-width: 900px;
+    padding-top: 0; 
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--dns-color-border-muted);
+    margin-bottom: 3rem;
+    padding: 0 5%;
+}
+
+.dns-header__indicator {
+    color: var(--dns-color-text-muted);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-align: right; /* Contextual breadcrumb style */
+    padding-bottom: 10px;
+    border-bottom: 1px solid #111111;
+    font-size: 0.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #777777;
+}
+
+.dns-header__title {
+    font-size: 2.6rem; /* Adopted size from approach title */
+    font-weight: 400; /* Adjusted for calmer DNS tone */
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.dns-header__intro {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--dns-color-text-secondary);
+    line-height: 1.7;
+    text-align: center;
+    margin: 0 0 5rem 0;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| SECTIONS & TYPOGRAPHY (DNS Tone)
+|--------------------------------------------------------------------------
+*/
 .dns-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+    padding: 2rem 0;
+    border-top: 1px solid var(--dns-color-border-muted); /* Separator on top */
 }
 
-.dns-section-inner {
-  width: 100%;
-  max-width: 1000px;
+.dns-section:last-child {
+    border-bottom: 1px solid var(--dns-color-border-muted);
 }
 
-.section-title {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  display: inline-block;
+.dns-section__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: var(--dns-color-text-primary);
 }
 
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+.dns-section__text {
+    font-size: 1rem;
+    color: var(--dns-color-text-secondary);
+    margin-bottom: 1rem;
 }
 
-/* ===========================================================
-   MEDIA QUERIES
-=========================================================== */
+.dns-section__text--critical {
+    font-style: italic;
+    color: var(--dns-color-text-muted);
+    margin-top: 1.5rem;
+}
+
+.dns-section__note {
+    font-size: 0.9rem;
+    color: var(--dns-color-text-muted);
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/*
+|--------------------------------------------------------------------------
+| STATUS BOX & BADGE (Section 02)
+|--------------------------------------------------------------------------
+*/
+.status-box {
+    background-color: var(--dns-color-section-bg); /* Use defined subtle background */
+    padding: 1.5rem;
+    border: 1px solid var(--dns-color-border-muted);
+    border-radius: 4px;
+}
+
+.status-box__text {
+    font-size: 1rem;
+    color: var(--dns-color-text-secondary);
+    margin-bottom: 1rem;
+}
+
+.status-box__badge {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dns-color-text-primary);
+    text-transform: uppercase;
+}
+
+.status-box__state {
+    color: var(--dns-color-text-muted);
+}
+
+/*
+|--------------------------------------------------------------------------
+| DOMAIN LIST (Section 03)
+|--------------------------------------------------------------------------
+*/
+.domain-list {
+    margin-top: 1rem;
+    padding-left: 0;
+}
+
+.domain-list__item {
+    font-family: monospace;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--dns-color-text-primary);
+    list-style: none;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.domain-list__item::before {
+    content: "›";
+    color: var(--dns-color-text-muted);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.domain-list__item--planned {
+    color: var(--dns-color-text-secondary);
+}
+
+.domain-list__status {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: var(--dns-color-text-muted);
+    margin-left: 0.5rem;
+}
+
+/*
+|--------------------------------------------------------------------------
+| BLOCKQUOTE (Section 04)
+|--------------------------------------------------------------------------
+*/
+.dns-blockquote {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--dns-color-text-primary);
+    padding: 1.5rem 2rem;
+    border-left: 4px solid var(--dns-color-border-muted);
+    background-color: var(--dns-color-section-bg);
+    font-style: italic;
+}
+
+/*
+|--------------------------------------------------------------------------
+| CLOSING SECTION (Section 10)
+|--------------------------------------------------------------------------
+*/
+.dns-section--closing {
+    border-bottom: none;
+    padding-bottom: 0;
+    text-align: center;
+}
+
+.dns-closing-statement {
+    font-size: 1.25rem; /* Reduced size */
+    font-weight: 300;
+    color: var(--dns-color-text-secondary);
+    margin-top: 5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dns-color-border-muted);
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.dns-closing-metadata {
+    display: flex;
+    justify-content: center; /* Center the metadata */
+    gap: 3rem;
+    margin-bottom: 6rem; /* Spacing before the footer */
+}
+
+.system-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.system-detail__label {
+    font-size: 0.8rem; /* Smaller, subtler */
+    color: var(--dns-color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+}
+
+.system-detail__value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dns-color-text-primary);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| MEDIA QUERIES
+|--------------------------------------------------------------------------
+*/
 @media (max-width: 768px) {
-  .dns-wrapper { padding: 60px 20px; gap: 70px; }
-  .split-section { grid-template-columns: 1fr; gap: 30px; }
-  .device-row { flex-direction: column; align-items: flex-start; gap: 16px; border-left-width: 0px; border-top: 4px solid transparent; }
-  
-  /* Mobile border logic fix */
-  .device-row.trusted { border-top-color: #4ade80; }
-  .device-row.expiring { border-top-color: #fbbf24; }
-  .device-row.danger { border-top-color: #f87171; }
-  
-  .device-right { width: 100%; justify-content: space-between; }
-  
-  .log-entry { flex-direction: column; gap: 4px; }
-  .log-time { min-width: auto; opacity: 0.5; font-size: 0.8rem; }
+    .dns-header {
+        padding-top: 3rem;
+    }
+    .dns-header__title {
+        font-size: 2.2rem;
+    }
+    .dns-header__intro {
+        font-size: 1.25rem;
+        text-align: left;
+    }
+    .dns-main-content {
+        padding: 0 5%;
+    }
+    .dns-section__title {
+        font-size: 1.5rem;
+    }
+    .dns-blockquote {
+        font-size: 1.1rem;
+        padding: 1rem;
+    }
+    .dns-closing-statement {
+        font-size: 1.25rem;
+        text-align: left;
+    }
+    .dns-closing-metadata {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    .system-detail__value {
+        font-size: 1rem;
+    }
 }

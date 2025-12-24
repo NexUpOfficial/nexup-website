@@ -1,85 +1,94 @@
 /* ===========================================================
-   ROOT VARIABLES
+    ROOT VARIABLES
 =========================================================== */
 :root {
-  --bg-color: #000;
-  --text-color: #e0e0e0;
-  --sidebar-width: 173px;
-  --transition-speed: 0.35s;
-  --transition-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --bg-color: #000;
+    --text-color: #e0e0e0;
+    --sidebar-width: 173px;
+    --transition-speed: 0.35s;
+    --transition-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ===========================================================
-   BASE
+    BASE
 =========================================================== */
 body {
-  margin: 0;
-  background: var(--bg-color);
-  color: var(--text-color);
-  overflow-x: hidden;
+    margin: 0;
+    background: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
 }
 
 /* ===========================================================
-   PAGE FRAME (STABLE)
+    PAGE FRAME (STABLE)
 =========================================================== */
 .page-frame {
-  position: relative;
-  width: 100%;
-  display: flex;
-  transition: width var(--transition-speed) var(--transition-ease),
-              margin-left var(--transition-speed) var(--transition-ease);
+    position: relative;
+    width: 100%;
+    display: flex;
+    transition: width var(--transition-speed) var(--transition-ease),
+                margin-left var(--transition-speed) var(--transition-ease);
 }
 
 /* Content wrapper */
 .page-content {
-  width: 100%;
-  padding-top: 60px; /* header height */
+    width: 100%;
+    padding-top: 60px; /* header height */
 }
 body {
-  overflow-y: auto;
+    overflow-y: auto;
 }
 
 /* ===========================================================
-   DESKTOP (RESIZE, NOT PUSH OFFSCREEN)
-=========================================================== */
-@media (min-width: 1024px) {
-  .page-frame.sidebar-open {
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
-  }
+  TABLET & DESKTOP (SHRINK & SHIFT)
+  Applies for screens >= 769px. This is the desired change.
+=========================================================== 
+*/
+@media (min-width: 769px) {
+    .page-frame.sidebar-open {
+        /* Shift content to the right by sidebar width */
+        margin-left: var(--sidebar-width);
+        /* Shrink content width by sidebar width */
+        width: calc(100% - var(--sidebar-width));
+    }
+}
+
+
+/* ===========================================================
+  MOBILE (FULL WIDTH & NO SHIFT)
+  Applies for screens <= 768px. Sidebar covers content fully.
+=========================================================== 
+*/
+@media (max-width: 768px) {
+    .page-frame.sidebar-open {
+        /* No shift */
+        margin-left: 0;
+        /* Full width */
+        width: 100%;
+    }
 }
 
 /* ===========================================================
-   MOBILE (NO MOVE, NO BLUR)
-=========================================================== */
-@media (max-width: 1023px) {
-  .page-frame.sidebar-open {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-/* ===========================================================
-   SCROLL TO TOP BUTTON
+    SCROLL TO TOP BUTTON
 =========================================================== */
 .scroll-fab {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
-  border: none;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(15px);
-  transition: all 0.25s ease;
-  z-index: 50;
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.25s ease;
+    z-index: 50;
 }
 
 .scroll-fab.visible {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
