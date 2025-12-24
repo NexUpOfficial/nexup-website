@@ -1,347 +1,355 @@
-/* src/page-styles/sections/Roadmap.css */
+/*
+ * ROADMAP PAGE STYLES - INSTITUTIONAL DOCUMENT AESTHETIC
+ * Update Rationale: Changed .roadmap-page display to flex-direction: column to stack content and footer correctly.
+ */
 
 :root {
-  --neon-purple: #b8a9ff;
-  --bg-black: #050505;
-  --glass-bg: rgba(20, 20, 20, 0.4); /* More transparent for sheen visibility */
-  --glass-border: rgba(255, 255, 255, 0.08);
+    --color-bg-dark: #000000;
+    --color-text-light: #ffffff;
+    --color-text-muted: #777777;
+    --color-text-dim: #444444;
+    --color-border-subtle: #111111;
+    --color-border-medium: #222222;
+    --color-border-strong: #333333;
+    --color-accent-system: #ffffff;
+    --max-content-width: 680px;
 }
+
+/* --- Global Page Setup (Section 1) --- */
 
 .roadmap-page {
-  background-color: var(--bg-black);
-  min-height: 100vh;
-  color: #fff;
-  padding: 100px 24px;
-  overflow-x: hidden; /* Critical for 3D tilt */
-  position: relative;
+    /* Full black background for a deep, focused read */
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+    min-height: 100vh;
+    padding: 10vh 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.7;
+    
+    /* FIX: Use column flex to stack content and footer */
+    display: flex; 
+    flex-direction: column; 
+    
+    /* Removed justify-content: center and align-items: flex-start */
+    box-sizing: border-box;
 }
 
-/* --- BACKGROUND BLOB --- */
-.roadmap-bg-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
+.roadmap-container {
+    /* Center the document content */
+    max-width: var(--max-content-width);
+    width: 100%;
+    margin: 0 auto; /* Added margin: 0 auto for horizontal centering */
+    padding: 0;
+    text-align: center;
 }
 
-.roadmap-blob {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(74, 58, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  filter: blur(60px);
-}
+/* * IMPORTANT: If your Footer component needs to be pushed to the very bottom 
+ * of the screen (i.e., sticky footer when content is short), you need to 
+ * ensure the Footer component itself has 'margin-top: auto' applied in its CSS. 
+ * Since I cannot edit the Footer component's CSS, I am ensuring the main page 
+ * allows it to be stacked.
+ */
 
-/* --- HEADER --- */
+/* --- Header & Title (Section 5) --- */
+
 .roadmap-header {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  margin-bottom: 120px; /* Increased spacing */
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-align: right;
 }
 
-.header-badge {
-  display: inline-block;
-  padding: 6px 18px;
-  border-radius: 20px;
-  background: rgba(184, 169, 255, 0.05);
-  border: 1px solid rgba(184, 169, 255, 0.2);
-  color: var(--neon-purple);
-  font-family: monospace;
-  font-size: 0.85rem;
-  margin-bottom: 24px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  backdrop-filter: blur(5px);
+.indicator {
+    font-size: 0.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-text-muted);
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
 .roadmap-title {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 800;
-  margin-bottom: 10px;
-  line-height: 1.1;
+    font-size: 2.6rem;
+    font-weight: 400;
+    letter-spacing: -0.05em;
+    margin-bottom: 3rem;
+    text-align: center;
 }
 
-.gradient-text {
-  background: linear-gradient(90deg, #fff 0%, var(--neon-purple) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.roadmap-header h1 {
+    display: none;
 }
 
-/* --- TIMELINE WRAPPER --- */
-.roadmap-timeline-wrapper {
-  position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 0;
-  z-index: 2;
+/* --- Intro & Philosophy (Section 5 & 4) --- */
+
+.roadmap-intro {
+    font-size: 1.5rem;
+    font-weight: 300; 
+    line-height: 1.7;
+    margin: 0 0 5rem 0;
+    padding-left: 0;
+    border-left: none;
+    opacity: 0.85;
+    text-align: center;
+    color: var(--color-text-light);
 }
 
-/* Central Lines */
-.central-line-static {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: rgba(255, 255, 255, 0.05);
-  transform: translateX(-50%);
-  z-index: 0;
+.roadmap-intro p {
+    margin: 0;
 }
 
-.central-line-container {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  transform: translateX(-50%);
-  z-index: 1;
-  transform-origin: top;
-  overflow: hidden; /* For glow animation */
+.roadmap-intro strong {
+    font-weight: 500;
+    color: var(--color-accent-system);
 }
 
-/* Updated Pulsing Glow */
-.central-line-glow {
-  width: 100%;
-  height: 200%; /* Larger for scrolling effect */
-  background: linear-gradient(180deg, 
-    #4a3aff, 
-    #b8a9ff, 
-    #ff4aae, 
-    #4a3aff
-  );
-  background-size: 100% 50%;
-  box-shadow: 0 0 20px rgba(184, 169, 255, 0.6);
-  border-radius: 2px;
-  animation: streamGlow 4s linear infinite;
+.roadmap-philosophy {
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    margin-bottom: 4rem;
+    padding-bottom: 0;
+    border-bottom: none;
+    opacity: 0.85;
+    text-align: left;
 }
 
-@keyframes streamGlow {
-  0% { transform: translateY(-50%); }
-  100% { transform: translateY(0%); }
+.roadmap-philosophy strong {
+    font-weight: 500;
+    color: var(--color-text-light);
 }
 
-/* --- TIMELINE ROWS --- */
-.timeline-items {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 100px; /* Increased gap for better rhythm */
+/* --- Core Sections (Harmonizing with approach-sections-stack) --- */
+
+.roadmap-sections-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 4rem;
+    text-align: left;
 }
 
-.timeline-row {
-  display: flex;
-  align-items: center;
-  position: relative;
-  width: 50%;
+.roadmap-section {
+    border-top: 1px solid var(--color-border-strong);
+    padding-top: 0;
+    margin-bottom: 0;
 }
 
-.timeline-content-wrapper {
-  width: 100%;
-  perspective: 1000px; /* Essential for 3D tilt */
+.roadmap-section:first-child {
+    border-top: none;
 }
 
-/* Left/Right Alignment Logic */
-.timeline-row.left {
-  align-self: flex-start;
-  padding-right: 60px;
-  justify-content: flex-end;
-  text-align: left;
+.roadmap-section-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    padding: 2.5rem 0;
+    align-items: center;
 }
 
-.timeline-row.right {
-  align-self: flex-end;
-  padding-left: 60px;
-  justify-content: flex-start;
-  text-align: left;
+.roadmap-section-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-dim); 
+    text-align: center;
+    margin-top: 0;
 }
 
-/* --- THE 3D CARD STYLE --- */
-.timeline-card {
-  position: relative;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  padding: 36px; /* Increased padding */
-  border-radius: 24px;
-  width: 100%;
-  max-width: 520px;
-  transition: border-color 0.3s;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-  overflow: hidden; /* Contains the sheen */
+.roadmap-section h2 {
+    font-size: 1.5rem; 
+    font-weight: 500; 
+    line-height: 1.3;
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    color: var(--color-text-light);
+    letter-spacing: normal;
 }
 
-.timeline-card:hover {
-  border-color: rgba(184, 169, 255, 0.3);
-  box-shadow: 0 20px 50px rgba(74, 58, 255, 0.15);
+.roadmap-section p {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    margin: 0 0 20px 0;
 }
 
-/* VisionOS Glass Sheen */
-.glass-sheen {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.08), 
-    transparent
-  );
-  transform: skewX(-25deg);
-  pointer-events: none;
-  animation: glassShine 8s infinite ease-in-out;
-  z-index: 1;
+.roadmap-section strong {
+    color: var(--color-text-light);
+    font-weight: 500;
 }
 
-@keyframes glassShine {
-  0%, 40% { left: -100%; }
-  60% { left: 200%; }
-  100% { left: 200%; }
+.roadmap-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 20px 0;
 }
 
-/* Card Internals */
-.card-content-inner {
-  position: relative;
-  z-index: 2;
-  transform: translateZ(20px); /* Lifts text off card in 3D space */
-}
-
-.card-header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
-  align-items: flex-start;
-}
-
-.phase-id {
-  font-family: monospace;
-  font-weight: 700;
-  letter-spacing: 2px;
-  font-size: 0.8rem;
-  opacity: 0.9;
-}
-
-.phase-title {
-  font-size: 1.85rem;
-  margin: 0;
-  line-height: 1.1;
-  font-weight: 700;
-}
-
-.phase-subtitle {
-  font-size: 1.05rem;
-  color: #a0a0a0;
-  font-weight: 400;
-  margin: 0 0 20px 0;
-  font-family: monospace;
-}
-
-.phase-desc {
-  color: rgba(255, 255, 255, 0.75);
-  line-height: 1.6;
-  font-size: 1rem;
-  margin: 0;
-}
-
-/* --- NODES (DOTS) --- */
-.timeline-node {
-  position: absolute;
-  top: 40px;
-  width: 24px;
-  height: 24px;
-  z-index: 3;
-}
-
-.timeline-row.left .timeline-node { right: -12px; }
-.timeline-row.right .timeline-node { left: -12px; }
-
-.node-circle {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #000;
-  border: 4px solid #fff;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-.node-pulse {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  opacity: 0.4;
-  filter: blur(8px);
-  animation: pulseNode 3s infinite;
-  z-index: 1;
-}
-
-@keyframes pulseNode {
-  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.2; }
-  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
-  100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.2; }
-}
-
-/* --- RESPONSIVE DESIGN --- */
-@media (max-width: 900px) {
-  .roadmap-timeline-wrapper {
+.roadmap-section ul li {
+    position: relative;
     padding-left: 20px;
-    padding-right: 10px;
-  }
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
 
-  .timeline-items {
-    gap: 120px; /* Larger gap on mobile to prevent stacking overlap look */
-  }
+.roadmap-section ul li::before {
+    content: "▫";
+    position: absolute;
+    left: 0;
+    font-size: 1em;
+    line-height: 1;
+    color: var(--color-text-light);
+}
 
-  /* Move line to left */
-  .central-line-static, .central-line-container {
-    left: 20px; 
-  }
+/* --- Phase Sections (Foundation, Expansion, Integration, Maturity) --- */
 
-  .timeline-row {
-    width: 100%;
-  }
+.phase-section h2 {
+    color: var(--color-accent-system);
+    font-size: 1.7rem; 
+    font-weight: 600;
+    letter-spacing: 0;
+}
 
-  /* Reset alignments for mobile */
-  .timeline-row.left, 
-  .timeline-row.right {
-    align-self: flex-start;
-    padding-left: 50px; /* Space for the line on left */
-    padding-right: 0;
-    justify-content: flex-start;
-  }
+.phase-section .roadmap-section-number {
+    color: var(--color-accent-system); 
+}
 
-  /* Adjust nodes */
-  .timeline-row.left .timeline-node,
-  .timeline-row.right .timeline-node {
-    left: 8px; /* Aligns with line at 20px */
-    right: auto;
-  }
+.phase-section p {
+    color: var(--color-text-light);
+    font-weight: 300;
+    opacity: 0.9;
+}
+.phase-section p strong {
+    color: var(--color-accent-system); 
+}
 
-  /* Reduce card padding slightly on small screens */
-  .timeline-card {
-    padding: 28px;
-  }
+.phase-section ul li {
+    color: var(--color-text-light);
+}
+
+.phase-section ul li::before {
+    color: var(--color-accent-system);
+}
+
+/* --- Footer (Section 10) --- */
+
+.roadmap-footer {
+    border-top: 1px solid var(--color-border-strong);
+    padding-top: 1rem;
+    margin-top: 5rem;
+    text-align: center;
+}
+
+.roadmap-footer-closing-signal {
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.6;
+    opacity: 0.9;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--color-text-light);
+}
+
+.roadmap-footer-unsaid-signal {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.silent-signal-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 6rem;
+}
+
+.silent-signal {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--color-text-dim); 
+    opacity: 0.7;
+    margin: 0;
+}
+
+.version-meta {
+    font-size: 0.8rem !important;
+    line-height: 1.5;
+    color: var(--color-text-dim) !important;
+    margin-top: 30px;
+    margin-bottom: 0;
+    display: block;
+}
+
+.roadmap-footer p,
+.roadmap-footer p:first-of-type {
+    /* Ensuring old P tags from the original structure are hidden */
+    display: none;
+}
+
+
+/* --- Responsive Adjustments (Aligned with Approach Page Media Query) --- */
+@media (max-width: 768px) {
+    .roadmap-page {
+        padding: 5vh 15px;
+    }
+    .roadmap-container {
+        padding: 0;
+        margin: 0 auto;
+        text-align: left;
+    }
+    .roadmap-header {
+        margin-bottom: 3rem;
+    }
+    .roadmap-title {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+    .roadmap-intro {
+        font-size: 1.25rem;
+        text-align: left;
+    }
+    
+    .roadmap-section-header {
+        grid-template-columns: 50px 1fr;
+        padding: 1.5rem 0;
+    }
+    .roadmap-section-number {
+        font-size: 1.5rem;
+    }
+    .roadmap-section h2 {
+        font-size: 1.2rem;
+    }
+    .phase-section h2 {
+        font-size: 1.4rem;
+    }
+    .roadmap-section ul li,
+    .roadmap-philosophy {
+        font-size: 1rem;
+    }
+
+    .roadmap-footer {
+        margin-top: 3rem;
+    }
+    .roadmap-footer-closing-signal {
+        text-align: left;
+    }
+    .silent-signal-container {
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+    }
 }

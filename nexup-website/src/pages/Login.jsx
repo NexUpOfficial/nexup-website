@@ -1,279 +1,197 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
+// src/pages/About/Login.jsx (Final Infrastructural Design with Federated Identity Access)
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { 
-  FiMail, FiLock, FiArrowRight, FiCheckCircle, 
-  FiCpu, FiEye, FiEyeOff, FiLoader, FiAlertCircle
-} from "react-icons/fi";
-import { FaGoogle, FaGithub, FaApple } from "react-icons/fa";
+// Importing monochrome icons for provider list (Rule: No colorful buttons)
+import { FaGoogle, FaGithub, FaMicrosoft, FaTwitter, FaFacebookF } from 'react-icons/fa';
+
 import "../page-styles/Login.css";
 
-/* --- ANIMATIONS (Simplified) --- */
 const contentVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
-};
-const inputVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: (i) => ({ 
-    opacity: 1, y: 0, transition: { delay: i * 0.1 + 0.2, duration: 0.4 } 
-  }),
-  exit: { opacity: 0, x: -10, transition: { duration: 0.2 } }
-};
-const featureListVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } }
-};
-const featureItemVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-/* --- COMPONENTS (ParticleField & GlowButton kept same) --- */
-const ParticleField = () => {
-  const particles = useMemo(() => Array.from({ length: 20 }).map(() => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    duration: Math.random() * 5 + 10,
-    delay: Math.random() * 5,
-    size: Math.random() * 3 + 1
-  })), []);
-
-  return (
-    <div className="particle-container">
-      {particles.map((p, i) => (
-        <motion.div
-          key={i}
-          className="particle"
-          initial={{ x: p.x, y: p.y, opacity: 0 }}
-          animate={{ x: [null, Math.random() * 40 - 20], y: [null, Math.random() * -100], opacity: [0, 0.3, 0] }}
-          transition={{ duration: p.duration, repeat: Infinity, ease: "linear", delay: p.delay }}
-          style={{ width: p.size, height: p.size }}
-        />
-      ))}
-    </div>
-  );
-};
-
-const GlowButton = ({ children, className, onClick, disabled }) => {
-  const btnRef = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const handleMouseMove = (e) => {
-    if (!btnRef.current) return;
-    const rect = btnRef.current.getBoundingClientRect();
-    x.set(e.clientX - rect.left);
-    y.set(e.clientY - rect.top);
-  };
-
-  return (
-    <motion.button
-      ref={btnRef}
-      className={`glow-trail-btn ${className}`}
-      onMouseMove={handleMouseMove}
-      onClick={onClick}
-      disabled={disabled}
-      whileHover={!disabled ? { scale: 1.02 } : {}}
-      whileTap={!disabled ? { scale: 0.98 } : {}}
-    >
-      <motion.div className="glow-effect" style={{ x, y }} />
-      <span className="btn-content">{children}</span>
-    </motion.button>
-  );
-};
+const federatedProviders = [
+    { name: "Google", icon: FaGoogle, key: "google" },
+    { name: "GitHub", icon: FaGithub, key: "github" },
+    { name: "Microsoft", icon: FaMicrosoft, key: "microsoft" },
+    { name: "X", icon: FaTwitter, key: "twitter" }, // Using Twitter icon for 'X' as it's common
+    { name: "Facebook", icon: FaFacebookF, key: "facebook" },
+];
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true);
-  const [isTyping, setIsTyping] = useState(false);
-  const [emailValid, setEmailValid] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const [isAuthenticating, setIsAuthenticating] = useState(true);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
-  // 3D Tilt Logic
-  const cardRef = useRef(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [8, -8]), { stiffness: 100, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-8, 8]), { stiffness: 100, damping: 20 });
+    const handleAuth = async (e) => {
+        e.preventDefault();
+        setError("");
+        if (!email || !password) {
+            setError("Identity identifiers are required.");
+            return;
+        }
+        
+        setIsLoading(true);
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            navigate("/dashboard"); 
+        } catch (err) {
+            setError("Verification failed. Protocol error or invalid key.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-  const handleCardMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left - rect.width / 2);
-    mouseY.set(e.clientY - rect.top - rect.height / 2);
-  };
-  const handleCardMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
+    const handleFederatedAuth = (providerKey) => {
+        setError("");
+        setIsLoading(true); // Show system loading state (Rule: show system loading state)
+        console.log(`Initiating delegated authentication via: ${providerKey}`);
+        
+        // Simulate OAuth Redirect/Flow
+        setTimeout(() => {
+            setIsLoading(false);
+            // In a real app, this would trigger a redirect.
+            setError(`Delegation for ${providerKey} initiated. Awaiting external response.`);
+        }, 1500);
+    }
 
-  // Email Validation
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      setEmailValid(isValid && email.length > 0);
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [email]);
+    const handleSwitchMode = (mode) => {
+        setIsAuthenticating(mode === 'authenticate');
+        setError("");
+    };
 
-  // Auth Handler
-  const handleAuth = async (e) => {
-    if(e) e.preventDefault();
-    setError("");
-    if (!email || !password) { setError("Credentials required."); return; }
-    if (!emailValid) { setError("Invalid email format."); return; }
-    if (password.length < 6) { setError("Password too short."); return; }
-    setIsLoading(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      // ⭐ UPDATED: Navigate to dashboard (root path) on success
-      navigate("/"); 
-    } catch (err) { 
-      setError("Authentication failed. Check your credentials."); 
-    } finally { 
-      setIsLoading(false); 
-    }
-  };
+    const primaryActionText = isAuthenticating ? "Verify Identity" : "Register Identity";
 
-  return (
-    <div className={`login-page ${isTyping ? "typing-mode" : ""}`}>
-      <div className="cyber-grid" />
-      <ParticleField />
-      <div className="login-glow-top" />
-      <div className="login-glow-bottom" />
+    return (
+        <div className="login-page-infrastructure">
+            
+            <motion.div 
+                className="login-panel"
+                variants={contentVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                <p className="system-indicator">SYSTEM ACCESS</p>
+                <h1 className="identity-title">NexUP Identity</h1>
+                <p className="context-line">
+                    {isAuthenticating ? "Authenticate to access NexUP systems." : "Create a new identity for system enrollment."}
+                </p>
 
-      <motion.div 
-        className="login-content-wrapper"
-        variants={contentVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="login-text-side">
-          <motion.div 
-            className="glass-text-panel"
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="brand-pill">
-              <span className="dot pulse"></span> Secure Gateway v2.4
-            </div>
-            <h1 className="login-title">
-              Welcome to <br />
-              <span className="gradient-text">NexWorld ID.</span>
-            </h1>
-            <p className="login-sub">
-              Your single identity for the spatial web. Access NexWorld, manage NexNodes, 
-              and sync your digital reality across all devices.
-            </p>
-            <motion.div className="login-features" variants={featureListVariants} initial="hidden" animate="visible">
-              <FeatureItem text="End-to-End Encryption" />
-              <FeatureItem text="Biometric Ready" />
-              <FeatureItem text="Distributed Ledger Sync" />
-            </motion.div>
-          </motion.div>
-        </div>
+                {error && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: -5 }} 
+                        animate={{ opacity: 1, y: 0 }} 
+                        className="error-message"
+                    >
+                        {error}
+                    </motion.div>
+                )}
 
-        <div className="login-card-side">
-          <motion.div 
-            ref={cardRef}
-            className="tilt-container"
-            style={{ rotateX, rotateY, perspective: 1000 }}
-            onMouseMove={handleCardMouseMove}
-            onMouseLeave={handleCardMouseLeave}
-          >
-            <div className="neon-border-box">
-              <div className={`auth-card glass-panel ${isTyping ? "card-active-glow" : ""}`}>
-                <div className="holo-sheen" />
-                <div className="card-brand-logo">NEXUP</div>
-                <div className={`avatar-scanner ${isTyping ? "scanning" : ""}`}>
-                  <div className="scan-line"></div>
-                  <FiCpu className="avatar-icon" />
-                </div>
+                <form className="auth-form" onSubmit={handleAuth}>
+                    <div className="input-field">
+                        <label htmlFor="email">Email Identifier</label>
+                        <input 
+                            id="email"
+                            type="email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            required 
+                            disabled={isLoading}
+                        />
+                    </div>
+                    
+                    <div className="input-field">
+                        <label htmlFor="password"> Create Access Key</label>
+                        <input 
+                            id="password"
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            required 
+                            disabled={isLoading}
+                        />
+                    </div>
 
-                <div className="auth-tabs">
-                  <button className={`tab-btn ${isLogin ? "active" : ""}`} onClick={() => { setIsLogin(true); setError(""); }}>Log In</button>
-                  <button className={`tab-btn ${!isLogin ? "active" : ""}`} onClick={() => { setIsLogin(false); setError(""); }}>Sign Up</button>
-                </div>
+                    <button 
+                        type="submit" 
+                        className="primary-action-btn" 
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 
+                            <span className="loading-state">Processing...</span> : 
+                            primaryActionText}
+                    </button>
+                </form>
 
-                <div className="auth-header">
-                  <h2>{isLogin ? "Identity Verification" : "Create Identity"}</h2>
-                  <p>{isLogin ? "Authenticate to access the ecosystem." : "Create your NexWorld Identity."}</p>
-                </div>
+                {/* --- Federated Identity Access Section --- */}
+                
+                {/* Divider (Rule) */}
+                <div className="auth-divider">
+                    <span>or</span>
+                </div>
 
-                <div className="social-login-grid">
-                  <button className="social-btn"><FaGoogle /></button>
-                  <button className="social-btn"><FaGithub /></button>
-                  <button className="social-btn"><FaApple /></button>
-                </div>
+                {/* Section Title (Rule) */}
+                <p className="federated-access-title">
+                    Continue using an external identity provider
+                </p>
 
-                <div className="auth-divider"><span>Or use email protocol</span></div>
+                {/* Provider List (Rule: Vertical, text-first) */}
+                <div className="federated-providers-list">
+                    {federatedProviders.map(provider => (
+                        <motion.button
+                            key={provider.key}
+                            className="provider-btn"
+                            onClick={() => handleFederatedAuth(provider.key)}
+                            disabled={isLoading}
+                            whileHover={{ scale: 1.005 }}
+                            whileTap={{ scale: 0.995 }}
+                        >
+                            <span className="provider-name">{provider.name}</span>
+                            <provider.icon className="provider-icon" />
+                        </motion.button>
+                    ))}
+                </div>
 
-                {error && (
-                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="error-banner">
-                        <FiAlertCircle /> {error}
-                    </motion.div>
-                )}
+                {/* --- Secondary Actions (Moved Below Federated Section) --- */}
+                <div className="secondary-actions">
+                    {isAuthenticating ? (
+                        <>
+                            <span 
+                                className="action-link"
+                                onClick={() => handleSwitchMode('create')}
+                            >
+                                Create Identity
+                            </span>
+                            <span className="separator">/</span>
+                            <span 
+                                className="action-link"
+                                onClick={() => alert('Access key recovery initiated.')}
+                            >
+                                Recover access
+                            </span>
+                        </>
+                    ) : (
+                        <span 
+                            className="action-link"
+                            onClick={() => handleSwitchMode('authenticate')}
+                        >
+                            Return to Authentication
+                        </span>
+                    )}
+                </div>
 
-                <form className="auth-form" onSubmit={handleAuth}>
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={isLogin ? "login" : "signup"}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      <motion.div className={`input-group ${emailValid ? "success" : ""}`} custom={1} variants={inputVariants} initial="hidden" animate="visible">
-                        <FiMail className="input-icon" />
-                        <input type="email" placeholder="name@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} onFocus={() => setIsTyping(true)} onBlur={() => setIsTyping(false)} />
-                        <div className="input-border-glow" />
-                      </motion.div>
+                {/* --- Footer Signal (Bottom of Panel) --- */}
+                <p className="system-footer-signal">
+                    This authentication process is governed by NexUP system controls.
+                </p>
 
-                      <motion.div className="input-group" custom={2} variants={inputVariants} initial="hidden" animate="visible">
-                        <FiLock className="input-icon" />
-                        <input type={showPassword ? "text" : "password"} placeholder={isLogin ? "Password" : "Password (min. 6 characters)"} required value={password} onChange={(e) => setPassword(e.target.value)} onFocus={() => setIsTyping(true)} onBlur={() => setIsTyping(false)} />
-                        <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <FiEyeOff /> : <FiEye />}
-                        </button>
-                        <div className="input-border-glow" />
-                      </motion.div>
-                    </motion.div>
-                  </AnimatePresence>
-
-                  {isLogin && (
-                    <div className="form-actions">
-                      {/* Custom Neon Checkbox Structure */}
-                      <label className="checkbox-container">
-                        <input type="checkbox" />
-                        <span className="custom-checkmark"></span>
-                        <span className="checkbox-text">Keep session active</span>
-                      </label>
-                      <span className="forgot-link">Recover Key?</span>
-                    </div>
-                  )}
-
-                  <GlowButton className="submit-btn" type="submit" disabled={isLoading}>
-                    {isLoading ? <><FiLoader className="spinner" /> {isLogin ? "Authenticating..." : "Initializing..."}</> : <>{isLogin ? "Authenticate" : "Initialize Account"} <FiArrowRight /></>}
-                  </GlowButton>
-                </form>
-
-                <p className="auth-footer">Protected by <span className="link">NexGuard</span> Encryption.</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-function FeatureItem({ text }) {
-  return (
-    <motion.div className="feature-item" variants={featureItemVariants}>
-      <FiCheckCircle className="check-icon" /> <span>{text}</span>
-    </motion.div>
-  );
+            </motion.div>
+        </div>
+    );
 }

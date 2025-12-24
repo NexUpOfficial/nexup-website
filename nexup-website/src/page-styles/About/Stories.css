@@ -1,155 +1,219 @@
-/* --- Global Page Reset and Dark Theme Setup --- */
+/*
+ * STORIES PAGE STYLES - Reflective, Document Aesthetic
+ * Focus: Readability, Wide Margins, Single-Column flow
+ */
 
-/* Applying a high-contrast dark theme to the main container */
-.stories-page-container {
-  background-color: #000000; /* Deep black background */
-  color: #ffffff; /* Pure white text for high contrast */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  line-height: 1.6;
-  padding: 0;
-  margin: 0;
-  min-height: 100vh;
+/* --- 1. Root Page Container & Main Layout --- */
+.nx-page.stories-page {
+    background-color: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+    padding-bottom: 50px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Limit content width for better readability on large screens */
-.stories-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.nx-main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-/* --- Header Styling --- */
-.stories-header {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 40px 20px 60px 20px;
-  text-align: left;
-  border-bottom: 1px solid #333333; /* Subtle separator line */
+.stories-document {
+    /* Rule 7: Wider column than News (720px) for long-form reading comfort */
+    max-width: 800px; 
+    width: 100%;
+    padding: 5vh 20px 0;
+    box-sizing: border-box;
+    text-align: left; 
 }
 
-.page-main-title {
-  font-size: 3.5rem; /* Large, bold title */
-  font-weight: 700;
-  margin: 0 0 10px 0;
-  letter-spacing: -1px;
+
+/* --- 2. Header & Introduction (Rule 12) --- */
+.document-header {
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1a1a1a;
 }
 
-.page-subtitle {
-  font-size: 1.25rem;
-  color: #aaaaaa; /* Slightly desaturated subtitle */
-  margin: 0;
+.indicator-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 10px;
 }
 
-/* --- Section and Text Styling --- */
-
-.story-section {
-  padding: 40px 0;
-  border-bottom: 1px solid #1a1a1a; /* Very subtle separation between sections */
+.document-header h1 {
+    font-size: 3.2rem; /* Slightly larger than News for 'essay' feel */
+    font-weight: 350; 
+    letter-spacing: -0.05em;
+    margin: 0 0 0.5rem 0;
 }
 
-.story-section:last-child {
-  border-bottom: none; /* No line after the last main section */
+.intro-text {
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #999999;
 }
 
-.intro-paragraph {
-  font-size: 1.15rem;
-  font-weight: 300;
-  margin-bottom: 40px;
-  color: #dddddd;
+
+/* --- 3. Story Archive --- */
+.stories-archive {
+    display: flex;
+    flex-direction: column;
 }
 
-.section-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin-top: 0;
-  margin-bottom: 25px;
-  border-left: 4px solid #ffffff; /* Visual anchor, inspired by code blocks/titles */
-  padding-left: 15px;
+.story-entry {
+    padding: 60px 0; /* More vertical space for separation */
+    border-bottom: 1px solid #333333; 
 }
 
-.subsection-title {
-  font-size: 1.3rem;
-  font-weight: 500;
-  color: #eeeeee;
-  margin-top: 30px;
-  margin-bottom: 15px;
+/* --- Entry Header (Date & Category) --- */
+.entry-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
-p {
-  margin: 0 0 15px 0;
+.entry-date {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #666666; 
 }
 
-.note-emphasis {
-  font-style: italic;
-  margin-top: 20px;
-  padding: 10px 15px;
-  background-color: #111111; /* Subtle dark background for emphasis boxes */
-  border-left: 4px solid #ffffff;
+.entry-category {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    /* Rule 9: Muted and low-contrast */
+    background-color: transparent; 
+    border: 1px solid #444444; 
+    color: #cccccc;
 }
 
-.detail-text {
-  font-size: 0.9rem;
-  color: #888888;
-  margin-top: 15px;
-  margin-left: 20px;
+/* --- Entry Title & Subtitle --- */
+.entry-title {
+    font-size: 2.2rem;
+    font-weight: 500; 
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+    color: #ffffff;
 }
 
-/* --- List Styling (Key to the clean look) --- */
-
-.story-list {
-  list-style: none; /* Remove default bullets */
-  padding-left: 20px;
-  margin-bottom: 20px;
+.entry-subtitle {
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 300;
+    color: #999999;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #1a1a1a; /* Subtle line below subtitle */
 }
 
-.story-list li {
-  position: relative;
-  margin-bottom: 10px;
-  padding-left: 15px;
-  font-size: 1rem;
+/* --- Entry Body (Long-form Reading Style) --- */
+.entry-body p {
+    font-size: 1.1rem; /* Larger text for reading comfort */
+    line-height: 1.8; /* Increased line height */
+    color: #cccccc;
+    margin-bottom: 1.5rem;
 }
 
-.story-list li::before {
-  content: '—'; /* Use a dash or a simple shape for the bullet */
-  color: #ffffff;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
+/* --- Read More Link --- */
+.entry-divider {
+    width: 50px;
+    height: 1px;
+    background-color: #333333;
+    margin: 20px 0 20px 0;
 }
 
-.story-list.list-negative li::before {
-  content: '×'; /* Use an 'x' for the "What Are Not" list */
-  color: #ff0000; /* A touch of red for negation */
-  font-weight: bold;
+.read-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-/* --- Final Note Block --- */
-
-.final-note-block {
-  padding: 60px 0;
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 300;
-  color: #aaaaaa;
+.read-more-link:hover {
+    color: #999999;
 }
 
-/* --- Optional Footer Line --- */
-
-.footer-line-optional {
-  text-align: center;
-  padding: 20px 0;
-  margin-top: 40px;
-  font-size: 0.9rem;
-  color: #818181; /* Very subtle text */
-  border-top: 1px solid #1a1a1a;
+.read-more-link .arrow-icon {
+    color: #ffffff;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
-/* You would need to ensure your 'Footer' component also respects the dark theme */
-/* For example, if you have a component like this: */
-/* .footer-component {
-  background-color: #000000;
-  color: #888888;
-  padding: 20px;
-  text-align: center;
-} */
+.read-more-link:hover .arrow-icon {
+    transform: translateX(3px);
+    color: #999999;
+}
+
+
+/* --- 4. Closing Principle Section (Rule 11) --- */
+.closing-principle-section {
+    padding: 80px 0 40px 0;
+    border-top: 1px solid #333333; 
+    text-align: center;
+}
+
+.closing-statement {
+    font-size: 1rem;
+    color: #666666;
+    font-style: italic;
+    margin: 0;
+}
+
+
+/* --- 5. Responsive Adjustments --- */
+@media (max-width: 850px) {
+    .stories-document {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .stories-document {
+        padding: 5vh 15px 0;
+    }
+
+    .document-header h1 {
+        font-size: 2.6rem;
+    }
+
+    .intro-text {
+        font-size: 1.1rem;
+    }
+
+    .story-entry {
+        padding: 40px 0;
+    }
+
+    .entry-title {
+        font-size: 1.8rem;
+    }
+    
+    .entry-subtitle {
+        font-size: 1rem;
+    }
+
+    .entry-body p {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+}

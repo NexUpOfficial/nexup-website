@@ -1,251 +1,216 @@
-// src/pages/sections/Roadmap.jsx
-import React, { useRef } from "react";
-import { motion, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
+import React from 'react';
 import "../../page-styles/sections/Roadmap.css";
+// Updated Footer import path as requested
+import Footer from "../../components/Footer/Footer"; 
 
 const Roadmap = () => {
-  const containerRef = useRef(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"]
-  });
+  return (
+    <div className="roadmap-page">
+      <div className="roadmap-container">
+        
+        {/* 5. Page Metadata (Using the new header structure) */}
+        <header className="roadmap-header">
+          <span className="indicator">Direction · Roadmap</span>
+        </header>
 
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+        {/* 5. Main Title - Placed outside the header grid for centering */}
+        <h1 className="roadmap-title">NEXUP ROADMAP</h1>
 
-  const phases = [
-    {
-      id: "01",
-      title: "NexWorld v1.0",
-      subtitle: "Foundation Build",
-      desc: "Initial ecosystem setup, immersive UI/UX, DNS login system, user identity structure, and the NeXUP Loop concept.",
-      color: "#4a3aff" 
-    },
-    {
-      id: "02",
-      title: "NexNodes",
-      subtitle: "Infrastructure Layer",
-      desc: "Core nodes that act as the digital skeleton of NexWorld. Introducing decentralized data flow and early support for NexHousing.",
-      color: "#b8a9ff" 
-    },
-    {
-      id: "03",
-      title: "NexHousing",
-      subtitle: "Smart Virtual Living",
-      desc: "3D futuristic homes, AR blueprints, holographic room control, and environment customization. Models generated via AI.",
-      color: "#ff4aae" 
-    },
-    {
-      id: "04",
-      title: "NexEngine",
-      subtitle: "Development Powerhouse",
-      desc: "AI-assisted ecosystem engine enabling creators to build apps, simulations, and tools. Full integration with NexNodes.",
-      color: "#4a3aff"
-    },
-    {
-      id: "05",
-      title: "NexWorld City",
-      subtitle: "Immersive AR/VR Experience",
-      desc: "Full virtual city with app-buildings, dynamic neon environments, avatar navigation, and portal systems.",
-      color: "#b8a9ff"
-    },
-    {
-      id: "06",
-      title: "NexUP Loop",
-      subtitle: "Portal System",
-      desc: "The signature dimensional gate for entering NexWorld. Contains motion graphics, energy effects, and biometric authentication.",
-      color: "#ff4aae"
-    },
-    {
-      id: "07",
-      title: "Digital Identity",
-      subtitle: "Nex-DNS",
-      desc: "Universal NexUP login handling identity mapping, permission layers, user journey tracking, and multi-app authentication.",
-      color: "#4a3aff"
-    },
-    {
-      id: "08",
-      title: "AR/VR Integration",
-      subtitle: "NexWorld 2.0",
-      desc: "Full support for AR glasses and VR headsets. Mixed reality blending of homes, nodes, portals, and AI agents.",
-      color: "#b8a9ff"
-    },
-    {
-      id: "09",
-      title: "AI Ecosystem",
-      subtitle: "NexAI",
-      desc: "Personalized AI guides, world-builders, content generators, and city navigators. AI-driven character creation.",
-      color: "#ff4aae"
-    },
-    {
-      id: "10",
-      title: "Marketplace",
-      subtitle: "Creator Hub",
-      desc: "Virtual assets, 3D homes, nodes, extensions, avatars, and motion packs. Creator Hub allows users to publish inside NexWorld.",
-      color: "#4a3aff"
-    },
-    {
-      id: "11",
-      title: "NexWorld 3.0",
-      subtitle: "Autonomous Universe",
-      desc: "Self-updating world systems, evolving cities, AI-managed services, holographic interfaces, and global connectivity.",
-      color: "#b8a9ff"
-    },
-    {
-      id: "12",
-      title: "Beyond 2026",
-      subtitle: "Immersive Reality Future",
-      desc: "Complete Metaverse integration. Interoperability, avatar economy, interactive physics, and real-time transformation.",
-      color: "#fff" 
-    },
-  ];
+        {/* 5. Intro & Critical Messaging (Aligned with .approach-intro) */}
+        <p className="roadmap-intro">
+          This roadmap outlines the **directional evolution** of NexUP systems.
+          It is **not a delivery schedule**.
+        </p>
 
-  return (
-    <div className="roadmap-page" ref={containerRef}>
-      <RoadmapBackground />
+        {/* 4. Roadmap Philosophy (Aligned with a standard text block) */}
+        <p className="roadmap-philosophy">
+          NexUP does not publish delivery timelines for foundational systems.
+          Progress is guided by **architectural readiness**, not deadlines.
+        </p>
+
+        {/* 8. Core Sections Wrapper */}
+        <div className="roadmap-sections-stack">
+
+          {/* Section 01 — How to Read This Roadmap */}
+          <section className="roadmap-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">01</span>
+                    <h2>How to Read This Roadmap</h2>
+                </div>
+              <p>
+                This document is a technical brief intended to set expectations immediately.
+              </p>
+              <ul>
+                <li>This roadmap communicates system direction, **not delivery commitments**.</li>
+                <li>Items listed represent areas of active or planned architectural focus.</li>
+                <li>The stated order indicates architectural **dependency**, not priority or proximity to launch.</li>
+                <li>It is an honest view of uncertainty and constraint-aware development.</li>
+              </ul>
+          </section>
+
+          {/* Section 02 — Foundation (Current Phase) */}
+          <section className="roadmap-section phase-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">02</span>
+                    <h2>Foundation</h2>
+                </div>
+              <p>
+                The **Foundation** phase focuses on establishing core system primitives. Stability, correctness, and long-term maintainability take precedence over public exposure. This is where NexUP is now.
+              </p>
+              <ul>
+                <li>Core spatial runtime and physics stability.</li>
+                <li>Identity & access systems (Authentication, Authorization).</li>
+                <li>Internal validation and testing infrastructure hardening.</li>
+                <li>Security auditing and foundational trust systems.</li>
+              </ul>
+          </section>
+
+          {/* Section 03 — Expansion */}
+          <section className="roadmap-section phase-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">03</span>
+                    <h2>Expansion</h2>
+                </div>
+              <p>
+                The **Expansion** phase prepares for broader system adoption. Work in this phase is **intended** to unlock capabilities for external parties once Foundation systems achieve reliability thresholds.
+              </p>
+              <ul>
+                <li>Public environment access mechanisms (e.g., initial read/write APIs).</li>
+                <li>Exposure of Creator Tooling for early architectural partners.</li>
+                <li>Engine interoperability exploration (**prepared for** Unreal / Unity).</li>
+                <li>Expanded device support exploration (e.g., dedicated AR / VR / MR rendering pipelines).</li>
+              </ul>
+          </section>
+
+          {/* Section 04 — Integration */}
+          <section className="roadmap-section phase-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">04</span>
+                    <h2>Integration</h2>
+                </div>
+              <p>
+                The **Integration** phase describes how NexUP systems connect internally and with the external ecosystem. This work is deliberately complex and deliberate, aimed at creating compounding network effects.
+              </p>
+              <ul>
+                <li>Cross-world continuity (seamless transfer of identity and state).</li>
+                <li>External platform interoperability frameworks (data exchange protocols).</li>
+                <li>Search & discovery layers, prioritizing integrity and relevance.</li>
+                <li>Data and state persistence across disparate environments.</li>
+              </ul>
+          </section>
+
+          {/* Section 05 — Maturity */}
+          <section className="roadmap-section phase-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">05</span>
+                    <h2>Maturity</h2>
+                </div>
+              <p>
+                The **Maturity** phase signals the long-term, multi-year direction for NexUP. The focus shifts to systemic resilience, governance, and institutional-grade reliability.
+              </p>
+              <ul>
+                <li>Governance systems architecture (e.g., DAO or decentralized decision frameworks).</li>
+                <li>Advanced, proactive trust & safety mechanisms.</li>
+                <li>Decentralized infrastructure considerations and research.</li>
+                <li>High-availability and institutional-grade reliability targets.</li>
+              </ul>
+          </section>
+
+          {/* Section 06 — What Is Intentionally Not Listed */}
+          <section className="roadmap-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">06</span>
+                    <h2>What Is Intentionally Not Listed</h2>
+                </div>
+              <p>
+                This section is critical for maintaining directional focus and managing expectations.
+              </p>
+              <ul>
+                <li>Specific features (e.g., 'avatar clothes shop' or 'new map type').</li>
+                <li>Delivery dates or version numbers.</li>
+                <li>Commercial details, pricing, or growth strategies.</li>
+              </ul>
+              <p>
+                Their inclusion would misrepresent the nature of system-level work. **This document is not a feature checklist.**
+              </p>
+          </section>
+
+          {/* Section 07 — Change & Adaptation */}
+          <section className="roadmap-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">07</span>
+                    <h2>Change & Adaptation</h2>
+                </div>
+              <p>
+                The roadmap adapts as system constraints, architectural discoveries, and global technological shifts emerge.
+              </p>
+              <ul>
+                <li>Direction remains consistent even when implementation paths change.</li>
+                <li>Flexibility is a core system design principle.</li>
+              </ul>
+          </section>
+
+          {/* Section 08 — Relationship to Other Pages */}
+          <section className="roadmap-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">08</span>
+                    <h2>Relationship to Other Pages</h2>
+                </div>
+              <p>
+                Clarifying the separation of concerns across our documentation:
+              </p>
+              <ul>
+                <li>The **Vision** document defines why the system exists.</li>
+                <li>This **Roadmap** describes how the foundational system evolves.</li>
+                <li>The **News** page records what has successfully occurred and shipped.</li>
+              </ul>
+          </section>
+        
+          {/* Section 09 — External Expectations */}
+          <section className="roadmap-section">
+                <div className="roadmap-section-header">
+                    <span className="roadmap-section-number">09</span>
+                    <h2>External Expectations</h2>
+                </div>
+              <p>
+                For user trust and clarity:
+              </p>
+              <ul>
+                <li>Presence on this roadmap does not imply immediate availability, access, or timing.</li>
+                <li>Public access is introduced only when systems meet high reliability thresholds.</li>
+                <li>We avoid "coming soon" and similar language to maintain honesty.</li>
+              </ul>
+          </section>
+
+        </div> {/* End of roadmap-sections-stack */}
+
+
+        {/* Section 10 — Closing System Signal (Local Footer Structure) */}
+        <footer className="roadmap-footer">
+            <p className="roadmap-footer-closing-signal">
+              This document reflects directional intent, not delivery commitment.
+            </p>
+
+            {/* Silent Structural Signal - Placeholder if needed */}
+            <div className="silent-signal-container">
+                <p className="silent-signal">ARCHITECTURAL VIEW</p>
+                <p className="silent-signal">SYSTEM INTEGRITY</p>
+            </div>
+            
+            <p className="version-meta">
+              Version: 0.1
+              <br />
+              Status: Directional
+            </p>
+        </footer>
+
+      </div> {/* End of roadmap-container (Max-width content) */}
+
+      {/* Adding the external Footer component, which will now stack below the container */}
+      <Footer /> 
       
-      <div className="roadmap-header">
-        <motion.div 
-          className="header-badge"
-          initial={{ opacity: 0, scale: 0.5 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-        >
-          Master Plan
-        </motion.div>
-        <motion.h1 
-          className="roadmap-title"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          The Path to <span className="gradient-text">Immersion.</span>
-        </motion.h1>
-      </div>
-
-      <div className="roadmap-timeline-wrapper">
-        <motion.div className="central-line-container" style={{ scaleY }}>
-          <div className="central-line-glow"></div>
-        </motion.div>
-        <div className="central-line-static"></div>
-
-        <div className="timeline-items">
-          {phases.map((phase, index) => (
-            <TimelineItem key={index} data={phase} index={index} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- Sub-Components ---
-
-const RoadmapBackground = () => (
-  <div className="roadmap-bg-wrapper">
-    <motion.div 
-      className="roadmap-blob"
-      animate={{
-        x: [0, 100, -100, 0],
-        y: [0, -50, 50, 0],
-        scale: [1, 1.2, 0.8, 1],
-        opacity: [0.3, 0.5, 0.3]
-      }}
-      transition={{
-        duration: 15,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }}
-    />
-  </div>
-);
-
-const TimelineItem = ({ data, index }) => {
-  const isEven = index % 2 === 0;
-
-  // Animation Strategy: "Slide from Core"
-  // If Even (Left): Start from X=50 (Right), Move to 0
-  // If Odd (Right): Start from X=-50 (Left), Move to 0
-  const initialX = isEven ? 50 : -50;
-
-  return (
-    <div className={`timeline-row ${isEven ? "left" : "right"}`}>
-      {/* Node Dot */}
-      <motion.div 
-        className="timeline-node"
-        initial={{ scale: 0, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ delay: 0.2, type: "spring" }}
-      >
-        <div className="node-circle" style={{ borderColor: data.color }}></div>
-        <div className="node-pulse" style={{ background: data.color }}></div>
-      </motion.div>
-
-      {/* The 3D Card */}
-      <motion.div
-        className="timeline-content-wrapper"
-        initial={{ opacity: 0, x: initialX }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <TiltCard data={data} />
-      </motion.div>
-    </div>
-  );
-};
-
-// 3D Tilt Logic handled here
-const TiltCard = ({ data }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Less rotation for a subtle "micro" feel
-  const rotateX = useTransform(y, [-100, 100], [5, -5]);
-  const rotateY = useTransform(x, [-100, 100], [-5, 5]);
-
-  const handleMouseMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-    
-    const xPct = (mouseX / width - 0.5) * 200;
-    const yPct = (mouseY / height - 0.5) * 200;
-
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div 
-      className="timeline-card glass-panel"
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="glass-sheen"></div>
-      <div className="card-content-inner">
-        <div className="card-header">
-          <span className="phase-id" style={{ color: data.color }}>PHASE {data.id}</span>
-          <h3 className="phase-title">{data.title}</h3>
-        </div>
-        <h4 className="phase-subtitle">{data.subtitle}</h4>
-        <p className="phase-desc">{data.desc}</p>
-      </div>
-    </motion.div>
-  );
+    </div>
+  );
 };
 
 export default Roadmap;

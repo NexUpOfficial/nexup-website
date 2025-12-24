@@ -102,16 +102,13 @@ const Home = () => {
                     <h1 className="hero__title">NEXUP</h1>
                     <h2 className="hero__subtitle">The Spatial Operating System</h2>
                     
-                    {/* Updated Short Description */}
-                    <p className="hero__supporting-line text--subtle">
-                        A unified system for building, living, and operating inside persistent digital worlds.
-                    </p>
+                    {/* CHANGE 1: REMOVED <p className="hero__supporting-line"> */}
                     
                     <div className="hero__cta-group">
                         {/* CTA: Enter NexWorld -> /ecosystem/nexworld */}
                         <a href="/ecosystem/nexworld" className="cta cta-primary">Enter NexWorld →</a>
-                        {/* CTA: How NexUP Works -> /architecture */}
-                        <a href="/architecture" className="cta cta-secondary">How NexUP Works</a>
+                        {/* CHANGE 2: How NexUP Works converted to text link (cta-link) */}
+                        <a href="/architecture" className="cta cta-link">How NexUP Works</a>
                     </div>
                 </div>
 
@@ -142,8 +139,7 @@ const Home = () => {
                     <span>NVIDIA OMNIVERSE</span>
                     <span>•</span>
                     <span>SOLANA</span>
-                    <span>•</span>
-                    <span>AI</span>
+                    {/* CHANGE 3: REMOVED <span>•</span><span>AI</span> */}
                 </div>
             </section>
 
@@ -156,7 +152,8 @@ const Home = () => {
                         <p className="text--secondary">For decades, digital experiences have been confined to screens, applications, and isolated platforms. But reality is changing.</p>
                         <p className="text--secondary">Persistent worlds, spatial interfaces, and intelligent systems are redefining how humans interact with technology.</p>
                     </div>
-                    <p className="shift__transition-line">NexUP is built for this shift.</p>
+                    {/* CHANGE 4: Updated line */}
+                    <p className="shift__transition-line">That constraint no longer holds.</p>
                     {/* CTA: Read the Manifesto -> /about/vision */}
                     <a href="/about/vision" className="cta cta-secondary">Read the Manifesto →</a>
                 </div>
@@ -164,7 +161,9 @@ const Home = () => {
                 {/* 4. MINI MANIFESTO */}
                 <div className="section-manifesto">
                     <h3 className="manifesto__statement">
-                        We are building a world where intelligence and immersion exist as one continuous reality.
+                        {/* CHANGE 5: Updated statement for clarity and confidence */}
+                        We are building a continuous environment<br />
+                        where intelligence and immersion converge.
                     </h3>
                     <p className="manifesto__supporting-line text--secondary">
                         No dashboards. No disconnected apps. Just living systems that respond, adapt, and evolve.
@@ -177,7 +176,7 @@ const Home = () => {
                 <span className="section__label">ARCHITECTURE</span>
                 <h2 className="section__title">How NexUP Operates</h2>
                 
-                {/*  */}
+                {/*  */}
                 <div className="flow__diagram">
                     <div className="flow__step">Physical Reality</div>
                     <div className="flow__arrow">↓</div>
@@ -250,7 +249,8 @@ const Home = () => {
 
             {/* 7. USE-CASE SNAPSHOTS */}
             <section className="section-use-cases">
-                <h2 className="section__title">Built for Every Layer of Society</h2>
+                {/* CHANGE 8: Updated title */}
+                <h2 className="section__title">Who NexUP Is Designed For</h2>
 
                 <div className="use-cases__grid">
                     <div className="use-case__pill">
@@ -274,8 +274,9 @@ const Home = () => {
 
             {/* 8. MID-PAGE CTA — CHOOSE YOUR PATH */}
             <section className="section-mid-cta section--dark">
-                <h2 className="mid-cta__title">Choose How You Enter NexUP</h2>
-                <p className="mid-cta__helper">Different paths for different builders.</p>
+                {/* CHANGE 9: Updated title and subtext */}
+                <h2 className="mid-cta__title">Entry Points</h2>
+                <p className="mid-cta__helper">Different interfaces for different roles.</p>
                 <div className="mid-cta__options">
                     {/* CTA: Build on NexUP -> /ecosystem/nexengine */}
                     <a href="/ecosystem/nexengine" className="mid-cta__option-cta cta-primary">Build on NexUP →</a>
@@ -297,8 +298,7 @@ const Home = () => {
                     <span className="future__pillar">PERSISTENT DIGITAL WORLDS</span>
                     <span className="future__pillar">AI-NATIVE ENVIRONMENTS</span>
                 </div>
-                {/* CTA: View Roadmap -> /sections/roadmap */}
-                <a href="/sections/roadmap" className="cta cta-primary">View Roadmap →</a>
+                {/* CHANGE 10: REMOVED CTA: View Roadmap */}
             </section>
 
             {/* 10. FINAL IDENTITY STATEMENT */}

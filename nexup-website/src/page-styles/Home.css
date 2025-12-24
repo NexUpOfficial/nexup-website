@@ -127,6 +127,18 @@ button, input, textarea {
     border-bottom-color: var(--color-primary-text);
 }
 
+/* CHANGE 2: New style for the quietly linked CTA (e.g., "How NexUP Works") */
+.cta-link {
+    color: var(--color-secondary-text);
+    padding: 0.75rem 0.5rem; /* Reduced horizontal padding */
+    border-bottom: none; /* No underline */
+}
+.cta-link:hover {
+    color: var(--color-primary-text);
+    text-decoration: underline; /* Subtle underline on hover */
+    filter: none;
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -225,13 +237,8 @@ section {
     margin-bottom: 1.5rem;
 }
 
-.hero__supporting-line {
-    font-size: 1.1rem;
-    color: var(--color-subtle-text);
-    max-width: 400px;
-    line-height: 1.4;
-    margin-bottom: 2.5rem;
-}
+/* CHANGE 1: Supporting line removed from JSX, CSS class can be removed or left empty */
+/* .hero__supporting-line { ... } */
 
 .hero__cta-group {
     display: flex;
@@ -248,7 +255,6 @@ section {
     padding: 1rem 5%;
     text-align: center;
     background-color: var(--color-secondary-dark);
-    /* Removed redundant border-top/bottom as the color is the same */
     margin-top: 150px; /* Spacing from the hero */
 }
 
@@ -299,6 +305,7 @@ section {
 .shift__transition-line {
     font-size: 1.5rem;
     font-weight: 700;
+    /* CHANGE 4: Still neon, but authority is in the text now */
     color: var(--color-neon-accent);
     margin-top: 3rem;
     margin-bottom: 1.5rem;
@@ -354,13 +361,16 @@ section {
     position: relative;
     text-align: center;
     min-width: 300px; 
-    transition: transform 0.3s ease;
+    transition: none; /* CHANGE 6: Removed transition entirely to ensure stability */
 }
 
+/* CHANGE 6: Removed hover effects for architecture steps */
+/*
 .flow__step:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-neon-focus);
+    transform: none; 
+    box-shadow: none;
 }
+*/
 
 .flow__arrow {
     font-size: 2rem;
@@ -413,7 +423,8 @@ section {
     border: 1px solid var(--color-secondary-dark);
     /* NEW: Apply the requested box-shadow to the card */
     box-shadow: var(--shadow-visual-neon); 
-    transition: all 0.3s ease;
+    /* Reduced transition to exclude transform */
+    transition: border-color 0.3s, box-shadow 0.3s; 
     overflow: hidden;
     cursor: pointer;
 }
@@ -421,7 +432,8 @@ section {
 .ecosystem__card:hover {
     border-color: var(--color-neon-accent);
     box-shadow: var(--shadow-neon-focus);
-    transform: translateY(-5px);
+    /* CHANGE 7: Removed transform: translateY(-5px); */
+    transform: none;
 }
 
 .card__video-container {
@@ -433,8 +445,9 @@ section {
     transition: transform 0.3s ease;
 }
 
+/* CHANGE 7: Removed video hover scale */
 .ecosystem__card:hover .card__video-container {
-    transform: scale(1.05);
+    transform: none; 
 }
 
 .card__video {
@@ -513,8 +526,8 @@ section {
 .use-case__role {
     font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
     color: var(--color-neon-accent);
+    margin-bottom: 0.5rem;
 }
 
 .use-case__description {
@@ -534,12 +547,14 @@ section {
 }
 
 .mid-cta__title {
+    /* CHANGE 9: Title updated in JSX to "Entry Points" */
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1rem;
 }
 
 .mid-cta__helper {
+    /* CHANGE 9: Helper text updated in JSX */
     font-size: 1.1rem;
     color: var(--color-subtle-text);
     margin-bottom: 3rem;
@@ -614,10 +629,10 @@ section {
     color: var(--color-primary-text);
 }
 
+/* CHANGE 11: Remove the neon glow/shadow */
 .final__statement span {
     color: var(--color-neon-accent);
-    /* Subtle neon shadow for the accent text */
-    text-shadow: 0 0 5px rgba(184, 169, 255, 0.4); 
+    text-shadow: none; 
 }
 
 /*
@@ -701,72 +716,64 @@ section {
     }
 }
 
-@media (max-width: 600px) {
-    section {
-        padding: 7rem 5%;
+@media (max-width: 768px) {
+     /* Ecosystem drops to 1 card per row */
+     .ecosystem__card {
+        width: 100%; 
+        min-width: unset;
     }
-    .section__title {
-        font-size: 2rem;
-    }
-    .hero__panel-left {
-        padding: 3rem 5% 1.5rem 5%;
-    }
-    .hero__title {
-        font-size: 2.5rem;
-    }
-    .hero__subtitle {
-        font-size: 1.25rem;
-    }
-    .hero__supporting-line {
-        font-size: 1rem;
-    }
+    
     .hero__cta-group {
         flex-direction: column;
+        gap: 1.5rem;
         align-items: flex-start;
-        gap: 1rem;
     }
-    .section-context {
-        margin-top: 50px; /* Reduced margin */
+    
+    .cta {
+        width: 100%; /* Make CTAs full width on mobile */
+        justify-content: center;
+        padding: 1rem 0;
     }
-    .context__list {
-        flex-wrap: wrap;
-        gap: 0.75rem 1rem; /* Adjusted gap */
+    
+    .cta-link {
+        width: auto; /* Allow the text link to remain inline/natural width */
         justify-content: flex-start;
+        padding: 0.75rem 0.5rem;
     }
-    .shift__content {
-        padding: 1.5rem;
+    
+    .context__list {
+        gap: 1.5rem;
+        flex-wrap: wrap;
     }
-    .shift__title {
-        font-size: 2rem;
+    
+    .section__title {
+        font-size: 2.5rem;
     }
-    .shift__text p {
-        font-size: 1rem;
-    }
-    .section-manifesto {
+
+    .shift__content, .section-manifesto {
         padding: 2rem;
     }
+    .shift__title {
+        font-size: 2.5rem;
+    }
+    .shift__text p {
+        font-size: 1.1rem;
+    }
     .manifesto__statement {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
     }
-    /* Ecosystem stacks vertically */
-    .ecosystem__card {
-        width: 100%;
-        min-width: auto;
-    }
-    .ecosystem__grid {
-        gap: 1.5rem; /* Adjusted gap */
-    } 
-    .final__statement {
-        font-size: 2rem;
-    }
+    
     .flow__step {
-        min-width: 90%;
-        padding: 1rem;
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+        min-width: 250px;
     }
-    .future__pillars {
-        gap: 1rem;
+    
+    .mid-cta__option-cta {
+        font-size: 1.25rem;
     }
-    .future__pillar {
-        font-size: 0.9rem;
+    
+    .final__statement {
+        font-size: 2.5rem;
     }
 }

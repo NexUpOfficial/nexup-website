@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react"; // <-- Import useEffect
 import { NavLink } from "react-router-dom";
 import "./styles/Sidebar.css";
 // --- Import React Icons ---
@@ -11,9 +11,14 @@ function Sidebar({ isOpen, onClose }) {
   const sidebarRef = useRef(null);
 
   // State to manage which submenu is currently open on mobile
-  // Note: Using an object here allows for multiple menus to potentially be open,
-  // but the current toggleMenu logic ensures only one is open at a time (accordion style).
   const [openMenu, setOpenMenu] = useState({}); 
+
+  // FIX 4: Reset submenu state when the sidebar closes
+  useEffect(() => {
+    if (!isOpen) {
+      setOpenMenu({});
+    }
+  }, [isOpen]);
 
   // Function to handle opening/closing submenus
   const toggleMenu = (menuName) => {
@@ -50,14 +55,13 @@ function Sidebar({ isOpen, onClose }) {
 
   const renderLink = (to, label, isSub = false, isMobileBtn = false) => {
     // Determine if the link should close the sidebar. 
-    // We remove onClose from mobile footer elements for snappier performance.
     const clickHandler = isMobileBtn ? undefined : onClose; 
 
     return (
       <NavLink
         key={to}
         to={to}
-        onClick={clickHandler} // <-- Only close if it's not a mobile footer button
+        onClick={clickHandler} 
         className={({ isActive }) =>
           `${isMobileBtn ? "mobile-login-btn" : "nav-link"} ${isSub ? "sub-link" : ""} ${isActive ? "active" : ""}`
         }
@@ -74,14 +78,12 @@ function Sidebar({ isOpen, onClose }) {
       key="/search"
       to="/search"
       onClick={onClose}
-      // Removed search-link class which was tied to the icon styling
       className={({ isActive }) =>
         `nav-link ${isActive ? "active" : ""}`
       }
     >
       <span>Search</span>
-      {/* Search Icon removed here */}
-      <span className="chevron">{">"}</span> {/* Keeping the chevron as a separator */}
+      <span className="chevron">{">"}</span> 
     </NavLink>
   );
 
@@ -93,7 +95,6 @@ function Sidebar({ isOpen, onClose }) {
       target="_blank"
       rel="noopener noreferrer"
       className="social-link"
-      // Removed onClick={onClose} for immediate link transition
       aria-label={item.label}
     >
       {item.icon}
@@ -109,8 +110,8 @@ function Sidebar({ isOpen, onClose }) {
         <div 
           className="nav-link hover-trigger"
           onClick={() => toggleMenu(menuName)} // <-- TOGGLE ON CLICK/TAP
-          role="button"
-          tabIndex={0} // Make div keyboard accessible
+          role="button" // FIX 5: Explicitly define role for accessibility and clarity
+          tabIndex={0} 
           aria-expanded={!!openMenu[menuName]}
         >
           {label} <span className="chevron">{">"}</span>
@@ -130,21 +131,17 @@ function Sidebar({ isOpen, onClose }) {
     <aside
       ref={sidebarRef}
       className={`sidebar-container ${isOpen ? "is-open" : ""}`}
-    style={{
-  top: window.innerWidth > 768 ? "60px" : "0",
-  height: window.innerWidth > 768
-    ? "calc(100vh - 60px)"
-    : "100vh",
-}}
-
+      // FIX 1: Removed the inline style block and moved logic to CSS.
       role="navigation"
       aria-label="Primary navigation"
     >
       {/* Background (pure black via CSS) - Click closes menu */}
+      {/* FIX 2: Backdrop is still full screen, but the sidebar-container now manages its own height 
+          and position via CSS for the top-level fix. */}
       <div className="sidebar-backdrop" onClick={onClose} />
 
       <nav className="sidebar-scroll-area">
-        {/* CLOSE BUTTON (Now inside scroll area, positioned absolutely for mobile) */}
+        {/* CLOSE BUTTON (Now inside scroll area, positioned absolutely/sticky for mobile) */}
         <button className="close-btn" onClick={onClose} aria-label="Close menu">
           <IoMdClose /> 
         </button>
@@ -153,7 +150,7 @@ function Sidebar({ isOpen, onClose }) {
         <div className="sidebar-content center-vertical">
           {/* NEW: SEARCH LINK */}
           <div className="hover-group standalone">
-              {renderSearchLink()}
+            {renderSearchLink()}
           </div>
 
           {/* ECOSYSTEM */}
@@ -164,15 +161,15 @@ function Sidebar({ isOpen, onClose }) {
 
           {/* STANDALONE LINKS */}
           <div className="hover-group standalone">
-              {renderLink("/support/help", "Support")}
+            {renderLink("/support/help", "Support")}
           </div>
           <div className="hover-group standalone">
-              {renderLink("/contact", "Contact")}
+            {renderLink("/contact", "Contact")}
           </div>
 
           {/* LOGIN (For Desktop View) */}
           <div className="hover-group standalone desktop-only-login">
-              {renderLink("/login", "Login")}
+            {renderLink("/login", "Login")}
           </div>
 
         </div>
@@ -180,12 +177,12 @@ function Sidebar({ isOpen, onClose }) {
       
       {/* MOBILE LOGIN BUTTON / FOOTER */}
       <div className="sidebar-footer">
-          {/* Social Links */}
-          <div className="social-links-group">
-              {socialItems.map(renderSocialLink)}
-          </div>
-          {/* Login Button - onClick={onClose} removed in renderLink for speed */}
-          {renderLink("/login", "Login", false, true)} 
+        {/* Social Links */}
+        <div className="social-links-group">
+          {socialItems.map(renderSocialLink)}
+        </div>
+        {/* Login Button */}
+        {renderLink("/login", "Login", false, true)} 
       </div>
     </aside>
   );
