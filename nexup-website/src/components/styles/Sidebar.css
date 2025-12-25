@@ -327,7 +327,3 @@
         background: #444; 
     }
 }
-
-/* FIX 3: Removed the entire @media (max-width:480px) block 
-   as it contained the hacky margin-bottom: 100px. The main 768px block 
-   and the .sidebar-scroll-area padding fix are sufficient. */
