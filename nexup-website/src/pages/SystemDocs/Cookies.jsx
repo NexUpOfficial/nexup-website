@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "../../components/Footer/Footer";
-import "../../page-styles/vision/Vision.css";
+import "../../page-styles/SystemDocs/SystemDocs.css";
+
 
 export default function Cookies() {
   return (

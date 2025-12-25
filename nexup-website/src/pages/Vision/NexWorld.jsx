@@ -6,7 +6,8 @@ import Footer from "../../components/Footer/Footer";
    We intentionally reuse the SAME CSS file as Vision.
    This keeps the document system consistent across NexUP.
 */
-import "../../page-styles/vision/Vision.css";
+
+import "../../page-styles/Vision/Vision.css";
 
 export default function NexWorld() {
   return (
