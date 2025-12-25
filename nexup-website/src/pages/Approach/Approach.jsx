@@ -8,7 +8,7 @@ export default function Approach() {
     <>
       <main className="page-container vision-page">
 
-        {/* ==============================================
+        {/* =============================================
             HEADER & METADATA
         ============================================== */}
         <header className="vision-header">
