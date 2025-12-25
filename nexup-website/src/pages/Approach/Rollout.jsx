@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
-import "../../page-styles/vision/Vision.css";
+import "../../page-styles/Approach/Approach.css";
+
 
 export default function Rollout() {
   return (

@@ -7,7 +7,7 @@ import Footer from "../../components/Footer/Footer";
   NexEngine uses the SAME document layout system as Vision, NexWorld, NexNodes.
   No new layout CSS is introduced.
 */
-import "../../page-styles/vision/Vision.css";
+import "../../page-styles/Vision/Vision.css";
 
 export default function NexEngine() {
   return (

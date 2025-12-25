@@ -7,7 +7,8 @@ import Footer from "../../components/Footer/Footer";
   NexHousing reuses the SAME document layout system as all NexUP
   vision and ecosystem pages.
 */
-import "../../page-styles/vision/Vision.css";
+
+import "../../page-styles/Vision/Vision.css";
 
 export default function NexHousing() {
   return (
