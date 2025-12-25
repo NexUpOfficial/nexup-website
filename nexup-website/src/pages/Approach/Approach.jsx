@@ -26,7 +26,7 @@ export default function Approach() {
           </p>
         </header>
 
-        {/* ==============================================
+        {/* =============================================
             ORIENTATION
         ============================================== */}
         <section className="vision-orientation">
