@@ -11,7 +11,8 @@
     padding-bottom: 50px; 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* 🛑 CRITICAL FIX: Removing align-items: center ensures full-width children (like the footer)
+       are not constrained to the center of the viewport, but span 100%. */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -19,6 +20,7 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    /* ✅ KEEP THIS: This centers the *constrained content block* (.team-document) */
     align-items: center;
     width: 100%;
 }

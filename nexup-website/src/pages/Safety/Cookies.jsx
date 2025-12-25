@@ -114,7 +114,10 @@ export default function Cookies() {
       anchorSections={["01", "04"]}
       defaultOpen="01"
       closing="Cookies are a technical mechanism, not a tracking strategy."
-      cta={null}
+      cta={<a href="/system-docs/cookies" className="cta cta-primary">
+     View System Cookies
+</a>
+}
     />
   );
 }

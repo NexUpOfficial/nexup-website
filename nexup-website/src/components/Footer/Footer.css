@@ -1,329 +1,189 @@
-/*
- * FOOTER STYLES - NeX UP System Aesthetic
- * Color Palette: #000000 (Primary BG), #ffffff (Primary Text/Accent), #333333 (Muted/Borders), #666666 (Secondary Text)
- */
+/* =========================================================
+    FOOTER — BASE (COMPACT & CALM)
+========================================================= */
 
 .nx-footer {
-    position: relative;
-    background-color: #000000;
-    color: #ffffff;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    padding: 0;
-    width: 100%;
-    overflow: hidden; 
-    border-top: 1px solid #333333; 
+  background-color: #000;
+  color: #fff;
+  padding: 40px 6% 24px; 
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* --- Ambient Effects (Noise and Glow) --- */
+/* =========================================================
+    TOP BRAND ROW + LOGIN (SUBTLE)
+========================================================= */
 
-.footer-noise {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwiSB2aWV3Qm94PSIwIDAgMzAwIDMwMCI+PGZpbHRlciBpZD0iZSI+PGZlVHVyYmVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VmcmVxdWVuY3k9IjAuODMzIiBudW1PY3RhdmVzPSI0IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXsgdHlwZT0ibHVtYS10by1hbHBoYSIgdmFsdWVzPSIwIDAgMCAwIDEgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ3aGl0ZSIgZmlsdGVyPSJ1cmwoI2UpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: 1;
+.nx-footer-top {
+  margin-bottom: 32px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.footer-glow {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    /* Change 1: Reduced size and opacity for structural feel */
-    width: 420px;
-    height: 420px;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0) 70%); 
-    pointer-events: none;
-    z-index: 1;
+.nx-footer-brand h2 {
+  /* E. Make the brand row more subtle */
+  font-size: 1.4rem; 
+  font-weight: 500; /* Keeping original font-weight, but applying subtle size/opacity */
+  opacity: 0.9;
+  margin-bottom: 0;
+  letter-spacing: -0.02em; 
 }
 
+/* =========================================================
+    MERGED LINK GRID (4-COLUMN LAYOUT)
+========================================================= */
 
-/* --- Grid Containers --- */
-
-.nx-footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 20px 20px 20px;
-    position: relative;
-    z-index: 2;
+.nx-footer-grid {
+  /* A. Reduce column count: Target 4 columns */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); 
+  gap: 20px; 
+  row-gap: 32px; 
 }
 
-.nx-footer-grid-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding-bottom: 40px;
-    margin-bottom: 40px;
-    border-bottom: 1px solid #333333;
+.nx-footer-grid-col {
+  display: flex;
+  flex-direction: column;
 }
 
-.nx-footer-grid-bottom {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 20px;
-    padding-bottom: 60px;
+.nx-footer-grid-col h4 {
+  font-size: 0.75rem; 
+  /* C. Make headers lighter & less shouty */
+  font-weight: 500; 
+  letter-spacing: 0.08em; 
+  text-transform: uppercase;
+  margin-bottom: 14px; 
+  color: #8a8a8a;
+  opacity: 0.75; /* Added opacity for calm effect */
 }
 
-
-/* --- Column Styling --- */
-
-.nx-col {
-    display: flex;
-    flex-direction: column;
+.nx-footer-grid-col a {
+  font-size: 0.8rem;
+  color: #ffffff;
+  text-decoration: none;
+  /* D. Reduce link density (vertical rhythm) */
+  margin-bottom: 6px; 
+  line-height: 1.6; /* Increased line-height */
+  padding: 2px 0;
+  transition: color 0.15s ease; 
 }
 
-.nx-col h4 {
-    /* Change 8: Typography Micro-Polish for editorial/system look */
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #ffffff; 
-    text-transform: uppercase;
-    letter-spacing: 0.08em; 
+.nx-footer-grid-col a:hover {
+  color: #999;
 }
 
-.nx-col a {
-    color: #cccccc; 
-    text-decoration: none;
-    font-size: 0.95rem;
-    margin-bottom: 8px;
-    transition: color 0.2s ease;
+.nx-footer-grid-col a:focus-visible {
+  outline: 2px solid #444;
+  outline-offset: 2px;
 }
 
-.nx-col a:hover {
-    color: #ffffff; 
-}
-
-/* --- Brand Column Specifics --- */
-
-.brand-col {
-    max-width: 300px;
-}
-
-.nx-logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    margin-bottom: 10px;
-    color: #ffffff !important;
-}
-
-.nx-desc {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: #666666;
-    margin-top: 5px;
-}
-
-/* Hiring Badge */
-.hiring-badge {
-    display: inline-block;
-    background-color: #ffffff; 
-    color: #000000; 
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    margin-left: 8px;
-    border-radius: 3px;
-    text-transform: uppercase;
-}
-
-/* --- Auth Column Specifics (Buttons) --- */
-
-.auth-col {
-    align-items: flex-end;
-}
-
-.auth-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.auth-btn {
-    padding: 10px 20px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 4px;
-    text-align: center;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
-    border: 1px solid transparent;
-}
-
-.auth-btn.primary {
-    background-color: #ffffff; 
-    color: #000000;
-    border: 1px solid #ffffff;
-    opacity: 0.9; /* Change 3: Less CTA feel */
-}
-
-.auth-btn.primary:hover {
-    background-color: #cccccc;
-    opacity: 1; /* Change 3: Full opacity on hover */
-}
-
-.auth-btn.secondary {
-    background-color: #000000;
-    color: #ffffff;
-    border-color: #444444; 
-}
-
-.auth-btn.secondary:hover {
-    background-color: #1a1a1a;
-    border-color: #ffffff;
-}
-
-/* --- Connect Column Specifics (Socials) --- */
+/* =========================================================
+    SOCIAL LINKS
+========================================================= */
 
 .contact-link {
-    color: #ffffff !important;
-    font-size: 1rem !important;
-    margin-bottom: 15px;
+  font-size: 0.8rem; 
+  color: #ffffff;
+  text-decoration: none;
+  margin-bottom: 8px; 
 }
 
 .social-row {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  margin-top: 4px; 
 }
 
 .social-row a {
-    font-size: 1.2rem;
-    color: #cccccc;
-    margin-bottom: 0;
+  font-size: 1.1rem; 
+  color: #ffffff;
+  transition: color 0.15s ease;
 }
 
 .social-row a:hover {
-    color: #ffffff;
+  color: #999;
 }
 
+/* =========================================================
+    LEGAL BAR (ULTRA-MINIMAL)
+========================================================= */
 
-/* --- Bottom Bar (Legal/Status) --- */
-
-.nx-footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    border-top: 1px solid #1a1a1a; 
-    font-size: 0.85rem;
-    color: #666666;
+.nx-footer-legal {
+  margin-top: 40px; 
+  padding-top: 20px;
+  /* B. Legal bar separated by a light line */
+  border-top: 1px solid #333; 
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 0.75rem; 
+  color: #8a8a8a;
+  align-items: center;
 }
 
-.nx-copyright {
-    flex-shrink: 0;
+.nx-footer-legal span {
+  opacity: 0.9;
 }
 
 .nx-legal-links {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 16px;
 }
 
 .nx-legal-links a {
-    color: #666666;
-    text-decoration: none;
-    transition: color 0.2s ease;
-    font-size: 0.85rem;
+  color: #8a8a8a;
+  text-decoration: none;
+  transition: color 0.15s ease;
 }
 
 .nx-legal-links a:hover {
-    color: #cccccc;
+  /* F. Legal bar = ultra-minimal: Toned-down hover color */
+  color: #ccc;
 }
 
-.nx-system-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #666666;
+/* =========================================================
+    RESPONSIVE (4-2-1 Collapse)
+========================================================= */
+
+@media (max-width: 1024px) {
+  .nx-footer-grid {
+    /* Target: Tablet -> 2 columns */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 24px;
+    row-gap: 32px;
+  }
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #10b981; 
-    box-shadow: none; /* Change 6A: Removed glow/urgency */
+@media (max-width: 640px) {
+  .nx-footer-top {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  /* Update the login link position for mobile */
+  .nx-footer-login {
+    order: 1; /* Move login below the brand name */
+  }
+
+  .nx-footer-grid {
+    /* Target: Mobile -> 1 column */
+    grid-template-columns: 1fr; 
+    gap: 20px;
+    row-gap: 28px;
+  }
+
+  .nx-footer-grid-col h4 {
+    margin-bottom: 12px;
+  }
+
+  .nx-footer-legal {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
-
-
-/* --- Responsive Adjustments --- */
-
-@media (max-width: 992px) {
-    .nx-footer-grid-bottom {
-        grid-template-columns: repeat(3, 1fr); 
-    }
-}
-
-@media (max-width: 768px) {
-    .nx-footer-container {
-        padding: 40px 15px 15px 15px;
-    }
-
-    .nx-footer-grid-top {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-        padding-bottom: 30px;
-        margin-bottom: 30px;
-    }
-
-    .nx-logo {
-        font-size: 1.6rem;
-    }
-
-    .auth-col {
-        align-items: flex-start; 
-        width: 100%;
-    }
-
-    .auth-buttons {
-        width: 100%;
-    }
-    
-    .auth-btn {
-        flex-grow: 1; 
-        padding: 12px 15px;
-        font-size: 1rem;
-    }
-
-    .nx-footer-grid-bottom {
-        grid-template-columns: repeat(2, 1fr); 
-    }
-
-    .nx-col h4 {
-        margin-top: 10px;
-    }
-    
-    /* Bottom bar stack */
-    .nx-footer-bottom {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    .nx-legal-links {
-        order: 3; 
-    }
-
-    .nx-system-status {
-        order: 2;
-    }
-
-    .nx-copyright {
-        order: 1;
-    }
-}
-
-@media (max-width: 480px) {
-    .nx-footer-grid-bottom {
-        grid-template-columns: 1fr; 
-    }
-    .nx-legal-links {
-        flex-direction: column;
-        gap: 5px;
-        align-items: center;
-    }
+.nx-footer-grid-col a {
+  display: inline-flex;   /* 🔑 key fix */
+  align-items: center;
+  width: fit-content;     /* 🔑 prevents full-row hover */
 }

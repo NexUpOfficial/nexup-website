@@ -190,7 +190,10 @@ export default function Terms() {
       anchorSections={["01", "04", "07", "10"]}
       defaultOpen="01"
       closing="These Terms define boundaries so the system can operate reliably for everyone."
-      cta={null}
+      cta={<a href="/system-docs/terms" className="cta cta-primary">
+  View System Terms
+</a>
+}
     />
   );
 }

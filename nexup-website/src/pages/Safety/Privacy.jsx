@@ -188,7 +188,10 @@ export default function PrivacyData() {
       anchorSections={["01", "03", "05", "07", "09"]}
       defaultOpen="01"
       closing="Privacy is not asserted. It is enforced by design."
-      cta={null}   // Privacy pages should not push action
+      cta={<a href="/system-docs/privacy" className="cta cta-primary">
+   View System Privacy
+</a>
+}   // Privacy pages should not push action
     />
   );
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"; // <-- Import useEffect
+import React, { useRef, useState, useEffect } from "react"; 
 import { NavLink } from "react-router-dom";
 import "./styles/Sidebar.css";
 // --- Import React Icons ---
@@ -13,7 +13,7 @@ function Sidebar({ isOpen, onClose }) {
   // State to manage which submenu is currently open on mobile
   const [openMenu, setOpenMenu] = useState({}); 
 
-  // FIX 4: Reset submenu state when the sidebar closes
+  // Reset submenu state when the sidebar closes
   useEffect(() => {
     if (!isOpen) {
       setOpenMenu({});
@@ -22,12 +22,13 @@ function Sidebar({ isOpen, onClose }) {
 
   // Function to handle opening/closing submenus
   const toggleMenu = (menuName) => {
-    // If the same menu is clicked, close it. Otherwise, open it and close others.
+    // If the same menu is clicked, close it. Otherwise, open it.
     setOpenMenu(prev => ({
       [menuName]: !prev[menuName] 
     }));
   };
 
+  // 🔧 UPDATED ROUTE DATA
   const ecosystemItems = [
     { label: "NexWorld", to: "/ecosystem/nexworld" },
     { label: "NexNodes", to: "/ecosystem/nexnodes" },
@@ -37,9 +38,7 @@ function Sidebar({ isOpen, onClose }) {
   ];
 
   const aboutItems = [
-    { label: "Vision", to: "/about/vision" },
-    { label: "Team", to: "/about/team" },
-    { label: "Stories", to: "/about/stories" },
+    { label: "Team", to: "/about/team" }, 
     { label: "Company", to: "/about/company" },
     { label: "Careers", to: "/about/career" },
     { label: "News", to: "/about/news" },
@@ -67,8 +66,8 @@ function Sidebar({ isOpen, onClose }) {
         }
       >
         {label}
-        {/* Only add chevron for specific links */}
-        {(!isMobileBtn && (label === "Support" || label === "Contact" || label === "Login" || label === "Search")) && <span className="chevron">{">"}</span>}
+        {/* Only add chevron for specific links (Support, Contact, Login, Search) for utility links */}
+        {(!isSub && (label === "Support" || label === "Contact" || label === "Login" || label === "Search")) && <span className="chevron">{">"}</span>}
       </NavLink>
     );
   };
@@ -110,7 +109,7 @@ function Sidebar({ isOpen, onClose }) {
         <div 
           className="nav-link hover-trigger"
           onClick={() => toggleMenu(menuName)} // <-- TOGGLE ON CLICK/TAP
-          role="button" // FIX 5: Explicitly define role for accessibility and clarity
+          role="button" 
           tabIndex={0} 
           aria-expanded={!!openMenu[menuName]}
         >
@@ -131,26 +130,30 @@ function Sidebar({ isOpen, onClose }) {
     <aside
       ref={sidebarRef}
       className={`sidebar-container ${isOpen ? "is-open" : ""}`}
-      // FIX 1: Removed the inline style block and moved logic to CSS.
       role="navigation"
       aria-label="Primary navigation"
     >
       {/* Background (pure black via CSS) - Click closes menu */}
-      {/* FIX 2: Backdrop is still full screen, but the sidebar-container now manages its own height 
-          and position via CSS for the top-level fix. */}
       <div className="sidebar-backdrop" onClick={onClose} />
 
       <nav className="sidebar-scroll-area">
-        {/* CLOSE BUTTON (Now inside scroll area, positioned absolutely/sticky for mobile) */}
-        <button className="close-btn" onClick={onClose} aria-label="Close menu">
-          <IoMdClose /> 
-        </button>
-        {/* END CLOSE BUTTON */}
-
+        
+        {/* ⭐️ NAVIGATION CONTENT (MOVED TO TOP OF SCROLL AREA) */}
         <div className="sidebar-content center-vertical">
-          {/* NEW: SEARCH LINK */}
+          
+          {/* SEARCH */}
           <div className="hover-group standalone">
             {renderSearchLink()}
+          </div>
+
+          {/* VISION */}
+          <div className="hover-group standalone">
+            {renderLink("/vision", "Vision")}
+          </div>
+
+          {/* APPROACH */}
+          <div className="hover-group standalone">
+            {renderLink("/approach", "Approach")}
           </div>
 
           {/* ECOSYSTEM */}
@@ -159,7 +162,7 @@ function Sidebar({ isOpen, onClose }) {
           {/* ABOUT */}
           {renderSubMenu("about", "About", aboutItems)}
 
-          {/* STANDALONE LINKS */}
+          {/* STANDALONE UTILITY LINKS */}
           <div className="hover-group standalone">
             {renderLink("/support/help", "Support")}
           </div>
@@ -173,6 +176,14 @@ function Sidebar({ isOpen, onClose }) {
           </div>
 
         </div>
+        {/* END NAVIGATION CONTENT */}
+
+        {/* CLOSE BUTTON (Positioned sticky, but rendered after content) */}
+        <button className="close-btn" onClick={onClose} aria-label="Close menu">
+          <IoMdClose /> 
+        </button>
+        {/* END CLOSE BUTTON */}
+        
       </nav>
       
       {/* MOBILE LOGIN BUTTON / FOOTER */}

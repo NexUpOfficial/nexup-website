@@ -186,7 +186,10 @@ export default function Transparency() {
       anchorSections={["01", "03", "05", "07", "09"]}
       defaultOpen="01"
       closing="Transparency is not disclosure by request. It is visibility by design."
-      cta={null}   // Transparency does not need a CTA
+      cta={<a href="/system-docs/transparency" className="cta cta-primary">
+    View System Trasparency
+</a>
+}   // Transparency does not need a CTA
     />
   );
 }

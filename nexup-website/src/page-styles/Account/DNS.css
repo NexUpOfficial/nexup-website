@@ -35,15 +35,22 @@
     padding: 10vh 20px 0; /* Add top padding similar to approach page */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* 🛑 CRITICAL FIX: Removed align-items: center; 
+       This allows the full-width Footer component (a direct child) to span the entire viewport. */
     box-sizing: border-box;
 }
 
 .dns-main-content {
+    /* * NOTE: Since .dns-status-page no longer centers, we rely on the browser's 
+     * default behavior or the header/content classes to center the internal document.
+     * We will keep the header and main content centered by setting a max-width and 
+     * letting the default block behavior center it, or use margin auto.
+     */
     max-width: 900px; /* Max width for content column */
     width: 100%;
     text-align: left;
     padding: 0 5%;
+    margin: 0 auto; /* Added margin: 0 auto to center the max-width content */
 }
 
 /*
@@ -59,6 +66,7 @@
     border-bottom: 1px solid var(--dns-color-border-muted);
     margin-bottom: 3rem;
     padding: 0 5%;
+    margin: 0 auto; /* Added margin: 0 auto to center the header */
 }
 
 .dns-header__indicator {

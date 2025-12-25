@@ -1,346 +1,186 @@
-// src/pages/Ecosystem/NexEngine.jsx
-
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { 
-  FiCpu, FiActivity, FiLayers, FiCode, 
-  FiSettings, FiZap, FiBox, FiTerminal 
-} from "react-icons/fi";
-import "../../page-styles/Ecosystem/NexEngine.css";
+import React, { useEffect } from "react";
+import "../../page-styles/Ecosystem/NexWorld.css"; // SAME CSS
 import Footer from "../../components/Footer/Footer";
 
-/* --- ANIMATION VARIANTS --- */
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.8, ease: "easeOut" } 
-  }
-};
+const NexEngine = () => {
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
-  }
-};
+  useEffect(() => {
+    const container = document.querySelector('.nexworld-page');
+    const sections = container ? container.querySelectorAll('.fade-in-on-load') : [];
 
-export default function NexEngine() {
-  const navigate = useNavigate();
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    sections.forEach(section => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="nexengine-page">
-      
-      {/* ================= HERO SECTION ================= */}
-      <section className="nexengine-hero-section">
-        
-        {/* VIDEO BACKGROUND */}
-        <div className="hero-video-container">
-          <video 
-            className="hero-video" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-          >
-            <source src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765123906/NexEngine_Powering_the_NexWorld_bnc8hm.mp4" type="video/mp4" />
-          </video>
-          <div className="hero-overlay" />
-        </div>
-        
-        <motion.div
-          className="nexengine-hero-content"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: "easeOut" }}
-        >
-          <div className="hero-badge"><FiCpu /> Runtime Core v4.2</div>
-          <h1 className="nexengine-hero-title">
-            The Reality Engine.
-          </h1>
-          <p className="nexengine-hero-sub">
-            The intelligent kernel powering spatial computing, physics, 
-            and adaptive AI across the NeX UP ecosystem.
-          </p>
-        </motion.div>
-      </section>
+    <div className="nexworld-page">
 
-      <div className="nexengine-wrapper">
-        
-        {/* ================= INTRO ================= */}
-        <section className="nexengine-section intro-section">
-          <motion.div 
-            className="intro-text-block glass-panel"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <h2 className="gradient-title section-title">Computation Layer</h2>
-            <p className="nexengine-text large-text">
-              NexEngine is the brain behind the pixels. It processes spatial data, 
-              orchestrates world behavior, and optimizes AR/VR rendering in real-time. 
-              It transforms raw sensor input into living, breathing digital reality.
-            </p>
-          </motion.div>
-        </section>
+      {/* CONTEXT HEADER */}
+      <header className="nexworld-context">
+        <p>ECOSYSTEM / NEXENGINE</p>
+      </header>
 
-        <BreakLine />
+      <main>
 
-        {/* ================= CAPABILITIES (Bento Grid) ================= */}
-        <NexEngineSection title="System Modules">
-          <motion.div 
-            className="bento-grid"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {/* ⭐ 3. Spotlight Cards */}
-            <SpotlightCard className="card-wide" icon={<FiZap />} id="MOD_01" title="Spatial Intelligence Core">
-              Real-time depth estimation, surface reconstruction, and semantic understanding of physical environments.
-            </SpotlightCard>
+        {/* HERO */}
+        <section className="nexworld-hero">
 
-            <SpotlightCard className="card-tall" icon={<FiActivity />} title="Adaptive Physics">
-              Simulates mass, friction, and collision for millions of interactive objects concurrently.
-            </SpotlightCard>
+          <div className="hero-text">
+            <h1>NexEngine</h1>
 
-            <SpotlightCard className="" icon={<FiBox />} title="Volumetric Rendering">
-              High-fidelity light field rendering for holographic displays.
-            </SpotlightCard>
+            <span className="world-signal">
+              CREATION · SIMULATION · INTELLIGENCE
+            </span>
 
-            <SpotlightCard className="" icon={<FiSettings />} title="Neural Optimization">
-              AI-driven LOD (Level of Detail) scaling based on gaze and attention.
-            </SpotlightCard>
-          </motion.div>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= ARCHITECTURE STACK ================= */}
-        <NexEngineSection title="Engine Stack">
-          <motion.div 
-            className="engine-stack"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <StackLayer 
-              level="L4" 
-              title="Interaction Layer" 
-              desc="Gestures, Gaze, Voice, Neural Input" 
-            />
-            <StackLayer 
-              level="L3" 
-              title="Simulation Layer" 
-              desc="Physics, AI Agents, Weather, Time" 
-            />
-            <StackLayer 
-              level="L2" 
-              title="Spatial Layer" 
-              desc="Mapping, Anchoring, Persistence" 
-            />
-            <StackLayer 
-              level="L1" 
-              title="Kernel" 
-              desc="Thread Management, Memory, Hardware Abstraction" 
-            />
-          </motion.div>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= CODE / DEVELOPER EXPERIENCE ================= */}
-        <NexEngineSection title="Developer Experience">
-          <motion.div 
-            className="dev-split"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            <motion.div className="dev-text" variants={fadeInUp}>
-              <p className="nexengine-text">
-                Build faster with the NexEngine SDK. Access low-level primitives 
-                or high-level prefabs.
-              </p>
-              <ul className="tech-list">
-                <li><FiTerminal /> <span>Direct C++ / Rust Bindings</span></li>
-                <li><FiCode /> <span>Visual Scripting for Designers</span></li>
-                <li><FiBox /> <span>Hot-reload Asset Pipeline</span></li>
-              </ul>
-            </motion.div>
-            
-            <motion.div className="code-window glass-panel" variants={fadeInUp}>
-              <div className="window-header">
-                <span className="dot red"></span>
-                <span className="dot yellow"></span>
-                <span className="dot green"></span>
-                <span className="filename">world_init.rs</span>
-              </div>
-              <pre className="code-content">
-{`use nex_engine::prelude::*;
-
-fn main() {
-    let mut world = World::new();
-    
-    // Initialize Spatial Physics
-    world.add_plugin(PhysicsPlugin::default());
-    
-    // Spawn Intelligent Agent
-    world.spawn((
-        SpatialBundle::default(),
-        AIBehavior::Autonomous,
-        RigidBody::Dynamic,
-    ));
-
-    world.run();
-}`}
-              </pre>
-            </motion.div>
-          </motion.div>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= PERFORMANCE METRICS ================= */}
-        <NexEngineSection title="Performance Targets">
-          <motion.div 
-            className="metrics-grid"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <MetricCard value="< 8ms" label="Motion-to-Photon Latency" />
-            <MetricCard value="1M+" label="Active Entities / Scene" />
-            <MetricCard value="120Hz" label="Target Refresh Rate" />
-            <MetricCard value="8K" label="Texture Resolution Support" />
-          </motion.div>
-        </NexEngineSection>
-
-        <BreakLine />
-
-        {/* ================= FINAL CTA ================= */}
-        <section className="nexengine-final-section">
-          <motion.div
-            className="nexengine-final"
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="gradient-title final-big">
-              Power your imagination.
-            </h2>
-            <p className="final-text">
-              Start building high-fidelity spatial experiences with the engine 
-              designed for the next era of computing.
+            <p className="hero-subtitle">
+              The engine where worlds are designed, simulated, and evolved.
             </p>
 
-            <div className="nexengine-final-actions">
-              <button className="white-btn" onClick={() => navigate("/contact")}>
-                Get SDK Access
-              </button>
-              <button className="ghost-btn" onClick={() => navigate("/support/help")}>
-                Read Docs
-              </button>
+            <div className="hero-cta">
+           <a href="/vision/nexEngine" className="cta cta-primary">
+  Learn more
+</a>
+
+              <a href="/ecosystem" className="cta cta-secondary">
+                Explore ecosystem
+              </a>
             </div>
-          </motion.div>
+          </div>
+
+          <div className="hero-media">
+            <video
+              src="https://res.cloudinary.com/dgzikn7nn/video/upload/v1765124047/NexEngine_Activation_Powering_NexWorld_afukbv.mp4"
+              poster="/assets/nexengine-poster.jpg"
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-hidden="true"
+            />
+          </div>
+
         </section>
+
+        {/* EDITORIAL — DEFINITION */}
+        <article
+          id="definition"
+          className="nexworld-editorial fade-in-on-load"
+        >
+          <h2>Creation before consumption.</h2>
+
+          <p>
+            NexEngine is the system used to create worlds inside NexWorld.
+            It combines simulation, AI, physics, and spatial logic into
+            a unified creation environment.
+          </p>
+
+          <p>
+            Worlds built in NexEngine are not static scenes — they are
+            living systems.
+          </p>
+        </article>
+
+        {/* SEPARATOR */}
+        <div className="editorial-separator fade-in-on-load">
+          <p>Systems are authored.</p>
+          <hr />
+        </div>
+
+        {/* EDITORIAL — SIMULATION */}
+        <article className="nexworld-editorial editorial-identity fade-in-on-load">
+          <h2>Simulation as a first-class primitive.</h2>
+
+          <p>
+            NexEngine simulates time, physics, behavior, and intelligence
+            continuously. Nothing is faked for presentation.
+          </p>
+
+          <p>
+            Worlds respond, evolve, and adapt — even when no creator is present.
+          </p>
+        </article>
+
+        {/* SEPARATOR */}
+        <div className="editorial-separator fade-in-on-load">
+          <hr />
+        </div>
+
+        {/* EDITORIAL — AI & INTELLIGENCE */}
+        <article className="nexworld-editorial editorial-identity fade-in-on-load">
+          <h2>Intelligence is embedded.</h2>
+
+          <p>
+            AI systems in NexEngine are not assistants — they are structural
+            components of the world.
+          </p>
+
+          <p>
+            Intelligence governs agents, environments, and emergent behavior.
+          </p>
+        </article>
+
+        {/* ECOSYSTEM BRIDGE */}
+        <section className="nexworld-bridge fade-in-on-load">
+          <span className="bridge-preamble">
+            Worlds begin here.
+          </span>
+
+          <h2>The creative core of NexUP.</h2>
+
+          <p>
+            NexEngine connects creators to NexNodes infrastructure and
+            publishes directly into NexWorld.
+          </p>
+
+          <a href="/ecosystem" className="bridge-link">
+            Explore the ecosystem →
+          </a>
+        </section>
+
+        {/* EDITORIAL — FUTURE */}
+        <article className="nexworld-editorial fade-in-on-load">
+          <h2>Built for worlds not yet imagined.</h2>
+
+          <p>
+            NexEngine is intentionally open-ended. It exists to support
+            creative systems that do not exist yet.
+          </p>
+        </article>
+
+        {/* FINAL STATEMENT */}
+        <section className="nexworld-final">
+          <p>NexEngine turns ideas into worlds.</p>
+        </section>
+
+      </main>
+
+      {/* WORLD TIME */}
+      <div className="world-time-indicator">
+        WORLD TIME · RUNNING
+      </div>
+
+      {/* NEXT PAGE */}
+      <div className="continue-to-next-page">
+        <a href="/ecosystem/nexhousing" className="continue-link">
+          Continue → NexHousing
+        </a>
       </div>
 
       <Footer />
     </div>
   );
-}
+};
 
-/* ================= COMPONENTS ================= */
-
-function BreakLine() {
-  return (
-    <motion.div 
-      className="break-line" 
-      initial={{ scaleX: 0, opacity: 0 }}
-      whileInView={{ scaleX: 1, opacity: 1 }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
-      viewport={{ once: true }}
-    />
-  );
-}
-
-function NexEngineSection({ title, children }) {
-  return (
-    <section className="nexengine-section">
-      <div className="nexengine-section-inner">
-        <motion.h2 
-          className="gradient-title section-title"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          {title}
-        </motion.h2>
-        {children}
-      </div>
-    </section>
-  );
-}
-
-// ⭐ 3. Spotlight Card Component
-function SpotlightCard({ className, icon, id, title, children }) {
-  const handleMouseMove = (e) => {
-    const { left, top } = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty('--x', `${e.clientX - left}px`);
-    e.currentTarget.style.setProperty('--y', `${e.clientY - top}px`);
-  };
-
-  return (
-    <motion.div 
-      className={`bento-card ${className || ""}`}
-      onMouseMove={handleMouseMove}
-      variants={fadeInUp}
-    >
-      <div className="card-header">
-        {icon}
-        {id && <span className="card-label">{id}</span>}
-      </div>
-      <h3>{title}</h3>
-      <p>{children}</p>
-    </motion.div>
-  );
-}
-
-function StackLayer({ level, title, desc }) {
-  return (
-    <motion.div 
-      className="stack-layer"
-      variants={fadeInUp}
-      whileHover={{ scale: 1.01, borderLeftColor: "#b8a9ff", transition: { duration: 0.2 } }}
-    >
-      <div className="stack-id">{level}</div>
-      <div className="stack-content">
-        <h3>{title}</h3>
-        <p>{desc}</p>
-      </div>
-      <div className="stack-lines" />
-    </motion.div>
-  );
-}
-
-function MetricCard({ value, label }) {
-  return (
-    <motion.div 
-      className="metric-card glass-panel-sm"
-      variants={fadeInUp}
-    >
-      <div className="metric-value">{value}</div>
-      <div className="metric-label">{label}</div>
-    </motion.div>
-  );
-}
+export default NexEngine;

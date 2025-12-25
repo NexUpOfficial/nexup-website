@@ -5,7 +5,7 @@
     background: #000;
     width: var(--sidebar-width, 173px);
     color: #fff;
-    z-index: 999999;
+    z-index: 99;
     transform: translateX(-100%);
     /* Default (Desktop) Transition */
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); 
@@ -33,9 +33,6 @@
 
 
 /* ================= BACKDROP ================= */
-/* FIX 2: Backdrop is intentionally kept full-page (inset: 0) and behind the sidebar content.
-   The pointer-events are managed via React logic or a simple z-index/click handler.
-   The original CSS z-index and positioning is mostly correct. */
 .sidebar-backdrop {
     position: absolute;
     inset: 0;
@@ -103,18 +100,24 @@
 .sidebar-content {
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    padding: 16px; 
+    /* ⭐️ UPDATED: Reduced gap between main items */
+    gap: 5px; 
 }
 
 .center-vertical {
     height: 100%;
     justify-content: center;
-    gap: 10px;
 }
 
 @media (max-width: 768px) {
     .desktop-only-login {
         display: none; 
+    }
+    /* ⭐️ UPDATED: Shift content up by ~70px on mobile */
+    .sidebar-content {
+        /* 16px initial padding + 54px negative margin = 70px lift */
+        margin-top: -54px; 
     }
 }
 
@@ -183,6 +186,7 @@
 
 
 .chevron {
+    /* Base style: Invisible and slightly offset */
     opacity: 0;
     font-size: 13px;
     font-weight: 700;
@@ -192,13 +196,8 @@
         transform 0.45s ease;
 }
 
-/* Desktop Hover: Chevron Animation */
-.hover-group:hover .chevron {
-    opacity: 0.4;
-    transform: translateX(0);
-}
-
-.hover-group.standalone .nav-link:hover .chevron {
+/* ⭐️ UPDATED: Desktop Hover: Chevron Animation ONLY for Submenu Triggers (i.e., NOT .standalone) */
+.hover-group:not(.standalone):hover .chevron {
     opacity: 0.4;
     transform: translateX(0);
 }
@@ -236,12 +235,14 @@
         transform: translateX(12px);
     }
     
+    /* ⭐️ UPDATED: Disable chevron animation on ALL groups on hover on mobile (JS handles clicks) */
     .hover-group:hover .chevron {
         opacity: 0;
         transform: translateX(-6px);
     }
     
     /* 2. Mobile Click: Submenu Open State (JS driven by .is-open) */
+    /* This applies to Ecosystem and About */
     .hover-group.is-open .hover-submenu {
         max-height: 500px; /* Open the submenu */
         opacity: 1;
@@ -303,31 +304,32 @@
     }
     
     /* Mobile Login Button Styling */
-    .mobile-login-btn {
-        text-decoration: none;
-        cursor: pointer;
-        color: #ffffff;
-        transition: background 0.2s ease;
+    /* Mobile Login Button Styling */
+.mobile-login-btn {
+    text-decoration: none;
+    cursor: pointer;
+    color: #ffffff;
 
-        height: 40px;
-        padding: 0 16px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #333; 
-        border-radius: 60px; 
-        font-size: 14px;
-        font-weight: 500;
-        white-space: nowrap;
-        /* FIX 3: Removed hacky margin-right: 40px, let flexbox handle it */
-        margin-right: 30px;
-    }
+    height: 40px;
+    padding: 0 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     
-    .mobile-login-btn:hover {
-        background: #444; 
-    }
+    font-size: 14px;
+    font-weight: 500;
+
+    line-height: 1;              /* 🔑 FIX */
+    white-space: nowrap;
+    margin-right: 30px;
+
+    transition: background 0.3s ease;
 }
 
-/* FIX 3: Removed the entire @media (max-width:480px) block 
-   as it contained the hacky margin-bottom: 100px. The main 768px block 
-   and the .sidebar-scroll-area padding fix are sufficient. */
+.mobile-login-btn:hover {
+   opacity: 0.8;
+}
+
+    
+}

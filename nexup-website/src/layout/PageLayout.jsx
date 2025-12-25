@@ -20,7 +20,6 @@ export default function PageLayout({
 
   /* Route change */
   useEffect(() => {
-    window.scrollTo(0, 0);
     if (isOpen) onCloseSidebar();
   }, [location.pathname]);
 
