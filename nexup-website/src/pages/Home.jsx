@@ -108,7 +108,7 @@ const Home = () => {
                         {/* CTA: Enter NexWorld -> /ecosystem/nexworld */}
                         <a href="/ecosystem/nexworld" className="cta cta-primary">Enter NexWorld →</a>
                         {/* CHANGE 2: How NexUP Works converted to text link (cta-link) */}
-                        <a href="/architecture" className="cta cta-link">How NexUP Works</a>
+                        <a href="/approach/architecture" className="cta cta-link">How NexUP Works</a>
                     </div>
                 </div>
 
@@ -191,7 +191,7 @@ const Home = () => {
                     Every layer functions together as a single operating system, not separate products.
                 </p>
                 {/* CTA: View Full Architecture -> /architecture */}
-                <a href="/architecture" className="cta cta-secondary">View Full Architecture →</a>
+                <a href="/approach/architecture" className="cta cta-secondary">View Full Architecture →</a>
             </section>
 
             {/* 6. ECOSYSTEM — ONE WORLD, MULTIPLE LAYERS */}

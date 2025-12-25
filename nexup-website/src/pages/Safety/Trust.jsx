@@ -192,7 +192,10 @@ export default function Trust() {
       anchorSections={["01", "03", "05", "09"]}
       defaultOpen="01"
       closing="Trust is not requested. It is designed."
-      cta={null}   // Trust does NOT need a CTA
+      cta={<a href="/system-docs" className="cta cta-primary">
+   View System Trust
+</a>
+}  
     />
   );
 }

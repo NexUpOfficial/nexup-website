@@ -1,493 +1,531 @@
-/* ===========================================================
-   PAGE LAYOUT & BACKGROUND
-=========================================================== */
+/* =========================================================
+    NEXWORLD — BASE STYLES & LAYOUT
+========================================================= */
+
 .nexworld-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: #000;
-  overflow-x: hidden;
-  position: relative;
+    /* BASE */
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.7;
+    /* CRITICAL FIX: Ensure no unexpected horizontal scrolling */
+    overflow-x: hidden;
+    position: relative;
 }
 
-/* ⭐ 1. Soft Aurora Background */
+/* E. Invisible Grid System */
 .nexworld-page::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at 20% 30%, rgba(184,169,255,0.06), transparent 60%),
-              radial-gradient(circle at 80% 70%, rgba(100,70,255,0.05), transparent 60%);
-  pointer-events: none;
-  z-index: 0;
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.015) 1px,
+        transparent 1px
+    );
+    background-size: 100% 120px;
+    pointer-events: none;
 }
 
-.nexworld-wrapper {
-  flex: 1;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 100px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 120px;
-  color: #e8e8e8;
-  position: relative;
-  z-index: 2;
+/* Base style for scroll-reveal effect */
+.fade-in-on-load {
+    opacity: 0;
+    /* IMPROVEMENT 2: Consistent scroll rhythm - from 12px to 16px */
+    transform: translateY(16px);
+    transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    scroll-margin-top: 15vh;
 }
 
-/* ===========================================================
-   HERO SECTION (Cinematic)
-=========================================================== */
-.nexworld-hero-section {
-  position: relative;
-  width: 100%;
-  height: 90vh; /* Taller hero */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+.fade-in-on-load.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.nexworld-video-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  /* ⭐ 2. Opacity handles via inline Framer Motion style now */
-}
-
-.hero-video-element {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Sophisticated Overlay */
-.video-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.4) 60%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  z-index: 1;
-}
-
-.nexworld-hero-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 1000px;
-  padding: 0 24px;
-  text-align: center;
-}
-
-.nexworld-hero-title {
-  color: #ffffff;
-  font-size: clamp(4rem, 8vw, 7rem); /* Massive Impact Font */
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 24px;
-  text-transform: uppercase;
-  text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
-}
-
-.nexworld-hero-sub {
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  max-width: 600px;
-  margin: 0 auto;
-  opacity: 0.9;
-  line-height: 1.6;
-  color: #d4d4d4;
-}
-
-/* ===========================================================
-   TYPOGRAPHY & SECTIONS
-=========================================================== */
-.gradient-title {
-  background: linear-gradient(90deg, #b8a9ff, #ffffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-}
-
-.nexworld-section {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.nexworld-section-inner {
-  width: 100%;
-  max-width: 1100px;
-}
-
-.section-title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 40px;
-  display: inline-block;
-}
-
-.nexworld-text {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.large-text {
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-  line-height: 1.5;
-  color: #fff;
-  max-width: 900px;
-}
-
-.intro-text-block {
-  text-align: left;
-}
-
-/* ===========================================================
-   BENTO GRID (Core Architecture)
-=========================================================== */
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  width: 100%;
-}
-
-.bento-card {
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 220px;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(10px);
-  position: relative; /* Context for video bg */
-  overflow: hidden; /* Clip video */
-}
-
-/* ⭐ 3. Hover Glow Border */
-.bento-card:hover {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(184, 169, 255, 0.4);
-  transform: translateY(-5px);
-  box-shadow: 0 0 25px rgba(184,169,255,0.25);
-}
-
-/* Large card spans 2 columns */
-.large-card {
-  grid-column: span 2;
-  background: #000; /* Darker base for video */
-}
-
-/* ⭐ 4. Mini Video Background */
-.bento-video-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.bento-video-bg video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.15;
-  transition: transform 0.6s ease;
-}
-
-.bento-video-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 100%);
-}
-
-.large-card:hover .bento-video-bg video {
-  transform: scale(1.05);
-  opacity: 0.25;
-}
-
-.card-content-layer {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.card-label {
-  font-family: monospace;
-  font-size: 0.8rem;
-  color: #b8a9ff;
-  margin-bottom: 20px;
-  opacity: 0.8;
-  letter-spacing: 1px;
-}
-
-.bento-card h3 {
-  font-size: 1.5rem;
-  color: #fff;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 2;
-}
-
-.bento-card p {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.5;
-  position: relative;
-  z-index: 2;
-}
-
-/* Mobile Responsive Grid */
-@media (max-width: 900px) {
-  .bento-grid {
-    grid-template-columns: 1fr;
-  }
-  .large-card {
-    grid-column: span 1;
+/* 1️⃣ ADDED: Reduced-Motion Support (Accessibility Win) */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-on-load {
+    transition: none;
+    transform: none;
+    opacity: 1;
   }
 }
 
-/* ===========================================================
-   WORLD TYPES (Minimal List)
-=========================================================== */
-.world-types-list {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid rgba(255,255,255,0.1);
+/* C. World Time Illusion (Fixed Footer) */
+.world-time-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: #333333;
+    text-transform: uppercase;
+    z-index: 100;
+    pointer-events: none;
 }
 
-.world-type-row {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  padding: 30px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  cursor: default;
-  transition: background 0.3s ease;
-  padding-left: 20px;
+/* =========================================================
+    CONTEXT HEADER
+========================================================= */
+.nexworld-context {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 5vh 5% 0;
+    position: relative;
+    z-index: 10;
 }
 
-.world-type-row h3 {
-  font-size: 1.4rem;
-  color: #fff;
+.nexworld-context p {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #8a8a8a;
 }
 
-.world-type-row p {
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.6);
+/* =========================================================
+    HERO — WORLD ENTRY (APPLYING HOME MEASUREMENTS)
+========================================================= */
+.nexworld-hero {
+    min-height: 65vh;
+    max-height: 800px;
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+
+    position: relative;
+    box-shadow: 0 0 100px rgba(184, 169, 255, 0.05);
+    z-index: 5;
 }
 
-@media (max-width: 768px) {
-  .world-type-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
+/* ---------- LEFT PANEL (CONTENT) ---------- */
+.hero-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 5%;
+    background-color: #000000;
+    z-index: 10;
 }
 
-/* ===========================================================
-   PIPELINE (Big Numbers)
-=========================================================== */
-.pipeline-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  padding-top: 20px;
+.world-signal {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #555555;
+    margin-bottom: 2.5rem;
+    display: block;
+    animation: pulse-color 4s infinite ease-in-out;
 }
 
-.pipeline-step {
-  position: relative;
-  padding-right: 20px;
-  overflow: hidden; /* Clip scanline */
+@keyframes pulse-color {
+    0%, 100% { color: #555555; }
+    50% { color: #8a8a8a; }
 }
 
-/* ⭐ 6. Pipeline Scanline Animation */
-.pipeline-step::after {
-  content: "";
-  position: absolute;
-  top: 40px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: scanline 3s linear infinite;
-  z-index: -1;
+.hero-text h1 {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.75rem;
 }
 
-@keyframes scanline {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+.hero-subtitle {
+    font-size: 2.25rem;
+    font-weight: 300;
+    color: #b3b3b3;
+    margin-bottom: 2rem;
+    max-width: 520px;
 }
 
-.step-number {
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.1);
-  line-height: 1;
-  margin-bottom: 10px;
+/* --- CTA STYLES (Used by hero-cta) --- */
+.hero-cta a {
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
 }
 
-.step-content h4 {
-  font-size: 1.2rem;
-  color: #fff;
-  margin-bottom: 6px;
+.cta-primary {
+    /* Using variables is best practice, assuming they are defined elsewhere */
+    /* color: var(--color-primary-text); */
+    color: #ffffff; /* Fallback/Specific color */
+    /* border-bottom: 2px solid var(--color-neon-accent); */
+    border-bottom: 2px solid #b8a9ff; /* Specific color */
 }
 
-.step-content p {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.6);
+.cta-primary:hover {
+    /* color: var(--color-neon-accent); */
+    color: #b8a9ff; /* Specific color */
+    filter: brightness(1.2);
+    /* border-bottom-color: var(--color-neon-accent); */
+    border-bottom-color: #b8a9ff; /* Specific color */
 }
 
-@media (max-width: 768px) {
-  .pipeline-container {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-  }
+.cta-secondary {
+    /* color: var(--color-secondary-text); */
+    color: #b3b3b3; /* Specific color */
+    /* border-bottom: 2px solid var(--color-subtle-text); */
+    border-bottom: 2px solid #555555; /* Specific color */
+    margin-left: 20px;
 }
 
-/* ===========================================================
-   ECOSYSTEM CONNECTION BOX
-=========================================================== */
-.connection-box {
-  background: rgba(184, 169, 255, 0.03);
-  border: 1px solid rgba(184, 169, 255, 0.15);
-  border-radius: 20px;
-  padding: 60px;
-  text-align: center;
+.cta-secondary:hover {
+    /* color: var(--color-primary-text); */
+    color: #ffffff; /* Specific color */
+    /* border-bottom-color: var(--color-primary-text); */
+    border-bottom-color: #ffffff; /* Specific color */
 }
 
-.centered-text {
-  max-width: 700px;
-  margin: 20px auto 0;
-  font-size: 1.2rem;
+
+/* ---------- RIGHT PANEL (VIDEO) ---------- */
+.hero-media {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #050505;
+    padding: 2rem;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
 }
 
-/* ===========================================================
-   FINAL CTA
-=========================================================== */
-.nexworld-final-section {
-  text-align: center;
-  display: flex;
-  justify-content: center;
+.hero-media video {
+    width: 100%;
+    height: 100%;
+    max-height: 600px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(184, 169, 255, 0.12);
 }
 
+/* Video Vignette */
+.hero-media::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.8) 100%);
+    pointer-events: none;
+}
+
+
+/* =========================================================
+    EDITORIAL SECTIONS (APPLYING HOME RHYTHM)
+========================================================= */
+
+.nexworld-editorial {
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 8rem 5%;
+    /* IMPROVEMENT 3: Prevent CLS / Layout Shift */
+    contain: layout paint;
+}
+
+/* 3. SPACING AFTER HERO (MATCH HOME BEHAVIOR) */
+#definition {
+    margin-top: 150px;
+}
+
+/* Variant for shorter, sharper sections */
+.editorial-short {
+    max-width: 600px;
+}
+
+/* IMPROVEMENT 4: Reading Flow Enhancement */
+.editorial-short p:last-child {
+    margin-bottom: 0;
+}
+
+/* FIX 2 — MAKE RIGHT-SHIFT MATHEMATICAL (NOT VISUAL) */
+.editorial-shift-right {
+    max-width: 720px;
+    margin-left: auto;
+    /* This calculation correctly handles the difference between 100vw and the 1400px container width,
+        plus the 5% padding on the content, ensuring stable right alignment. */
+    margin-right: calc((100vw - 1400px) / 2 + 5%);
+}
+
+/* IMPROVEMENT 1: Visual Anchor for Section 2 (Optional but Premium) */
+.editorial-shift-right {
+    position: relative; /* Ensure ::before is positioned correctly */
+}
+.editorial-shift-right::before {
+    content: "";
+    position: absolute;
+    /* Pushes line 40px left from the content edge */
+    left: -40px; 
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #1a1a1a;
+}
+
+
+/* D. Typography Hierarchy Boost for Manifesto Sections */
+.editorial-short p {
+    font-size: 1.2rem;
+    line-height: 1.9;
+}
+
+.nexworld-editorial h2 {
+    font-size: 2.25rem;
+    font-weight: 450;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.nexworld-editorial p {
+    font-size: 1.1rem;
+    color: #b3b3b3;
+    line-height: 1.8;
+    margin-bottom: 1.4rem;
+}
+
+/* Breathing Separator */
+.editorial-separator {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 4vh 5%;
+    position: relative;
+    z-index: 1;
+    margin-top: -4vh;
+}
+
+.editorial-separator hr {
+    border: none;
+    border-top: 1px solid #1a1a1a;
+    margin: 2rem auto;
+    width: 50%;
+}
+
+.editorial-separator p {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #444444;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Architectural Grid / Identity Metaphor */
+.editorial-identity {
+    position: relative;
+    z-index: 1;
+}
+
+.editorial-identity h2::before {
+    content: '◊';
+    position: absolute;
+    top: -1.5rem;
+    left: 5%;
+    font-size: 4rem;
+    color: #1a1a1a;
+    opacity: 0.6;
+    z-index: -1;
+    font-weight: 100;
+}
+
+
+/* =========================================================
+    ECOSYSTEM BRIDGE (SINGLE LINK)
+========================================================= */
+.nexworld-bridge {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 10rem 5%;
+    position: relative;
+    z-index: 1;
+}
+
+.bridge-preamble {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #8a8a8a;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+}
+
+.nexworld-bridge h2 {
+    font-size: 2.1rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.nexworld-bridge p {
+    font-size: 1.1rem;
+    color: #b3b3b3;
+}
+
+.bridge-link {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    border-bottom: 2px solid #8a8a8a;
+    transition: color 0.3s, border-bottom-color 0.3s;
+}
+
+.bridge-link:hover {
+    color: #b8a9ff;
+    border-bottom-color: #b8a9ff;
+}
+
+/* =========================================================
+    FINAL STATEMENT
+========================================================= */
 .nexworld-final {
-  max-width: 800px;
+    padding: 18vh 5% 16vh;
+    text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
-.final-big {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.1;
-  margin-bottom: 20px;
+.nexworld-final p {
+    font-size: 1.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    animation: final-fade-in 2s ease-out forwards;
+    opacity: 0;
+    text-shadow: 0 0 10px rgba(184, 169, 255, 0.2);
 }
 
-.final-text {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 40px;
+@keyframes final-fade-in {
+    from { opacity: 0; letter-spacing: 0.1em; }
+    to { opacity: 1; letter-spacing: 0.04em; }
 }
 
-.nexworld-final-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
+/* 7. Simplified CTA Text Link (Added) */
+.cta-container-text {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5rem;
+    padding-top: 3rem;
 }
 
-/* ===========================================================
-   UTILITIES & BUTTONS
-=========================================================== */
-/* ⭐ 5. Subtle Pulse Divider */
-.break-line {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  animation: glowline 4s infinite ease-in-out;
+.cta-text-link {
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #444444;
+    transition: border-bottom-color 0.3s ease;
 }
 
-@keyframes glowline {
-  0% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-  100% { opacity: 0.3; }
+.cta-text-link:hover {
+    border-bottom-color: #ffffff;
 }
 
-/* Button Base */
-.white-btn, .ghost-btn {
-  position: relative;
-  padding: 16px 32px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: 0.3s;
-  overflow: hidden; /* For teleport ring */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* 2️⃣ MODIFIED: Styling for the next page link container (using <a> instead of <button>) */
+.continue-to-next-page {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 3rem;
+}
+.continue-to-next-page .continue-link { /* Targeting the new link class */
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #444444;
+    transition: border-bottom-color 0.3s ease;
+}
+.continue-to-next-page .continue-link:hover {
+    border-bottom-color: #ffffff;
 }
 
-/* ⭐ 9. Futuristic Glow & ⭐ 10. Teleport Ring */
-.white-btn {
-  background: #fff;
-  color: #000;
-  border: none;
+
+/* =========================================================
+    RESPONSIVE — MEDIA QUERIES
+========================================================= */
+
+/* Tablet/Small Desktop Breakpoint (1023px) */
+@media (max-width: 1023px) {
+    .nexworld-hero {
+        flex-direction: column;
+        min-height: auto;
+        max-height: none;
+        box-shadow: none;
+        padding-bottom: 4vh;
+    }
+
+    .hero-text {
+        padding: 4rem 5% 2rem;
+        text-align: left;
+    }
+
+    .hero-media {
+        padding: 0;
+        height: 350px;
+    }
+
+    /* Reset spacing on mobile */
+    #definition {
+        margin-top: 8vh;
+    }
+
+    .nexworld-editorial {
+        padding: 6rem 5%;
+    }
+
+    .hero-text h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.75rem;
+    }
+
+    /* FIX 3: Clean mobile reset for shifted section (revert to center flow) */
+    .editorial-shift-right {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    /* Disable the visual anchor line on smaller screens */
+    .editorial-shift-right::before {
+        content: none;
+    }
+    
+    .editorial-identity h2::before {
+        top: -0.5rem;
+        font-size: 3rem;
+    }
 }
 
-.white-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255,255,255,0.4);
-}
+/* Mobile Breakpoint (768px) */
+@media (max-width: 768px) {
+    .nexworld-editorial {
+        padding: 10vh 5%;
+    }
 
-.white-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.1);
-  transform: scale(0);
-  transition: transform 0.4s ease;
-}
+    .editorial-short p {
+        font-size: 1.1rem;
+    }
 
-.white-btn:hover::before {
-  transform: scale(1.6);
-}
+    .nexworld-final p {
+        font-size: 1.6rem;
+    }
 
-.ghost-btn {
-  background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.ghost-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: #fff;
-  box-shadow: 0 0 15px rgba(255,255,255,0.2);
-}
-
-.ghost-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  transform: scale(0);
-  transition: transform 0.4s ease;
-}
-
-.ghost-btn:hover::before {
-  transform: scale(1.6);
+    .world-time-indicator {
+        display: none;
+    }
 }

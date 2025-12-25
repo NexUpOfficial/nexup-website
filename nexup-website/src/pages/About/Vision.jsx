@@ -215,9 +215,11 @@ export default function Vision() {
       defaultOpen="01"
       closing="The vision is not expressed through promises. It is expressed through architecture."
       cta={
-        <RouterLink to="/ecosystem" className="cta-text-link">
-          Continue → Ecosystem
-        </RouterLink>
+   <a href="/vision" className="cta cta-primary">
+  Learn more
+</a>
+
+
       }
     />
   );

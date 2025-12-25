@@ -1,362 +1,419 @@
 /* ============================================
-   PAGE WRAPPER
+    PAGE WRAPPER
 ============================================ */
 .search-page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 40px 24px;
-  display: flex;
-  flex-direction: column;
-  background: #000000;
-  align-items: center;
-  /* 3️⃣ FIX: Prevent entry animations (y:8, y:-12) from causing temporary scrollbars */
-  overflow-x: hidden; 
-  box-sizing: border-box;
+    /* Full width, minimum full viewport height */
+    width: 100%;
+    min-height: 100vh;
+    
+    /* Default spacing and layout */
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    /* Aesthetics */
+    background: #000000;
+    
+    /* 📐 Desktop padding accounting for a 60px fixed header */
+    padding-top: 100px; 
+    
+    /* FIX: Prevent entry animations from causing temporary scrollbars */
+    overflow-x: hidden; 
+    
+    box-sizing: border-box;
+    
+    /* 💡 CRITICAL FIX: Transition for smooth layout shift */
+    transition: justify-content 0.35s ease-in-out;
+    
+    /* Default alignment is flex-start (top) for when results are visible/after interaction */
+    justify-content: flex-start;
 }
+
+/* 💡 CRITICAL FIX: Modifier class for initial/unfocused state centering */
+.search-page-centered {
+    /* This makes the single content block (input wrapper) center vertically */
+    justify-content: center;
+}
+
 
 /* ============================================
-   INPUT AREA
+    INPUT AREA WRAPPER
 ============================================ */
 .underline-input-wrapper {
-  width: 100%;
-  max-width: 520px;
-  position: relative;
-  /* Ensure z-index is above results to prevent overlap issues */
-  z-index: 10; 
+    width: 100%;
+    max-width: 520px;
+    position: relative;
+    z-index: 10; 
+    
+    /* Allows motion opacity animation */
+    will-change: opacity; 
 }
 
+/* INPUT CONTAINER */
 .input-container {
-  position: relative;
-  padding-bottom: 6px; /* Space for underline */
-  /* 1️⃣ FIX: Ensure specific height to contain absolute placeholder */
-  min-height: 50px; 
-  display: flex;
-  align-items: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* Space for mic (30) + send (30) + gaps */
+    padding-right: 70px; 
 }
 
 /* GRADIENT UNDERLINE */
 .input-container::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, #a78bfa, #ffffff);
-  pointer-events: none;
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #a78bfa, #ffffff);
+    pointer-events: none;
 }
 
 /* INPUT FIELD */
 .underline-input {
-  width: 100%;
-  font-size: 20px;
-  padding: 12px 4px 8px;
-  border: none;
-  background: transparent;
-  color: white;
-  outline: none;
-  /* Ensure input sits on top of placeholder */
-  position: relative;
-  z-index: 2; 
-  background-color: transparent; 
+    width: 100%;
+    font-size: 20px;
+    padding: 12px 4px 8px;
+    border: none;
+    background: transparent;
+    color: white;
+    outline: none;
+    position: relative;
+    z-index: 2; 
+    background-color: transparent; 
 }
 
 /* ============================================
-   ANIMATED PLACEHOLDER FIX
+    ANIMATED PLACEHOLDER FIX
 ============================================ */
 .placeholder-animated {
-  position: absolute;
-  left: 4px;
-  top: 50%;
-  /* 1️⃣ FIX: Strict vertical centering without causing overflow */
-  transform: translateY(-50%); 
-  pointer-events: none;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 20px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  overflow: hidden; /* Clips internal text motion */
-  white-space: nowrap;
-  max-width: 80%; /* Prevents horizontal overflow if text is long */
-  z-index: 1;
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    
+    /* FIX: Strict vertical centering without causing overflow */
+    transform: translateY(-50%); 
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 20px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    overflow: hidden; 
+    white-space: nowrap;
+    max-width: 80%; 
+    z-index: 1;
 }
 
 /* ============================================
-   VOICE BUTTON (OpenAI-level design)
+    VOICE BUTTON
 ============================================ */
 .voice-btn {
-  position: absolute;
-  right: 40px;
-  top: 50%;
-  transform: translateY(-50%) !important; /* Force center */
-  width: 30px;
-  height: 30px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.85);
-
-  cursor: pointer;
-  transition: background 180ms ease, opacity 180ms ease;
-  z-index: 5;
-  padding: 0 !important;
-  line-height: 1 !important;
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%) !important; 
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: background 180ms ease, opacity 180ms ease;
+    z-index: 5;
+    padding: 0 !important;
+    line-height: 1 !important;
 }
 
 .voice-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.voice-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .voice-btn.listening {
-  background: rgba(255, 255, 255, 1) !important;
-  color: black !important;
+    background: rgba(255, 255, 255, 1) !important;
+    color: black !important;
 }
 
 /* ============================================
-   SEND BUTTON (Arrow)
+    SEND BUTTON (Arrow)
 ============================================ */
 .send-btn {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%) !important; /* Force center */
-  
-  width: 30px;
-  height: 30px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) !important; 
+    
+    width: 30px;
+    height: 30px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  border-radius: 50%;
-  border: none;
+    border-radius: 50%;
+    border: none;
 
-  font-size: 17px;
-  font-weight: 600;
+    font-size: 17px;
+    font-weight: 600;
 
-  background: rgba(255, 255, 255, 0.92);
-  color: black;
+    background: rgba(255, 255, 255, 0.92);
+    color: black;
 
-  cursor: pointer;
-  transition: background 180ms ease;
-  z-index: 5;
-  padding: 0 !important;
-  line-height: 1 !important;
-}
-
-.send-btn:hover {
-  background: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    transition: background 180ms ease;
+    z-index: 5;
+    padding: 0 !important;
+    line-height: 1 !important;
 }
 
 /* ============================================
-   SEARCH RESULTS AREA
+    SEARCH RESULTS AREA
 ============================================ */
 .search-results {
-  /* 2️⃣ FIX: Ensure margin doesn't push page width out */
-  margin-top: 40px; 
-  width: 100%;
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding-bottom: 40px; /* Safe space at bottom */
+    margin-top: 40px; 
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-bottom: 40px; 
 }
 
 /* CATEGORY HEADER */
 .category-block {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .category-title {
-  font-size: 14px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  margin-left: 4px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-left: 4px;
 }
 
 /* GRID OF CARDS */
 .category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
 }
 
 /* OPENAI-STYLE SEARCH CARD */
 .search-card {
-  padding: 16px 18px;
-  border-radius: 14px;
+    padding: 16px 18px;
+    border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
 
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  /* 3️⃣ FIX: Ensure box shadow doesn't trigger scrollbars */
-  box-sizing: border-box; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box; 
 }
 
 .search-card:hover {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px); 
 }
 
+/* 💥 FIX 3: Enhanced Active Card Styling */
 .search-card.active {
-  border-color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 2px #a78bfa; 
+    transform: translateY(-2px); 
 }
 
 /* CARD CONTENT */
 .card-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-  margin-bottom: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 6px;
 }
 
 .card-desc {
-  font-size: 14px;
-  color: rgba(230, 230, 230, 0.86);
-  margin-bottom: 12px;
-  line-height: 1.4;
+    font-size: 14px;
+    color: rgba(230, 230, 230, 0.86);
+    margin-bottom: 12px;
+    line-height: 1.4;
 }
 
 /* CARD META AREA */
 .card-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
 }
 
 .chip {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .chip-link {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* ============================================
-   📱 MOBILE RESPONSIVE (0px – 600px)
+    💥 FIX 1: NO RESULTS STATE
+============================================ */
+.no-results-state {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 520px; 
+    text-align: center;
+    padding: 60px 24px;
+    border-radius: 14px;
+    
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.no-results-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.no-results-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.no-results-tip {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* ============================================
+    📱 MOBILE RESPONSIVE (0px – 600px)
 ============================================ */
 @media (max-width: 600px) {
-  .search-page {
-    padding-top: 20px;
-    justify-content: flex-start;
-    /* 3️⃣ FIX: Mobile strict overflow */
-    overflow-x: hidden;
-  }
+    .search-page {
+        /* Mobile padding for 60px header */
+        padding-top: 80px;
+        justify-content: flex-start;
+        overflow-x: hidden;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .search-page-centered {
+        justify-content: center;
+    }
 
-  .underline-input-wrapper {
-    max-width: 92%;
-    margin-top: 10px; 
-    transform: none; 
-  }
+    .underline-input-wrapper {
+        max-width: 92%;
+        margin-top: 10px; 
+        transform: none; 
+    }
 
-  .underline-input {
-    font-size: 18px;
-    padding: 12px 4px 8px;
-  }
+    .underline-input {
+        font-size: 18px;
+        padding: 12px 4px 8px;
+    }
 
-  .voice-btn,
-  .send-btn {
-    width: 26px;
-    height: 26px;
-    font-size: 12px;
-  }
+    .voice-btn,
+    .send-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 12px;
+    }
 
-  .placeholder-animated {
-    font-size: 18px;
-  }
+    .placeholder-animated {
+        font-size: 18px;
+    }
 
-  .category-grid {
-    grid-template-columns: 1fr;
-  }
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
 
-  .search-card {
-    padding: 14px 16px;
-  }
+    .search-card {
+        padding: 14px 16px;
+    }
+    
+    .no-results-state {
+        max-width: 92%;
+        padding: 40px 16px;
+    }
 }
 
 /* ============================================
-   📺 LARGE SCREENS / TV MODE (1600px+)
+    📺 LARGE SCREENS / TV MODE (1600px+)
 ============================================ */
 @media (min-width: 1600px) {
-  .search-page {
-    padding-top: 100px;
-  }
+    .search-page {
+        padding-top: 100px;
+    }
 
-  .underline-input-wrapper {
-    max-width: 700px;
-  }
+    .underline-input-wrapper {
+        max-width: 700px;
+    }
 
-  .underline-input {
-    font-size: 24px;
-    padding: 14px 6px 10px;
-  }
+    .underline-input {
+        font-size: 24px;
+        padding: 14px 6px 10px;
+    }
 
-  .voice-btn,
-  .send-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-  }
+    .voice-btn,
+    .send-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
 
-  .category-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
 
-  .search-card {
-    padding: 20px;
-    font-size: 20px;
-  }
+    .search-card {
+        padding: 20px;
+        font-size: 20px;
+    }
 }
 
 /* ============================================
-   💻 TABLET (600px – 1024px)
+    💻 TABLET (600px – 1024px)
 ============================================ */
 @media (min-width: 600px) and (max-width: 1024px) {
-  .underline-input-wrapper {
-    max-width: 80%;
-  }
+    .underline-input-wrapper {
+        max-width: 80%;
+    }
 
-  .underline-input {
-    font-size: 19px;
-  }
+    .underline-input {
+        font-size: 19px;
+    }
 
-  .category-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
 }
 
 /* ============================================
-   🖥 DESKTOP (1024px – 1600px)
+    🖥 DESKTOP (1024px – 1600px)
 ============================================ */
 @media (min-width: 1024px) and (max-width: 1600px) {
-  .underline-input-wrapper {
-    max-width: 520px;
-  }
+    .underline-input-wrapper {
+        max-width: 520px;
+    }
 }

@@ -184,7 +184,11 @@ export default function HelpCenter() {
       anchorSections={["01", "03", "05" , "09"]}
       defaultOpen="01"
       closing="Most issues can be resolved through system understanding. Support is available when needed."
-      cta={null}
+      cta={
+  <a href="/contact" className="cta cta-primary">
+   Contact US
+  </a>
+}
     />
   );
 }

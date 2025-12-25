@@ -245,10 +245,15 @@ const Approach = () => {
 
                     {/* 7. Simplified CTA Text Link */}
                     <div className="cta-container-text">
-                        <RouterLink to="/src/pages/contact" className="cta-text-link">
+                        <RouterLink to="/contact" className="cta-text-link">
                             Continue → Contact
                         </RouterLink>
                     </div>
+
+                    <a href="/approach" className="cta cta-primary">
+  View System Approach
+</a>
+
 
                 </div>
             </div>

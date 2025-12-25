@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 const TITLE_MAP = {
   "/": "NexUP",
 
-  /* Ecosystem */
+  /* ================= Ecosystem ================= */
   "/ecosystem": "Ecosystem",
   "/ecosystem/nexworld": "NexWorld",
   "/ecosystem/nexnodes": "NexNodes",
@@ -15,36 +15,61 @@ const TITLE_MAP = {
   "/ecosystem/nexhousing": "NexHousing",
   "/ecosystem/nexsearch": "NexSearch",
 
-  /* About */
+  /* ================= Vision ================= */
+  "/vision": "Vision",
+  "/vision/nexworld": "Vision · NexWorld",
+  "/vision/nexnodes": "Vision · NexNodes",
+  "/vision/nexengine": "Vision · NexEngine",
+  "/vision/nexhousing": "Vision · NexHousing",
+  "/vision/nexsearch": "Vision · NexSearch",
+
+  /* ================= Approach ================= */
+  "/approach": "Approach",
+  "/approach/architecture": "Approach · Architecture",
+  "/approach/scalability": "Approach · Scalability",
+  "/approach/rollout": "Approach · Rollout",
+
+  /* ================= System Docs ================= */
+  "/systemdocs": "System Docs",
+  "/systemdocs/overview": "Overview",
+  "/systemdocs/governance": "Governance",
+  "/systemdocs/security": "Security",
+  "/systemdocs/privacy": "Privacy",
+  "/systemdocs/cookies": "Cookies",
+  "/systemdocs/transparency": "Transparency",
+  "/systemdocs/terms": "Terms",
+
+  /* ================= About ================= */
   "/about": "About NexUP",
-  "/about/vision": "Vision",
+  "/about/vision": "About · Vision",
   "/about/team": "Team",
   "/about/stories": "Stories",
   "/about/company": "Company",
   "/about/career": "Careers",
   "/about/news": "News",
 
-  /* Support */
+  /* ================= Support ================= */
   "/support": "Support",
   "/support/guidelines": "Guidelines",
-  "/support/help": "Help & Support",
+  "/support/help": "Help Center",
 
-  /* Safety */
+  /* ================= Safety ================= */
   "/safety": "Safety",
-  "/safety/approach": "Safety Approach",
+  "/safety/approach": "Safety · Approach",
   "/safety/privacy": "Privacy Policy",
+  "/safety/security": "Security",
   "/safety/trust": "Trust",
   "/safety/transparency": "Transparency",
   "/safety/cookies": "Cookies Policy",
 
-  /* Auth & Misc */
+  /* ================= Auth & Misc ================= */
   "/login": "Login",
   "/search": "Search",
   "/contact": "Contact Us",
   "/feedback": "Feedback",
   "/dns": "DNS",
 
-  /* Legal / Sections */
+  /* ================= Sections ================= */
   "/sections/roadmap": "Roadmap",
   "/sections/terms": "Terms & Conditions",
 };
@@ -52,20 +77,39 @@ const TITLE_MAP = {
 /* ====================================================
  * HOOK
  * ==================================================== */
-export default function useBrowserTitle() {
+export default function useBrowserTitle({
+  isOffline = false,
+  isNotFound = false,
+} = {}) {
   const { pathname } = useLocation();
 
   const title = useMemo(() => {
-    return TITLE_MAP[pathname] || "NexUP";
-  }, [pathname]);
+    if (isOffline) return "Offline";
+    if (isNotFound) return "Page Not Found";
+
+    // Exact match first
+    if (TITLE_MAP[pathname]) {
+      return TITLE_MAP[pathname];
+    }
+
+    // Longest prefix match (for nested routes)
+    const matchedKey = Object.keys(TITLE_MAP)
+      .filter(
+        key =>
+          key !== "/" &&
+          pathname.startsWith(key)
+      )
+      .sort((a, b) => b.length - a.length)[0];
+
+    return matchedKey ? TITLE_MAP[matchedKey] : "NexUP";
+  }, [pathname, isOffline, isNotFound]);
 
   useEffect(() => {
-    if (pathname === "/") {
-      document.title = "NexUP";
-    } else {
-      document.title = `${title} | NexUP`;
-    }
+    document.title =
+      pathname === "/"
+        ? "NexUP"
+        : `${title} | NexUP`;
   }, [title, pathname]);
 
-  return title; // useful for Header UI
+  return title; // usable for Header / Breadcrumbs
 }
