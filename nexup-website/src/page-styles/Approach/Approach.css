@@ -1,0 +1,479 @@
+/* =====================================================
+ * 🎨 VISION PAGE — CONTAINER & LAYOUT (OpenAI Style)
+ * -----------------------------------------------------
+ * A dark-mode, two-column layout optimized for long-form
+ * reading, with a sticky Table of Contents (TOC).
+ * ===================================================== */
+
+/*
+ * =====================================================
+ * 1. 📄 PAGE & GLOBAL STYLES
+ * =====================================================
+ */
+
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 96px 6% 120px;
+    color: #ffffff;
+    background-color: #000;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.75;
+}
+
+/*
+ * =====================================================
+ * 2. 📰 HEADER & METADATA
+ * =====================================================
+ */
+
+.vision-header {
+    max-width: 820px;
+    margin: 0 auto 40px auto;
+}
+
+.page-container h1 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+}
+
+.vision-doc-meta {
+    font-size: 0.85rem;
+    color: #444;
+    margin-bottom: 32px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ✅ READING DEPTH CUE */
+.vision-depth-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.lead-paragraph {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #a0a0a0;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* 1️⃣ VISION ORIENTATION BLOCK */
+.vision-orientation {
+    max-width: 820px;
+    margin: 0 auto 64px auto;
+    padding: 20px 0;
+    border-top: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.vision-orientation p {
+    font-size: 1rem;
+    color: #999;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+.vision-orientation p:last-child {
+    margin-bottom: 0;
+}
+
+
+/*
+ * =====================================================
+ * 3. 📐 LAYOUT GRID (OpenAI Style - Left TOC, Right Content)
+ * =====================================================
+ */
+
+.vision-layout-grid {
+    display: grid;
+    /* Two columns: 240px fixed TOC, 780px max content */
+    grid-template-columns: 240px minmax(0, 780px);
+    gap: 80px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+
+/*
+ * -----------------------------------------------------
+ * 3.1. LEFT COLUMN: TABLE OF CONTENTS (TOC)
+ * -----------------------------------------------------
+ */
+
+.vision-toc {
+    font-size: 0.9rem;
+    padding-right: 20px;
+    position: sticky; /* Keeps it visible while scrolling */
+    top: 90px;
+    height: fit-content;
+    align-self: flex-start;
+    padding-top: 20px;
+}
+
+/* ✅ DOCUMENT NATURE STATEMENT */
+.vision-reading-tip {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 24px;
+    line-height: 1.5;
+    font-style: italic;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 15px;
+}
+
+.vision-toc h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+}
+
+.vision-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid #1a1a1a; /* Vertical line cue */
+}
+
+.vision-toc li {
+    margin-bottom: 0;
+    line-height: 1.4;
+    font-size: 0.9rem;
+    padding-left: 10px;
+}
+
+.vision-toc a {
+    color: #a0a0a0;
+    font-weight: 300;
+    text-decoration: none;
+    display: block;
+    padding: 4px 0;
+    transition: color 0.15s ease, font-weight 0.15s ease;
+    position: relative; /* Added for hover arrow */
+}
+
+.vision-toc a:hover {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* 5️⃣ STRENGTHEN TOC AFFORDANCE */
+.vision-toc a:hover::before {
+    content: "→";
+    position: absolute;
+    left: -12px;
+    color: #888;
+}
+
+/*
+ * -----------------------------------------------------
+ * 3.2. RIGHT COLUMN: MAIN CONTENT AREA
+ * -----------------------------------------------------
+ */
+
+/* 2️⃣ PRINCIPLE MARKERS (e.g., "CORE PRINCIPLE") */
+.vision-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #b8b8b8;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    margin-top: 50px;
+}
+
+/* Headings & Scroll Fix */
+.vision-content-area h2 {
+    /* 4️⃣ Section Arrival Fix: Adjusts scroll position for sticky headers/TOC */
+    scroll-margin-top: 120px; 
+    
+    font-size: 2.1rem;
+    font-weight: 600;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+    border-top: 1px solid #1a1a1a; /* Separator line above sections */
+    padding-top: 30px;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.vision-content-area h2:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+/* Paragraphs & Links */
+.vision-content-area p {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #d1d1d1;
+    margin-bottom: 24px;
+}
+
+/* 4️⃣ SLIGHTLY IMPROVE PARAGRAPH GROUPING */
+.vision-content-area p + p {
+    margin-top: 16px; /* Adjusted slightly from suggested -8px to 16px to maintain space but reduce gap from 24px */
+}
+
+.vision-content-area strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* 1️⃣ FINAL LINK STYLE: Underline-Only, No Background */
+.vision-content-area a {
+    color: #cfd8ff; /* Light blue/purple for links */
+    text-decoration: none;
+    border-bottom: 1px solid rgba(207, 216, 255, 0.5);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.vision-content-area a:hover {
+    color: #ffffff;
+    border-bottom-color: #ffffff;
+}
+
+/* Concept Blocks (Blockquote/Citation Style) */
+.concept-block {
+    font-style: italic;
+    color: #b0b0b0;
+    padding-left: 15px;
+    border-left: 3px solid #222;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/* Concept Cross-Link */
+.concept-cross-link {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #888;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+/* Concept Status Callout (Boxed Note) */
+.vision-status-note {
+    background-color: #0d0d0d;
+    padding: 25px;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    margin: 40px 0;
+}
+
+.vision-status-note p {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+.vision-status-note p:last-child {
+    margin-bottom: 0;
+}
+
+/* Ecosystem List (Architectural Look - Custom Bullet) */
+.vision-ecosystem-list {
+    list-style: none;
+    padding-left: 0;
+}
+.vision-ecosystem-list li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #d1d1d1;
+    margin-bottom: 12px;
+}
+/* 👇 CHANGE: Replaced '—' with '•' (dot) for the list bullet */
+.vision-ecosystem-list li::before {
+    content: "•"; /* Dot style applied here */
+    position: absolute;
+    left: 0;
+    top: 5px;
+    color: #ffffff; /* Using the link/highlight color for the dot */
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* Optional Polish: Slightly stronger underline for ecosystem names */
+.vision-ecosystem-list li a {
+    border-bottom-width: 2px;
+}
+
+.vision-constraints-list {
+    list-style: none;
+    padding-left: 0;
+}
+.vision-constraints-list li {
+    position: relative;
+    padding-left: 18px;
+}
+.vision-constraints-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #cfd8ff;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Concept Index (Tag Cloud / Glossary) */
+.vision-concept-index-container {
+    margin-top: 80px;
+    padding-top: 30px;
+    border-top: 1px solid #1a1a1a;
+}
+.vision-concept-index-container h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.vision-concept-index {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.vision-concept-index li {
+    font-size: 0.95rem;
+    color: #aaa;
+    margin-right: 25px;
+    margin-bottom: 10px;
+}
+
+
+/*
+ * -----------------------------------------------------
+ * 3.3. Call-to-Action (CTA) Button
+ * -----------------------------------------------------
+ */
+
+.vision-cta-container {
+    margin-top: 60px;
+    text-align: left;
+    padding-top: 40px;
+    border-top: 1px solid #1a1a1a;
+}
+
+.cta-context {
+    font-size: 1rem;
+    color: #999;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+.vision-cta-button {
+    display: inline-block;
+    color: #ffffff; /* Changed text color to white */
+    background-color: #000; /* Kept background dark */
+    text-decoration: none; /* Removed default underline */
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, color 0.2s ease;
+    margin-top: 30px;
+}
+
+/* 6️⃣ CTA BUTTON HOVER FIX */
+.vision-cta-button:hover {
+    color: #ffffff;
+}
+
+/*
+ * -----------------------------------------------------
+ * 3.4. Footer
+ * -----------------------------------------------------
+ */
+
+/* VISION VERSION FOOTER */
+.vision-version {
+    max-width: 1400px;
+    margin: 80px auto 0 auto;
+    padding: 20px 6% 0 6%;
+    font-size: 0.85rem;
+    color: #555;
+    text-align: center;
+    border-top: 1px solid #1a1a1a;
+}
+
+
+/*
+ * =====================================================
+ * 4. 📱 RESPONSIVE MEDIA QUERIES
+ * =====================================================
+ */
+
+/* Adjustments for tablets/smaller desktops (TOC disappears) */
+@media (max-width: 1200px) {
+    .vision-layout-grid {
+        /* Single column layout */
+        grid-template-columns: 1fr;
+        max-width: 820px;
+        gap: 0;
+    }
+    
+    .vision-toc {
+        /* Hide the sticky TOC for narrow views */
+        display: none;
+    }
+    
+    .vision-header {
+        margin-bottom: 40px;
+    }
+
+    .vision-content-area p + p {
+        margin-top: 16px; /* Reset the reduced margin for mobile single column if desired, or keep 16px */
+    }
+}
+
+/* Adjustments for mobile phones */
+@media (max-width: 640px) {
+    .page-container {
+        padding: 72px 20px 96px; /* Reduced side padding */
+        line-height: 1.65;
+    }
+
+    .page-container h1 {
+        font-size: 2.4rem; /* Smaller main heading */
+    }
+
+    .lead-paragraph {
+        font-size: 1.1rem; /* Smaller lead text */
+    }
+    
+    .vision-orientation {
+        margin-bottom: 40px;
+    }
+
+    .vision-content-area h2 {
+        font-size: 1.8rem; /* Smaller section headings */
+        margin-top: 40px;
+        padding-top: 25px;
+    }
+
+    .vision-content-area p,
+    .vision-content-area li {
+        font-size: 1rem; /* Base content text slightly smaller */
+    }
+    
+    .vision-status-note {
+        padding: 20px;
+    }
+
+    .vision-concept-index-container {
+        margin-top: 60px;
+    }
+}

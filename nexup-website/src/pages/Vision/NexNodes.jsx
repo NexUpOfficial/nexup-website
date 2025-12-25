@@ -7,7 +7,8 @@ import Footer from "../../components/Footer/Footer";
   NexNodes reuses the SAME document layout system as Vision & NexWorld.
   No new layout CSS is introduced here.
 */
-import "../../page-styles/vision/Vision.css";
+
+import "../../page-styles/Vision/Vision.css";
 
 export default function NexNodes() {
   return (
