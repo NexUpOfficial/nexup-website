@@ -41,7 +41,7 @@ export default function Approach() {
           </p>
         </section>
 
-        {/* ==============================================
+        {/* =============================================
             MAIN LAYOUT GRID
         ============================================== */}
         <div className="vision-layout-grid">
