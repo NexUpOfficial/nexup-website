@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-/* Core */
+/* ================= ANALYTICS ================= */
+import AnalyticManage from "./analytics/AnalyticManage";
+
+/* ================= CORE ================= */
 import Loader from "./components/TopLoader/Loader";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import PageLayout from "./layout/PageLayout"; // <-- Remember to apply fix 4 here
-// import ScrollToTop from "./components/ScrollToTop"; // <-- Removed (as per instructions)
+import PageLayout from "./layout/PageLayout";
 import RefreshPage from "./hooks/refresh/RefreshPage";
-import ScrollRestoration from "./components/ScrollRestoration"; // <-- The centralized scroll handler
+import ScrollRestoration from "./components/ScrollRestoration";
 import NotFound from "./pages/NotFound";
 
 import "./App.css";
@@ -42,7 +44,7 @@ import News from "./pages/About/News";
 import Guidelines from "./pages/Support/Guidelines";
 import Help from "./pages/Support/Help";
 
-/* ================= Safety (Legacy) ================= */
+/* ================= Safety ================= */
 import SafetyApproach from "./pages/Safety/Approach";
 import SafetyPrivacy from "./pages/Safety/Privacy";
 import SafetySecurity from "./pages/Safety/Security";
@@ -61,7 +63,7 @@ import DNS from "./pages/Account/DNS";
 import Roadmap from "./pages/sections/Roadmap";
 import SectionTerms from "./pages/sections/Terms";
 
-/* ================= Vision (NEW) ================= */
+/* ================= Vision ================= */
 import VisionIndex from "./pages/Vision/Vision";
 import VisionNexWorld from "./pages/Vision/NexWorld";
 import VisionNexNodes from "./pages/Vision/NexNodes";
@@ -69,7 +71,7 @@ import VisionNexEngine from "./pages/Vision/NexEngine";
 import VisionNexHousing from "./pages/Vision/NexHousing";
 import VisionNexSearch from "./pages/Vision/NexSearch";
 
-/* ================= Approach (NEW) ================= */
+/* ================= Approach ================= */
 import ApproachIndex from "./pages/Approach/Approach";
 import Architecture from "./pages/Approach/Architecture";
 import Scalability from "./pages/Approach/Scalability";
@@ -85,16 +87,15 @@ import SysTransparency from "./pages/SystemDocs/Transparency";
 import SysTerms from "./pages/SystemDocs/Terms";
 
 /* ============================================================
-    ANIMATED ROUTES
+    ANIMATED ROUTES (NO ANALYTICS HERE ANYMORE)
 ============================================================ */
 function AnimatedRoutesWrapper() {
   const location = useLocation();
 
   return (
-   <AnimatePresence initial={false}>
+    <AnimatePresence initial={false} mode="wait">
       <Routes location={location} key={location.pathname}>
-<Route path="*" element={<NotFound />} />
-
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
 
         {/* Ecosystem */}
@@ -124,7 +125,7 @@ function AnimatedRoutesWrapper() {
           <Route path="help" element={<Help />} />
         </Route>
 
-        {/* Safety (legacy) */}
+        {/* Safety */}
         <Route path="safety">
           <Route path="approach" element={<SafetyApproach />} />
           <Route path="privacy" element={<SafetyPrivacy />} />
@@ -162,7 +163,7 @@ function AnimatedRoutesWrapper() {
           <Route path="transparency" element={<SysTransparency />} />
           <Route path="terms" element={<SysTerms />} />
         </Route>
-        
+
         {/* Misc */}
         <Route path="contact" element={<Contact />} />
         <Route path="login" element={<Login />} />
@@ -173,7 +174,6 @@ function AnimatedRoutesWrapper() {
         {/* Sections */}
         <Route path="sections/roadmap" element={<Roadmap />} />
         <Route path="sections/terms" element={<SectionTerms />} />
-
       </Routes>
     </AnimatePresence>
   );
@@ -186,8 +186,6 @@ export default function App() {
   const [isOpen, setIsOpen] = useState(
     () => localStorage.getItem("sidebar_open") === "true"
   );
-  
-  // NOTE: The useGlobalScrollOverride function and its call were DELETED here.
 
   const toggleSidebar = () => {
     setIsOpen(prev => {
@@ -204,17 +202,16 @@ export default function App() {
 
   return (
     <>
-      <Loader />
+      {/* 🧠 Analytics Manager (GLOBAL, HEADLESS) */}
+      <AnalyticManage />
 
-      {/* Scroll handling: This is the ONLY component controlling scroll-to-top on route change */}
+      <Loader />
       <ScrollRestoration />
-      
-      {/* Layout */}
+
       <Header isOpen={isOpen} toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={isOpen} onClose={closeSidebar} />
 
       <PageLayout isOpen={isOpen} onCloseSidebar={closeSidebar}>
-        {/* RefreshPage, Header, and Sidebar use the 'isOpen' state as props */}
         <RefreshPage
           isSidebarOpen={isOpen}
           onOpenSidebar={toggleSidebar}
