@@ -1,25 +1,46 @@
 // src/analytics/event.js
 
-import { post } from "./client";
-import { getSessionId } from "./session";
+import { sendBeacon, getSessionId } from './config.js';
+import { getCurrentPageData } from './config.js';
+
 
 /**
- * Track any user event
+ * Tracks a custom event/action on the website.
+ * @param {string} eventName - The name of the event (e.g., 'CTA_Clicked', 'Form_Submitted')
+ * @param {object} properties - Custom data relevant to the event (e.g., { btnText: 'Sign Up', formId: 'contact' })
  */
-export function trackEvent({
-  name,
-  page,
-  type = "click",
-  metadata = {},
-}) {
-  const sessionId = getSessionId();
-  if (!sessionId) return;
+export const trackEvent = (eventName, properties = {}) => {
+    const sessionId = getSessionId();
+    if (!sessionId) {
+        console.warn(`Analytics: Cannot track event '${eventName}', session not initialized.`);
+        return;
+    }
+    
+    const { pageViewId } = getCurrentPageData();
 
-  post("/event", {
-    sessionId,
-    name,
-    type,
-    page,
-    metadata,
-  });
-}
+    const eventData = {
+        sessionId: sessionId,
+        eventName: eventName,
+        timestamp: new Date().toISOString(),
+        properties: {
+            ...properties,
+            path: window.location.pathname,
+            pageViewId: pageViewId, // Link event to the current page view
+        }
+    };
+
+    sendBeacon('/event/track', eventData);
+    console.log(`Analytics: Tracked Event: ${eventName}`, properties);
+};
+
+/**
+ * Helper to easily track a CTA click.
+ * @param {string} btnText - The visible text on the button.
+ * @param {string} targetUrl - The destination URL (if applicable).
+ */
+export const trackCTAClick = (btnText, targetUrl) => {
+    trackEvent('CTA_CLICK', {
+        buttonText: btnText,
+        targetUrl: targetUrl,
+    });
+};
